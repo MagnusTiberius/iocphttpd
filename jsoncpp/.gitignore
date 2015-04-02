@@ -1,0 +1,11 @@
+Debug
+Release
+*.sln
+*.suo
+*.user
+*.swp
+*.vcproj
+*~
+*.vcxproj*
+jsoncpp.Makefile
+jsoncpp.target.mk
