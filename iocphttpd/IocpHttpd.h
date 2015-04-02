@@ -1,5 +1,5 @@
 #pragma once
-#include "..\iocphttpdlib\SocketCompletionPortServer.h"
+#include "SocketCompletionPortServer.h"
 
 
 class IocpHttpd : public SocketCompletionPortServer

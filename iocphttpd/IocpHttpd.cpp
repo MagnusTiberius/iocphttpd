@@ -26,17 +26,17 @@ void IocpHttpd::EvalPost(HttpRequest *httpRequest, HttpResponse *httpResponse)
 void IocpHttpd::HandleHome(HttpRequest *httpRequest, HttpResponse *httpResponse)
 {
 	printf("IocpHttpd::HandleHome\n");
-
+	httpResponse->Write("<html><h1>Test Home</h1><hr></html>");
 }
 
 void IocpHttpd::HandleTest(HttpRequest *httpRequest, HttpResponse *httpResponse)
 {
 	printf("IocpHttpd::HandleTest\n");
-
+	httpResponse->Write("<html><h1>Test Test</h1><hr></html>");
 }
 
 void IocpHttpd::HandleInit(HttpRequest *httpRequest, HttpResponse *httpResponse)
 {
 	printf("IocpHttpd::HandleInit\n");
-
+	httpResponse->Write("<html><h1>Test Init</h1><hr></html>");
 }

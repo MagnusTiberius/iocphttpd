@@ -99,12 +99,14 @@ int SocketCompletionPortServer::Start()
 		printf("listen() is working...\n");
 
 	// Accept connections and assign to the completion port
-	while (TRUE)
+	BOOL isOK = true;
+	while (isOK)
 	{
 		if ((Accept = WSAAccept(Listen, NULL, NULL, NULL, 0)) == SOCKET_ERROR)
 		{
 			printf("WSAAccept() failed with error %d\n", WSAGetLastError());
-			return 1;
+			isOK = false;
+			continue;
 		}
 		else
 			printf("WSAAccept() looks fine!\n");
@@ -123,7 +125,8 @@ int SocketCompletionPortServer::Start()
 		if (CreateIoCompletionPort((HANDLE)Accept, CompletionPort, (DWORD)PerHandleData, 0) == NULL)
 		{
 			printf("CreateIoCompletionPort() failed with error %d\n", GetLastError());
-			return 1;
+			isOK = false;
+			continue;
 		}
 		else
 			printf("CreateIoCompletionPort() is OK!\n");
@@ -132,7 +135,8 @@ int SocketCompletionPortServer::Start()
 		if ((PerIoData = (LPPER_IO_OPERATION_DATA)GlobalAlloc(GPTR, sizeof(PER_IO_OPERATION_DATA))) == NULL)
 		{
 			printf("GlobalAlloc() failed with error %d\n", GetLastError());
-			return 1;
+			isOK = false;
+			continue;
 		}
 		else
 			printf("GlobalAlloc() for LPPER_IO_OPERATION_DATA is OK!\n");
@@ -151,7 +155,8 @@ int SocketCompletionPortServer::Start()
 			if (WSAGetLastError() != ERROR_IO_PENDING)
 			{
 				printf("WSARecv() failed with error %d\n", WSAGetLastError());
-				return 1;
+				isOK = false;
+				continue;
 			}
 		}
 		else
@@ -188,7 +193,10 @@ void SocketCompletionPortServer::Dispatch(HttpRequest *httpRequest, HttpResponse
 	}
 
 	LPSTATICFUNC lpFunc = (LPSTATICFUNC)GetRoute(httpRequest->GetUrl());
-	(*lpFunc)(httpRequest, httpResponse);
+	if (lpFunc != NULL)
+	{
+		(*lpFunc)(httpRequest, httpResponse);
+	}
 }
 
 DWORD WINAPI SocketCompletionPortServer::ServerWorkerThread(LPVOID lpObject)
@@ -198,6 +206,8 @@ DWORD WINAPI SocketCompletionPortServer::ServerWorkerThread(LPVOID lpObject)
 	DWORD BytesTransferred;
 	LPPER_HANDLE_DATA PerHandleData;
 	LPPER_IO_OPERATION_DATA PerIoData;
+	LPPER_IO_OPERATION_DATA PerIoDataSend;
+	LPPER_IO_OPERATION_DATA PerIoDataRecv;
 	DWORD SendBytes, RecvBytes;
 	DWORD Flags;
 
@@ -206,8 +216,8 @@ DWORD WINAPI SocketCompletionPortServer::ServerWorkerThread(LPVOID lpObject)
 
 	while (TRUE)
 	{
-		if (GetQueuedCompletionStatus(CompletionPort, &BytesTransferred,
-			(PULONG_PTR)&PerHandleData, (LPOVERLAPPED *)&PerIoData, INFINITE) == 0)
+		BOOL res1 = GetQueuedCompletionStatus(CompletionPort, &BytesTransferred, (PULONG_PTR)&PerHandleData, (LPOVERLAPPED *)&PerIoData, INFINITE);
+		if (res1==0)
 		{
 			printf("ServerWorkerThread--GetQueuedCompletionStatus() failed with error %d\n", GetLastError());
 			return 0;
@@ -218,7 +228,7 @@ DWORD WINAPI SocketCompletionPortServer::ServerWorkerThread(LPVOID lpObject)
 		// First check to see if an error has occurred on the socket and if so
 		// then close the socket and cleanup the SOCKET_INFORMATION structure
 		// associated with the socket
-		if (BytesTransferred == 0)
+		if (BytesTransferred == 0 || PerIoData->BytesRECV == 0)
 		{
 			printf("ServerWorkerThread--Closing socket %d\n", PerHandleData->Socket);
 			if (closesocket(PerHandleData->Socket) == SOCKET_ERROR)
@@ -237,72 +247,34 @@ DWORD WINAPI SocketCompletionPortServer::ServerWorkerThread(LPVOID lpObject)
 		{
 			httpRequest.Parse(PerIoData->DataBuf.buf);
 			obj->Dispatch(&httpRequest, &httpResponse);
-		}
-
-		continue;
-
-		// Check to see if the BytesRECV field equals zero. If this is so, then
-		// this means a WSARecv call just completed so update the BytesRECV field
-		// with the BytesTransferred value from the completed WSARecv() call
-		/*if (PerIoData->BytesRECV == 0)
-		{
-			PerIoData->BytesRECV = BytesTransferred;
-			PerIoData->BytesSEND = 0;
-		}
-		else
-		{
-			PerIoData->BytesSEND += BytesTransferred;
-		}
-		if (PerIoData->BytesRECV > PerIoData->BytesSEND)
-		*/
-		if (PerIoData->BytesSEND > 0)
-		{
-			// Post another WSASend() request.
-			// Since WSASend() is not guaranteed to send all of the bytes requested,
-			// continue posting WSASend() calls until all received bytes are sent.
-			//ZeroMemory(&(PerIoData->Overlapped), sizeof(OVERLAPPED));
-			//PerIoData->DataBuf.buf = PerIoData->Buffer + PerIoData->BytesSEND;
-			//PerIoData->DataBuf.len = PerIoData->BytesRECV - PerIoData->BytesSEND;
-
-			if (WSASend(PerHandleData->Socket, &(PerIoData->DataBuf), 1, &SendBytes, 0,
-				&(PerIoData->Overlapped), NULL) == SOCKET_ERROR)
+			ZeroMemory(PerIoData->Buffer, DATA_BUFSIZE);
+			ZeroMemory(&(PerIoData->Overlapped), sizeof(OVERLAPPED));
+			PerIoData->DataBuf.buf = PerIoData->Buffer;
+			httpResponse.GetResponse(PerIoData->Buffer, DATA_BUFSIZE);
+			httpResponse.Write("");
+			auto n = strlen(PerIoData->Buffer);
+			PerIoData->DataBuf.len = (ULONG)n;
+			int res = WSASend(PerHandleData->Socket, &(PerIoData->DataBuf), 1, &SendBytes, 0, &(PerIoData->Overlapped), NULL);
+			if (res == SOCKET_ERROR)
 			{
-				if (WSAGetLastError() != ERROR_IO_PENDING)
-				{
-					printf("ServerWorkerThread--WSASend() failed with error %d\n", WSAGetLastError());
-					return 0;
-				}
+				printf("ServerWorkerThread--WSASend() failed with error %d\n", WSAGetLastError());
 			}
-			else
-				printf("ServerWorkerThread--WSASend() is OK!\n");
-		}
-		if (PerIoData->BytesRECV > 0)
-		{
-			PerIoData->BytesRECV = 0;
-			// Now that there are no more bytes to send post another WSARecv() request
+			/*
 			Flags = 0;
 			ZeroMemory(&(PerIoData->Overlapped), sizeof(OVERLAPPED));
+			ZeroMemory(PerIoData->Buffer, DATA_BUFSIZE);
 			PerIoData->DataBuf.len = DATA_BUFSIZE;
 			PerIoData->DataBuf.buf = PerIoData->Buffer;
 
-			DWORD res = WSARecv(PerHandleData->Socket, &(PerIoData->DataBuf), 1, &RecvBytes, &Flags,
+			DWORD res2 = WSARecv(PerHandleData->Socket, &(PerIoData->DataBuf), 1, &RecvBytes, &Flags,
 				&(PerIoData->Overlapped), NULL);
 
-			if ( res == SOCKET_ERROR)
+			if (res2 == SOCKET_ERROR)
 			{
-				DWORD ler = WSAGetLastError();
-				printf("WSAGetLastError() returned 0x%x\n", ler);
-				if (WSAGetLastError() != ERROR_IO_PENDING)
-				{
-					printf("ServerWorkerThread--WSARecv() failed with error %d\n", WSAGetLastError());
-					return 0;
-				}
+				printf("ServerWorkerThread--WSARecv() failed with error %d\n", WSAGetLastError());
 			}
-			else
-			{
-				printf("ServerWorkerThread--WSARecv() is OK!\n");
-				PerIoData->BytesRECV = BytesTransferred;
-			}
+			*/
 		}
+
 	}
 }
