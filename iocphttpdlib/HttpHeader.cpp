@@ -13,6 +13,7 @@ HttpHeader::~HttpHeader()
 
 void HttpHeader::Parse(char* content)
 {
+	DWORD dwThreadId = GetCurrentThreadId();
 	char buf1[DATA_BUFSIZE];
 	ZeroMemory(buf1, DATA_BUFSIZE);
 	int buf1_ptr = 0;
@@ -36,7 +37,7 @@ void HttpHeader::Parse(char* content)
 
 			if (m_ps == PSTATE_URL) // url detected
 			{
-				printf("method found: %s\n", buf1);
+				fprintf(stderr, "%d::method found: %s\n", dwThreadId, buf1);
 				ZeroMemory(m_httpVer, DATA_BUFSIZE);
 				sprintf_s(m_httpVer, DATA_BUFSIZE, "%s", buf1);
 				ZeroMemory(buf1, DATA_BUFSIZE);
@@ -48,7 +49,7 @@ void HttpHeader::Parse(char* content)
 			
 			if (m_ps == PSTATE_HOST_DETECTED) 
 			{
-				printf("host value: %s\n", buf1);
+				fprintf(stderr, "%d::host value: %s\n", dwThreadId, buf1);
 				ZeroMemory(m_host, DATA_BUFSIZE);
 				sprintf_s(m_host, DATA_BUFSIZE, "%s", buf1);
 				ZeroMemory(buf1, DATA_BUFSIZE);
@@ -59,7 +60,7 @@ void HttpHeader::Parse(char* content)
 			}
 			if (m_ps == PSTATE_CONNECTION_DETECTED)
 			{
-				printf("connection value: %s\n", buf1);
+				fprintf(stderr, "%d::connection value: %s\n", dwThreadId, buf1);
 				ZeroMemory(m_connection, DATA_BUFSIZE);
 				sprintf_s(m_connection, DATA_BUFSIZE, "%s", buf1);
 				ZeroMemory(buf1, DATA_BUFSIZE);
@@ -74,7 +75,7 @@ void HttpHeader::Parse(char* content)
 		{
 			if (strcmp(buf1, "GET") == 0) // method detected
 			{
-				printf("method found: %s\n", buf1);
+				fprintf(stderr, "%d::method found: %s\n", dwThreadId, buf1);
 				ZeroMemory(buf1, DATA_BUFSIZE);
 				buf1_ptr = 0;
 				m_method = HTTP_GET;
@@ -84,7 +85,7 @@ void HttpHeader::Parse(char* content)
 			}
 			if (strcmp(buf1, "POST") == 0) // method detected
 			{
-				printf("method found: %s\n", buf1);
+				fprintf(stderr, "%d::method found: %s\n", dwThreadId, buf1);
 				ZeroMemory(buf1, DATA_BUFSIZE);
 				buf1_ptr = 0;
 				m_method = HTTP_POST;
@@ -94,7 +95,7 @@ void HttpHeader::Parse(char* content)
 			}
 			if (m_ps == PSTATE_GET || m_ps == PSTATE_POST) // url detected
 			{
-				printf("method found: %s\n", buf1);
+				fprintf(stderr, "%d::method found: %s\n", dwThreadId, buf1);
 				ZeroMemory(m_url, DATA_BUFSIZE);
 				sprintf_s(m_url, DATA_BUFSIZE, "%s", buf1);
 				ZeroMemory(buf1, DATA_BUFSIZE);
@@ -111,7 +112,7 @@ void HttpHeader::Parse(char* content)
 			if (strcmp(buf1, "Host") == 0) // method detected
 			{
 				m_ps = PSTATE_HOST_DETECTED;
-				printf("header element: %s\n", buf1);
+				fprintf(stderr, "%d::Host element: %s\n", dwThreadId, buf1);
 				ZeroMemory(buf1, DATA_BUFSIZE);
 				c = content[++i];
 				buf1_ptr = 0;
@@ -120,7 +121,7 @@ void HttpHeader::Parse(char* content)
 			if (strcmp(buf1, "Connection") == 0) // method detected
 			{
 				m_ps = PSTATE_CONNECTION_DETECTED;
-				printf("header element: %s\n", buf1);
+				fprintf(stderr, "%d::Connection element: %s\n", dwThreadId, buf1);
 				ZeroMemory(buf1, DATA_BUFSIZE);
 				c = content[++i];
 				buf1_ptr = 0;

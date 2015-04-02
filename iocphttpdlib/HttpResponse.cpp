@@ -19,6 +19,7 @@ void HttpResponse::Write(const char* str)
 
 void HttpResponse::GetResponse(char* pszResponse, DWORD dwSize)
 {
+	DWORD dwThreadId = GetCurrentThreadId();
 	std::string hdr;
 	ZeroMemory(pszResponse, dwSize);
 	sprintf_s(pszResponse, dwSize, "%s%s", resp_ok, "\n");
@@ -28,6 +29,6 @@ void HttpResponse::GetResponse(char* pszResponse, DWORD dwSize)
 	size_t siz = strlen(m_szResponse.c_str());
 	sprintf_s(pszResponse, dwSize, "%s%s%d%s", pszResponse, "Content-Length: ", siz, "\n\n");
 	sprintf_s(pszResponse, dwSize, "%s%s%s", pszResponse, m_szResponse.c_str(), "\n");
-	printf("%s \n", m_szResponse.c_str());
+	printf("%d::%s \n", dwThreadId, m_szResponse.c_str());
 
 }

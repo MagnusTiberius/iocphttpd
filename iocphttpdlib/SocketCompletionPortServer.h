@@ -21,6 +21,8 @@ public:
 
 	SocketCompletionPortServer(int PortNum);
 
+	void Start(int PortNum);
+
 	typedef struct
 	{
 		OVERLAPPED Overlapped;
