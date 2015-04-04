@@ -46,6 +46,8 @@ public:
 	virtual void EvalPost(HttpRequest *httpRequest, HttpResponse *httpResponse);
 	virtual void Dispatch(HttpRequest *httpRequest, HttpResponse *httpResponse);
 
+	virtual void UrlNotFound(HttpRequest *httpRequest, HttpResponse *httpResponse);
+
 private:
 	static DWORD WINAPI ServerWorkerThread(LPVOID CompletionPortID);
 	HANDLE CompletionPort;

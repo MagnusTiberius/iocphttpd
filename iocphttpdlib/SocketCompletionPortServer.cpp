@@ -161,7 +161,7 @@ int SocketCompletionPortServer::Start()
 			if (WSAGetLastError() != ERROR_IO_PENDING)
 			{
 				fprintf(stderr, "%d::WSARecv() failed with error %d\n", dwThreadId, WSAGetLastError());
-				isOK = false;
+				isOK = true;
 				continue;
 			}
 		}
@@ -203,6 +203,15 @@ void SocketCompletionPortServer::Dispatch(HttpRequest *httpRequest, HttpResponse
 	{
 		(*lpFunc)(httpRequest, httpResponse);
 	}
+	else
+	{
+		UrlNotFound(httpRequest, httpResponse);
+	}
+}
+
+void SocketCompletionPortServer::UrlNotFound(HttpRequest *httpRequest, HttpResponse *httpResponse)
+{
+	fprintf(stderr, "SocketCompletionPortServer::UrlNotFound: %s \n", httpRequest->GetUrl());
 }
 
 DWORD WINAPI SocketCompletionPortServer::ServerWorkerThread(LPVOID lpObject)

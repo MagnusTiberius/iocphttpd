@@ -39,6 +39,9 @@
     <ClInclude Include="HttpUrlRoute.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="ParserHeader.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="stdafx.cpp">
@@ -59,5 +62,11 @@
     <ClCompile Include="HttpUrlRoute.cpp">
       <Filter>Resource Files</Filter>
     </ClCompile>
+    <ClCompile Include="ParserHeader.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="..\README.md" />
   </ItemGroup>
 </Project>
