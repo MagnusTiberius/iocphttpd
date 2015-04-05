@@ -13,3 +13,8 @@ https://ci.appveyor.com/api/projects/status/lpsxd8dcbxapj3b5
 Dependencies:
 
 1) Uses jsoncpp, see https://github.com/open-source-parsers/jsoncpp for details.
+
+
+TODO:
+
+1) Setup AppVeyor to install bison.exe
