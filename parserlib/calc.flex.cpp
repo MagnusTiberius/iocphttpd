@@ -744,12 +744,12 @@ YY_RULE_SETUP
 case 4:
 YY_RULE_SETUP
 #line 21 "calc.l"
-{ yylval.int_val = atoi(yytext); return IDENTIFIER; }
+{ yylval.identifier_tok = _strdup(yytext); return IDENTIFIER; }
 	YY_BREAK
 case 5:
 YY_RULE_SETUP
 #line 22 "calc.l"
-{ yylval.int_val = atoi(yytext); return METHOD; }
+{ yylval.identifier_tok = _strdup(yytext); return METHOD; }
 	YY_BREAK
 case 6:
 YY_RULE_SETUP

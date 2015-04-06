@@ -18,8 +18,8 @@ method			[GET|POST]
 {int_const}			{ yylval.int_val = atoi(yytext); return INTEGER_LITERAL; }
 "+"					{ yylval.identifier_tok = _strdup(yytext); return PLUS; }
 "*"					{ yylval.identifier_tok = _strdup(yytext); return MULT; }
-{identifier}		{ yylval.int_val = _strdup(yytext); return IDENTIFIER; }
-{method}			{ yylval.int_val = _strdup(yytext); return METHOD; }
+{identifier}		{ yylval.identifier_tok = _strdup(yytext); return IDENTIFIER; }
+{method}			{ yylval.identifier_tok = _strdup(yytext); return METHOD; }
 
 [ \t]*		{}
 [\n]		{ yylineno++;	}

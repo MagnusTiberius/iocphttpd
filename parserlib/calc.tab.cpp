@@ -1607,7 +1607,8 @@ int yyerror(string s)
   
   cerr << "ERROR: " << s << " at symbol \"" << yytext;
   cerr << "\" on line " << yylineno << endl;
-  exit(1);
+  //exit(1);
+  return 1;
 }
 
 int yyerror(char *s)
