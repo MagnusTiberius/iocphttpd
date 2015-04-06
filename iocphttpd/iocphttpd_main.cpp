@@ -10,8 +10,6 @@
 int _tmain(int argc, _TCHAR* argv[])
 {
 
-	headerparser::HParser hParser;
-	hParser.Parse();
 
 	IocpHttpd server;
 	server.Start();

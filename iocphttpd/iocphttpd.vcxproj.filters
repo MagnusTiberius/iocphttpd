@@ -27,9 +27,6 @@
     <ClInclude Include="IocpHttpd.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="HParser.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="stdafx.cpp">
@@ -39,9 +36,6 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="IocpHttpd.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="HParser.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>

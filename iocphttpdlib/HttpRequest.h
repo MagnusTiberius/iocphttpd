@@ -1,6 +1,6 @@
 #pragma once
 #include "HttpHeader.h"
-
+#include "HParser.h"
 
 class HttpRequest
 {
@@ -13,6 +13,7 @@ public:
 	HttpHeader::MethodType GetMethod();
 
 private:
+	headerparser::HParser hParser;
 	HttpHeader httpHeader;
 };
 
