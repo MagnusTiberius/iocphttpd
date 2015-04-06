@@ -38,6 +38,9 @@
     <ClInclude Include="calc.tab.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="AstHttp.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Bison Include="calc.y">

@@ -14,6 +14,10 @@
 #include <cmath>
 #include <iostream>
 #include <cstdlib>
+#include <windows.h>
+
+#define BUFSIZMAX  8*1024
+#define BUFSIZMIN  1024
 
 using namespace std;
 
