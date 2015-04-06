@@ -115,8 +115,10 @@ extern int yydebug;
       know about them.  */
    enum yytokentype {
      INTEGER_LITERAL = 258,
-     PLUS = 259,
-     MULT = 260
+     IDENTIFIER = 259,
+     METHOD = 260,
+     PLUS = 261,
+     MULT = 262
    };
 #endif
 
@@ -128,11 +130,11 @@ typedef union YYSTYPE
 #line 18 "calc.y"
 
   int		int_val;
-  char*	op_val;
+  char*		identifier_tok;
 
 
 /* Line 387 of yacc.c  */
-#line 136 "calc.tab.cpp"
+#line 138 "calc.tab.cpp"
 } YYSTYPE;
 # define YYSTYPE_IS_TRIVIAL 1
 # define yystype YYSTYPE /* obsolescent; will be withdrawn */
@@ -160,7 +162,7 @@ int yyparse ();
 /* Copy the second part of user declarations.  */
 
 /* Line 390 of yacc.c  */
-#line 164 "calc.tab.cpp"
+#line 166 "calc.tab.cpp"
 
 #ifdef short
 # undef short
@@ -380,10 +382,10 @@ union yyalloc
 /* YYFINAL -- State number of the termination state.  */
 #define YYFINAL  4
 /* YYLAST -- Last index in YYTABLE.  */
-#define YYLAST   7
+#define YYLAST   6
 
 /* YYNTOKENS -- Number of terminals.  */
-#define YYNTOKENS  6
+#define YYNTOKENS  8
 /* YYNNTS -- Number of nonterminals.  */
 #define YYNNTS  3
 /* YYNRULES -- Number of rules.  */
@@ -393,7 +395,7 @@ union yyalloc
 
 /* YYTRANSLATE(YYLEX) -- Bison symbol number corresponding to YYLEX.  */
 #define YYUNDEFTOK  2
-#define YYMAXUTOK   260
+#define YYMAXUTOK   262
 
 #define YYTRANSLATE(YYX)						\
   ((unsigned int) (YYX) <= YYMAXUTOK ? yytranslate[YYX] : YYUNDEFTOK)
@@ -427,7 +429,7 @@ static const yytype_uint8 yytranslate[] =
        2,     2,     2,     2,     2,     2,     2,     2,     2,     2,
        2,     2,     2,     2,     2,     2,     2,     2,     2,     2,
        2,     2,     2,     2,     2,     2,     1,     2,     3,     4,
-       5
+       5,     6,     7
 };
 
 #if YYDEBUG
@@ -441,14 +443,14 @@ static const yytype_uint8 yyprhs[] =
 /* YYRHS -- A `-1'-separated list of the rules' RHS.  */
 static const yytype_int8 yyrhs[] =
 {
-       7,     0,    -1,    -1,     8,    -1,     3,    -1,     8,     4,
-       8,    -1,     8,     5,     8,    -1
+       9,     0,    -1,    -1,    10,    -1,     3,    -1,    10,     6,
+      10,    -1,    10,     7,    10,    -1
 };
 
 /* YYRLINE[YYN] -- source line where rule number YYN was defined.  */
 static const yytype_uint8 yyrline[] =
 {
-       0,    32,    32,    33,    36,    37,    38
+       0,    33,    33,    34,    37,    38,    39
 };
 #endif
 
@@ -457,8 +459,8 @@ static const yytype_uint8 yyrline[] =
    First, the terminals, then, starting at YYNTOKENS, nonterminals.  */
 static const char *const yytname[] =
 {
-  "$end", "error", "$undefined", "INTEGER_LITERAL", "PLUS", "MULT",
-  "$accept", "input", "exp", YY_NULL
+  "$end", "error", "$undefined", "INTEGER_LITERAL", "IDENTIFIER",
+  "METHOD", "PLUS", "MULT", "$accept", "input", "exp", YY_NULL
 };
 #endif
 
@@ -467,14 +469,14 @@ static const char *const yytname[] =
    token YYLEX-NUM.  */
 static const yytype_uint16 yytoknum[] =
 {
-       0,   256,   257,   258,   259,   260
+       0,   256,   257,   258,   259,   260,   261,   262
 };
 # endif
 
 /* YYR1[YYN] -- Symbol number of symbol that rule YYN derives.  */
 static const yytype_uint8 yyr1[] =
 {
-       0,     6,     7,     7,     8,     8,     8
+       0,     8,     9,     9,    10,    10,    10
 };
 
 /* YYR2[YYN] -- Number of symbols composing right hand side of rule YYN.  */
@@ -499,16 +501,16 @@ static const yytype_int8 yydefgoto[] =
 
 /* YYPACT[STATE-NUM] -- Index in YYTABLE of the portion describing
    STATE-NUM.  */
-#define YYPACT_NINF -5
+#define YYPACT_NINF -7
 static const yytype_int8 yypact[] =
 {
-       1,    -5,     5,    -4,    -5,     1,     1,     2,    -5
+       1,    -7,     5,    -6,    -7,     1,     1,    -1,    -7
 };
 
 /* YYPGOTO[NTERM-NUM].  */
 static const yytype_int8 yypgoto[] =
 {
-      -5,    -5,    -3
+      -7,    -7,    -3
 };
 
 /* YYTABLE[YYPACT[STATE-NUM]].  What to do in state STATE-NUM.  If
@@ -517,25 +519,25 @@ static const yytype_int8 yypgoto[] =
 #define YYTABLE_NINF -1
 static const yytype_uint8 yytable[] =
 {
-       5,     6,     7,     8,     1,     4,     0,     6
+       5,     6,     7,     8,     1,     4,     6
 };
 
 #define yypact_value_is_default(Yystate) \
-  (!!((Yystate) == (-5)))
+  (!!((Yystate) == (-7)))
 
 #define yytable_value_is_error(Yytable_value) \
   YYID (0)
 
-static const yytype_int8 yycheck[] =
+static const yytype_uint8 yycheck[] =
 {
-       4,     5,     5,     6,     3,     0,    -1,     5
+       6,     7,     5,     6,     3,     0,     7
 };
 
 /* YYSTOS[STATE-NUM] -- The (internal number of the) accessing
    symbol of state STATE-NUM.  */
 static const yytype_uint8 yystos[] =
 {
-       0,     3,     7,     8,     0,     4,     5,     8,     8
+       0,     3,     9,    10,     0,     6,     7,    10,    10
 };
 
 #define yyerrok		(yyerrstatus = 0)
@@ -1337,31 +1339,31 @@ yyreduce:
     {
         case 3:
 /* Line 1792 of yacc.c  */
-#line 33 "calc.y"
+#line 34 "calc.y"
     { cout << "Result: " << (yyvsp[(1) - (1)].int_val) << endl; }
     break;
 
   case 4:
 /* Line 1792 of yacc.c  */
-#line 36 "calc.y"
+#line 37 "calc.y"
     { (yyval.int_val) = (yyvsp[(1) - (1)].int_val); }
     break;
 
   case 5:
 /* Line 1792 of yacc.c  */
-#line 37 "calc.y"
+#line 38 "calc.y"
     { (yyval.int_val) = (yyvsp[(1) - (3)].int_val) + (yyvsp[(3) - (3)].int_val); }
     break;
 
   case 6:
 /* Line 1792 of yacc.c  */
-#line 38 "calc.y"
+#line 39 "calc.y"
     { (yyval.int_val) = (yyvsp[(1) - (3)].int_val) * (yyvsp[(3) - (3)].int_val); }
     break;
 
 
 /* Line 1792 of yacc.c  */
-#line 1365 "calc.tab.cpp"
+#line 1367 "calc.tab.cpp"
       default: break;
     }
   /* User semantic actions sometimes alter yychar, and that requires
@@ -1593,7 +1595,7 @@ yyreturn:
 
 
 /* Line 2055 of yacc.c  */
-#line 41 "calc.y"
+#line 42 "calc.y"
 
 
 

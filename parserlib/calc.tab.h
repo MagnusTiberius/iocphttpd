@@ -47,8 +47,10 @@ extern int yydebug;
       know about them.  */
    enum yytokentype {
      INTEGER_LITERAL = 258,
-     PLUS = 259,
-     MULT = 260
+     IDENTIFIER = 259,
+     METHOD = 260,
+     PLUS = 261,
+     MULT = 262
    };
 #endif
 
@@ -60,11 +62,11 @@ typedef union YYSTYPE
 #line 18 "calc.y"
 
   int		int_val;
-  char*	op_val;
+  char*		identifier_tok;
 
 
 /* Line 2058 of yacc.c  */
-#line 68 "calc.tab.h"
+#line 70 "calc.tab.h"
 } YYSTYPE;
 # define YYSTYPE_IS_TRIVIAL 1
 # define yystype YYSTYPE /* obsolescent; will be withdrawn */

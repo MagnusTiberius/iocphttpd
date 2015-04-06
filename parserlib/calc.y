@@ -17,12 +17,13 @@ int yylex(void);
 
 %union{
   int		int_val;
-  char*	op_val;
+  char*		identifier_tok;
 };
 
 %start	input 
 
 %token	<int_val>	INTEGER_LITERAL
+%token	<identifier_tok>	IDENTIFIER METHOD
 %type	<int_val>	exp
 %left	PLUS
 %left	MULT

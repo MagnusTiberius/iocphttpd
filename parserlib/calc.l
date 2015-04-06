@@ -10,17 +10,21 @@ int yyerror(char *s);
 
 digit		[0-9]
 int_const	{digit}+
+identifier		[a-zA-Z]+[0-9]
+method			[GET|POST]
 
 %%
 
-{int_const}	{ yylval.int_val = atoi(yytext); return INTEGER_LITERAL; }
-"+"		{ yylval.op_val = _strdup(yytext); return PLUS; }
-"*"		{ yylval.op_val = _strdup(yytext); return MULT; }
+{int_const}			{ yylval.int_val = atoi(yytext); return INTEGER_LITERAL; }
+"+"					{ yylval.identifier_tok = _strdup(yytext); return PLUS; }
+"*"					{ yylval.identifier_tok = _strdup(yytext); return MULT; }
+{identifier}		{ yylval.int_val = _strdup(yytext); return IDENTIFIER; }
+{method}			{ yylval.int_val = _strdup(yytext); return METHOD; }
 
 [ \t]*		{}
 [\n]		{ yylineno++;	}
 
-.		{ std::cerr << "SCANNER "; yyerror(""); exit(1);	}
+.		{ yylval.int_val = atoi(yytext); 	}
 
 %%
 
