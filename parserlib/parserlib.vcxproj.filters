@@ -24,6 +24,9 @@
     <ClCompile Include="calc.tab.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="calc.flex.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="stdafx.h">
@@ -40,5 +43,10 @@
     <Bison Include="calc.y">
       <Filter>Source Files</Filter>
     </Bison>
+  </ItemGroup>
+  <ItemGroup>
+    <Flex Include="calc.l">
+      <Filter>Source Files</Filter>
+    </Flex>
   </ItemGroup>
 </Project>

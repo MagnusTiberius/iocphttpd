@@ -3,14 +3,22 @@
 
 %{
 #include "stdafx.h"
+
+
+
+
+
 int yyerror(char *s);
 int yylex(void);
+
+
+
 %}
 
 %union{
   int		int_val;
-  string*	op_val;
-}
+  char*	op_val;
+};
 
 %start	input 
 
@@ -32,6 +40,8 @@ exp:		INTEGER_LITERAL	{ $$ = $1; }
 
 %%
 
+
+
 int yyerror(string s)
 {
   extern int yylineno;	// defined and maintained in lex.c
@@ -45,11 +55,4 @@ int yyerror(string s)
 int yyerror(char *s)
 {
   return yyerror(string(s));
-}
-
-
-int yylex()
-{
-
-	return 0;
 }

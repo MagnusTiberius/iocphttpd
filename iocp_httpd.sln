@@ -7,6 +7,7 @@ Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "iocphttpdlib", "iocphttpdli
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "iocphttpd", "iocphttpd\iocphttpd.vcxproj", "{54F797E9-FB21-4BBE-914C-4EFD66861330}"
 	ProjectSection(ProjectDependencies) = postProject
+		{BB848CBE-8AF6-4920-B52F-378022E4265E} = {BB848CBE-8AF6-4920-B52F-378022E4265E}
 		{ACA636DC-C983-41BA-AC3C-061470242BA3} = {ACA636DC-C983-41BA-AC3C-061470242BA3}
 	EndProjectSection
 EndProject

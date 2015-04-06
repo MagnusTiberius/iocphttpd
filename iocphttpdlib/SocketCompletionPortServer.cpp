@@ -221,8 +221,6 @@ DWORD WINAPI SocketCompletionPortServer::ServerWorkerThread(LPVOID lpObject)
 	DWORD BytesTransferred;
 	LPPER_HANDLE_DATA PerHandleData;
 	LPPER_IO_OPERATION_DATA PerIoData;
-	LPPER_IO_OPERATION_DATA PerIoDataSend;
-	LPPER_IO_OPERATION_DATA PerIoDataRecv;
 	DWORD SendBytes, RecvBytes;
 	DWORD Flags;
 

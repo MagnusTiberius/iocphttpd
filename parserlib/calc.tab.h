@@ -57,10 +57,10 @@ extern int yydebug;
 typedef union YYSTYPE
 {
 /* Line 2058 of yacc.c  */
-#line 10 "calc.y"
+#line 18 "calc.y"
 
   int		int_val;
-  string*	op_val;
+  char*	op_val;
 
 
 /* Line 2058 of yacc.c  */

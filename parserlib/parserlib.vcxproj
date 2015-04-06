@@ -58,6 +58,8 @@
       <Optimization>Disabled</Optimization>
       <PreprocessorDefinitions>WIN32;_DEBUG;_LIB;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <SDLCheck>true</SDLCheck>
+      <CompileAs>Default</CompileAs>
+      <RuntimeLibrary>MultiThreadedDebugDLL</RuntimeLibrary>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>
@@ -100,6 +102,7 @@
     <Text Include="ReadMe.txt" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="calc.flex.cpp" />
     <ClCompile Include="calc.tab.cpp" />
     <ClCompile Include="stdafx.cpp" />
   </ItemGroup>
@@ -109,14 +112,10 @@
     <ClInclude Include="targetver.h" />
   </ItemGroup>
   <ItemGroup>
-    <Bison Include="calc.y">
-      <Warnings Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
-      </Warnings>
-      <Warnings Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
-      </Warnings>
-      <FilePrefix Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">calcp_</FilePrefix>
-      <FilePrefix Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">calcp_</FilePrefix>
-    </Bison>
+    <Bison Include="calc.y" />
+  </ItemGroup>
+  <ItemGroup>
+    <Flex Include="calc.l" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

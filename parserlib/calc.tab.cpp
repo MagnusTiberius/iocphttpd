@@ -66,11 +66,19 @@
 #line 4 "calc.y"
 
 #include "stdafx.h"
+
+
+
+
+
 int yyerror(char *s);
 int yylex(void);
 
+
+
+
 /* Line 371 of yacc.c  */
-#line 74 "calc.tab.cpp"
+#line 82 "calc.tab.cpp"
 
 # ifndef YY_NULL
 #  if defined __cplusplus && 201103L <= __cplusplus
@@ -117,14 +125,14 @@ extern int yydebug;
 typedef union YYSTYPE
 {
 /* Line 387 of yacc.c  */
-#line 10 "calc.y"
+#line 18 "calc.y"
 
   int		int_val;
-  string*	op_val;
+  char*	op_val;
 
 
 /* Line 387 of yacc.c  */
-#line 128 "calc.tab.cpp"
+#line 136 "calc.tab.cpp"
 } YYSTYPE;
 # define YYSTYPE_IS_TRIVIAL 1
 # define yystype YYSTYPE /* obsolescent; will be withdrawn */
@@ -152,7 +160,7 @@ int yyparse ();
 /* Copy the second part of user declarations.  */
 
 /* Line 390 of yacc.c  */
-#line 156 "calc.tab.cpp"
+#line 164 "calc.tab.cpp"
 
 #ifdef short
 # undef short
@@ -440,7 +448,7 @@ static const yytype_int8 yyrhs[] =
 /* YYRLINE[YYN] -- source line where rule number YYN was defined.  */
 static const yytype_uint8 yyrline[] =
 {
-       0,    24,    24,    25,    28,    29,    30
+       0,    32,    32,    33,    36,    37,    38
 };
 #endif
 
@@ -1329,31 +1337,31 @@ yyreduce:
     {
         case 3:
 /* Line 1792 of yacc.c  */
-#line 25 "calc.y"
+#line 33 "calc.y"
     { cout << "Result: " << (yyvsp[(1) - (1)].int_val) << endl; }
     break;
 
   case 4:
 /* Line 1792 of yacc.c  */
-#line 28 "calc.y"
+#line 36 "calc.y"
     { (yyval.int_val) = (yyvsp[(1) - (1)].int_val); }
     break;
 
   case 5:
 /* Line 1792 of yacc.c  */
-#line 29 "calc.y"
+#line 37 "calc.y"
     { (yyval.int_val) = (yyvsp[(1) - (3)].int_val) + (yyvsp[(3) - (3)].int_val); }
     break;
 
   case 6:
 /* Line 1792 of yacc.c  */
-#line 30 "calc.y"
+#line 38 "calc.y"
     { (yyval.int_val) = (yyvsp[(1) - (3)].int_val) * (yyvsp[(3) - (3)].int_val); }
     break;
 
 
 /* Line 1792 of yacc.c  */
-#line 1357 "calc.tab.cpp"
+#line 1365 "calc.tab.cpp"
       default: break;
     }
   /* User semantic actions sometimes alter yychar, and that requires
@@ -1585,7 +1593,9 @@ yyreturn:
 
 
 /* Line 2055 of yacc.c  */
-#line 33 "calc.y"
+#line 41 "calc.y"
+
+
 
 
 int yyerror(string s)
@@ -1601,11 +1611,4 @@ int yyerror(string s)
 int yyerror(char *s)
 {
   return yyerror(string(s));
-}
-
-
-int yylex()
-{
-
-	return 0;
 }
