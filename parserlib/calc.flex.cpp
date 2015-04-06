@@ -1759,5 +1759,5 @@ void yyfree (void * ptr )
 
 
 int yywrap() {
-	return 0;
+	return 1;
 }

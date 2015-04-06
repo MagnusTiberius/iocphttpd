@@ -25,5 +25,5 @@ int_const	{digit}+
 %%
 
 int yywrap() {
-	return 0;
+	return 1;
 }

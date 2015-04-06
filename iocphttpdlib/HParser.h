@@ -21,6 +21,7 @@ namespace headerparser
 		~HParser();
 
 		void Parse();
+		void Parse(char* content);
 	};
 
 }
