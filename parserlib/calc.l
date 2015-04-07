@@ -21,6 +21,7 @@ equal			\=
 question        \?
 ampersand       \&
 host			Host:
+accept			Accept:
 connection		Connection:
 useragent		User-Agent:
 anytype         \*\/\*
@@ -90,6 +91,16 @@ anytype         \*\/\*
 {anytype}			{	yylval.identifier_tok = _strdup(yytext); 
 						printf("Lexer::anytype:=%s\n",yytext); 
 						return ANYTYPE; 
+					}
+
+{accept}			{	yylval.identifier_tok = _strdup(yytext); 
+						printf("Lexer::accept:=%s\n",yytext); 
+						return ACCEPT; 
+					}
+
+{useragent}			{	yylval.identifier_tok = _strdup(yytext); 
+						printf("Lexer::useragent:=%s\n",yytext); 
+						return USERAGENT; 
 					}
 
 

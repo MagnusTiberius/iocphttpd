@@ -20,8 +20,10 @@ int yylex(void);
 
 %token	<int_val>			DIGITS NEWLINE
 %token	<identifier_tok>	IDENTIFIER METHODACTION DIGIT HEADERELEM URLPATH METHODVER ID2 URLPARAMS HOST EQUAL
-							CONNECTION USERAGENT QUESTION AMPERSAND ANYTYPE
+							CONNECTION USERAGENT QUESTION AMPERSAND ANYTYPE ACCEPT 
 %type	<int_val>			exp
+%type	<identifier_tok>	delimiters
+
 %type	<lpHttpdoc>	line 
 %left	PLUS
 %left	MULT
@@ -36,7 +38,9 @@ line	: exp { cout << "Result: " << $1 << endl; }
 		| line1 { printf("line1 seen\n"); }
 		| host { printf("HOST seen\n"); }
 		| connection { printf("CONNECTION seen\n"); }
-		| property_item { printf("property_item seen\n"); }
+		| accept
+		| property_item_list { printf("property_item seen\n"); }
+		| user_agent
 		;
 
 exp		: DIGITS	{ $$ = $1; }
@@ -69,22 +73,50 @@ connection	: CONNECTION
 			| connection ID2
 			;
 
-property_item : ID2
-			  | property_item ANYTYPE
-			  | property_item ID2
-			  | property_item IDENTIFIER
-			  | property_item "/"
-			  | property_item "," 
-			  | property_item ":" 
-			  | property_item ";" 
-			  | property_item "." 
-			  | property_item MULT
-			  | property_item DIGITS
-			  | property_item PLUS
-			  | property_item "(" 
-			  | property_item ")" 
+accept		: ACCEPT
+			| accept ID2 
+			| accept delimiters
+			| accept DIGITS
+			| accept ANYTYPE
+			;
+
+user_agent	: USERAGENT
+			| user_agent ID2 
+			| user_agent IDENTIFIER 
+			| user_agent delimiters
+			| user_agent DIGITS
+			| user_agent ANYTYPE
+			;
+
+property_item_list : property_item
+				   | property_item_list property_item
+				   ;
+
+property_item : ID2 ":" " " attriblist
 			  ;
 
+attriblist    : attriblist
+			  | attriblist ANYTYPE
+			  | attriblist ID2
+			  | attriblist IDENTIFIER
+			  | attriblist "/"
+			  | attriblist "," 
+			  | attriblist ":" 
+			  | attriblist ";" 
+			  | attriblist "." 
+			  | attriblist MULT
+			  | attriblist DIGITS
+			  | attriblist PLUS
+			  | attriblist "(" 
+			  | attriblist ")" 
+			  ;
+
+delimiters    : ","
+			  | ";"
+			  | "/"
+			  | PLUS
+			  | "."
+			  ;
 
 %%
 
