@@ -3,6 +3,7 @@
 #define yyconst const
 
 extern  int yyparse(void);
+extern  int GetHttpUrl(char *action, size_t siz);
 //extern  int yyerror(char *s);
 //extern  int yyerror(std::string s);
 //extern  int yylex(void);
@@ -36,7 +37,12 @@ namespace headerparser
 		YY_BUFFER_STATE  my_string_buffer = yy_scan_string(content);
 		int res = yyparse();
 		yy_delete_buffer(my_string_buffer);
+		GetHttpUrl(m_Url, DATA_BUFSIZE);
 	}
 
+	const char* HParser::GetUrl()
+	{
+		return m_Url;
+	}
 
 }

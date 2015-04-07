@@ -22,6 +22,10 @@ namespace headerparser
 
 		void Parse();
 		void Parse(char* content);
+		const char* GetUrl();
+
+	private:
+		char m_Url[DATA_BUFSIZE];
 	};
 
 }

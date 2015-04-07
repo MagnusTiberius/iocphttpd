@@ -55,3 +55,8 @@ void SetMethodAction(char* v, lpHttpdoc doc)
 	fprintf_s(stderr, "%d::szMethodAction", dwThreadId);
 }
 
+int GetHttpUrl(char *action, size_t size)
+{
+	sprintf_s(action, size, "%s", g_Httpdoc.header.szUrl);
+	return 1;
+}
