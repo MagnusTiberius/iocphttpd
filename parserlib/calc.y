@@ -18,9 +18,9 @@ int yylex(void);
 
 %start	input 
 
-%token	<int_val>			DIGITS
-%token	<identifier_tok>	IDENTIFIER METHODACTION DIGIT HEADERELEM URLPATH METHODVER ID2 URLPARAMS HOST
-							CONNECTION USERAGENT
+%token	<int_val>			DIGITS NEWLINE
+%token	<identifier_tok>	IDENTIFIER METHODACTION DIGIT HEADERELEM URLPATH METHODVER ID2 URLPARAMS HOST EQUAL
+							CONNECTION USERAGENT QUESTION AMPERSAND ANYTYPE
 %type	<int_val>			exp
 %type	<lpHttpdoc>	line 
 %left	PLUS
@@ -34,11 +34,9 @@ input	: /* empty */
 
 line	: exp { cout << "Result: " << $1 << endl; }
 		| line1 { printf("line1 seen\n"); }
-		| line8
-		| line17 
 		| host { printf("HOST seen\n"); }
 		| connection { printf("CONNECTION seen\n"); }
-		| useragent { printf("USERAGENT seen\n"); }
+		| property_item { printf("property_item seen\n"); }
 		;
 
 exp		: DIGITS	{ $$ = $1; }
@@ -47,26 +45,20 @@ exp		: DIGITS	{ $$ = $1; }
 		;
 
 
-line1	: METHODACTION    
+line1	: METHODACTION		{ SetMethodAction($1, &g_Httpdoc); }
 		| line1 URLPATH		{ SetUrl($2, &g_Httpdoc); }
-		| line1 URLPARAMS   { SetUrlParams($2, &g_Httpdoc); }
+		| line1 urlparams   { printf("urlparams whole seen\n"); }
 		| line1 METHODVER   { SetMethodVersion($2, &g_Httpdoc); }
 		;
 
-line8	: DIGITS IDENTIFIER { printf("line seen\n"); }
-		;
+urlparams : QUESTION								{ printf("urlparams 1 seen\n"); }
+		  | urlparams IDENTIFIER EQUAL IDENTIFIER	{ printf("urlparams 2 seen\n"); }
+		  | urlparams ID2 EQUAL ID2					{ printf("urlparams 3 seen\n"); }
+		  | urlparams ID2 EQUAL DIGITS				{ printf("urlparams 4 seen\n"); }
+		  | urlparams AMPERSAND						{ printf("urlparams 5 seen\n"); }
+		  ;
 
 
-line17  : ID2 
-		| MULT
-		| line17 ":" ID2
-		| line17 "/" ID2
-		| line17 PLUS ID2
-		| line17 "," ID2
-		| line17 ";" ID2
-		| line17 "=" ID2
-		| line17 "/" MULT
-		;
 
 host	: HOST
 		| host ID2
@@ -77,17 +69,22 @@ connection	: CONNECTION
 			| connection ID2
 			;
 
-useragent   : USERAGENT
-			| useragent ID2 
-			| useragent MULT
-			| useragent ":" ID2
-			| useragent "/" ID2
-			| useragent PLUS ID2
-			| useragent "," ID2
-			| useragent ";" ID2
-			| useragent "=" ID2
-			| useragent "/" MULT
-			;
+property_item : ID2
+			  | property_item ANYTYPE
+			  | property_item ID2
+			  | property_item IDENTIFIER
+			  | property_item "/"
+			  | property_item "," 
+			  | property_item ":" 
+			  | property_item ";" 
+			  | property_item "." 
+			  | property_item MULT
+			  | property_item DIGITS
+			  | property_item PLUS
+			  | property_item "(" 
+			  | property_item ")" 
+			  ;
+
 
 %%
 
