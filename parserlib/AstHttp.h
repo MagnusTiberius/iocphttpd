@@ -47,3 +47,11 @@ void SetMethodVersion(char* v, lpHttpdoc doc)
 	fprintf_s(stderr, "%d::SetMethodVersion", dwThreadId);
 }
 
+void SetMethodAction(char* v, lpHttpdoc doc)
+{
+	DWORD dwThreadId = GetCurrentThreadId();
+	memset(doc->header.szMethodAction, '\0', BUFSIZMAX);
+	sprintf_s(doc->header.szMethodAction, BUFSIZMAX, "%s", v);
+	fprintf_s(stderr, "%d::szMethodAction", dwThreadId);
+}
+
