@@ -87,6 +87,16 @@
   <ItemGroup>
     <Bison Include="jsonp.y" />
   </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="jsonp.flex.cpp" />
+    <ClCompile Include="jsonp.tab.cpp" />
+    <ClCompile Include="stdafx.cpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="jsonp.tab.h" />
+    <ClInclude Include="stdafx.h" />
+    <ClInclude Include="targetver.h" />
+  </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
     <Import Project="..\parserlib\build\win_flex_bison_custom_build.targets" />

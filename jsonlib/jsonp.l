@@ -1,11 +1,12 @@
-/* Mini Calculator */
-/* calc.lex */
+
 
 %{
+
 #include "stdafx.h"
-#include "tok.h"
+#include "jsonp.tab.h"
+
 int yyerror(char *s);
-int yylineno = 1;
+//int yylineno = 1;
 %}
 
 digit		[0-9]
@@ -25,7 +26,8 @@ carriageret \r
 horiztab    \t
 commasep    \,
 colonsep    \:
-cchar1      [a-zA-Z0-9]{revsolidus}{solidus}{backspace}{formfeed}{newline}{carriageret}{horiztab}{doublequote}
+cspecial    [!@#$%^&_=]
+cchar1      [[a-zA-Z0-9]|{revsolidus}|{solidus}|{backspace}|{formfeed}|{newline}|{carriageret}|{horiztab}|{doublequote}|{cspecial}]
 fourhex     \u[0-9][0-9][0-9][0-9]
 cchar       ({cchar1}|{fourhex})
 cchars      ({cchar}|{cchar}+)
@@ -38,8 +40,8 @@ cnull       (null|NULL)
 %%
 
 {int_const}		{ yylval.int_val = atoi(yytext); return INTEGER_LITERAL; }
-"+"				{ yylval.op_val = new std::string(yytext); return PLUS; }
-"*"				{ yylval.op_val = new std::string(yytext); return MULT; }
+"+"				{ yylval.str_val = _strdup(yytext); return PLUS; }
+"*"				{ yylval.str_val = _strdup(yytext); return MULT; }
 {opencurly}		{ yylval.str_val = _strdup(yytext); return OPENCURLY; }
 {closecurly}	{ yylval.str_val = _strdup(yytext); return CLOSECURLY; }
 {opensqrbrk}	{ yylval.str_val = _strdup(yytext); return OPENSQRBRK; }
