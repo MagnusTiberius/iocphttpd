@@ -22,7 +22,7 @@ char* HttpRequest::GetUrl()
 	return httpHeader.GetUrl();
 }
 
-HttpHeader::MethodType HttpRequest::GetMethod()
+MethodType HttpRequest::GetMethod()
 {
 	return httpHeader.GetMethod();
 }

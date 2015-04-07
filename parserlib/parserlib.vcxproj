@@ -60,6 +60,7 @@
       <SDLCheck>true</SDLCheck>
       <CompileAs>Default</CompileAs>
       <RuntimeLibrary>MultiThreadedDebugDLL</RuntimeLibrary>
+      <AdditionalIncludeDirectories>$(SolutionDir)\iocphttpdlib\</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>

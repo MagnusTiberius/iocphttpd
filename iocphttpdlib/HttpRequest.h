@@ -1,6 +1,7 @@
 #pragma once
 #include "HttpHeader.h"
 #include "HParser.h"
+#include "Enums.h"
 
 class HttpRequest
 {
@@ -10,7 +11,7 @@ public:
 
 	void Parse(char *content);
 	char* GetUrl();
-	HttpHeader::MethodType GetMethod();
+	MethodType GetMethod();
 
 private:
 	headerparser::HParser hParser;

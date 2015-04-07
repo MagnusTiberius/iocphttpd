@@ -189,11 +189,11 @@ void SocketCompletionPortServer::EvalPost(HttpRequest *httpRequest, HttpResponse
 
 void SocketCompletionPortServer::Dispatch(HttpRequest *httpRequest, HttpResponse *httpResponse)
 {
-	if (httpRequest->GetMethod() == HttpHeader::MethodType::HTTP_GET)
+	if (httpRequest->GetMethod() == MethodType::HTTP_GET)
 	{
 		EvalGet(httpRequest, httpResponse);
 	}
-	if (httpRequest->GetMethod() == HttpHeader::MethodType::HTTP_POST)
+	if (httpRequest->GetMethod() == MethodType::HTTP_POST)
 	{
 		EvalPost(httpRequest, httpResponse);
 	}

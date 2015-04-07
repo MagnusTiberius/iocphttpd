@@ -136,7 +136,7 @@ void HttpHeader::Parse(char* content)
 	}
 }
 
-HttpHeader::MethodType HttpHeader::GetMethod()
+MethodType HttpHeader::GetMethod()
 {
 	return m_method;
 }

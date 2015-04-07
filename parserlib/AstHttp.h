@@ -60,3 +60,9 @@ int GetHttpUrl(char *action, size_t size)
 	sprintf_s(action, size, "%s", g_Httpdoc.header.szUrl);
 	return 1;
 }
+
+int GetHttpMethod(char *v, size_t size)
+{
+	sprintf_s(v, size, "%s", g_Httpdoc.header.szMethodAction);
+	return 1;
+}

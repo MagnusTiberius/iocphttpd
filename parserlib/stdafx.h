@@ -15,6 +15,7 @@
 #include <iostream>
 #include <cstdlib>
 #include <windows.h>
+#include "Enums.h"
 
 #define BUFSIZMAX  8*1024
 #define BUFSIZMIN  1024
