@@ -13,6 +13,7 @@ HttpHeader::~HttpHeader()
 
 void HttpHeader::Parse(char* content)
 {
+	printf("\n%s\n", content);
 	DWORD dwThreadId = GetCurrentThreadId();
 	char buf1[DATA_BUFSIZE];
 	ZeroMemory(buf1, DATA_BUFSIZE);
