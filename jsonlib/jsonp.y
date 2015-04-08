@@ -28,7 +28,7 @@ int jsonliblex(void);
 %start	input
 
 %token	<str_val>	OPENCURLY CLOSECURLY OPENSQRBRK CLOSESQRBRK COMMASEP STRINGVAL COLONSEP ANUMBER
-					CTRUE CFALSE CNULL INTNUM FRACTNUM FLOATNUM
+					CTRUE CFALSE CNULL INTNUM FRACTNUM FLOATNUM EXPONENT FOURHEX
 %token	<int_val>	INTEGER_LITERAL 
 %type	<int_val>	exp
 %left	PLUS
@@ -76,11 +76,14 @@ avalue		: STRINGVAL		{ printf("STRINGVAL\n"); }
 			| CFALSE
 			| CNULL
 			| pair
+			| FOURHEX
 			;
 
 anumber		: INTNUM				{ printf("INTNUM\n"); }
 			| FRACTNUM				{ printf("FRACTNUM\n"); }
-			| anumber  FRACTNUM		{ printf("FLOATNUM\n"); }
+			| anumber  FRACTNUM		{ printf("anumber  FRACTNUM\n"); }
+			| anumber  EXPONENT     { printf("anumber  EXPONENT\n"); }
+			| anumber  INTNUM		{ printf("anumber  INTNUM\n"); }
 			;
 
 %%

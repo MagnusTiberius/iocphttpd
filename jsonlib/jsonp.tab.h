@@ -60,9 +60,11 @@ extern int yydebug;
      INTNUM = 269,
      FRACTNUM = 270,
      FLOATNUM = 271,
-     INTEGER_LITERAL = 272,
-     PLUS = 273,
-     MULT = 274
+     EXPONENT = 272,
+     FOURHEX = 273,
+     INTEGER_LITERAL = 274,
+     PLUS = 275,
+     MULT = 276
    };
 #endif
 
@@ -78,7 +80,7 @@ typedef union YYSTYPE
 
 
 /* Line 2058 of yacc.c  */
-#line 82 "jsonp.tab.h"
+#line 84 "jsonp.tab.h"
 } YYSTYPE;
 # define YYSTYPE_IS_TRIVIAL 1
 # define yystype YYSTYPE /* obsolescent; will be withdrawn */

@@ -13,6 +13,7 @@ plussign    \+
 minsign		\-
 digit		[0-9]
 digits		{digit}+
+exponent    [Ee]
 intnum      [\-\+]*{digits}
 fract       [\-\+]*.{digits}
 opencurly   \{
@@ -31,7 +32,7 @@ commasep    \,
 colonsep    \:
 cspecial    [!@#$%^&_=]
 cchar1      [[a-zA-Z0-9]|{revsolidus}|{solidus}|{backspace}|{formfeed}|{newline}|{carriageret}|{horiztab}|{doublequote}|{cspecial}]
-fourhex     \u[0-9][0-9][0-9][0-9]
+fourhex     \\[\u\U][0-9][0-9][0-9][0-9]
 cchar       ({cchar1}|{fourhex})
 cchars      ({cchar}|{cchar}+)
 string      ({doublequote}{doublequote}|{doublequote}{cchars}{doublequote})
@@ -57,6 +58,8 @@ cnull       (null|NULL)
 {cnull}			{ yylval.str_val = _strdup(yytext); return CNULL; }
 {intnum}		{ yylval.str_val = _strdup(yytext); printf("intnum==%s\n",yytext); return INTNUM; }
 {fract}			{ yylval.str_val = _strdup(yytext); printf("fract==%s\n",yytext); return FRACTNUM; }
+{exponent}		{ yylval.str_val = _strdup(yytext); printf("exponent==%s\n",yytext); return EXPONENT; }
+{fourhex}		{ yylval.str_val = _strdup(yytext); printf("fourhex==%s\n",yytext); return FOURHEX; }
 
 
 
