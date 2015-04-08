@@ -14,7 +14,7 @@ HttpRequest::~HttpRequest()
 void HttpRequest::Parse(char *content)
 {
 	httpHeader.Parse(content);
-	hParser.Parse(content);
+	//hParser.Parse(content);
 }
 
 char* HttpRequest::GetUrl()

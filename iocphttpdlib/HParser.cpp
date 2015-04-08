@@ -41,7 +41,7 @@ namespace headerparser
 
 	void HParser::Parse(char* content)
 	{
-		printf("HParser::Parse() \n");
+		printf("HParser::Parse()\n %s \n", content);
 		YY_BUFFER_STATE  my_string_buffer = parserlib_scan_string(content);
 		int res = yyparse();
 		parserlib_delete_buffer(my_string_buffer);

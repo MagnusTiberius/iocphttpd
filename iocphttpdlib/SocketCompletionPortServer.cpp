@@ -211,7 +211,7 @@ void SocketCompletionPortServer::Dispatch(HttpRequest *httpRequest, HttpResponse
 
 void SocketCompletionPortServer::UrlNotFound(HttpRequest *httpRequest, HttpResponse *httpResponse)
 {
-	fprintf(stderr, "SocketCompletionPortServer::UrlNotFound: %s \n", httpRequest->GetUrl());
+	fprintf(stderr, "SocketCompletionPortServer::UrlNotFound: \n");
 }
 
 DWORD WINAPI SocketCompletionPortServer::ServerWorkerThread(LPVOID lpObject)
@@ -269,6 +269,7 @@ DWORD WINAPI SocketCompletionPortServer::ServerWorkerThread(LPVOID lpObject)
 			httpResponse.Write("");
 			auto n = strlen(PerIoData->Buffer);
 			PerIoData->DataBuf.len = (ULONG)n;
+			PerIoData->BytesRECV = 0;
 			int res = WSASend(PerHandleData->Socket, &(PerIoData->DataBuf), 1, &SendBytes, 0, &(PerIoData->Overlapped), NULL);
 			if (res == SOCKET_ERROR)
 			{
