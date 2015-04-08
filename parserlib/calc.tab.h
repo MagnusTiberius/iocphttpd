@@ -67,8 +67,16 @@ extern int yydebug;
      ACCEPTLANG = 276,
      DIGITS = 277,
      NEWLINE = 278,
-     PLUS = 279,
-     MULT = 280
+     PROPNAME = 279,
+     COMMA = 280,
+     SEMICOL = 281,
+     COLON = 282,
+     FSLASH = 283,
+     PERIOD = 284,
+     OPENPAR = 285,
+     CLOSEPAR = 286,
+     PLUS = 287,
+     MULT = 288
    };
 #endif
 
@@ -84,7 +92,7 @@ typedef union YYSTYPE
 
 
 /* Line 2058 of yacc.c  */
-#line 88 "calc.tab.h"
+#line 96 "calc.tab.h"
 } YYSTYPE;
 # define YYSTYPE_IS_TRIVIAL 1
 # define yystype YYSTYPE /* obsolescent; will be withdrawn */

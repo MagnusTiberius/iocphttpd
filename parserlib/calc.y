@@ -36,12 +36,14 @@ int parserliblex(void);
 %token	<int_val>			
 %token	<identifier_tok>	IDENTIFIER METHODACTION DIGIT HEADERELEM URLPATH METHODVER ID2 URLPARAMS HOST EQUAL
 							CONNECTION USERAGENT QUESTION AMPERSAND ANYTYPE ACCEPT CACHECONTROL
-							ACCEPTENCODING ACCEPTLANG DIGITS NEWLINE
-%type	<identifier_tok>	delimiters property_name
+							ACCEPTENCODING ACCEPTLANG DIGITS NEWLINE 
+							PROPNAME COMMA SEMICOL COLON FSLASH PERIOD OPENPAR CLOSEPAR
+							PLUS MULT
+%type	<identifier_tok>	delimiters property_name property
 
 %type	<lpHttpdoc>	line 
-%left	PLUS
-%left	MULT
+/* %left	PLUS
+%left	MULT */
 
 %%
 
@@ -50,11 +52,7 @@ input	: /* empty */
 		;
 
 line	: line1 NEWLINE			{ printf("line1 seen\n"); }
-		| host NEWLINE			{ printf("HOST seen\n"); }
-		| connection NEWLINE	{ printf("CONNECTION seen\n"); }
-		| accept NEWLINE		{ printf("accept seen\n"); }
 		| property NEWLINE		{ printf("property_item seen\n"); }
-		| user_agent NEWLINE	{ printf("user_agent seen\n"); }
 		| NEWLINE
 		;
 
@@ -73,58 +71,31 @@ urlparams : QUESTION								{ printf("urlparams 1 seen\n"); }
 		  ;
 
 
-
-host	: HOST
-		| host ID2
-		| host ":"
-		| host  DIGITS
-		;
-
-connection	: CONNECTION
-			| connection ID2
-			;
-
-accept		: ACCEPT
-			| accept ID2 
-			| accept delimiters
-			| accept DIGITS
-			| accept ANYTYPE
-			;
-
-user_agent	: USERAGENT
-			| user_agent ID2 
-			| user_agent IDENTIFIER 
-			| user_agent delimiters
-			| user_agent DIGITS
-			| user_agent ANYTYPE
+property	: property_name				{  $$ = $1; }
+			| property ANYTYPE			{  $$ = $2; }
+			| property ID2				{  $$ = $2; }
+			| property IDENTIFIER		{  $$ = $2; }
+			| property delimiters		{  $$ = $2; }
+			| property DIGITS			{  $$ = $2; }
+			| property PROPNAME			{  $$ = $2; }
 			;
 
 
-
-property	: property_name  
-			| property ANYTYPE
-			| property ID2
-			| property IDENTIFIER
-			| property delimiters
-			| property MULT
-			| property DIGITS
-			| property PLUS
-			;
-
-
-delimiters    : ","
-			  | ";"
-			  | ":"
-			  | "/"
-			  | PLUS
-			  | "."
-			  | "("
-			  | ")"
+delimiters    : COMMA				{  $$ = $1; }
+			  | SEMICOL				{  $$ = $1; }	
+			  | COLON				{  $$ = $1; }	
+			  | FSLASH				{  $$ = $1; }
+			  | PLUS				{  $$ = $1; }
+			  | PERIOD				{  $$ = $1; }
+			  | OPENPAR				{  $$ = $1; }
+			  | CLOSEPAR			{  $$ = $1; }
+			  | MULT				{  $$ = $1; }
 			  ;
 
 property_name   : CACHECONTROL     {  $$ = $1; }
 				| ACCEPTENCODING   {  $$ = $1; }
 				| ACCEPTLANG       {  $$ = $1; }
+				| PROPNAME		   {  $$ = $1; }
 				;
 
 %%

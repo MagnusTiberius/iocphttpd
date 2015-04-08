@@ -24,11 +24,14 @@ identifier2		([a-zA-z]+|[a-zA-z]+[a-zA-z\-]+)
 equal			\=
 question        \?
 ampersand       \&
-host			Host:
-accept			Accept:
-connection		Connection:
-useragent		User-Agent:
-anytype         \*\/\*
+propname        {identifier2}:
+comma			\,
+semicol			\;
+colon			\:
+fslash          \/
+period			\.
+openpar			\(
+closepar		\)
 
 %%
 
@@ -82,37 +85,53 @@ anytype         \*\/\*
 					  return ID2; 
 					}
 
-{host}				{	yylval.identifier_tok = _strdup(yytext); 
-						printf("Lexer::Host:=%s\n",yytext); 
-						return HOST; 
+{propname}			{ yylval.identifier_tok = _strdup(yytext); 
+					  printf("Lexer::PROPNAME:=%s\n",yytext); 
+					  return PROPNAME; 
 					}
 
-{connection}		{	yylval.identifier_tok = _strdup(yytext); 
-						printf("Lexer::Connection:=%s\n",yytext); 
-						return CONNECTION; 
+{comma}				{ yylval.identifier_tok = _strdup(yytext); 
+					  printf("Lexer::COMMA:=%s\n",yytext); 
+					  return COMMA; 
 					}
 
-{anytype}			{	yylval.identifier_tok = _strdup(yytext); 
-						printf("Lexer::anytype:=%s\n",yytext); 
-						return ANYTYPE; 
+{semicol}			{ yylval.identifier_tok = _strdup(yytext); 
+					  printf("Lexer::SEMICOL:=%s\n",yytext); 
+					  return SEMICOL; 
 					}
 
-{accept}			{	yylval.identifier_tok = _strdup(yytext); 
-						printf("Lexer::accept:=%s\n",yytext); 
-						return ACCEPT; 
+{colon}				{ yylval.identifier_tok = _strdup(yytext); 
+					  printf("Lexer::COLON:=%s\n",yytext); 
+					  return COLON; 
 					}
 
-{useragent}			{	yylval.identifier_tok = _strdup(yytext); 
-						printf("Lexer::useragent:=%s\n",yytext); 
-						return USERAGENT; 
+{fslash}			{ yylval.identifier_tok = _strdup(yytext); 
+					  printf("Lexer::FSLASH:=%s\n",yytext); 
+					  return FSLASH; 
 					}
+
+{period}			{ yylval.identifier_tok = _strdup(yytext); 
+					  printf("Lexer::PERIOD:=%s\n",yytext); 
+					  return PERIOD; 
+					}
+
+{openpar}			{ yylval.identifier_tok = _strdup(yytext); 
+					  printf("Lexer::OPENPAR:=%s\n",yytext); 
+					  return OPENPAR; 
+					}
+
+{closepar}			{ yylval.identifier_tok = _strdup(yytext); 
+					  printf("Lexer::CLOSEPAR:=%s\n",yytext); 
+					  return CLOSEPAR; 
+					}
+
 
 
 
 [ \t]*		{}
-[\n]		{ yylineno++; yylval.identifier_tok = _strdup(yytext);  printf("Lexer::newline:\n"); 	}
+[\n]		{ yylineno++; yylval.identifier_tok = _strdup(yytext);  printf("Lexer::newline:\n"); return NEWLINE;	}
 
-.		{ yylval.int_val = atoi(yytext); 	}
+.			{ yylval.int_val = atoi(yytext); 	}
 
 %%
 
