@@ -1,9 +1,14 @@
 
 %{
+
 #include "stdafx.h"
 
-int yyerror(char *s);
-int yylex(void);
+
+#define yyerror parserliberror
+#define yylex parserliblex
+
+int parserliberror(char *s);
+int parserliblex(void);
 
 %}
 
@@ -59,7 +64,7 @@ avalue		: STRINGVAL
 			;
 
 %%
-int yyerror(string s)
+int parserliberror(string s)
 {
 	extern int yylineno;	// defined and maintained in lex.c
 	extern char *yytext;	// defined and maintained in lex.c
@@ -68,11 +73,11 @@ int yyerror(string s)
 	cerr << "\" on line " << yylineno << endl;
 	exit(1);
 }
-int yyerror(char *s)
+int parserliberror(char *s)
 {
 	return yyerror(string(s));
 }
-int yylex()
-{
-	return 0;
-}
+
+
+
+

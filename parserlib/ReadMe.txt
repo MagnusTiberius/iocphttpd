@@ -27,3 +27,13 @@ AppWizard uses "TODO:" comments to indicate parts of the source code you
 should add to or customize.
 
 /////////////////////////////////////////////////////////////////////////////
+
+
+References:
+
+SSL and TLS: A Beginners’ Guide
+http://www.sans.org/reading-room/whitepapers/protocols/ssl-tls-beginners-guide-1029
+
+HTTP Made Really Easy
+A Practical Guide to Writing Clients and Servers
+http://www.jmarshall.com/easy/http/

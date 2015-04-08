@@ -1,10 +1,12 @@
-/* Mini Calculator */
-/* calc.lex */
 
 %{
+
 #include "stdafx.h"
 #include "calc.tab.h"
-int yyerror(char *s);
+
+
+
+//int yyerror(char *s);
 //int yylineno = 1;
 %}
 
@@ -28,7 +30,7 @@ anytype         \*\/\*
 
 %%
 
-{digits}			{ yylval.int_val = atoi(yytext); printf("Lexer::digits:=>%s\n",yytext); return DIGITS; }
+{digits}			{ yylval.identifier_tok = _strdup(yytext); printf("Lexer::digits:=>%s\n",yytext); return DIGITS; }
 "+"					{ yylval.identifier_tok = _strdup(yytext); return PLUS; }
 "*"					{ yylval.identifier_tok = _strdup(yytext); return MULT; }
 {identifier}		{ yylval.identifier_tok = _strdup(yytext); printf("Lexer::identifier\n"); return IDENTIFIER; }
@@ -106,7 +108,7 @@ anytype         \*\/\*
 
 
 [ \t]*		{}
-[\n]		{ yylineno++; yylval.int_val = atoi(yytext); printf("Lexer::newline:\n"); 	}
+[\n]		{ yylineno++; yylval.identifier_tok = _strdup(yytext);  printf("Lexer::newline:\n"); 	}
 
 .		{ yylval.int_val = atoi(yytext); 	}
 
@@ -115,3 +117,4 @@ anytype         \*\/\*
 int yywrap() {
 	return 1;
 }
+

@@ -5,9 +5,16 @@
 #include "stdafx.h"
 #include "AstHttp.h"
 
+#define yyerror parserliberror
+#define yylex parserliblex
 
-int yyerror(char *s);
-int yylex(void);
+int parserliberror(string s);
+int parserliberror(char *s);
+int parserliblex(void);
+
+//int yyerror(char *s);
+//int yyerror(string s);
+//int yylex(void);
 
 %}
 
@@ -18,11 +25,10 @@ int yylex(void);
 
 %start	input 
 
-%token	<int_val>			DIGITS NEWLINE
+%token	<int_val>			
 %token	<identifier_tok>	IDENTIFIER METHODACTION DIGIT HEADERELEM URLPATH METHODVER ID2 URLPARAMS HOST EQUAL
 							CONNECTION USERAGENT QUESTION AMPERSAND ANYTYPE ACCEPT CACHECONTROL
-							ACCEPTENCODING ACCEPTLANG
-%type	<int_val>			exp
+							ACCEPTENCODING ACCEPTLANG DIGITS NEWLINE
 %type	<identifier_tok>	delimiters property_name
 
 %type	<lpHttpdoc>	line 
@@ -35,19 +41,13 @@ input	: /* empty */
 		| input line 
 		;
 
-line	: exp { cout << "Result: " << $1 << endl; }
-		| line1 NEWLINE { printf("line1 seen\n"); }
-		| host NEWLINE { printf("HOST seen\n"); }
-		| connection NEWLINE { printf("CONNECTION seen\n"); }
-		| accept NEWLINE { printf("accept seen\n"); }
-		| property NEWLINE { printf("property_item seen\n"); }
-		| user_agent NEWLINE { printf("user_agent seen\n"); }
+line	: line1 NEWLINE			{ printf("line1 seen\n"); }
+		| host NEWLINE			{ printf("HOST seen\n"); }
+		| connection NEWLINE	{ printf("CONNECTION seen\n"); }
+		| accept NEWLINE		{ printf("accept seen\n"); }
+		| property NEWLINE		{ printf("property_item seen\n"); }
+		| user_agent NEWLINE	{ printf("user_agent seen\n"); }
 		| NEWLINE
-		;
-
-exp		: DIGITS	{ $$ = $1; }
-		| exp PLUS exp	{ $$ = $1 + $3; }
-		| exp MULT exp	{ $$ = $1 * $3; }
 		;
 
 
@@ -123,13 +123,40 @@ property_name   : CACHECONTROL     {  $$ = $1; }
 
 
 
+int parserliberror(string s)
+{
+  extern int parserliblineno;	// defined and maintained in lex.c
+  extern char *parserlibtext;	// defined and maintained in lex.c
+  
+  cerr << "PARSER sERROR: " << s << " at symbol \"" << parserlibtext;
+  cerr << "\" on line " << parserliblineno << endl;
+  //exit(1);
+  return 1;
+}
+
+int parserliberror(char *s)
+{
+  return parserliberror(string(s));
+}
+
+/*
+int parserliblex(void)
+{
+	return 0;
+}
+
+int yylex(void)
+{
+	return 0;
+}
+
 int yyerror(string s)
 {
-  extern int yylineno;	// defined and maintained in lex.c
-  extern char *yytext;	// defined and maintained in lex.c
+  extern int parserliblineno;	// defined and maintained in lex.c
+  extern char *parserlibtext;	// defined and maintained in lex.c
   
-  cerr << "PARSER sERROR: " << s << " at symbol \"" << yytext;
-  cerr << "\" on line " << yylineno << endl;
+  cerr << "PARSER sERROR: " << s << " at symbol \"" << parserlibtext;
+  cerr << "\" on line " << parserliblineno << endl;
   //exit(1);
   return 1;
 }
@@ -138,5 +165,4 @@ int yyerror(char *s)
 {
   return yyerror(string(s));
 }
-
-
+*/

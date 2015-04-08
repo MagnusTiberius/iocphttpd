@@ -82,7 +82,9 @@
     <Text Include="ReadMe.txt" />
   </ItemGroup>
   <ItemGroup>
-    <Flex Include="jsonp.l" />
+    <Flex Include="jsonp.l">
+      <Prefix Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">jsonlib</Prefix>
+    </Flex>
   </ItemGroup>
   <ItemGroup>
     <Bison Include="jsonp.y" />

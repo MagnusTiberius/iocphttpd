@@ -114,10 +114,15 @@
     <ClInclude Include="targetver.h" />
   </ItemGroup>
   <ItemGroup>
-    <Bison Include="calc.y" />
+    <Bison Include="calc.y">
+      <FilePrefix Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">calcpre_</FilePrefix>
+      <Verbose Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</Verbose>
+    </Bison>
   </ItemGroup>
   <ItemGroup>
-    <Flex Include="calc.l" />
+    <Flex Include="calc.l">
+      <Prefix Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">parserlib</Prefix>
+    </Flex>
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
