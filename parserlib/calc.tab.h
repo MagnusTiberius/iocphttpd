@@ -77,7 +77,7 @@ extern int yydebug;
 typedef union YYSTYPE
 {
 /* Line 2058 of yacc.c  */
-#line 21 "calc.y"
+#line 29 "calc.y"
 
   int		int_val;
   char*		identifier_tok;

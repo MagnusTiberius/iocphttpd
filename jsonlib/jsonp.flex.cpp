@@ -532,7 +532,7 @@ char *jsonlibtext;
 #include "stdafx.h"
 #include "jsonp.tab.h"
 
-int yyerror(char *s);
+int jsonliberror(char *s);
 //int jsonliblineno = 1;
 #line 538 "jsonp.flex.cpp"
 
@@ -817,12 +817,12 @@ YY_RULE_SETUP
 case 4:
 YY_RULE_SETUP
 #line 45 "jsonp.l"
-{ yylval.str_val = _strdup(jsonlibtext); return OPENCURLY; }
+{ yylval.str_val = _strdup(jsonlibtext); printf("opencurly\n"); return OPENCURLY; }
 	YY_BREAK
 case 5:
 YY_RULE_SETUP
 #line 46 "jsonp.l"
-{ yylval.str_val = _strdup(jsonlibtext); return CLOSECURLY; }
+{ yylval.str_val = _strdup(jsonlibtext); printf("closecurly\n"); return CLOSECURLY; }
 	YY_BREAK
 case 6:
 YY_RULE_SETUP
@@ -884,7 +884,7 @@ YY_RULE_SETUP
 case 17:
 YY_RULE_SETUP
 #line 61 "jsonp.l"
-{ std::cerr << "SCANNER "; yyerror(""); exit(1);	}
+{ std::cerr << "SCANNER "; jsonliberror(""); exit(1);	}
 	YY_BREAK
 case 18:
 YY_RULE_SETUP
@@ -1888,3 +1888,7 @@ void jsonlibfree (void * ptr )
 #line 62 "jsonp.l"
 
 
+
+int jsonlibwrap() {
+	return 1;
+}

@@ -4,6 +4,8 @@
 #include "stdafx.h"
 #include "calc.tab.h"
 
+//#define yystype parserlibstype
+//#define YYSTYPE PARSERLIBSTYPE
 
 
 //int yyerror(char *s);

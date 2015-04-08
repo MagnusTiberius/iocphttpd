@@ -2,7 +2,8 @@
 
 #define yyconst const
 
-
+//#define yyparse parserlibparse
+//#define yylval parserliblval
 
 extern  int yyparse(void);
 extern  int GetHttpUrl(char *action, size_t siz);

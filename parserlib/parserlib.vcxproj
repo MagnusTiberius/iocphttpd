@@ -73,6 +73,9 @@
       <Command>
       </Command>
     </PostBuildEvent>
+    <Bison>
+      <FilePrefix>parserlib</FilePrefix>
+    </Bison>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
     <ClCompile>
@@ -98,6 +101,9 @@
       <Command>
       </Command>
     </PostBuildEvent>
+    <Bison>
+      <FilePrefix>parserlib</FilePrefix>
+    </Bison>
   </ItemDefinitionGroup>
   <ItemGroup>
     <Text Include="ReadMe.txt" />
@@ -122,6 +128,7 @@
   <ItemGroup>
     <Flex Include="calc.l">
       <Prefix Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">parserlib</Prefix>
+      <Prefix Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">parserlib</Prefix>
     </Flex>
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

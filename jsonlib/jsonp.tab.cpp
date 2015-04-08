@@ -68,16 +68,24 @@
 
 #include "stdafx.h"
 
+#define yyerror jsonliberror
+#define yylex jsonliblex
+#define yyparse jsonlibparse
+#define yylval jsonliblval
+#define yychar jsonlibchar
+#define yynerrs jsonlibnerrs
+//#define yystype jsonlibstype
 
-#define yyerror parserliberror
-#define yylex parserliblex
 
-int parserliberror(char *s);
-int parserliblex(void);
+int jsonliberror(char *s);
+int jsonliberror(string s);
+int jsonliblex(void);
+
+
 
 
 /* Line 371 of yacc.c  */
-#line 81 "jsonp.tab.cpp"
+#line 89 "jsonp.tab.cpp"
 
 # ifndef YY_NULL
 #  if defined __cplusplus && 201103L <= __cplusplus
@@ -135,14 +143,14 @@ extern int yydebug;
 typedef union YYSTYPE
 {
 /* Line 387 of yacc.c  */
-#line 15 "jsonp.y"
+#line 23 "jsonp.y"
 
 	int		int_val;
 	char*	str_val;
 
 
 /* Line 387 of yacc.c  */
-#line 146 "jsonp.tab.cpp"
+#line 154 "jsonp.tab.cpp"
 } YYSTYPE;
 # define YYSTYPE_IS_TRIVIAL 1
 # define yystype YYSTYPE /* obsolescent; will be withdrawn */
@@ -170,7 +178,7 @@ int yyparse ();
 /* Copy the second part of user declarations.  */
 
 /* Line 390 of yacc.c  */
-#line 174 "jsonp.tab.cpp"
+#line 182 "jsonp.tab.cpp"
 
 #ifdef short
 # undef short
@@ -465,9 +473,9 @@ static const yytype_int8 yyrhs[] =
 /* YYRLINE[YYN] -- source line where rule number YYN was defined.  */
 static const yytype_uint8 yyrline[] =
 {
-       0,    31,    31,    32,    33,    36,    37,    38,    41,    44,
-      47,    48,    51,    54,    57,    58,    59,    60,    61,    62,
-      63
+       0,    39,    39,    40,    41,    44,    45,    46,    49,    52,
+      55,    56,    59,    62,    65,    66,    67,    68,    69,    70,
+      71
 };
 #endif
 
@@ -1373,31 +1381,31 @@ yyreduce:
     {
         case 3:
 /* Line 1792 of yacc.c  */
-#line 32 "jsonp.y"
+#line 40 "jsonp.y"
     { cout << "Result: " << (yyvsp[(1) - (1)].int_val) << endl; }
     break;
 
   case 5:
 /* Line 1792 of yacc.c  */
-#line 36 "jsonp.y"
+#line 44 "jsonp.y"
     { (yyval.int_val) = (yyvsp[(1) - (1)].int_val); }
     break;
 
   case 6:
 /* Line 1792 of yacc.c  */
-#line 37 "jsonp.y"
+#line 45 "jsonp.y"
     { (yyval.int_val) = (yyvsp[(1) - (3)].int_val) + (yyvsp[(3) - (3)].int_val); }
     break;
 
   case 7:
 /* Line 1792 of yacc.c  */
-#line 38 "jsonp.y"
+#line 46 "jsonp.y"
     { (yyval.int_val) = (yyvsp[(1) - (3)].int_val) * (yyvsp[(3) - (3)].int_val); }
     break;
 
 
 /* Line 1792 of yacc.c  */
-#line 1401 "jsonp.tab.cpp"
+#line 1409 "jsonp.tab.cpp"
       default: break;
     }
   /* User semantic actions sometimes alter yychar, and that requires
@@ -1629,20 +1637,21 @@ yyreturn:
 
 
 /* Line 2055 of yacc.c  */
-#line 66 "jsonp.y"
+#line 74 "jsonp.y"
 
-int parserliberror(string s)
+int jsonliberror(string s)
 {
-	extern int yylineno;	// defined and maintained in lex.c
-	extern char *yytext;	// defined and maintained in lex.c
+	extern int jsonliblineno;	// defined and maintained in lex.c
+	extern char *jsonlibtext;	// defined and maintained in lex.c
 
-	cerr << "ERROR: " << s << " at symbol \"" << yytext;
-	cerr << "\" on line " << yylineno << endl;
-	exit(1);
+	cerr << "ERROR: " << s << " at symbol \"" << jsonlibtext;
+	cerr << "\" on line " << jsonliblineno << endl;
+	//exit(1);
+	return 0;
 }
-int parserliberror(char *s)
+int jsonliberror(char *s)
 {
-	return yyerror(string(s));
+	return jsonliberror(string(s));
 }
 
 

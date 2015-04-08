@@ -8,6 +8,14 @@
 #define yyerror parserliberror
 #define yylex parserliblex
 
+//#define yyparse parserlibparse
+//#define yylval parserliblval
+//#define yychar parserlibchar
+//#define yynerrs parserlibnerrs
+//#define yystype parserlibstype
+//#define YYSTYPE PARSERLIBSTYPE
+
+
 int parserliberror(string s);
 int parserliberror(char *s);
 int parserliblex(void);

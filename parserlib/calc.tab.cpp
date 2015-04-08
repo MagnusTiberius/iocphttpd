@@ -71,6 +71,14 @@
 #define yyerror parserliberror
 #define yylex parserliblex
 
+//#define yyparse parserlibparse
+//#define yylval parserliblval
+//#define yychar parserlibchar
+//#define yynerrs parserlibnerrs
+//#define yystype parserlibstype
+//#define YYSTYPE PARSERLIBSTYPE
+
+
 int parserliberror(string s);
 int parserliberror(char *s);
 int parserliblex(void);
@@ -81,7 +89,7 @@ int parserliblex(void);
 
 
 /* Line 371 of yacc.c  */
-#line 85 "calc.tab.cpp"
+#line 93 "calc.tab.cpp"
 
 # ifndef YY_NULL
 #  if defined __cplusplus && 201103L <= __cplusplus
@@ -148,14 +156,14 @@ extern int yydebug;
 typedef union YYSTYPE
 {
 /* Line 387 of yacc.c  */
-#line 21 "calc.y"
+#line 29 "calc.y"
 
   int		int_val;
   char*		identifier_tok;
 
 
 /* Line 387 of yacc.c  */
-#line 159 "calc.tab.cpp"
+#line 167 "calc.tab.cpp"
 } YYSTYPE;
 # define YYSTYPE_IS_TRIVIAL 1
 # define yystype YYSTYPE /* obsolescent; will be withdrawn */
@@ -183,7 +191,7 @@ int yyparse ();
 /* Copy the second part of user declarations.  */
 
 /* Line 390 of yacc.c  */
-#line 187 "calc.tab.cpp"
+#line 195 "calc.tab.cpp"
 
 #ifdef short
 # undef short
@@ -491,12 +499,12 @@ static const yytype_int8 yyrhs[] =
 /* YYRLINE[YYN] -- source line where rule number YYN was defined.  */
 static const yytype_uint8 yyrline[] =
 {
-       0,    40,    40,    41,    44,    45,    46,    47,    48,    49,
-      50,    54,    55,    56,    57,    60,    61,    62,    63,    64,
-      69,    70,    71,    72,    75,    76,    79,    80,    81,    82,
-      83,    86,    87,    88,    89,    90,    91,    96,    97,    98,
-      99,   100,   101,   102,   103,   107,   108,   109,   110,   111,
-     112,   113,   114,   117,   118,   119
+       0,    48,    48,    49,    52,    53,    54,    55,    56,    57,
+      58,    62,    63,    64,    65,    68,    69,    70,    71,    72,
+      77,    78,    79,    80,    83,    84,    87,    88,    89,    90,
+      91,    94,    95,    96,    97,    98,    99,   104,   105,   106,
+     107,   108,   109,   110,   111,   115,   116,   117,   118,   119,
+     120,   121,   122,   125,   126,   127
 };
 #endif
 
@@ -1442,115 +1450,115 @@ yyreduce:
     {
         case 4:
 /* Line 1792 of yacc.c  */
-#line 44 "calc.y"
+#line 52 "calc.y"
     { printf("line1 seen\n"); }
     break;
 
   case 5:
 /* Line 1792 of yacc.c  */
-#line 45 "calc.y"
+#line 53 "calc.y"
     { printf("HOST seen\n"); }
     break;
 
   case 6:
 /* Line 1792 of yacc.c  */
-#line 46 "calc.y"
+#line 54 "calc.y"
     { printf("CONNECTION seen\n"); }
     break;
 
   case 7:
 /* Line 1792 of yacc.c  */
-#line 47 "calc.y"
+#line 55 "calc.y"
     { printf("accept seen\n"); }
     break;
 
   case 8:
 /* Line 1792 of yacc.c  */
-#line 48 "calc.y"
+#line 56 "calc.y"
     { printf("property_item seen\n"); }
     break;
 
   case 9:
 /* Line 1792 of yacc.c  */
-#line 49 "calc.y"
+#line 57 "calc.y"
     { printf("user_agent seen\n"); }
     break;
 
   case 11:
 /* Line 1792 of yacc.c  */
-#line 54 "calc.y"
+#line 62 "calc.y"
     { SetMethodAction((yyvsp[(1) - (1)].identifier_tok), &g_Httpdoc); }
     break;
 
   case 12:
 /* Line 1792 of yacc.c  */
-#line 55 "calc.y"
+#line 63 "calc.y"
     { SetUrl((yyvsp[(2) - (2)].identifier_tok), &g_Httpdoc); }
     break;
 
   case 13:
 /* Line 1792 of yacc.c  */
-#line 56 "calc.y"
+#line 64 "calc.y"
     { printf("urlparams whole seen\n"); }
     break;
 
   case 14:
 /* Line 1792 of yacc.c  */
-#line 57 "calc.y"
+#line 65 "calc.y"
     { SetMethodVersion((yyvsp[(2) - (2)].identifier_tok), &g_Httpdoc); }
     break;
 
   case 15:
 /* Line 1792 of yacc.c  */
-#line 60 "calc.y"
+#line 68 "calc.y"
     { printf("urlparams 1 seen\n"); }
     break;
 
   case 16:
 /* Line 1792 of yacc.c  */
-#line 61 "calc.y"
+#line 69 "calc.y"
     { printf("urlparams 2 seen\n"); }
     break;
 
   case 17:
 /* Line 1792 of yacc.c  */
-#line 62 "calc.y"
+#line 70 "calc.y"
     { printf("urlparams 3 seen\n"); }
     break;
 
   case 18:
 /* Line 1792 of yacc.c  */
-#line 63 "calc.y"
+#line 71 "calc.y"
     { printf("urlparams 4 seen\n"); }
     break;
 
   case 19:
 /* Line 1792 of yacc.c  */
-#line 64 "calc.y"
+#line 72 "calc.y"
     { printf("urlparams 5 seen\n"); }
     break;
 
   case 53:
 /* Line 1792 of yacc.c  */
-#line 117 "calc.y"
+#line 125 "calc.y"
     {  (yyval.identifier_tok) = (yyvsp[(1) - (1)].identifier_tok); }
     break;
 
   case 54:
 /* Line 1792 of yacc.c  */
-#line 118 "calc.y"
+#line 126 "calc.y"
     {  (yyval.identifier_tok) = (yyvsp[(1) - (1)].identifier_tok); }
     break;
 
   case 55:
 /* Line 1792 of yacc.c  */
-#line 119 "calc.y"
+#line 127 "calc.y"
     {  (yyval.identifier_tok) = (yyvsp[(1) - (1)].identifier_tok); }
     break;
 
 
 /* Line 1792 of yacc.c  */
-#line 1554 "calc.tab.cpp"
+#line 1562 "calc.tab.cpp"
       default: break;
     }
   /* User semantic actions sometimes alter yychar, and that requires
@@ -1782,7 +1790,7 @@ yyreturn:
 
 
 /* Line 2055 of yacc.c  */
-#line 122 "calc.y"
+#line 130 "calc.y"
 
 
 

@@ -3,12 +3,20 @@
 
 #include "stdafx.h"
 
+#define yyerror jsonliberror
+#define yylex jsonliblex
+#define yyparse jsonlibparse
+#define yylval jsonliblval
+#define yychar jsonlibchar
+#define yynerrs jsonlibnerrs
+//#define yystype jsonlibstype
 
-#define yyerror parserliberror
-#define yylex parserliblex
 
-int parserliberror(char *s);
-int parserliblex(void);
+int jsonliberror(char *s);
+int jsonliberror(string s);
+int jsonliblex(void);
+
+
 
 %}
 
@@ -64,18 +72,19 @@ avalue		: STRINGVAL
 			;
 
 %%
-int parserliberror(string s)
+int jsonliberror(string s)
 {
-	extern int yylineno;	// defined and maintained in lex.c
-	extern char *yytext;	// defined and maintained in lex.c
+	extern int jsonliblineno;	// defined and maintained in lex.c
+	extern char *jsonlibtext;	// defined and maintained in lex.c
 
-	cerr << "ERROR: " << s << " at symbol \"" << yytext;
-	cerr << "\" on line " << yylineno << endl;
-	exit(1);
+	cerr << "ERROR: " << s << " at symbol \"" << jsonlibtext;
+	cerr << "\" on line " << jsonliblineno << endl;
+	//exit(1);
+	return 0;
 }
-int parserliberror(char *s)
+int jsonliberror(char *s)
 {
-	return yyerror(string(s));
+	return jsonliberror(string(s));
 }
 
 

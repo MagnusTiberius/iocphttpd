@@ -5,7 +5,7 @@
 #include "stdafx.h"
 #include "jsonp.tab.h"
 
-int yyerror(char *s);
+int jsonliberror(char *s);
 //int yylineno = 1;
 %}
 
@@ -42,8 +42,8 @@ cnull       (null|NULL)
 {int_const}		{ yylval.int_val = atoi(yytext); return INTEGER_LITERAL; }
 "+"				{ yylval.str_val = _strdup(yytext); return PLUS; }
 "*"				{ yylval.str_val = _strdup(yytext); return MULT; }
-{opencurly}		{ yylval.str_val = _strdup(yytext); return OPENCURLY; }
-{closecurly}	{ yylval.str_val = _strdup(yytext); return CLOSECURLY; }
+{opencurly}		{ yylval.str_val = _strdup(yytext); printf("opencurly\n"); return OPENCURLY; }
+{closecurly}	{ yylval.str_val = _strdup(yytext); printf("closecurly\n"); return CLOSECURLY; }
 {opensqrbrk}	{ yylval.str_val = _strdup(yytext); return OPENSQRBRK; }
 {closesqrbrk}	{ yylval.str_val = _strdup(yytext); return CLOSESQRBRK; }
 {commasep}		{ yylval.str_val = _strdup(yytext); return COMMASEP; }
@@ -58,6 +58,10 @@ cnull       (null|NULL)
 [ \t]*		{}
 [\n]		{ jsonliblineno++;	}
 
-.		{ std::cerr << "SCANNER "; yyerror(""); exit(1);	}
+.		{ std::cerr << "SCANNER "; jsonliberror(""); exit(1);	}
 
 %%
+
+int yywrap() {
+	return 1;
+}

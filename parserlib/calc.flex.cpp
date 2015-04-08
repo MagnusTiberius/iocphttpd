@@ -607,12 +607,14 @@ char *parserlibtext;
 #include "stdafx.h"
 #include "calc.tab.h"
 
+//#define yystype parserlibstype
+//#define YYSTYPE PARSERLIBSTYPE
 
 
 //int yyerror(char *s);
 //int parserliblineno = 1;
 
-#line 616 "calc.flex.cpp"
+#line 618 "calc.flex.cpp"
 
 #define INITIAL 0
 #define ASTATE 1
@@ -793,10 +795,10 @@ YY_DECL
 	register char *yy_cp, *yy_bp;
 	register int yy_act;
     
-#line 31 "calc.l"
+#line 33 "calc.l"
 
 
-#line 800 "calc.flex.cpp"
+#line 802 "calc.flex.cpp"
 
 	if ( !(yy_init) )
 		{
@@ -881,32 +883,32 @@ do_action:	/* This label is used only to access EOF actions. */
 
 case 1:
 YY_RULE_SETUP
-#line 33 "calc.l"
+#line 35 "calc.l"
 { yylval.identifier_tok = _strdup(parserlibtext); printf("Lexer::digits:=>%s\n",parserlibtext); return DIGITS; }
 	YY_BREAK
 case 2:
 YY_RULE_SETUP
-#line 34 "calc.l"
+#line 36 "calc.l"
 { yylval.identifier_tok = _strdup(parserlibtext); return PLUS; }
 	YY_BREAK
 case 3:
 YY_RULE_SETUP
-#line 35 "calc.l"
+#line 37 "calc.l"
 { yylval.identifier_tok = _strdup(parserlibtext); return MULT; }
 	YY_BREAK
 case 4:
 YY_RULE_SETUP
-#line 36 "calc.l"
+#line 38 "calc.l"
 { yylval.identifier_tok = _strdup(parserlibtext); printf("Lexer::identifier\n"); return IDENTIFIER; }
 	YY_BREAK
 case 5:
 YY_RULE_SETUP
-#line 37 "calc.l"
+#line 39 "calc.l"
 { yylval.identifier_tok = _strdup(parserlibtext); printf("Lexer::digit\n"); return DIGIT; }
 	YY_BREAK
 case 6:
 YY_RULE_SETUP
-#line 39 "calc.l"
+#line 41 "calc.l"
 {	BEGIN ASTATE; 
 						yylval.identifier_tok = _strdup(parserlibtext); 
 						printf("Lexer::methodaction:%s\n",parserlibtext); 
@@ -915,7 +917,7 @@ YY_RULE_SETUP
 	YY_BREAK
 case 7:
 YY_RULE_SETUP
-#line 45 "calc.l"
+#line 47 "calc.l"
 { yylval.identifier_tok = _strdup(parserlibtext); 
 					  printf("Lexer::urlpath:%s\n",parserlibtext); 
 					  return URLPATH; 
@@ -923,7 +925,7 @@ YY_RULE_SETUP
 	YY_BREAK
 case 8:
 YY_RULE_SETUP
-#line 49 "calc.l"
+#line 51 "calc.l"
 { yylval.identifier_tok = _strdup(parserlibtext); 
 					  printf("Lexer::EQUAL:%s\n",parserlibtext); 
 					  return EQUAL; 
@@ -931,7 +933,7 @@ YY_RULE_SETUP
 	YY_BREAK
 case 9:
 YY_RULE_SETUP
-#line 53 "calc.l"
+#line 55 "calc.l"
 { yylval.identifier_tok = _strdup(parserlibtext); 
 					  printf("Lexer::question:%s\n",parserlibtext); 
 					  return QUESTION; 
@@ -939,7 +941,7 @@ YY_RULE_SETUP
 	YY_BREAK
 case 10:
 YY_RULE_SETUP
-#line 58 "calc.l"
+#line 60 "calc.l"
 { yylval.identifier_tok = _strdup(parserlibtext); 
 					  printf("Lexer::ampersand:%s\n",parserlibtext); 
 					  return AMPERSAND; 
@@ -947,12 +949,12 @@ YY_RULE_SETUP
 	YY_BREAK
 case 11:
 YY_RULE_SETUP
-#line 64 "calc.l"
+#line 66 "calc.l"
 { yylval.int_val = atoi(parserlibtext); return DIGITS; }
 	YY_BREAK
 case 12:
 YY_RULE_SETUP
-#line 66 "calc.l"
+#line 68 "calc.l"
 { yylval.identifier_tok = _strdup(parserlibtext); 
 					  printf("Lexer::identifier2:%s\n",parserlibtext); 
 					  return ID2; 
@@ -960,7 +962,7 @@ YY_RULE_SETUP
 	YY_BREAK
 case 13:
 YY_RULE_SETUP
-#line 72 "calc.l"
+#line 74 "calc.l"
 { BEGIN 0; 
 					  yylval.identifier_tok = _strdup(parserlibtext); 
 					  printf("Lexer::methodver:=%s\n",parserlibtext); 
@@ -969,7 +971,7 @@ YY_RULE_SETUP
 	YY_BREAK
 case 14:
 YY_RULE_SETUP
-#line 78 "calc.l"
+#line 80 "calc.l"
 { yylval.identifier_tok = _strdup(parserlibtext); 
 					  printf("Lexer::identifier2:=%s\n",parserlibtext); 
 					  return ID2; 
@@ -977,7 +979,7 @@ YY_RULE_SETUP
 	YY_BREAK
 case 15:
 YY_RULE_SETUP
-#line 83 "calc.l"
+#line 85 "calc.l"
 {	yylval.identifier_tok = _strdup(parserlibtext); 
 						printf("Lexer::Host:=%s\n",parserlibtext); 
 						return HOST; 
@@ -985,7 +987,7 @@ YY_RULE_SETUP
 	YY_BREAK
 case 16:
 YY_RULE_SETUP
-#line 88 "calc.l"
+#line 90 "calc.l"
 {	yylval.identifier_tok = _strdup(parserlibtext); 
 						printf("Lexer::Connection:=%s\n",parserlibtext); 
 						return CONNECTION; 
@@ -993,7 +995,7 @@ YY_RULE_SETUP
 	YY_BREAK
 case 17:
 YY_RULE_SETUP
-#line 93 "calc.l"
+#line 95 "calc.l"
 {	yylval.identifier_tok = _strdup(parserlibtext); 
 						printf("Lexer::anytype:=%s\n",parserlibtext); 
 						return ANYTYPE; 
@@ -1001,7 +1003,7 @@ YY_RULE_SETUP
 	YY_BREAK
 case 18:
 YY_RULE_SETUP
-#line 98 "calc.l"
+#line 100 "calc.l"
 {	yylval.identifier_tok = _strdup(parserlibtext); 
 						printf("Lexer::accept:=%s\n",parserlibtext); 
 						return ACCEPT; 
@@ -1009,7 +1011,7 @@ YY_RULE_SETUP
 	YY_BREAK
 case 19:
 YY_RULE_SETUP
-#line 103 "calc.l"
+#line 105 "calc.l"
 {	yylval.identifier_tok = _strdup(parserlibtext); 
 						printf("Lexer::useragent:=%s\n",parserlibtext); 
 						return USERAGENT; 
@@ -1017,26 +1019,26 @@ YY_RULE_SETUP
 	YY_BREAK
 case 20:
 YY_RULE_SETUP
-#line 110 "calc.l"
+#line 112 "calc.l"
 {}
 	YY_BREAK
 case 21:
 /* rule 21 can match eol */
 YY_RULE_SETUP
-#line 111 "calc.l"
+#line 113 "calc.l"
 { parserliblineno++; yylval.identifier_tok = _strdup(parserlibtext);  printf("Lexer::newline:\n"); 	}
 	YY_BREAK
 case 22:
 YY_RULE_SETUP
-#line 113 "calc.l"
+#line 115 "calc.l"
 { yylval.int_val = atoi(parserlibtext); 	}
 	YY_BREAK
 case 23:
 YY_RULE_SETUP
-#line 115 "calc.l"
+#line 117 "calc.l"
 ECHO;
 	YY_BREAK
-#line 1040 "calc.flex.cpp"
+#line 1042 "calc.flex.cpp"
 case YY_STATE_EOF(INITIAL):
 case YY_STATE_EOF(ASTATE):
 case YY_STATE_EOF(BSTATE):
@@ -2032,7 +2034,7 @@ void parserlibfree (void * ptr )
 
 #define YYTABLES_NAME "yytables"
 
-#line 114 "calc.l"
+#line 116 "calc.l"
 
 
 
