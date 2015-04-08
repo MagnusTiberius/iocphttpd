@@ -78,7 +78,7 @@ property	: property_name				{  $$ = $1; }
 			| property delimiters		{  $$ = $2; }
 			| property DIGITS			{  $$ = $2; }
 			| property PROPNAME			{  $$ = $2; }
-			;
+			; 
 
 
 delimiters    : COMMA				{  $$ = $1; }
