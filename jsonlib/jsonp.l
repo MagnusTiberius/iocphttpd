@@ -56,7 +56,7 @@ cnull       (null|NULL)
 
 
 [ \t]*		{}
-[\n]		{ yylineno++;	}
+[\n]		{ jsonliblineno++;	}
 
 .		{ std::cerr << "SCANNER "; yyerror(""); exit(1);	}
 

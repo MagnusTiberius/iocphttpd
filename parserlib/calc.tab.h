@@ -46,27 +46,27 @@ extern int yydebug;
    /* Put the tokens into the symbol table, so that GDB and other debuggers
       know about them.  */
    enum yytokentype {
-     DIGITS = 258,
-     NEWLINE = 259,
-     IDENTIFIER = 260,
-     METHODACTION = 261,
-     DIGIT = 262,
-     HEADERELEM = 263,
-     URLPATH = 264,
-     METHODVER = 265,
-     ID2 = 266,
-     URLPARAMS = 267,
-     HOST = 268,
-     EQUAL = 269,
-     CONNECTION = 270,
-     USERAGENT = 271,
-     QUESTION = 272,
-     AMPERSAND = 273,
-     ANYTYPE = 274,
-     ACCEPT = 275,
-     CACHECONTROL = 276,
-     ACCEPTENCODING = 277,
-     ACCEPTLANG = 278,
+     IDENTIFIER = 258,
+     METHODACTION = 259,
+     DIGIT = 260,
+     HEADERELEM = 261,
+     URLPATH = 262,
+     METHODVER = 263,
+     ID2 = 264,
+     URLPARAMS = 265,
+     HOST = 266,
+     EQUAL = 267,
+     CONNECTION = 268,
+     USERAGENT = 269,
+     QUESTION = 270,
+     AMPERSAND = 271,
+     ANYTYPE = 272,
+     ACCEPT = 273,
+     CACHECONTROL = 274,
+     ACCEPTENCODING = 275,
+     ACCEPTLANG = 276,
+     DIGITS = 277,
+     NEWLINE = 278,
      PLUS = 279,
      MULT = 280
    };
@@ -77,7 +77,7 @@ extern int yydebug;
 typedef union YYSTYPE
 {
 /* Line 2058 of yacc.c  */
-#line 14 "calc.y"
+#line 21 "calc.y"
 
   int		int_val;
   char*		identifier_tok;
