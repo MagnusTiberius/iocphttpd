@@ -1,5 +1,4 @@
 
-
 %{
 
 #include "stdafx.h"
@@ -43,23 +42,23 @@ cnull       (null|NULL)
 
 %%
 
-{digits}		{ yylval.int_val = atoi(yytext); return INTEGER_LITERAL; }
-"+"				{ yylval.str_val = _strdup(yytext); return PLUS; }
-"*"				{ yylval.str_val = _strdup(yytext); return MULT; }
-{opencurly}		{ yylval.str_val = _strdup(yytext); printf("opencurly\n"); return OPENCURLY; }
-{closecurly}	{ yylval.str_val = _strdup(yytext); printf("closecurly\n"); return CLOSECURLY; }
-{opensqrbrk}	{ yylval.str_val = _strdup(yytext); printf("OPENSQRBRK\n"); return OPENSQRBRK; }
-{closesqrbrk}	{ yylval.str_val = _strdup(yytext); printf("CLOSESQRBRK\n"); return CLOSESQRBRK; }
-{commasep}		{ yylval.str_val = _strdup(yytext); printf("COMMASEP\n"); return COMMASEP; }
-{string}		{ yylval.str_val = _strdup(yytext); printf("STRINGVAL==%s\n",yytext); return STRINGVAL; }
-{colonsep}		{ yylval.str_val = _strdup(yytext); printf("COLONSEP\n"); return COLONSEP; }
-{ctrue}			{ yylval.str_val = _strdup(yytext); return CTRUE; }
-{cfalse}		{ yylval.str_val = _strdup(yytext); return CFALSE; }
-{cnull}			{ yylval.str_val = _strdup(yytext); return CNULL; }
-{intnum}		{ yylval.str_val = _strdup(yytext); printf("intnum==%s\n",yytext); return INTNUM; }
-{fract}			{ yylval.str_val = _strdup(yytext); printf("fract==%s\n",yytext); return FRACTNUM; }
-{exponent}		{ yylval.str_val = _strdup(yytext); printf("exponent==%s\n",yytext); return EXPONENT; }
-{fourhex}		{ yylval.str_val = _strdup(yytext); printf("fourhex==%s\n",yytext); return FOURHEX; }
+{digits}		{ jsonliblval.int_val = atoi(yytext); return INTEGER_LITERAL; }
+"+"				{ jsonliblval.str_val = _strdup(yytext); return PLUS; }
+"*"				{ jsonliblval.str_val = _strdup(yytext); return MULT; }
+{opencurly}		{ jsonliblval.str_val = _strdup(yytext); printf("opencurly\n"); return OPENCURLY; }
+{closecurly}	{ jsonliblval.str_val = _strdup(yytext); printf("closecurly\n"); return CLOSECURLY; }
+{opensqrbrk}	{ jsonliblval.str_val = _strdup(yytext); printf("OPENSQRBRK\n"); return OPENSQRBRK; }
+{closesqrbrk}	{ jsonliblval.str_val = _strdup(yytext); printf("CLOSESQRBRK\n"); return CLOSESQRBRK; }
+{commasep}		{ jsonliblval.str_val = _strdup(yytext); printf("COMMASEP\n"); return COMMASEP; }
+{string}		{ jsonliblval.str_val = _strdup(yytext); printf("STRINGVAL==%s\n",yytext); return STRINGVAL; }
+{colonsep}		{ jsonliblval.str_val = _strdup(yytext); printf("COLONSEP\n"); return COLONSEP; }
+{ctrue}			{ jsonliblval.str_val = _strdup(yytext); return CTRUE; }
+{cfalse}		{ jsonliblval.str_val = _strdup(yytext); return CFALSE; }
+{cnull}			{ jsonliblval.str_val = _strdup(yytext); return CNULL; }
+{intnum}		{ jsonliblval.str_val = _strdup(yytext); printf("intnum==%s\n",yytext); return INTNUM; }
+{fract}			{ jsonliblval.str_val = _strdup(yytext); printf("fract==%s\n",yytext); return FRACTNUM; }
+{exponent}		{ jsonliblval.str_val = _strdup(yytext); printf("exponent==%s\n",yytext); return EXPONENT; }
+{fourhex}		{ jsonliblval.str_val = _strdup(yytext); printf("fourhex==%s\n",yytext); return FOURHEX; }
 
 
 
@@ -67,7 +66,7 @@ cnull       (null|NULL)
 [ \t]*		{}
 [\n]		{ jsonliblineno++;	}
 
-.		{ yylval.int_val = atoi(yytext); 	}
+.		{ jsonliblval.int_val = atoi(yytext); 	}
 
 %%
 

@@ -1,3 +1,4 @@
+%define api.prefix jsonlib
 
 %{
 
@@ -6,9 +7,10 @@
 #define yyerror jsonliberror
 #define yylex jsonliblex
 #define yyparse jsonlibparse
-#define yylval jsonliblval
+//#define yylval jsonliblval
 #define yychar jsonlibchar
 #define yynerrs jsonlibnerrs
+
 //#define yystype jsonlibstype
 
 
