@@ -28,7 +28,7 @@ int jsonliblex(void);
 %start	input
 
 %token	<str_val>	OPENCURLY CLOSECURLY OPENSQRBRK CLOSESQRBRK COMMASEP STRINGVAL COLONSEP ANUMBER
-					CTRUE CFALSE CNULL
+					CTRUE CFALSE CNULL INTNUM FRACTNUM FLOATNUM
 %token	<int_val>	INTEGER_LITERAL 
 %type	<int_val>	exp
 %left	PLUS
@@ -47,28 +47,40 @@ exp			:		INTEGER_LITERAL{ $$ = $1; }
 			;
 
 jsonvalue	: jsonobject
+			| anarray
 			;
 
-jsonobject  : OPENCURLY members CLOSECURLY
+jsonobject  : OPENCURLY members CLOSECURLY { printf(" OPENCURLY members CLOSECURLY\n"); }
 			;
 
 members     : pair
 			| members COMMASEP pair
             ;
 
-anarray     : OPENSQRBRK avalue CLOSESQRBRK
+anarray     : OPENSQRBRK arrmembers CLOSESQRBRK
             ;
+
+arrmembers  : avalue
+			| arrmembers COMMASEP avalue
+            ;
+
 
 pair		: STRINGVAL COLONSEP avalue
 			;
 
-avalue		: STRINGVAL
-			| ANUMBER
-			| jsonobject
+avalue		: STRINGVAL		{ printf("STRINGVAL\n"); }
+			| anumber		{ printf("anumber\n"); }
+			| jsonobject    { printf("jsonobject\n"); }
 			| anarray
 			| CTRUE
 			| CFALSE
 			| CNULL
+			| pair
+			;
+
+anumber		: INTNUM				{ printf("INTNUM\n"); }
+			| FRACTNUM				{ printf("FRACTNUM\n"); }
+			| anumber  FRACTNUM		{ printf("FLOATNUM\n"); }
 			;
 
 %%

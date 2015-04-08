@@ -57,9 +57,12 @@ extern int yydebug;
      CTRUE = 266,
      CFALSE = 267,
      CNULL = 268,
-     INTEGER_LITERAL = 269,
-     PLUS = 270,
-     MULT = 271
+     INTNUM = 269,
+     FRACTNUM = 270,
+     FLOATNUM = 271,
+     INTEGER_LITERAL = 272,
+     PLUS = 273,
+     MULT = 274
    };
 #endif
 
@@ -75,7 +78,7 @@ typedef union YYSTYPE
 
 
 /* Line 2058 of yacc.c  */
-#line 79 "jsonp.tab.h"
+#line 82 "jsonp.tab.h"
 } YYSTYPE;
 # define YYSTYPE_IS_TRIVIAL 1
 # define yystype YYSTYPE /* obsolescent; will be withdrawn */

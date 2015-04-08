@@ -9,9 +9,12 @@ int jsonliberror(char *s);
 //int yylineno = 1;
 %}
 
+plussign    \+
+minsign		\-
 digit		[0-9]
-int_const	{digit}+
-anumber     ((-)[0-9]+(.[0-9]+)((-)[eE][0-9]+)|(-)([0-9]+).[0-9]+((-)[eE][0-9]+))
+digits		{digit}+
+intnum      [\-\+]*{digits}
+fract       [\-\+]*.{digits}
 opencurly   \{
 closecurly  \}
 opensqrbrk  \[
@@ -39,26 +42,29 @@ cnull       (null|NULL)
 
 %%
 
-{int_const}		{ yylval.int_val = atoi(yytext); return INTEGER_LITERAL; }
+{digits}		{ yylval.int_val = atoi(yytext); return INTEGER_LITERAL; }
 "+"				{ yylval.str_val = _strdup(yytext); return PLUS; }
 "*"				{ yylval.str_val = _strdup(yytext); return MULT; }
 {opencurly}		{ yylval.str_val = _strdup(yytext); printf("opencurly\n"); return OPENCURLY; }
 {closecurly}	{ yylval.str_val = _strdup(yytext); printf("closecurly\n"); return CLOSECURLY; }
-{opensqrbrk}	{ yylval.str_val = _strdup(yytext); return OPENSQRBRK; }
-{closesqrbrk}	{ yylval.str_val = _strdup(yytext); return CLOSESQRBRK; }
-{commasep}		{ yylval.str_val = _strdup(yytext); return COMMASEP; }
-{string}		{ yylval.str_val = _strdup(yytext); return STRINGVAL; }
-{colonsep}		{ yylval.str_val = _strdup(yytext); return COLONSEP; }
-{anumber}		{ yylval.str_val = _strdup(yytext); return ANUMBER; }
+{opensqrbrk}	{ yylval.str_val = _strdup(yytext); printf("OPENSQRBRK\n"); return OPENSQRBRK; }
+{closesqrbrk}	{ yylval.str_val = _strdup(yytext); printf("CLOSESQRBRK\n"); return CLOSESQRBRK; }
+{commasep}		{ yylval.str_val = _strdup(yytext); printf("COMMASEP\n"); return COMMASEP; }
+{string}		{ yylval.str_val = _strdup(yytext); printf("STRINGVAL==%s\n",yytext); return STRINGVAL; }
+{colonsep}		{ yylval.str_val = _strdup(yytext); printf("COLONSEP\n"); return COLONSEP; }
 {ctrue}			{ yylval.str_val = _strdup(yytext); return CTRUE; }
 {cfalse}		{ yylval.str_val = _strdup(yytext); return CFALSE; }
 {cnull}			{ yylval.str_val = _strdup(yytext); return CNULL; }
+{intnum}		{ yylval.str_val = _strdup(yytext); printf("intnum==%s\n",yytext); return INTNUM; }
+{fract}			{ yylval.str_val = _strdup(yytext); printf("fract==%s\n",yytext); return FRACTNUM; }
+
+
 
 
 [ \t]*		{}
 [\n]		{ jsonliblineno++;	}
 
-.		{ std::cerr << "SCANNER "; jsonliberror(""); exit(1);	}
+.		{ yylval.int_val = atoi(yytext); 	}
 
 %%
 
