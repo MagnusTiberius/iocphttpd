@@ -30,22 +30,30 @@
    This special exception was added by the Free Software Foundation in
    version 2.2 of Bison.  */
 
-#ifndef YY_YY_JSONP_TAB_H_INCLUDED
-# define YY_YY_JSONP_TAB_H_INCLUDED
+#ifndef YY_JSONLIB_JSONP_TAB_H_INCLUDED
+# define YY_JSONLIB_JSONP_TAB_H_INCLUDED
 /* Enabling traces.  */
-#ifndef YYDEBUG
-# define YYDEBUG 0
-#endif
-#if YYDEBUG
-extern int yydebug;
+#ifndef JSONLIBDEBUG
+# if defined YYDEBUG
+#  if YYDEBUG
+#   define JSONLIBDEBUG 1
+#  else
+#   define JSONLIBDEBUG 0
+#  endif
+# else /* ! defined YYDEBUG */
+#  define JSONLIBDEBUG 0
+# endif /* ! defined YYDEBUG */
+#endif  /* ! defined JSONLIBDEBUG */
+#if JSONLIBDEBUG
+extern int jsonlibdebug;
 #endif
 
 /* Tokens.  */
-#ifndef YYTOKENTYPE
-# define YYTOKENTYPE
+#ifndef JSONLIBTOKENTYPE
+# define JSONLIBTOKENTYPE
    /* Put the tokens into the symbol table, so that GDB and other debuggers
       know about them.  */
-   enum yytokentype {
+   enum jsonlibtokentype {
      OPENCURLY = 258,
      CLOSECURLY = 259,
      OPENSQRBRK = 260,
@@ -69,38 +77,38 @@ extern int yydebug;
 #endif
 
 
-#if ! defined YYSTYPE && ! defined YYSTYPE_IS_DECLARED
-typedef union YYSTYPE
+#if ! defined JSONLIBSTYPE && ! defined JSONLIBSTYPE_IS_DECLARED
+typedef union JSONLIBSTYPE
 {
 /* Line 2058 of yacc.c  */
-#line 23 "jsonp.y"
+#line 25 "jsonp.y"
 
 	int		int_val;
 	char*	str_val;
 
 
 /* Line 2058 of yacc.c  */
-#line 84 "jsonp.tab.h"
-} YYSTYPE;
-# define YYSTYPE_IS_TRIVIAL 1
-# define yystype YYSTYPE /* obsolescent; will be withdrawn */
-# define YYSTYPE_IS_DECLARED 1
+#line 92 "jsonp.tab.h"
+} JSONLIBSTYPE;
+# define JSONLIBSTYPE_IS_TRIVIAL 1
+# define jsonlibstype JSONLIBSTYPE /* obsolescent; will be withdrawn */
+# define JSONLIBSTYPE_IS_DECLARED 1
 #endif
 
-extern YYSTYPE yylval;
+extern JSONLIBSTYPE jsonliblval;
 
 #ifdef YYPARSE_PARAM
 #if defined __STDC__ || defined __cplusplus
-int yyparse (void *YYPARSE_PARAM);
+int jsonlibparse (void *YYPARSE_PARAM);
 #else
-int yyparse ();
+int jsonlibparse ();
 #endif
 #else /* ! YYPARSE_PARAM */
 #if defined __STDC__ || defined __cplusplus
-int yyparse (void);
+int jsonlibparse (void);
 #else
-int yyparse ();
+int jsonlibparse ();
 #endif
 #endif /* ! YYPARSE_PARAM */
 
-#endif /* !YY_YY_JSONP_TAB_H_INCLUDED  */
+#endif /* !YY_JSONLIB_JSONP_TAB_H_INCLUDED  */

@@ -1436,6 +1436,12 @@ yyreduce:
     { printf("property_item seen\n"); }
     break;
 
+  case 6:
+/* Line 1792 of yacc.c  */
+#line 56 "calc.y"
+    { printf("content should follow after this marker.\n"); }
+    break;
+
   case 7:
 /* Line 1792 of yacc.c  */
 #line 60 "calc.y"
@@ -1612,7 +1618,7 @@ yyreduce:
 
 
 /* Line 1792 of yacc.c  */
-#line 1616 "calc.tab.cpp"
+#line 1622 "calc.tab.cpp"
       default: break;
     }
   /* User semantic actions sometimes alter yychar, and that requires

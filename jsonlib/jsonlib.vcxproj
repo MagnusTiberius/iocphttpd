@@ -62,6 +62,9 @@
       <GenerateDebugInformation>true</GenerateDebugInformation>
     </Link>
     <Bison />
+    <Bison>
+      <Verbose>true</Verbose>
+    </Bison>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
     <ClCompile>
@@ -95,6 +98,7 @@
     <Bison Include="jsonp.y">
       <FilePrefix Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">jsonlib</FilePrefix>
       <FilePrefix Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">jsonlib</FilePrefix>
+      <Verbose Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</Verbose>
     </Bison>
   </ItemGroup>
   <ItemGroup>
