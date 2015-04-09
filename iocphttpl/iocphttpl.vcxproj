@@ -11,19 +11,19 @@
     </ProjectConfiguration>
   </ItemGroup>
   <PropertyGroup Label="Globals">
-    <ProjectGuid>{54F797E9-FB21-4BBE-914C-4EFD66861330}</ProjectGuid>
+    <ProjectGuid>{9C9048D6-37C8-44BF-BD8E-7D7F6B5AC42B}</ProjectGuid>
     <Keyword>Win32Proj</Keyword>
-    <RootNamespace>iocphttpd</RootNamespace>
+    <RootNamespace>iocphttpl</RootNamespace>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">
-    <ConfigurationType>Application</ConfigurationType>
+    <ConfigurationType>DynamicLibrary</ConfigurationType>
     <UseDebugLibraries>true</UseDebugLibraries>
     <PlatformToolset>v120</PlatformToolset>
     <CharacterSet>Unicode</CharacterSet>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'" Label="Configuration">
-    <ConfigurationType>Application</ConfigurationType>
+    <ConfigurationType>DynamicLibrary</ConfigurationType>
     <UseDebugLibraries>false</UseDebugLibraries>
     <PlatformToolset>v120</PlatformToolset>
     <WholeProgramOptimization>true</WholeProgramOptimization>
@@ -31,6 +31,7 @@
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.props" />
   <ImportGroup Label="ExtensionSettings">
+    <Import Project="..\flexbison\build\win_flex_bison_custom_build.props" />
   </ImportGroup>
   <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
@@ -52,17 +53,13 @@
       <PrecompiledHeader>NotUsing</PrecompiledHeader>
       <WarningLevel>Level3</WarningLevel>
       <Optimization>Disabled</Optimization>
-      <PreprocessorDefinitions>WIN32;_DEBUG;_CONSOLE;_LIB;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PreprocessorDefinitions>WIN32;_DEBUG;_WINDOWS;_USRDLL;IOCPHTTPL_EXPORTS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <SDLCheck>true</SDLCheck>
-      <AdditionalIncludeDirectories>$(SolutionDir)\iocphttpdlib\;$(SolutionDir)\jsoncpp\include\;$(SolutionDir)\httpparserdll\;$(SolutionDir)\jsondll\;$(SolutionDir)\iocphttpl\</AdditionalIncludeDirectories>
-      <CompileAs>Default</CompileAs>
-      <RuntimeLibrary>MultiThreadedDebugDLL</RuntimeLibrary>
     </ClCompile>
     <Link>
-      <SubSystem>Console</SubSystem>
+      <SubSystem>Windows</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
-      <AdditionalLibraryDirectories>$(SolutionDir)\lib\$(Platform)\$(Configuration)\</AdditionalLibraryDirectories>
-      <AdditionalDependencies>version.lib;ws2_32.lib;iocphttpl.lib</AdditionalDependencies>
+      <AdditionalDependencies>version.lib;ws2_32.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
@@ -72,33 +69,82 @@
       <Optimization>MaxSpeed</Optimization>
       <FunctionLevelLinking>true</FunctionLevelLinking>
       <IntrinsicFunctions>true</IntrinsicFunctions>
-      <PreprocessorDefinitions>WIN32;NDEBUG;_CONSOLE;_LIB;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PreprocessorDefinitions>WIN32;NDEBUG;_WINDOWS;_USRDLL;IOCPHTTPL_EXPORTS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <SDLCheck>true</SDLCheck>
-      <AdditionalIncludeDirectories>$(SolutionDir)\iocphttpdlib\;$(SolutionDir)\jsoncpp\include\;$(SolutionDir)\httpparserdll\;$(SolutionDir)\jsondll\;$(SolutionDir)\iocphttpl\</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
-      <SubSystem>Console</SubSystem>
+      <SubSystem>Windows</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
       <OptimizeReferences>true</OptimizeReferences>
-      <AdditionalLibraryDirectories>$(SolutionDir)\lib\$(Platform)\$(Configuration)\</AdditionalLibraryDirectories>
-      <AdditionalDependencies>version.lib;ws2_32.lib;iocphttpl.lib</AdditionalDependencies>
+      <AdditionalDependencies>version.lib;ws2_32.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
     <Text Include="ReadMe.txt" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="IocpHttpd.h" />
+    <ClInclude Include="Enums.h" />
+    <ClInclude Include="HttpHeader.h" />
+    <ClInclude Include="httpparser.tab.h" />
+    <ClInclude Include="httpparserast.h" />
+    <ClInclude Include="HttpRequest.h" />
+    <ClInclude Include="HttpResponse.h" />
+    <ClInclude Include="HttpUrlRoute.h" />
+    <ClInclude Include="iocphttpl.h" />
+    <ClInclude Include="jsonp.tab.h" />
+    <ClInclude Include="ParserHeader.h" />
+    <ClInclude Include="SocketCompletionPortServer.h" />
     <ClInclude Include="stdafx.h" />
     <ClInclude Include="targetver.h" />
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="IocpHttpd.cpp" />
-    <ClCompile Include="iocphttpd_main.cpp" />
-    <ClCompile Include="stdafx.cpp" />
+    <ClCompile Include="dllmain.cpp">
+      <CompileAsManaged Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">false</CompileAsManaged>
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+      </PrecompiledHeader>
+      <CompileAsManaged Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">false</CompileAsManaged>
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+      </PrecompiledHeader>
+    </ClCompile>
+    <ClCompile Include="HttpHeader.cpp" />
+    <ClCompile Include="httpparser.flex.cpp" />
+    <ClCompile Include="httpparser.tab.cpp" />
+    <ClCompile Include="HttpRequest.cpp" />
+    <ClCompile Include="HttpResponse.cpp" />
+    <ClCompile Include="HttpUrlRoute.cpp" />
+    <ClCompile Include="iocphttpl.cpp" />
+    <ClCompile Include="jsonp.flex.cpp" />
+    <ClCompile Include="jsonp.tab.cpp" />
+    <ClCompile Include="ParserHeader.cpp" />
+    <ClCompile Include="SocketCompletionPortServer.cpp" />
+    <ClCompile Include="stdafx.cpp">
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Create</PrecompiledHeader>
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Create</PrecompiledHeader>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <Flex Include="httpparser.l">
+      <Prefix Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">hp</Prefix>
+      <Prefix Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">hp</Prefix>
+    </Flex>
+    <Flex Include="jsonp.l">
+      <Prefix Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">jp</Prefix>
+      <Prefix Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">jp</Prefix>
+    </Flex>
+  </ItemGroup>
+  <ItemGroup>
+    <Bison Include="httpparser.y">
+      <FilePrefix Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">hp</FilePrefix>
+      <FilePrefix Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">hp</FilePrefix>
+    </Bison>
+    <Bison Include="jsonp.y">
+      <FilePrefix Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">jp</FilePrefix>
+      <FilePrefix Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">jp</FilePrefix>
+    </Bison>
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
+    <Import Project="..\flexbison\build\win_flex_bison_custom_build.targets" />
   </ImportGroup>
 </Project>
