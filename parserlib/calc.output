@@ -1,112 +1,461 @@
+Terminals unused in grammar
+
+   DIGIT
+   HEADERELEM
+   URLPARAMS
+   HOST
+   CONNECTION
+   USERAGENT
+   ACCEPT
+
+
 Grammar
 
     0 $accept: input $end
 
     1 input: /* empty */
-    2      | exp
+    2      | input line
 
-    3 exp: INTEGER_LITERAL
-    4    | exp PLUS exp
-    5    | exp MULT exp
+    3 line: line1 NEWLINE
+    4     | property NEWLINE
+    5     | NEWLINE
+
+    6 line1: METHODACTION
+    7      | line1 URLPATH
+    8      | line1 urlparams
+    9      | line1 METHODVER
+
+   10 urlparams: QUESTION
+   11          | urlparams IDENTIFIER EQUAL IDENTIFIER
+   12          | urlparams ID2 EQUAL ID2
+   13          | urlparams ID2 EQUAL DIGITS
+   14          | urlparams AMPERSAND
+
+   15 property: property_name
+   16         | property ANYTYPE
+   17         | property ID2
+   18         | property IDENTIFIER
+   19         | property delimiters
+   20         | property DIGITS
+   21         | property PROPNAME
+
+   22 delimiters: COMMA
+   23           | SEMICOL
+   24           | COLON
+   25           | FSLASH
+   26           | PLUS
+   27           | PERIOD
+   28           | OPENPAR
+   29           | CLOSEPAR
+   30           | MULT
+
+   31 property_name: CACHECONTROL
+   32              | ACCEPTENCODING
+   33              | ACCEPTLANG
+   34              | PROPNAME
 
 
 Terminals, with rules where they appear
 
 $end (0) 0
 error (256)
-INTEGER_LITERAL (258) 3
-PLUS (259) 4
-MULT (260) 5
+IDENTIFIER (258) 11 18
+METHODACTION (259) 6
+DIGIT (260)
+HEADERELEM (261)
+URLPATH (262) 7
+METHODVER (263) 9
+ID2 (264) 12 13 17
+URLPARAMS (265)
+HOST (266)
+EQUAL (267) 11 12 13
+CONNECTION (268)
+USERAGENT (269)
+QUESTION (270) 10
+AMPERSAND (271) 14
+ANYTYPE (272) 16
+ACCEPT (273)
+CACHECONTROL (274) 31
+ACCEPTENCODING (275) 32
+ACCEPTLANG (276) 33
+DIGITS (277) 13 20
+NEWLINE (278) 3 4 5
+PROPNAME (279) 21 34
+COMMA (280) 22
+SEMICOL (281) 23
+COLON (282) 24
+FSLASH (283) 25
+PERIOD (284) 27
+OPENPAR (285) 28
+CLOSEPAR (286) 29
+PLUS (287) 26
+MULT (288) 30
 
 
 Nonterminals, with rules where they appear
 
-$accept (6)
+$accept (34)
     on left: 0
-input (7)
-    on left: 1 2, on right: 0
-exp (8)
-    on left: 3 4 5, on right: 2 4 5
+input (35)
+    on left: 1 2, on right: 0 2
+line (36)
+    on left: 3 4 5, on right: 2
+line1 (37)
+    on left: 6 7 8 9, on right: 3 7 8 9
+urlparams (38)
+    on left: 10 11 12 13 14, on right: 8 11 12 13 14
+property (39)
+    on left: 15 16 17 18 19 20 21, on right: 4 16 17 18 19 20 21
+delimiters (40)
+    on left: 22 23 24 25 26 27 28 29 30, on right: 19
+property_name (41)
+    on left: 31 32 33 34, on right: 15
 
 
-state 0
+State 0
 
     0 $accept: . input $end
 
-    INTEGER_LITERAL  shift, and go to state 1
-
     $default  reduce using rule 1 (input)
 
-    input  go to state 2
-    exp    go to state 3
+    input  go to state 1
 
 
-state 1
-
-    3 exp: INTEGER_LITERAL .
-
-    $default  reduce using rule 3 (exp)
-
-
-state 2
+State 1
 
     0 $accept: input . $end
+    2 input: input . line
 
-    $end  shift, and go to state 4
+    $end            shift, and go to state 2
+    METHODACTION    shift, and go to state 3
+    CACHECONTROL    shift, and go to state 4
+    ACCEPTENCODING  shift, and go to state 5
+    ACCEPTLANG      shift, and go to state 6
+    NEWLINE         shift, and go to state 7
+    PROPNAME        shift, and go to state 8
+
+    line           go to state 9
+    line1          go to state 10
+    property       go to state 11
+    property_name  go to state 12
 
 
-state 3
-
-    2 input: exp .
-    4 exp: exp . PLUS exp
-    5    | exp . MULT exp
-
-    PLUS  shift, and go to state 5
-    MULT  shift, and go to state 6
-
-    $default  reduce using rule 2 (input)
-
-
-state 4
+State 2
 
     0 $accept: input $end .
 
     $default  accept
 
 
-state 5
+State 3
 
-    4 exp: exp PLUS . exp
+    6 line1: METHODACTION .
 
-    INTEGER_LITERAL  shift, and go to state 1
-
-    exp  go to state 7
+    $default  reduce using rule 6 (line1)
 
 
-state 6
+State 4
 
-    5 exp: exp MULT . exp
+   31 property_name: CACHECONTROL .
 
-    INTEGER_LITERAL  shift, and go to state 1
-
-    exp  go to state 8
+    $default  reduce using rule 31 (property_name)
 
 
-state 7
+State 5
 
-    4 exp: exp . PLUS exp
-    4    | exp PLUS exp .
-    5    | exp . MULT exp
+   32 property_name: ACCEPTENCODING .
 
-    MULT  shift, and go to state 6
-
-    $default  reduce using rule 4 (exp)
+    $default  reduce using rule 32 (property_name)
 
 
-state 8
+State 6
 
-    4 exp: exp . PLUS exp
-    5    | exp . MULT exp
-    5    | exp MULT exp .
+   33 property_name: ACCEPTLANG .
 
-    $default  reduce using rule 5 (exp)
+    $default  reduce using rule 33 (property_name)
+
+
+State 7
+
+    5 line: NEWLINE .
+
+    $default  reduce using rule 5 (line)
+
+
+State 8
+
+   34 property_name: PROPNAME .
+
+    $default  reduce using rule 34 (property_name)
+
+
+State 9
+
+    2 input: input line .
+
+    $default  reduce using rule 2 (input)
+
+
+State 10
+
+    3 line: line1 . NEWLINE
+    7 line1: line1 . URLPATH
+    8      | line1 . urlparams
+    9      | line1 . METHODVER
+
+    URLPATH    shift, and go to state 13
+    METHODVER  shift, and go to state 14
+    QUESTION   shift, and go to state 15
+    NEWLINE    shift, and go to state 16
+
+    urlparams  go to state 17
+
+
+State 11
+
+    4 line: property . NEWLINE
+   16 property: property . ANYTYPE
+   17         | property . ID2
+   18         | property . IDENTIFIER
+   19         | property . delimiters
+   20         | property . DIGITS
+   21         | property . PROPNAME
+
+    IDENTIFIER  shift, and go to state 18
+    ID2         shift, and go to state 19
+    ANYTYPE     shift, and go to state 20
+    DIGITS      shift, and go to state 21
+    NEWLINE     shift, and go to state 22
+    PROPNAME    shift, and go to state 23
+    COMMA       shift, and go to state 24
+    SEMICOL     shift, and go to state 25
+    COLON       shift, and go to state 26
+    FSLASH      shift, and go to state 27
+    PERIOD      shift, and go to state 28
+    OPENPAR     shift, and go to state 29
+    CLOSEPAR    shift, and go to state 30
+    PLUS        shift, and go to state 31
+    MULT        shift, and go to state 32
+
+    delimiters  go to state 33
+
+
+State 12
+
+   15 property: property_name .
+
+    $default  reduce using rule 15 (property)
+
+
+State 13
+
+    7 line1: line1 URLPATH .
+
+    $default  reduce using rule 7 (line1)
+
+
+State 14
+
+    9 line1: line1 METHODVER .
+
+    $default  reduce using rule 9 (line1)
+
+
+State 15
+
+   10 urlparams: QUESTION .
+
+    $default  reduce using rule 10 (urlparams)
+
+
+State 16
+
+    3 line: line1 NEWLINE .
+
+    $default  reduce using rule 3 (line)
+
+
+State 17
+
+    8 line1: line1 urlparams .
+   11 urlparams: urlparams . IDENTIFIER EQUAL IDENTIFIER
+   12          | urlparams . ID2 EQUAL ID2
+   13          | urlparams . ID2 EQUAL DIGITS
+   14          | urlparams . AMPERSAND
+
+    IDENTIFIER  shift, and go to state 34
+    ID2         shift, and go to state 35
+    AMPERSAND   shift, and go to state 36
+
+    $default  reduce using rule 8 (line1)
+
+
+State 18
+
+   18 property: property IDENTIFIER .
+
+    $default  reduce using rule 18 (property)
+
+
+State 19
+
+   17 property: property ID2 .
+
+    $default  reduce using rule 17 (property)
+
+
+State 20
+
+   16 property: property ANYTYPE .
+
+    $default  reduce using rule 16 (property)
+
+
+State 21
+
+   20 property: property DIGITS .
+
+    $default  reduce using rule 20 (property)
+
+
+State 22
+
+    4 line: property NEWLINE .
+
+    $default  reduce using rule 4 (line)
+
+
+State 23
+
+   21 property: property PROPNAME .
+
+    $default  reduce using rule 21 (property)
+
+
+State 24
+
+   22 delimiters: COMMA .
+
+    $default  reduce using rule 22 (delimiters)
+
+
+State 25
+
+   23 delimiters: SEMICOL .
+
+    $default  reduce using rule 23 (delimiters)
+
+
+State 26
+
+   24 delimiters: COLON .
+
+    $default  reduce using rule 24 (delimiters)
+
+
+State 27
+
+   25 delimiters: FSLASH .
+
+    $default  reduce using rule 25 (delimiters)
+
+
+State 28
+
+   27 delimiters: PERIOD .
+
+    $default  reduce using rule 27 (delimiters)
+
+
+State 29
+
+   28 delimiters: OPENPAR .
+
+    $default  reduce using rule 28 (delimiters)
+
+
+State 30
+
+   29 delimiters: CLOSEPAR .
+
+    $default  reduce using rule 29 (delimiters)
+
+
+State 31
+
+   26 delimiters: PLUS .
+
+    $default  reduce using rule 26 (delimiters)
+
+
+State 32
+
+   30 delimiters: MULT .
+
+    $default  reduce using rule 30 (delimiters)
+
+
+State 33
+
+   19 property: property delimiters .
+
+    $default  reduce using rule 19 (property)
+
+
+State 34
+
+   11 urlparams: urlparams IDENTIFIER . EQUAL IDENTIFIER
+
+    EQUAL  shift, and go to state 37
+
+
+State 35
+
+   12 urlparams: urlparams ID2 . EQUAL ID2
+   13          | urlparams ID2 . EQUAL DIGITS
+
+    EQUAL  shift, and go to state 38
+
+
+State 36
+
+   14 urlparams: urlparams AMPERSAND .
+
+    $default  reduce using rule 14 (urlparams)
+
+
+State 37
+
+   11 urlparams: urlparams IDENTIFIER EQUAL . IDENTIFIER
+
+    IDENTIFIER  shift, and go to state 39
+
+
+State 38
+
+   12 urlparams: urlparams ID2 EQUAL . ID2
+   13          | urlparams ID2 EQUAL . DIGITS
+
+    ID2     shift, and go to state 40
+    DIGITS  shift, and go to state 41
+
+
+State 39
+
+   11 urlparams: urlparams IDENTIFIER EQUAL IDENTIFIER .
+
+    $default  reduce using rule 11 (urlparams)
+
+
+State 40
+
+   12 urlparams: urlparams ID2 EQUAL ID2 .
+
+    $default  reduce using rule 12 (urlparams)
+
+
+State 41
+
+   13 urlparams: urlparams ID2 EQUAL DIGITS .
+
+    $default  reduce using rule 13 (urlparams)
