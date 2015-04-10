@@ -14,7 +14,10 @@ Dependencies:
 
 1) Uses jsoncpp, see https://github.com/open-source-parsers/jsoncpp for details.
 
-
 TODO:
 
-1) Setup AppVeyor to install bison.exe
+1) Setup AppVeyor to install bison.exe  -- done
+
+JOURNAL:
+
+4/10/15 - Configured win flex bison to generate output that could support multiple .y and .l files in one directory.
