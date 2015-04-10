@@ -85,6 +85,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Enums.h" />
+    <ClInclude Include="HParser.h" />
     <ClInclude Include="HttpHeader.h" />
     <ClInclude Include="httpparser.tab.h" />
     <ClInclude Include="httpparserast.h" />
@@ -92,6 +93,7 @@
     <ClInclude Include="HttpResponse.h" />
     <ClInclude Include="HttpUrlRoute.h" />
     <ClInclude Include="iocphttpl.h" />
+    <ClInclude Include="Jsonp.h" />
     <ClInclude Include="jsonp.tab.h" />
     <ClInclude Include="ParserHeader.h" />
     <ClInclude Include="SocketCompletionPortServer.h" />
@@ -107,6 +109,7 @@
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
       </PrecompiledHeader>
     </ClCompile>
+    <ClCompile Include="HParser.cpp" />
     <ClCompile Include="HttpHeader.cpp" />
     <ClCompile Include="httpparser.flex.cpp" />
     <ClCompile Include="httpparser.tab.cpp" />
@@ -114,6 +117,7 @@
     <ClCompile Include="HttpResponse.cpp" />
     <ClCompile Include="HttpUrlRoute.cpp" />
     <ClCompile Include="iocphttpl.cpp" />
+    <ClCompile Include="Jsonp.cpp" />
     <ClCompile Include="jsonp.flex.cpp" />
     <ClCompile Include="jsonp.tab.cpp" />
     <ClCompile Include="ParserHeader.cpp" />

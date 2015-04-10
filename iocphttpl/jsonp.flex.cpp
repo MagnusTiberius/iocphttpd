@@ -818,12 +818,12 @@ YY_RULE_SETUP
 case 2:
 YY_RULE_SETUP
 #line 46 "jsonp.l"
-{ jplval.str_val = _strdup(jptext); return PLUS; }
+{ jplval.str_val = _strdup(jptext); return JPPLUS; }
 	YY_BREAK
 case 3:
 YY_RULE_SETUP
 #line 47 "jsonp.l"
-{ jplval.str_val = _strdup(jptext); return MULT; }
+{ jplval.str_val = _strdup(jptext); return JPMULT; }
 	YY_BREAK
 case 4:
 YY_RULE_SETUP

@@ -1,6 +1,6 @@
 #pragma once
 #include "HttpHeader.h"
-//#include "HParser.h"
+#include "HParser.h"
 #include "Enums.h"
 
 class IOCPHTTPL_API HttpRequest
@@ -14,7 +14,7 @@ public:
 	MethodType GetMethod();
 
 private:
-	//headerparser::HParser hParser;
+	headerparser::HParser hParser;
 	HttpHeader httpHeader;
 };
 

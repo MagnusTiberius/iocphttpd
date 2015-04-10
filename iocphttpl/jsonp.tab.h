@@ -71,8 +71,8 @@ extern int jpdebug;
      EXPONENT = 272,
      FOURHEX = 273,
      INTEGER_LITERAL = 274,
-     PLUS = 275,
-     MULT = 276
+     JPPLUS = 275,
+     JPMULT = 276
    };
 #endif
 

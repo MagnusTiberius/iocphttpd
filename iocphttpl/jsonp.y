@@ -33,8 +33,8 @@ int jplex(void);
 					CTRUE CFALSE CNULL INTNUM FRACTNUM FLOATNUM EXPONENT FOURHEX
 %token	<int_val>	INTEGER_LITERAL 
 %type	<int_val>	exp
-%left	PLUS
-%left	MULT
+%left	JPPLUS
+%left	JPMULT
 
 %%
 
@@ -44,8 +44,8 @@ input		:		/* empty */
 			;
 
 exp			:		INTEGER_LITERAL{ $$ = $1; }
-			| exp PLUS exp{ $$ = $1 + $3; }
-			| exp MULT exp{ $$ = $1 * $3; }
+			| exp JPPLUS exp{ $$ = $1 + $3; }
+			| exp JPMULT exp{ $$ = $1 * $3; }
 			;
 
 jsonvalue	: jsonobject

@@ -63,6 +63,12 @@
     <ClInclude Include="jsonp.tab.h">
       <Filter>jsonparser</Filter>
     </ClInclude>
+    <ClInclude Include="HParser.h">
+      <Filter>httpparser</Filter>
+    </ClInclude>
+    <ClInclude Include="Jsonp.h">
+      <Filter>jsonparser</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="stdafx.cpp">
@@ -102,6 +108,12 @@
       <Filter>jsonparser</Filter>
     </ClCompile>
     <ClCompile Include="jsonp.tab.cpp">
+      <Filter>jsonparser</Filter>
+    </ClCompile>
+    <ClCompile Include="HParser.cpp">
+      <Filter>httpparser</Filter>
+    </ClCompile>
+    <ClCompile Include="Jsonp.cpp">
       <Filter>jsonparser</Filter>
     </ClCompile>
   </ItemGroup>

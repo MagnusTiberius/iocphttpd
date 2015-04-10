@@ -155,8 +155,8 @@ extern int jpdebug;
      EXPONENT = 272,
      FOURHEX = 273,
      INTEGER_LITERAL = 274,
-     PLUS = 275,
-     MULT = 276
+     JPPLUS = 275,
+     JPMULT = 276
    };
 #endif
 
@@ -513,9 +513,9 @@ static const char *const yytname[] =
   "$end", "error", "$undefined", "OPENCURLY", "CLOSECURLY", "OPENSQRBRK",
   "CLOSESQRBRK", "COMMASEP", "STRINGVAL", "COLONSEP", "ANUMBER", "CTRUE",
   "CFALSE", "CNULL", "INTNUM", "FRACTNUM", "FLOATNUM", "EXPONENT",
-  "FOURHEX", "INTEGER_LITERAL", "PLUS", "MULT", "$accept", "input", "exp",
-  "jsonvalue", "jsonobject", "members", "anarray", "arrmembers", "pair",
-  "avalue", "anumber", YY_NULL
+  "FOURHEX", "INTEGER_LITERAL", "JPPLUS", "JPMULT", "$accept", "input",
+  "exp", "jsonvalue", "jsonobject", "members", "anarray", "arrmembers",
+  "pair", "avalue", "anumber", YY_NULL
 };
 #endif
 

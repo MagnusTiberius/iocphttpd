@@ -43,8 +43,8 @@ cnull       (null|NULL)
 %%
 
 {digits}		{ jplval.int_val = atoi(yytext); return INTEGER_LITERAL; }
-"+"				{ jplval.str_val = _strdup(yytext); return PLUS; }
-"*"				{ jplval.str_val = _strdup(yytext); return MULT; }
+"+"				{ jplval.str_val = _strdup(yytext); return JPPLUS; }
+"*"				{ jplval.str_val = _strdup(yytext); return JPMULT; }
 {opencurly}		{ jplval.str_val = _strdup(yytext); printf("opencurly\n"); return OPENCURLY; }
 {closecurly}	{ jplval.str_val = _strdup(yytext); printf("closecurly\n"); return CLOSECURLY; }
 {opensqrbrk}	{ jplval.str_val = _strdup(yytext); printf("OPENSQRBRK\n"); return OPENSQRBRK; }
