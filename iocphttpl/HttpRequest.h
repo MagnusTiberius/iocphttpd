@@ -2,8 +2,9 @@
 #include "HttpHeader.h"
 #include "HParser.h"
 #include "Enums.h"
+#include "HttpTemplate.h"
 
-class IOCPHTTPL_API HttpRequest
+class IOCPHTTPL_API HttpRequest : public HttpTemplate
 {
 public:
 	HttpRequest();

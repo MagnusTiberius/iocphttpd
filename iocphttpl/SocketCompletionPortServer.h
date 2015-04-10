@@ -9,6 +9,7 @@
 #include "HttpRequest.h"
 #include "HttpResponse.h"
 #include "HttpUrlRoute.h"
+#include "HttpTemplate.h"
 
 #define PORT 5150
 #define DATA_BUFSIZE 8192

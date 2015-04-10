@@ -69,6 +69,9 @@
     <ClInclude Include="Jsonp.h">
       <Filter>jsonparser</Filter>
     </ClInclude>
+    <ClInclude Include="HttpTemplate.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="stdafx.cpp">
@@ -115,6 +118,9 @@
     </ClCompile>
     <ClCompile Include="Jsonp.cpp">
       <Filter>jsonparser</Filter>
+    </ClCompile>
+    <ClCompile Include="HttpTemplate.cpp">
+      <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

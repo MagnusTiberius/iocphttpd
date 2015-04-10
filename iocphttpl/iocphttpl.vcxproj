@@ -91,6 +91,7 @@
     <ClInclude Include="httpparserast.h" />
     <ClInclude Include="HttpRequest.h" />
     <ClInclude Include="HttpResponse.h" />
+    <ClInclude Include="HttpTemplate.h" />
     <ClInclude Include="HttpUrlRoute.h" />
     <ClInclude Include="iocphttpl.h" />
     <ClInclude Include="Jsonp.h" />
@@ -115,6 +116,7 @@
     <ClCompile Include="httpparser.tab.cpp" />
     <ClCompile Include="HttpRequest.cpp" />
     <ClCompile Include="HttpResponse.cpp" />
+    <ClCompile Include="HttpTemplate.cpp" />
     <ClCompile Include="HttpUrlRoute.cpp" />
     <ClCompile Include="iocphttpl.cpp" />
     <ClCompile Include="Jsonp.cpp" />

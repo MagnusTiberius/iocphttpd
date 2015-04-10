@@ -11,6 +11,8 @@
 #include <tchar.h>
 #include <string>
 
-
+#define BUFSIZMAX		8*1024
+#define BUFSIZMIN		1024
+#define DATA_BUFSIZE	8192
 
 // TODO: reference additional headers your program requires here

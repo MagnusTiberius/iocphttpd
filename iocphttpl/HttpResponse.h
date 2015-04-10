@@ -1,9 +1,9 @@
 #pragma once
 #include "HttpHeader.h"
+#include "HttpTemplate.h"
 
 
-
-class IOCPHTTPL_API HttpResponse
+class IOCPHTTPL_API HttpResponse : public HttpTemplate
 {
 public:
 	HttpResponse();
@@ -14,7 +14,7 @@ public:
 	const char* tmp_date = "Fri, 31 Dec 1999 23:59:59 GMT";
 
 	void Write(const char* str);
-
+	void WriteTemplate(char* code);
 	void GetResponse(char* szResponse, DWORD dwSize);
 
 private:

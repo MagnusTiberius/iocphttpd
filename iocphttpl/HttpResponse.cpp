@@ -16,6 +16,13 @@ void HttpResponse::Write(const char* str)
 	m_szResponse = std::string(str);
 }
 
+void HttpResponse::WriteTemplate(char* code)
+{
+	char buf[DATA_BUFSIZE];
+	memset(buf, '\0', DATA_BUFSIZE);
+	std::string str = GetTemplateContent(code);
+	m_szResponse = std::string(str);
+}
 
 void HttpResponse::GetResponse(char* pszResponse, DWORD dwSize)
 {

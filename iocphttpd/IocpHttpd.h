@@ -1,4 +1,5 @@
 #pragma once
+#include "stdafx.h"
 #include "SocketCompletionPortServer.h"
 
 
@@ -14,6 +15,8 @@ public:
 	static void HandleHome(HttpRequest *httpRequest, HttpResponse *httpResponse);
 	static void HandleTest(HttpRequest *httpRequest, HttpResponse *httpResponse);
 	static void HandleInit(HttpRequest *httpRequest, HttpResponse *httpResponse);
+
+private:
 
 };
 

@@ -6,6 +6,7 @@ IocpHttpd::IocpHttpd()
 	AddRoute("/", IocpHttpd::HandleHome);
 	AddRoute("/test", IocpHttpd::HandleTest);
 	AddRoute("/init", IocpHttpd::HandleInit);
+
 }
 
 
@@ -26,17 +27,29 @@ void IocpHttpd::EvalPost(HttpRequest *httpRequest, HttpResponse *httpResponse)
 void IocpHttpd::HandleHome(HttpRequest *httpRequest, HttpResponse *httpResponse)
 {
 	printf("IocpHttpd::HandleHome\n");
-	httpResponse->Write("<html><h1>Test Home</h1><hr></html>");
+	if (httpResponse->FindTemplate("Home") == false)
+	{
+		httpResponse->AddTemplate("Home", "C:\\www\\index.html");
+	}
+	httpResponse->WriteTemplate("Home");
 }
 
 void IocpHttpd::HandleTest(HttpRequest *httpRequest, HttpResponse *httpResponse)
 {
 	printf("IocpHttpd::HandleTest\n");
-	httpResponse->Write("<html><h1>Test Test</h1><hr></html>");
+	if (httpResponse->FindTemplate("Home") == false)
+	{
+		httpResponse->AddTemplate("Home", "C:\\www\\index.html");
+	}
+	httpResponse->WriteTemplate("Home");
 }
 
 void IocpHttpd::HandleInit(HttpRequest *httpRequest, HttpResponse *httpResponse)
 {
 	printf("IocpHttpd::HandleInit\n");
-	httpResponse->Write("<html><h1>Test Init</h1><hr></html>");
+	if (httpResponse->FindTemplate("init") == false)
+	{
+		httpResponse->AddTemplate("init", "C:\\www\\init.html");
+	}
+	httpResponse->WriteTemplate("init");
 }
