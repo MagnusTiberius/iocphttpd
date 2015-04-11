@@ -38,7 +38,7 @@ int hplex(void);
 							ACCEPTENCODING ACCEPTLANG DIGITS NEWLINE 
 							PROPNAME COMMA SEMICOL COLON FSLASH PERIOD OPENPAR CLOSEPAR
 							PLUS MULT
-%type	<identifier_tok>	delimiters property_name property
+%type	<identifier_tok>	delimiters property_name property urlpath2
 
 %type	<lpHttpdoc>	line 
 /* %left	PLUS
@@ -57,9 +57,13 @@ line	: line1 NEWLINE			{ printf("line1 seen\n"); }
 
 
 line1	: METHODACTION		{ SetMethodAction($1, &g_Httpdoc); }
-		| line1 URLPATH		{ SetUrl($2, &g_Httpdoc); }
+		| line1 urlpath2	{ SetUrl($2, &g_Httpdoc); }
 		| line1 urlparams   { printf("urlparams whole seen\n"); }
 		| line1 METHODVER   { SetMethodVersion($2, &g_Httpdoc); }
+		;
+
+urlpath2 : FSLASH
+		| URLPATH
 		;
 
 urlparams : QUESTION								{ printf("urlparams 1 seen\n"); }
