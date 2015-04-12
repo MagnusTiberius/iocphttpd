@@ -22,7 +22,7 @@ public:
 	void SetTemplateRootDir(char* filepath);
 	std::string GetTemplateContent(char* code);
 	bool FindTemplate(char *code);
-
+	std::string GetTemplateFilepath(char* code);
 protected:
 
 	TEMPLATELIST m_TemplateList;

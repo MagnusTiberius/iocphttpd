@@ -18,7 +18,7 @@ digit			[0-9]
 digits			{digit}+
 methodaction    (GET|POST)
 identifier		[a-zA-Z]+[0-9]+[a-zA-Z0-9\-]
-urlpath         \/[a-zA-Z]+[\/a-zA-Z.]+
+urlpath         \/[a-zA-Z]+[\/\_\-a-zA-Z.]+
 methodver		HTTP\/[0-9].[0-9]
 identifier2		([a-zA-z]+|[a-zA-z]+[a-zA-z\-]+)
 equal			\=

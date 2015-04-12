@@ -43,6 +43,24 @@ void HttpTemplate::SetTemplateRootDir(char* rootdir)
 	sprintf_s(m_RootDir, DATA_BUFSIZE, "%s", rootdir);
 }
 
+std::string HttpTemplate::GetTemplateFilepath(char* code)
+{
+	for (TEMPLATEITERATOR i = m_TemplateList.begin(); i != m_TemplateList.end(); ++i)
+	{
+		LPTEMPLATEITEM item = *i;
+		if (strcmp(item->code, code) == 0)
+		{
+			std::string str;
+			str.assign(item->filename);
+			//std::wstring wstr;
+			//wstr.assign(str.begin(), str.end());
+			return str;
+		}
+	}
+	return NULL;
+}
+
+
 std::string HttpTemplate::GetTemplateContent(char* code)
 {
 	for (TEMPLATEITERATOR i = m_TemplateList.begin(); i != m_TemplateList.end(); ++i)

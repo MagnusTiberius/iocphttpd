@@ -29,6 +29,8 @@ public:
 		OVERLAPPED Overlapped;
 		WSABUF DataBuf;
 		CHAR Buffer[DATA_BUFSIZE];
+		CHAR *LPBuffer;
+		vector<byte> byteBuffer;
 		DWORD BytesSEND;
 		DWORD BytesRECV;
 	} PER_IO_OPERATION_DATA, *LPPER_IO_OPERATION_DATA;
@@ -46,7 +48,7 @@ public:
 	virtual void EvalGet(HttpRequest *httpRequest, HttpResponse *httpResponse);
 	virtual void EvalPost(HttpRequest *httpRequest, HttpResponse *httpResponse);
 	virtual void Dispatch(HttpRequest *httpRequest, HttpResponse *httpResponse);
-
+	virtual void EvalStatic(HttpRequest *httpRequest, HttpResponse *httpResponse);
 	virtual void UrlNotFound(HttpRequest *httpRequest, HttpResponse *httpResponse);
 
 private:

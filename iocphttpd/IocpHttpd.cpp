@@ -6,7 +6,7 @@ IocpHttpd::IocpHttpd()
 	AddRoute("/", IocpHttpd::HandleHome);
 	AddRoute("/test", IocpHttpd::HandleTest);
 	AddRoute("/init", IocpHttpd::HandleInit);
-
+	SetStatic("\/static\/*","c:\\www\\static\\");
 }
 
 

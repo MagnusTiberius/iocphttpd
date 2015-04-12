@@ -1,7 +1,8 @@
 #pragma once
 #include "HttpHeader.h"
 #include "HttpTemplate.h"
-
+#include <fstream>
+#include "Shlwapi.h"
 
 class IOCPHTTPL_API HttpResponse : public HttpTemplate
 {
@@ -15,7 +16,13 @@ public:
 
 	void Write(const char* str);
 	void WriteTemplate(char* code);
-	void GetResponse(char* szResponse, DWORD dwSize);
+	void GetResponse(char* szResponse, vector<byte> *pvb, DWORD dwSize);
+	void SetStaticFileName(string path);
+	std::vector<byte> GetStaticContent(const char *path);
+	void WriteStatic(const char *path);
+	void SetContentTypeFromExtension();
+	PTSTR  GetPathExtension(const char* pszPath);
+	PTSTR  GetPathExtension(PTSTR pszPath);
 
 private:
 	HttpHeader httpHeader;
@@ -24,5 +31,11 @@ private:
 	char* m_content_lenght[DATA_BUFSIZE];
 	char* m_date[DATA_BUFSIZE];
 	std::string m_szResponse;
+	std::string m_path;
+	std::vector<byte> m_sbResponse;
+
+	std::wstring pathExtension;
+	std::wstring contenType;
+	const char *szPath;
 };
 

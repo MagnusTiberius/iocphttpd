@@ -198,6 +198,13 @@ void SocketCompletionPortServer::Dispatch(HttpRequest *httpRequest, HttpResponse
 		EvalPost(httpRequest, httpResponse);
 	}
 
+	if (IsStatic(httpRequest->GetUrl()))
+	{
+		printf("Static Directory\n");
+		EvalStatic(httpRequest, httpResponse);
+		return;
+	}
+
 	LPSTATICFUNC lpFunc = (LPSTATICFUNC)GetRoute(httpRequest->GetUrl());
 	if (lpFunc != NULL)
 	{
@@ -208,6 +215,16 @@ void SocketCompletionPortServer::Dispatch(HttpRequest *httpRequest, HttpResponse
 		UrlNotFound(httpRequest, httpResponse);
 	}
 }
+
+void SocketCompletionPortServer::EvalStatic(HttpRequest *httpRequest, HttpResponse *httpResponse)
+{
+	char *str = httpRequest->GetUrl();
+	string s = GetFullPath(str);
+	printf("Static %s\n", s.c_str());
+	httpResponse->SetStaticFileName(s);
+	httpResponse->WriteStatic(s.c_str());
+}
+
 
 void SocketCompletionPortServer::UrlNotFound(HttpRequest *httpRequest, HttpResponse *httpResponse)
 {
@@ -265,10 +282,28 @@ DWORD WINAPI SocketCompletionPortServer::ServerWorkerThread(LPVOID lpObject)
 			ZeroMemory(PerIoData->Buffer, DATA_BUFSIZE);
 			ZeroMemory(&(PerIoData->Overlapped), sizeof(OVERLAPPED));
 			PerIoData->DataBuf.buf = PerIoData->Buffer;
-			httpResponse.GetResponse(PerIoData->Buffer, DATA_BUFSIZE);
+			httpResponse.GetResponse(PerIoData->Buffer, &PerIoData->byteBuffer, DATA_BUFSIZE);
 			httpResponse.Write("");
 			auto n = strlen(PerIoData->Buffer);
 			PerIoData->DataBuf.len = (ULONG)n;
+			if (PerIoData->byteBuffer.size() > 0)
+			{
+				if (false)
+				{
+					std::string str(reinterpret_cast<const char *>(&PerIoData->byteBuffer[0]), PerIoData->byteBuffer.size());
+					vector<char> vc;
+					vc.assign(str.begin(), str.end());
+					PerIoData->DataBuf.buf = &vc[0];
+					PerIoData->DataBuf.len = PerIoData->byteBuffer.size();
+				}
+				else
+				{
+					std::string str(reinterpret_cast<const char *>(&PerIoData->byteBuffer[0]), PerIoData->byteBuffer.size());
+					PerIoData->LPBuffer = _strdup(str.c_str());
+					PerIoData->DataBuf.buf = PerIoData->LPBuffer;
+					PerIoData->DataBuf.len = str.size();
+				}
+			}
 			PerIoData->BytesRECV = 0;
 			int res = WSASend(PerHandleData->Socket, &(PerIoData->DataBuf), 1, &SendBytes, 0, &(PerIoData->Overlapped), NULL);
 			if (res == SOCKET_ERROR)
