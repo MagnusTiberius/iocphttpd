@@ -288,13 +288,14 @@ DWORD WINAPI SocketCompletionPortServer::ServerWorkerThread(LPVOID lpObject)
 			PerIoData->DataBuf.len = (ULONG)n;
 			if (PerIoData->byteBuffer.size() > 0)
 			{
-				if (false)
+				if (true)
 				{
-					std::string str(reinterpret_cast<const char *>(&PerIoData->byteBuffer[0]), PerIoData->byteBuffer.size());
-					vector<char> vc;
-					vc.assign(str.begin(), str.end());
-					PerIoData->DataBuf.buf = &vc[0];
-					PerIoData->DataBuf.len = PerIoData->byteBuffer.size();
+					size_t bufsiz = PerIoData->byteBuffer.size() * sizeof(PerIoData->byteBuffer[0]);
+					PerIoData->LPBuffer = (CHAR*)malloc(bufsiz);
+					memset(PerIoData->LPBuffer, '\0', bufsiz);
+					memcpy(PerIoData->LPBuffer, &PerIoData->byteBuffer[0], bufsiz);
+					PerIoData->DataBuf.buf = PerIoData->LPBuffer;
+					PerIoData->DataBuf.len = bufsiz;
 				}
 				else
 				{
