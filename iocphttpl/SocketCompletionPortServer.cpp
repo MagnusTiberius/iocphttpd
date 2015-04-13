@@ -152,6 +152,7 @@ int SocketCompletionPortServer::Start()
 		PerIoData->BytesRECV = 0;
 		PerIoData->DataBuf.len = DATA_BUFSIZE;
 		PerIoData->DataBuf.buf = PerIoData->Buffer;
+		PerIoData->LPBuffer = NULL;
 
 		Flags = 0;
 		DWORD dwRes = WSARecv(Accept, &(PerIoData->DataBuf), 1, &PerIoData->BytesRECV, &Flags, &(PerIoData->Overlapped), NULL);
@@ -288,22 +289,17 @@ DWORD WINAPI SocketCompletionPortServer::ServerWorkerThread(LPVOID lpObject)
 			PerIoData->DataBuf.len = (ULONG)n;
 			if (PerIoData->byteBuffer.size() > 0)
 			{
-				if (true)
+				size_t bufsiz = PerIoData->byteBuffer.size() * sizeof(PerIoData->byteBuffer[0]); 
+				if (PerIoData->LPBuffer != NULL)
 				{
-					size_t bufsiz = PerIoData->byteBuffer.size() * sizeof(PerIoData->byteBuffer[0]);
-					PerIoData->LPBuffer = (CHAR*)malloc(bufsiz);
-					memset(PerIoData->LPBuffer, '\0', bufsiz);
-					memcpy(PerIoData->LPBuffer, &PerIoData->byteBuffer[0], bufsiz);
-					PerIoData->DataBuf.buf = PerIoData->LPBuffer;
-					PerIoData->DataBuf.len = bufsiz;
+					free(PerIoData->LPBuffer);
+					PerIoData->LPBuffer = NULL;
 				}
-				else
-				{
-					std::string str(reinterpret_cast<const char *>(&PerIoData->byteBuffer[0]), PerIoData->byteBuffer.size());
-					PerIoData->LPBuffer = _strdup(str.c_str());
-					PerIoData->DataBuf.buf = PerIoData->LPBuffer;
-					PerIoData->DataBuf.len = str.size();
-				}
+				PerIoData->LPBuffer = (CHAR*)malloc(bufsiz);
+				memset(PerIoData->LPBuffer, '\0', bufsiz);
+				memcpy(PerIoData->LPBuffer, &PerIoData->byteBuffer[0], bufsiz);
+				PerIoData->DataBuf.buf = PerIoData->LPBuffer;
+				PerIoData->DataBuf.len = bufsiz;
 			}
 			PerIoData->BytesRECV = 0;
 			int res = WSASend(PerHandleData->Socket, &(PerIoData->DataBuf), 1, &SendBytes, 0, &(PerIoData->Overlapped), NULL);
@@ -311,21 +307,6 @@ DWORD WINAPI SocketCompletionPortServer::ServerWorkerThread(LPVOID lpObject)
 			{
 				fprintf(stderr, "%d::ServerWorkerThread--WSASend() failed with error %d\n", dwThreadId, WSAGetLastError());
 			}
-			/*
-			Flags = 0;
-			ZeroMemory(&(PerIoData->Overlapped), sizeof(OVERLAPPED));
-			ZeroMemory(PerIoData->Buffer, DATA_BUFSIZE);
-			PerIoData->DataBuf.len = DATA_BUFSIZE;
-			PerIoData->DataBuf.buf = PerIoData->Buffer;
-
-			DWORD res2 = WSARecv(PerHandleData->Socket, &(PerIoData->DataBuf), 1, &RecvBytes, &Flags,
-				&(PerIoData->Overlapped), NULL);
-
-			if (res2 == SOCKET_ERROR)
-			{
-				printf("ServerWorkerThread--WSARecv() failed with error %d\n", WSAGetLastError());
-			}
-			*/
 		}
 
 	}
