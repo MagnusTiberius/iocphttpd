@@ -21,3 +21,5 @@ TODO:
 JOURNAL:
 
 4/10/15 - Configured win flex bison to generate output that could support multiple .y and .l files in one directory.
+
+4/13/15 - Still figuring out how to copy a byte array to WSABUF.
