@@ -70,6 +70,14 @@ void HttpResponse::SetContentTypeFromExtension()
 	{
 		contenType.assign(L"image/png");
 	}
+	if (wstr.compare(L".css") == 0)
+	{
+		contenType.assign(L"text/css");
+	}
+	if (wstr.compare(L".js") == 0)
+	{
+		contenType.assign(L"text/javascript");
+	}
 }
 
 std::vector<byte> HttpResponse::GetStaticContent(const char *path)
