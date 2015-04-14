@@ -8,7 +8,7 @@ Repository:
 https://github.com/MagnusTiberius/iocphttpd
 
 Continuous Integration:
-https://ci.appveyor.com/api/projects/status/lpsxd8dcbxapj3b5
+https://ci.appveyor.com/project/MagnusTiberius/iocphttpd
 
 Dependencies:
 
