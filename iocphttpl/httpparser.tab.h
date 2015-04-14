@@ -93,7 +93,7 @@ extern int hpdebug;
 typedef union HPSTYPE
 {
 /* Line 2058 of yacc.c  */
-#line 19 "httpparser.y"
+#line 20 "httpparser.y"
 
   int		int_val;
   char*		identifier_tok;

@@ -83,8 +83,8 @@
 //#define yychar jpchar
 //#define yynerrs jpnerrs
 
-#define YYPARSE_PARAM jpparm
-#define YYLEX_PARAM jpparm
+//#define YYPARSE_PARAM jpparm
+//#define YYLEX_PARAM jpparm
 
 
 
@@ -92,12 +92,13 @@ int jperror(char *s);
 int jperror(string s);
 
 typedef void* yyscan_t;
-int jplex (YYSTYPE * yylval_param ,yyscan_t yyscanner);
+//int jplex (YYSTYPE * yylval_param ,yyscan_t yyscanner);
+int jplex (YYSTYPE * yylval_param);
 
 
 
 /* Line 371 of yacc.c  */
-#line 101 "jsonp.tab.cpp"
+#line 102 "jsonp.tab.cpp"
 
 # ifndef YY_NULL
 #  if defined __cplusplus && 201103L <= __cplusplus
@@ -168,14 +169,14 @@ extern int jpdebug;
 typedef union JPSTYPE
 {
 /* Line 387 of yacc.c  */
-#line 28 "jsonp.y"
+#line 29 "jsonp.y"
 
 	int		int_val;
 	char*	str_val;
 
 
 /* Line 387 of yacc.c  */
-#line 179 "jsonp.tab.cpp"
+#line 180 "jsonp.tab.cpp"
 } JPSTYPE;
 # define JPSTYPE_IS_TRIVIAL 1
 # define jpstype JPSTYPE /* obsolescent; will be withdrawn */
@@ -202,7 +203,7 @@ int jpparse ();
 /* Copy the second part of user declarations.  */
 
 /* Line 390 of yacc.c  */
-#line 206 "jsonp.tab.cpp"
+#line 207 "jsonp.tab.cpp"
 
 #ifdef short
 # undef short
@@ -500,10 +501,10 @@ static const yytype_int8 yyrhs[] =
 /* YYRLINE[YYN] -- source line where rule number YYN was defined.  */
 static const yytype_uint8 yyrline[] =
 {
-       0,    44,    44,    45,    46,    49,    50,    51,    54,    55,
-      58,    61,    62,    65,    68,    69,    73,    76,    77,    78,
-      79,    80,    81,    82,    83,    84,    87,    88,    89,    90,
-      91
+       0,    45,    45,    46,    47,    50,    51,    52,    55,    56,
+      59,    62,    63,    66,    69,    70,    74,    77,    78,    79,
+      80,    81,    82,    83,    84,    85,    88,    89,    90,    91,
+      92
 };
 #endif
 
@@ -1437,85 +1438,85 @@ yyreduce:
     {
         case 3:
 /* Line 1792 of yacc.c  */
-#line 45 "jsonp.y"
+#line 46 "jsonp.y"
     { cout << "Result: " << (yyvsp[(1) - (1)].int_val) << endl; }
     break;
 
   case 5:
 /* Line 1792 of yacc.c  */
-#line 49 "jsonp.y"
+#line 50 "jsonp.y"
     { (yyval.int_val) = (yyvsp[(1) - (1)].int_val); }
     break;
 
   case 6:
 /* Line 1792 of yacc.c  */
-#line 50 "jsonp.y"
+#line 51 "jsonp.y"
     { (yyval.int_val) = (yyvsp[(1) - (3)].int_val) + (yyvsp[(3) - (3)].int_val); }
     break;
 
   case 7:
 /* Line 1792 of yacc.c  */
-#line 51 "jsonp.y"
+#line 52 "jsonp.y"
     { (yyval.int_val) = (yyvsp[(1) - (3)].int_val) * (yyvsp[(3) - (3)].int_val); }
     break;
 
   case 10:
 /* Line 1792 of yacc.c  */
-#line 58 "jsonp.y"
+#line 59 "jsonp.y"
     { printf(" OPENCURLY members CLOSECURLY\n"); }
     break;
 
   case 17:
 /* Line 1792 of yacc.c  */
-#line 76 "jsonp.y"
+#line 77 "jsonp.y"
     { printf("STRINGVAL\n"); }
     break;
 
   case 18:
 /* Line 1792 of yacc.c  */
-#line 77 "jsonp.y"
+#line 78 "jsonp.y"
     { printf("anumber\n"); }
     break;
 
   case 19:
 /* Line 1792 of yacc.c  */
-#line 78 "jsonp.y"
+#line 79 "jsonp.y"
     { printf("jsonobject\n"); }
     break;
 
   case 26:
 /* Line 1792 of yacc.c  */
-#line 87 "jsonp.y"
+#line 88 "jsonp.y"
     { printf("INTNUM\n"); }
     break;
 
   case 27:
 /* Line 1792 of yacc.c  */
-#line 88 "jsonp.y"
+#line 89 "jsonp.y"
     { printf("FRACTNUM\n"); }
     break;
 
   case 28:
 /* Line 1792 of yacc.c  */
-#line 89 "jsonp.y"
+#line 90 "jsonp.y"
     { printf("anumber  FRACTNUM\n"); }
     break;
 
   case 29:
 /* Line 1792 of yacc.c  */
-#line 90 "jsonp.y"
+#line 91 "jsonp.y"
     { printf("anumber  EXPONENT\n"); }
     break;
 
   case 30:
 /* Line 1792 of yacc.c  */
-#line 91 "jsonp.y"
+#line 92 "jsonp.y"
     { printf("anumber  INTNUM\n"); }
     break;
 
 
 /* Line 1792 of yacc.c  */
-#line 1519 "jsonp.tab.cpp"
+#line 1520 "jsonp.tab.cpp"
       default: break;
     }
   /* User semantic actions sometimes alter yychar, and that requires
@@ -1747,7 +1748,7 @@ yyreturn:
 
 
 /* Line 2055 of yacc.c  */
-#line 94 "jsonp.y"
+#line 95 "jsonp.y"
 
 int jperror(string s)
 {
