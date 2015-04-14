@@ -6,14 +6,15 @@
 #include "httpparser.tab.h"
 
 //#define YYPARSE_PARAM hpparm
-//#define YYLEX_PARAM hpparm
+#define YYLEX_PARAM &hpparm
 
 
 int hperror(string s);
 int hperror(char *s);
+
 typedef void* yyscan_t;
-//int hplex (YYSTYPE * yylval_param ,yyscan_t yyscanner);
-int hplex (YYSTYPE * yylval_param );
+extern int hplex (YYSTYPE * yylval_param ,yyscan_t yyscanner);
+//extern int hplex (YYSTYPE * yylval_param );
 
 %}
 

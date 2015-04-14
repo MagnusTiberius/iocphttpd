@@ -11,17 +11,20 @@
 //#define yychar jpchar
 //#define yynerrs jpnerrs
 
+typedef void* yyscan_t;
+
+
 //#define YYPARSE_PARAM jpparm
-//#define YYLEX_PARAM jpparm
+#define YYLEX_PARAM &jpparm
 
 
 
 int jperror(char *s);
 int jperror(string s);
 
-typedef void* yyscan_t;
-//int jplex (YYSTYPE * yylval_param ,yyscan_t yyscanner);
-int jplex (YYSTYPE * yylval_param);
+
+extern int jplex (YYSTYPE * yylval_param ,yyscan_t yyscanner);
+//extern int jplex (YYSTYPE * yylval_param);
 
 
 %}
