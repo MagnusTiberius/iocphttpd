@@ -5,6 +5,10 @@
 #include "httpparserast.h"
 #include "httpparser.tab.h"
 
+void* hpscanner;
+#define hpparm hpscanner
+
+
 //#define YYPARSE_PARAM hpparm
 #define YYLEX_PARAM &hpparm
 
@@ -100,12 +104,11 @@ property_name   : CACHECONTROL     {  $$ = $1; }
 
 int hperror(string s)
 {
-  extern int hplineno;	// defined and maintained in lex.c
-  extern char *hptext;	// defined and maintained in lex.c
+  //extern int hplineno;	// defined and maintained in lex.c
+  //extern char *hptext;	// defined and maintained in lex.c
   
-  cerr << "PARSER sERROR: " << s << " at symbol \"" << hptext;
-  cerr << "\" on line " << hplineno << endl;
-  //exit(1);
+  //cerr << "PARSER sERROR: " << s << " at symbol \"" << hptext;
+  //cerr << "\" on line " << hplineno << endl;
   return 1;
 }
 

@@ -146,7 +146,8 @@ closepar		\)
 
 %%
  
-int yywrap() {
+int yywrap(yyscan_t scanner) 
+{
 	return 1;
 }
 

@@ -11,8 +11,9 @@
 //#define yychar jpchar
 //#define yynerrs jpnerrs
 
-typedef void* yyscan_t;
 
+void* jpscanner;
+#define jpparm jpscanner
 
 //#define YYPARSE_PARAM jpparm
 #define YYLEX_PARAM &jpparm
@@ -22,7 +23,7 @@ typedef void* yyscan_t;
 int jperror(char *s);
 int jperror(string s);
 
-
+typedef void* yyscan_t;
 extern int jplex (YYSTYPE * yylval_param ,yyscan_t yyscanner);
 //extern int jplex (YYSTYPE * yylval_param);
 
@@ -98,12 +99,11 @@ anumber		: INTNUM				{ printf("INTNUM\n"); }
 %%
 int jperror(string s)
 {
-	extern int jplineno;	// defined and maintained in lex.c
-	extern char *jptext;	// defined and maintained in lex.c
+	//extern int jplineno;	// defined and maintained in lex.c
+	//extern char *jptext;	// defined and maintained in lex.c
 
-	cerr << "ERROR: " << s << " at symbol \"" << jptext;
-	cerr << "\" on line " << jplineno << endl;
-	//exit(1);
+	//cerr << "ERROR: " << s << " at symbol \"" << jptext;
+	//cerr << "\" on line " << jplineno << endl;
 	return 0;
 }
 int jperror(char *s)
