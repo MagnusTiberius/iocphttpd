@@ -4,14 +4,17 @@
 #include "stdafx.h"
 #include "httpparser.tab.h"
 
+#define YYSTYPE HPSTYPE
+
 //#define yystype hpstype
 //#define YYSTYPE PARSERLIBSTYPE
-
-
+//
+//
 //int yyerror(char *s);
 //int yylineno = 1;
 %}
-
+%option reentrant
+%option bison-bridge
 %s ASTATE BSTATE
 
 digit			[0-9]
@@ -20,7 +23,7 @@ methodaction    (GET|POST)
 identifier		[a-zA-Z]+[0-9]+[a-zA-Z0-9\-]
 urlpath         \/[a-zA-Z]+[\/\_\-a-zA-Z.]+
 methodver		HTTP\/[0-9].[0-9]
-identifier2		([a-zA-z]+|[a-zA-z]+[a-zA-z\-]+)
+identifier2		([a-zA-z]+|[a-zA-z\-]+[a-zA-z\-]+)
 equal			\=
 question        \?
 ampersand       \&
@@ -35,93 +38,101 @@ closepar		\)
 
 %%
 
-{digits}			{ hplval.identifier_tok = _strdup(yytext); printf("Lexer::digits:=>%s\n",yytext); return DIGITS; }
-"+"					{ hplval.identifier_tok = _strdup(yytext); return PLUS; }
-"*"					{ hplval.identifier_tok = _strdup(yytext); return MULT; }
-{identifier}		{ hplval.identifier_tok = _strdup(yytext); printf("Lexer::identifier\n"); return IDENTIFIER; }
-{digit}				{ hplval.identifier_tok = _strdup(yytext); printf("Lexer::digit\n"); return DIGIT; }
+{digits}			{	yyg->yylval_r->identifier_tok = _strdup(yytext); 
+						//printf("Lexer::digits:=>%s\n",yytext); 
+						return DIGITS; }
+"+"					{	yyg->yylval_r->identifier_tok = _strdup(yytext); 
+						return PLUS; }
+"*"					{	yyg->yylval_r->identifier_tok = _strdup(yytext); 
+						return MULT; }
+{identifier}		{	yyg->yylval_r->identifier_tok = _strdup(yytext); 
+						//printf("Lexer::identifier\n"); 
+						return IDENTIFIER; }
+{digit}				{	yyg->yylval_r->identifier_tok = _strdup(yytext); 
+						//printf("Lexer::digit\n"); 
+						return DIGIT; }
 
 {methodaction}		{	BEGIN ASTATE; 
-						hplval.identifier_tok = _strdup(yytext); 
-						printf("Lexer::methodaction:%s\n",yytext); 
+						yyg->yylval_r->identifier_tok = _strdup(yytext); 
+						//printf("Lexer::methodaction:%s\n",yytext); 
 						return METHODACTION; 
 					}
 
-<ASTATE>{urlpath}	{ hplval.identifier_tok = _strdup(yytext); 
-					  printf("Lexer::urlpath:%s\n",yytext); 
+<ASTATE>{urlpath}	{ yyg->yylval_r->identifier_tok = _strdup(yytext); 
+					  //printf("Lexer::urlpath:%s\n",yytext); 
 					  return URLPATH; 
 					}
-<ASTATE>{equal}	{ hplval.identifier_tok = _strdup(yytext); 
-					  printf("Lexer::EQUAL:%s\n",yytext); 
+<ASTATE>{equal}	{ yyg->yylval_r->identifier_tok = _strdup(yytext); 
+					  //printf("Lexer::EQUAL:%s\n",yytext); 
 					  return EQUAL; 
 					}
-<ASTATE>{question}	{ hplval.identifier_tok = _strdup(yytext); 
-					  printf("Lexer::question:%s\n",yytext); 
+<ASTATE>{question}	{ yyg->yylval_r->identifier_tok = _strdup(yytext); 
+					  //printf("Lexer::question:%s\n",yytext); 
 					  return QUESTION; 
 					}
 
-<ASTATE>{ampersand}	{ hplval.identifier_tok = _strdup(yytext); 
-					  printf("Lexer::ampersand:%s\n",yytext); 
+<ASTATE>{ampersand}	{ yyg->yylval_r->identifier_tok = _strdup(yytext); 
+					  //printf("Lexer::ampersand:%s\n",yytext); 
 					  return AMPERSAND; 
 					}
 
 
-<ASTATE>{digits}	{ hplval.int_val = atoi(yytext); return DIGITS; }
+<ASTATE>{digits}	{ yyg->yylval_r->int_val = atoi(yytext); return DIGITS; }
 
-<ASTATE>{identifier2}	{ hplval.identifier_tok = _strdup(yytext); 
-					  printf("Lexer::identifier2:%s\n",yytext); 
+<ASTATE>{identifier2}	{ yyg->yylval_r->identifier_tok = _strdup(yytext); 
+					  //printf("Lexer::identifier2:%s\n",yytext); 
 					  return ID2; 
 					}
 
 
 <ASTATE>{methodver}	{ BEGIN 0; 
-					  hplval.identifier_tok = _strdup(yytext); 
-					  printf("Lexer::methodver:=%s\n",yytext); 
+					  yyg->yylval_r->identifier_tok = _strdup(yytext); 
+					 //printf("Lexer::methodver:=%s\n",yytext); 
 					  return METHODVER; 
 					}
 
-{identifier2}		{ hplval.identifier_tok = _strdup(yytext); 
-					  printf("Lexer::identifier2:=%s\n",yytext); 
+{identifier2}		{ yyg->yylval_r->identifier_tok = _strdup(yytext); 
+					  //printf("Lexer::identifier2:=%s\n",yytext); 
 					  return ID2; 
 					}
 
-{propname}			{ hplval.identifier_tok = _strdup(yytext); 
-					  printf("Lexer::PROPNAME:=%s\n",yytext); 
+{propname}			{ yyg->yylval_r->identifier_tok = _strdup(yytext); 
+					  //printf("Lexer::PROPNAME:=%s\n",yytext); 
 					  return PROPNAME; 
 					}
 
-{comma}				{ hplval.identifier_tok = _strdup(yytext); 
-					  printf("Lexer::COMMA:=%s\n",yytext); 
+{comma}				{ yyg->yylval_r->identifier_tok = _strdup(yytext); 
+					  //printf("Lexer::COMMA:=%s\n",yytext); 
 					  return COMMA; 
 					}
 
-{semicol}			{ hplval.identifier_tok = _strdup(yytext); 
-					  printf("Lexer::SEMICOL:=%s\n",yytext); 
+{semicol}			{ yyg->yylval_r->identifier_tok = _strdup(yytext); 
+					  //printf("Lexer::SEMICOL:=%s\n",yytext); 
 					  return SEMICOL; 
 					}
 
-{colon}				{ hplval.identifier_tok = _strdup(yytext); 
-					  printf("Lexer::COLON:=%s\n",yytext); 
+{colon}				{ yyg->yylval_r->identifier_tok = _strdup(yytext); 
+					  //printf("Lexer::COLON:=%s\n",yytext); 
 					  return COLON; 
 					}
 
-{fslash}			{ hplval.identifier_tok = _strdup(yytext); 
-					  printf("Lexer::FSLASH:=%s\n",yytext); 
+{fslash}			{ yyg->yylval_r->identifier_tok = _strdup(yytext); 
+					  //printf("Lexer::FSLASH:=%s\n",yytext); 
 					  return FSLASH; 
 					}
 
-{period}			{ hplval.identifier_tok = _strdup(yytext); 
-					  printf("Lexer::PERIOD:=%s\n",yytext); 
+{period}			{ yyg->yylval_r->identifier_tok = _strdup(yytext); 
+					  //printf("Lexer::PERIOD:=%s\n",yytext); 
 					  return PERIOD; 
 					}
 
-{openpar}			{ hplval.identifier_tok = _strdup(yytext); 
-					  printf("Lexer::OPENPAR:=%s\n",yytext); 
+{openpar}			{ yyg->yylval_r->identifier_tok = _strdup(yytext); 
+					  //printf("Lexer::OPENPAR:=%s\n",yytext); 
 					  return OPENPAR; 
 					}
 
-{closepar}			{ hplval.identifier_tok = _strdup(yytext); 
-					  printf("Lexer::CLOSEPAR:=%s\n",yytext); 
+{closepar}			{ yyg->yylval_r->identifier_tok = _strdup(yytext); 
+					  //printf("Lexer::CLOSEPAR:=%s\n",yytext); 
 					  return CLOSEPAR; 
 					}
 
@@ -129,9 +140,9 @@ closepar		\)
 
 
 [ \t]*		{}
-[\n]		{ yylineno++; hplval.identifier_tok = _strdup(yytext);  printf("Lexer::newline:\n"); return NEWLINE;	}
+[\n]		{ yylineno++; yyg->yylval_r->identifier_tok = _strdup(yytext);  /*printf("Lexer::newline:\n");*/ return NEWLINE;	}
 
-.			{ hplval.int_val = atoi(yytext); 	}
+.			{ yyg->yylval_r->int_val = atoi(yytext); 	}
 
 %%
  

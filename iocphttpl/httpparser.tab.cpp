@@ -50,7 +50,7 @@
 #define YYSKELETON_NAME "yacc.c"
 
 /* Pure parsers.  */
-#define YYPURE 0
+#define YYPURE 1
 
 /* Push parsers.  */
 #define YYPUSH 0
@@ -75,29 +75,20 @@
 
 #include "stdafx.h"
 #include "httpparserast.h"
+#include "httpparser.tab.h"
 
-#define yyerror hperror
-#define yylex hplex
-
-//#define yyparse hpparse
-//#define yylval hplval
-//#define yychar hpchar
-//#define yynerrs hpnerrs
-//#define yystype hpstype
-//#define YYSTYPE PARSERLIBSTYPE
+#define YYPARSE_PARAM hpparm
+#define YYLEX_PARAM hpparm
 
 
 int hperror(string s);
 int hperror(char *s);
-int hplex(void);
-
-//int yyerror(char *s);
-//int yyerror(string s);
-//int yylex(void);
+typedef void* yyscan_t;
+int hplex (YYSTYPE * yylval_param ,yyscan_t yyscanner);
 
 
 /* Line 371 of yacc.c  */
-#line 101 "httpparser.tab.cpp"
+#line 92 "httpparser.tab.cpp"
 
 # ifndef YY_NULL
 #  if defined __cplusplus && 201103L <= __cplusplus
@@ -180,21 +171,20 @@ extern int hpdebug;
 typedef union HPSTYPE
 {
 /* Line 387 of yacc.c  */
-#line 28 "httpparser.y"
+#line 19 "httpparser.y"
 
   int		int_val;
   char*		identifier_tok;
 
 
 /* Line 387 of yacc.c  */
-#line 191 "httpparser.tab.cpp"
+#line 182 "httpparser.tab.cpp"
 } HPSTYPE;
 # define HPSTYPE_IS_TRIVIAL 1
 # define hpstype HPSTYPE /* obsolescent; will be withdrawn */
 # define HPSTYPE_IS_DECLARED 1
 #endif
 
-extern HPSTYPE hplval;
 
 #ifdef YYPARSE_PARAM
 #if defined __STDC__ || defined __cplusplus
@@ -215,7 +205,7 @@ int hpparse ();
 /* Copy the second part of user declarations.  */
 
 /* Line 390 of yacc.c  */
-#line 219 "httpparser.tab.cpp"
+#line 209 "httpparser.tab.cpp"
 
 #ifdef short
 # undef short
@@ -516,10 +506,10 @@ static const yytype_int8 yyrhs[] =
 /* YYRLINE[YYN] -- source line where rule number YYN was defined.  */
 static const yytype_uint8 yyrline[] =
 {
-       0,    49,    49,    50,    53,    54,    55,    59,    60,    61,
-      62,    65,    66,    69,    70,    71,    72,    73,    77,    78,
-      79,    80,    81,    82,    83,    87,    88,    89,    90,    91,
-      92,    93,    94,    95,    98,    99,   100,   101
+       0,    40,    40,    41,    44,    45,    46,    50,    51,    52,
+      53,    56,    57,    60,    61,    62,    63,    64,    68,    69,
+      70,    71,    72,    73,    74,    78,    79,    80,    81,    82,
+      83,    84,    85,    86,    89,    90,    91,    92
 };
 #endif
 
@@ -703,9 +693,9 @@ while (YYID (0))
 
 /* YYLEX -- calling `yylex' with the right arguments.  */
 #ifdef YYLEX_PARAM
-# define YYLEX yylex (YYLEX_PARAM)
+# define YYLEX yylex (&yylval, YYLEX_PARAM)
 #else
-# define YYLEX yylex ()
+# define YYLEX yylex (&yylval)
 #endif
 
 /* Enable debugging if requested.  */
@@ -1166,25 +1156,6 @@ yydestruct (yymsg, yytype, yyvaluep)
 
 
 
-/* The lookahead symbol.  */
-int yychar;
-
-
-#ifndef YY_IGNORE_MAYBE_UNINITIALIZED_BEGIN
-# define YY_IGNORE_MAYBE_UNINITIALIZED_BEGIN
-# define YY_IGNORE_MAYBE_UNINITIALIZED_END
-#endif
-#ifndef YY_INITIAL_VALUE
-# define YY_INITIAL_VALUE(Value) /* Nothing. */
-#endif
-
-/* The semantic value of the lookahead symbol.  */
-YYSTYPE yylval YY_INITIAL_VALUE(yyval_default);
-
-/* Number of syntax errors so far.  */
-int yynerrs;
-
-
 /*----------.
 | yyparse.  |
 `----------*/
@@ -1211,6 +1182,38 @@ yyparse ()
 #endif
 #endif
 {
+/* The lookahead symbol.  */
+int yychar;
+
+
+#if defined __GNUC__ && 407 <= __GNUC__ * 100 + __GNUC_MINOR__
+/* Suppress an incorrect diagnostic about yylval being uninitialized.  */
+# define YY_IGNORE_MAYBE_UNINITIALIZED_BEGIN \
+    _Pragma ("GCC diagnostic push") \
+    _Pragma ("GCC diagnostic ignored \"-Wuninitialized\"")\
+    _Pragma ("GCC diagnostic ignored \"-Wmaybe-uninitialized\"")
+# define YY_IGNORE_MAYBE_UNINITIALIZED_END \
+    _Pragma ("GCC diagnostic pop")
+#else
+/* Default value used for initialization, for pacifying older GCCs
+   or non-GCC compilers.  */
+static YYSTYPE yyval_default;
+# define YY_INITIAL_VALUE(Value) = Value
+#endif
+#ifndef YY_IGNORE_MAYBE_UNINITIALIZED_BEGIN
+# define YY_IGNORE_MAYBE_UNINITIALIZED_BEGIN
+# define YY_IGNORE_MAYBE_UNINITIALIZED_END
+#endif
+#ifndef YY_INITIAL_VALUE
+# define YY_INITIAL_VALUE(Value) /* Nothing. */
+#endif
+
+/* The semantic value of the lookahead symbol.  */
+YYSTYPE yylval YY_INITIAL_VALUE(yyval_default);
+
+    /* Number of syntax errors so far.  */
+    int yynerrs;
+
     int yystate;
     /* Number of tokens to shift before error messages enabled.  */
     int yyerrstatus;
@@ -1445,199 +1448,199 @@ yyreduce:
     {
         case 4:
 /* Line 1792 of yacc.c  */
-#line 53 "httpparser.y"
-    { printf("line1 seen\n"); }
+#line 44 "httpparser.y"
+    { /*printf("line1 seen\n");*/ }
     break;
 
   case 5:
 /* Line 1792 of yacc.c  */
-#line 54 "httpparser.y"
-    { printf("property_item seen\n"); }
+#line 45 "httpparser.y"
+    { /*printf("property_item seen\n");*/ }
     break;
 
   case 6:
 /* Line 1792 of yacc.c  */
-#line 55 "httpparser.y"
-    { printf("content should follow after this marker.\n"); }
+#line 46 "httpparser.y"
+    { /*printf("content should follow after this marker.\n");*/ }
     break;
 
   case 7:
 /* Line 1792 of yacc.c  */
-#line 59 "httpparser.y"
+#line 50 "httpparser.y"
     { SetMethodAction((yyvsp[(1) - (1)].identifier_tok), &g_Httpdoc); }
     break;
 
   case 8:
 /* Line 1792 of yacc.c  */
-#line 60 "httpparser.y"
+#line 51 "httpparser.y"
     { SetUrl((yyvsp[(2) - (2)].identifier_tok), &g_Httpdoc); }
     break;
 
   case 9:
 /* Line 1792 of yacc.c  */
-#line 61 "httpparser.y"
+#line 52 "httpparser.y"
     { printf("urlparams whole seen\n"); }
     break;
 
   case 10:
 /* Line 1792 of yacc.c  */
-#line 62 "httpparser.y"
+#line 53 "httpparser.y"
     { SetMethodVersion((yyvsp[(2) - (2)].identifier_tok), &g_Httpdoc); }
     break;
 
   case 13:
 /* Line 1792 of yacc.c  */
-#line 69 "httpparser.y"
+#line 60 "httpparser.y"
     { printf("urlparams 1 seen\n"); }
     break;
 
   case 14:
 /* Line 1792 of yacc.c  */
-#line 70 "httpparser.y"
+#line 61 "httpparser.y"
     { printf("urlparams 2 seen\n"); }
     break;
 
   case 15:
 /* Line 1792 of yacc.c  */
-#line 71 "httpparser.y"
+#line 62 "httpparser.y"
     { printf("urlparams 3 seen\n"); }
     break;
 
   case 16:
 /* Line 1792 of yacc.c  */
-#line 72 "httpparser.y"
+#line 63 "httpparser.y"
     { printf("urlparams 4 seen\n"); }
     break;
 
   case 17:
 /* Line 1792 of yacc.c  */
-#line 73 "httpparser.y"
+#line 64 "httpparser.y"
     { printf("urlparams 5 seen\n"); }
     break;
 
   case 18:
 /* Line 1792 of yacc.c  */
-#line 77 "httpparser.y"
+#line 68 "httpparser.y"
     {  (yyval.identifier_tok) = (yyvsp[(1) - (1)].identifier_tok); }
     break;
 
   case 19:
 /* Line 1792 of yacc.c  */
-#line 78 "httpparser.y"
+#line 69 "httpparser.y"
     {  (yyval.identifier_tok) = (yyvsp[(2) - (2)].identifier_tok); }
     break;
 
   case 20:
 /* Line 1792 of yacc.c  */
-#line 79 "httpparser.y"
+#line 70 "httpparser.y"
     {  (yyval.identifier_tok) = (yyvsp[(2) - (2)].identifier_tok); }
     break;
 
   case 21:
 /* Line 1792 of yacc.c  */
-#line 80 "httpparser.y"
+#line 71 "httpparser.y"
     {  (yyval.identifier_tok) = (yyvsp[(2) - (2)].identifier_tok); }
     break;
 
   case 22:
 /* Line 1792 of yacc.c  */
-#line 81 "httpparser.y"
+#line 72 "httpparser.y"
     {  (yyval.identifier_tok) = (yyvsp[(2) - (2)].identifier_tok); }
     break;
 
   case 23:
 /* Line 1792 of yacc.c  */
-#line 82 "httpparser.y"
+#line 73 "httpparser.y"
     {  (yyval.identifier_tok) = (yyvsp[(2) - (2)].identifier_tok); }
     break;
 
   case 24:
 /* Line 1792 of yacc.c  */
-#line 83 "httpparser.y"
+#line 74 "httpparser.y"
     {  (yyval.identifier_tok) = (yyvsp[(2) - (2)].identifier_tok); }
     break;
 
   case 25:
 /* Line 1792 of yacc.c  */
-#line 87 "httpparser.y"
+#line 78 "httpparser.y"
     {  (yyval.identifier_tok) = (yyvsp[(1) - (1)].identifier_tok); }
     break;
 
   case 26:
 /* Line 1792 of yacc.c  */
-#line 88 "httpparser.y"
+#line 79 "httpparser.y"
     {  (yyval.identifier_tok) = (yyvsp[(1) - (1)].identifier_tok); }
     break;
 
   case 27:
 /* Line 1792 of yacc.c  */
-#line 89 "httpparser.y"
+#line 80 "httpparser.y"
     {  (yyval.identifier_tok) = (yyvsp[(1) - (1)].identifier_tok); }
     break;
 
   case 28:
 /* Line 1792 of yacc.c  */
-#line 90 "httpparser.y"
+#line 81 "httpparser.y"
     {  (yyval.identifier_tok) = (yyvsp[(1) - (1)].identifier_tok); }
     break;
 
   case 29:
 /* Line 1792 of yacc.c  */
-#line 91 "httpparser.y"
+#line 82 "httpparser.y"
     {  (yyval.identifier_tok) = (yyvsp[(1) - (1)].identifier_tok); }
     break;
 
   case 30:
 /* Line 1792 of yacc.c  */
-#line 92 "httpparser.y"
+#line 83 "httpparser.y"
     {  (yyval.identifier_tok) = (yyvsp[(1) - (1)].identifier_tok); }
     break;
 
   case 31:
 /* Line 1792 of yacc.c  */
-#line 93 "httpparser.y"
+#line 84 "httpparser.y"
     {  (yyval.identifier_tok) = (yyvsp[(1) - (1)].identifier_tok); }
     break;
 
   case 32:
 /* Line 1792 of yacc.c  */
-#line 94 "httpparser.y"
+#line 85 "httpparser.y"
     {  (yyval.identifier_tok) = (yyvsp[(1) - (1)].identifier_tok); }
     break;
 
   case 33:
 /* Line 1792 of yacc.c  */
-#line 95 "httpparser.y"
+#line 86 "httpparser.y"
     {  (yyval.identifier_tok) = (yyvsp[(1) - (1)].identifier_tok); }
     break;
 
   case 34:
 /* Line 1792 of yacc.c  */
-#line 98 "httpparser.y"
+#line 89 "httpparser.y"
     {  (yyval.identifier_tok) = (yyvsp[(1) - (1)].identifier_tok); }
     break;
 
   case 35:
 /* Line 1792 of yacc.c  */
-#line 99 "httpparser.y"
+#line 90 "httpparser.y"
     {  (yyval.identifier_tok) = (yyvsp[(1) - (1)].identifier_tok); }
     break;
 
   case 36:
 /* Line 1792 of yacc.c  */
-#line 100 "httpparser.y"
+#line 91 "httpparser.y"
     {  (yyval.identifier_tok) = (yyvsp[(1) - (1)].identifier_tok); }
     break;
 
   case 37:
 /* Line 1792 of yacc.c  */
-#line 101 "httpparser.y"
+#line 92 "httpparser.y"
     {  (yyval.identifier_tok) = (yyvsp[(1) - (1)].identifier_tok); }
     break;
 
 
 /* Line 1792 of yacc.c  */
-#line 1641 "httpparser.tab.cpp"
+#line 1644 "httpparser.tab.cpp"
       default: break;
     }
   /* User semantic actions sometimes alter yychar, and that requires
@@ -1869,7 +1872,7 @@ yyreturn:
 
 
 /* Line 2055 of yacc.c  */
-#line 104 "httpparser.y"
+#line 95 "httpparser.y"
 
 
 
@@ -1891,7 +1894,7 @@ int hperror(char *s)
 }
 
 /*
-int hplex(void)
+int hplex(HPSTYPE *p)
 {
 	return 0;
 }

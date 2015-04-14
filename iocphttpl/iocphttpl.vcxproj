@@ -88,7 +88,7 @@
       <PrecompiledHeader>NotUsing</PrecompiledHeader>
       <WarningLevel>Level3</WarningLevel>
       <Optimization>Disabled</Optimization>
-      <PreprocessorDefinitions>WIN32;_DEBUG;_WINDOWS;_USRDLL;IOCPHTTPL_EXPORTS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PreprocessorDefinitions>WIN32;UNICODE;_UNICODE</PreprocessorDefinitions>
       <SDLCheck>true</SDLCheck>
     </ClCompile>
     <Link>
@@ -96,6 +96,12 @@
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <AdditionalDependencies>version.lib;ws2_32.lib;Shlwapi.lib</AdditionalDependencies>
     </Link>
+    <Flex>
+      <Reentrant>true</Reentrant>
+      <Cpp>false</Cpp>
+      <CppClassName>
+      </CppClassName>
+    </Flex>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <ClCompile>
@@ -118,7 +124,7 @@
       <Optimization>MaxSpeed</Optimization>
       <FunctionLevelLinking>true</FunctionLevelLinking>
       <IntrinsicFunctions>true</IntrinsicFunctions>
-      <PreprocessorDefinitions>WIN32;NDEBUG;_WINDOWS;_USRDLL;IOCPHTTPL_EXPORTS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PreprocessorDefinitions>WIN32;UNICODE;_UNICODE</PreprocessorDefinitions>
       <SDLCheck>true</SDLCheck>
     </ClCompile>
     <Link>
@@ -128,6 +134,12 @@
       <OptimizeReferences>true</OptimizeReferences>
       <AdditionalDependencies>version.lib;ws2_32.lib;Shlwapi.lib</AdditionalDependencies>
     </Link>
+    <Flex>
+      <Reentrant>true</Reentrant>
+      <Cpp>false</Cpp>
+      <CppClassName>
+      </CppClassName>
+    </Flex>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
     <ClCompile>
@@ -163,6 +175,7 @@
     <ClInclude Include="iocphttpl.h" />
     <ClInclude Include="Jsonp.h" />
     <ClInclude Include="jsonp.tab.h" />
+    <ClInclude Include="Parser1.h" />
     <ClInclude Include="ParserHeader.h" />
     <ClInclude Include="SocketCompletionPortServer.h" />
     <ClInclude Include="stdafx.h" />
@@ -195,6 +208,7 @@
     <ClCompile Include="Jsonp.cpp" />
     <ClCompile Include="jsonp.flex.cpp" />
     <ClCompile Include="jsonp.tab.cpp" />
+    <ClCompile Include="Parser1.cpp" />
     <ClCompile Include="ParserHeader.cpp" />
     <ClCompile Include="SocketCompletionPortServer.cpp" />
     <ClCompile Include="stdafx.cpp">
@@ -210,6 +224,8 @@
       <Prefix Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">hp</Prefix>
       <Prefix Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">hp</Prefix>
       <Prefix Condition="'$(Configuration)|$(Platform)'=='Release|x64'">hp</Prefix>
+      <Reentrant Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</Reentrant>
+      <Reentrant Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">true</Reentrant>
     </Flex>
     <Flex Include="jsonp.l">
       <Prefix Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">jp</Prefix>

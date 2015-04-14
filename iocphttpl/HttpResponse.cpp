@@ -82,6 +82,13 @@ void HttpResponse::SetContentTypeFromExtension()
 
 std::vector<byte> HttpResponse::GetStaticContent(const char *path)
 {
+
+	if (strlen(path)==0)
+	{
+		std::vector<BYTE> vec;
+		return vec;
+	}
+
 	// open the file:
 	std::ifstream file(path, std::ios::binary);
 	
@@ -109,7 +116,14 @@ std::vector<byte> HttpResponse::GetStaticContent(const char *path)
 
 void HttpResponse::WriteStatic(const char *path)
 {
-	m_sbResponse = GetStaticContent(path);
+	if (strlen(path) > 0)
+	{
+		m_sbResponse = GetStaticContent(path);
+	}
+	else
+	{
+		printf("Static filepath is empty\n");
+	}
 }
 
 

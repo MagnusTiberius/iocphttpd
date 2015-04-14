@@ -93,7 +93,7 @@ extern int hpdebug;
 typedef union HPSTYPE
 {
 /* Line 2058 of yacc.c  */
-#line 28 "httpparser.y"
+#line 19 "httpparser.y"
 
   int		int_val;
   char*		identifier_tok;
@@ -107,7 +107,6 @@ typedef union HPSTYPE
 # define HPSTYPE_IS_DECLARED 1
 #endif
 
-extern HPSTYPE hplval;
 
 #ifdef YYPARSE_PARAM
 #if defined __STDC__ || defined __cplusplus

@@ -1,0 +1,90 @@
+﻿  stdafx.cpp
+  dllmain.cpp
+  HParser.cpp
+  HttpHeader.cpp
+HttpHeader.cpp(21): warning C4267: 'initializing' : conversion from 'size_t' to 'int', possible loss of data
+  httpparser.flex.cpp
+  httpparser.tab.cpp
+httpparser.tab.cpp(1163): warning C4065: switch statement contains 'default' but no 'case' labels
+  HttpRequest.cpp
+c:\users\bbgonzax\appdata\local\iocphttpd.03\iocphttpl\HttpTemplate.h(28): warning C4251: 'HttpTemplate::m_TemplateList' : class 'std::vector<HttpTemplate::LPTEMPLATEITEM,std::allocator<_Ty>>' needs to have dll-interface to be used by clients of class 'HttpTemplate'
+          with
+          [
+              _Ty=HttpTemplate::LPTEMPLATEITEM
+          ]
+  HttpResponse.cpp
+c:\users\bbgonzax\appdata\local\iocphttpd.03\iocphttpl\HttpTemplate.h(28): warning C4251: 'HttpTemplate::m_TemplateList' : class 'std::vector<HttpTemplate::LPTEMPLATEITEM,std::allocator<_Ty>>' needs to have dll-interface to be used by clients of class 'HttpTemplate'
+          with
+          [
+              _Ty=HttpTemplate::LPTEMPLATEITEM
+          ]
+c:\users\bbgonzax\appdata\local\iocphttpd.03\iocphttpl\HttpResponse.h(33): warning C4251: 'HttpResponse::m_szResponse' : class 'std::basic_string<char,std::char_traits<char>,std::allocator<char>>' needs to have dll-interface to be used by clients of class 'HttpResponse'
+c:\users\bbgonzax\appdata\local\iocphttpd.03\iocphttpl\HttpResponse.h(34): warning C4251: 'HttpResponse::m_path' : class 'std::basic_string<char,std::char_traits<char>,std::allocator<char>>' needs to have dll-interface to be used by clients of class 'HttpResponse'
+c:\users\bbgonzax\appdata\local\iocphttpd.03\iocphttpl\HttpResponse.h(35): warning C4251: 'HttpResponse::m_sbResponse' : class 'std::vector<byte,std::allocator<_Ty>>' needs to have dll-interface to be used by clients of class 'HttpResponse'
+          with
+          [
+              _Ty=byte
+          ]
+c:\users\bbgonzax\appdata\local\iocphttpd.03\iocphttpl\HttpResponse.h(37): warning C4251: 'HttpResponse::pathExtension' : class 'std::basic_string<wchar_t,std::char_traits<wchar_t>,std::allocator<wchar_t>>' needs to have dll-interface to be used by clients of class 'HttpResponse'
+c:\users\bbgonzax\appdata\local\iocphttpd.03\iocphttpl\HttpResponse.h(38): warning C4251: 'HttpResponse::contenType' : class 'std::basic_string<wchar_t,std::char_traits<wchar_t>,std::allocator<wchar_t>>' needs to have dll-interface to be used by clients of class 'HttpResponse'
+  HttpTemplate.cpp
+c:\users\bbgonzax\appdata\local\iocphttpd.03\iocphttpl\HttpTemplate.h(28): warning C4251: 'HttpTemplate::m_TemplateList' : class 'std::vector<HttpTemplate::LPTEMPLATEITEM,std::allocator<_Ty>>' needs to have dll-interface to be used by clients of class 'HttpTemplate'
+          with
+          [
+              _Ty=HttpTemplate::LPTEMPLATEITEM
+          ]
+  HttpUrlRoute.cpp
+c:\users\bbgonzax\appdata\local\iocphttpd.03\iocphttpl\HttpUrlRoute.h(31): warning C4251: 'HttpUrlRoute::urlRoutes' : class 'std::vector<HttpUrlRoute::ROUTEURL,std::allocator<_Ty>>' needs to have dll-interface to be used by clients of class 'HttpUrlRoute'
+          with
+          [
+              _Ty=HttpUrlRoute::ROUTEURL
+          ]
+c:\users\bbgonzax\appdata\local\iocphttpd.03\iocphttpl\HttpUrlRoute.h(32): warning C4251: 'HttpUrlRoute::staticAccessList' : class 'std::vector<HttpUrlRoute::STATICACCESS,std::allocator<_Ty>>' needs to have dll-interface to be used by clients of class 'HttpUrlRoute'
+          with
+          [
+              _Ty=HttpUrlRoute::STATICACCESS
+          ]
+c:\users\bbgonzax\appdata\local\iocphttpd.03\iocphttpl\HttpUrlRoute.h(36): warning C4251: 'HttpUrlRoute::pathExtension' : class 'std::basic_string<wchar_t,std::char_traits<wchar_t>,std::allocator<wchar_t>>' needs to have dll-interface to be used by clients of class 'HttpUrlRoute'
+c:\users\bbgonzax\appdata\local\iocphttpd.03\iocphttpl\HttpUrlRoute.h(37): warning C4251: 'HttpUrlRoute::contenType' : class 'std::basic_string<wchar_t,std::char_traits<wchar_t>,std::allocator<wchar_t>>' needs to have dll-interface to be used by clients of class 'HttpUrlRoute'
+HttpUrlRoute.cpp(61): warning C4129: '/' : unrecognized character escape sequence
+  iocphttpl.cpp
+  Jsonp.cpp
+  jsonp.flex.cpp
+  jsonp.tab.cpp
+jsonp.tab.cpp(1140): warning C4065: switch statement contains 'default' but no 'case' labels
+  ParserHeader.cpp
+  SocketCompletionPortServer.cpp
+c:\users\bbgonzax\appdata\local\iocphttpd.03\iocphttpl\HttpTemplate.h(28): warning C4251: 'HttpTemplate::m_TemplateList' : class 'std::vector<HttpTemplate::LPTEMPLATEITEM,std::allocator<_Ty>>' needs to have dll-interface to be used by clients of class 'HttpTemplate'
+          with
+          [
+              _Ty=HttpTemplate::LPTEMPLATEITEM
+          ]
+c:\users\bbgonzax\appdata\local\iocphttpd.03\iocphttpl\HttpResponse.h(33): warning C4251: 'HttpResponse::m_szResponse' : class 'std::basic_string<char,std::char_traits<char>,std::allocator<char>>' needs to have dll-interface to be used by clients of class 'HttpResponse'
+c:\users\bbgonzax\appdata\local\iocphttpd.03\iocphttpl\HttpResponse.h(34): warning C4251: 'HttpResponse::m_path' : class 'std::basic_string<char,std::char_traits<char>,std::allocator<char>>' needs to have dll-interface to be used by clients of class 'HttpResponse'
+c:\users\bbgonzax\appdata\local\iocphttpd.03\iocphttpl\HttpResponse.h(35): warning C4251: 'HttpResponse::m_sbResponse' : class 'std::vector<byte,std::allocator<_Ty>>' needs to have dll-interface to be used by clients of class 'HttpResponse'
+          with
+          [
+              _Ty=byte
+          ]
+c:\users\bbgonzax\appdata\local\iocphttpd.03\iocphttpl\HttpResponse.h(37): warning C4251: 'HttpResponse::pathExtension' : class 'std::basic_string<wchar_t,std::char_traits<wchar_t>,std::allocator<wchar_t>>' needs to have dll-interface to be used by clients of class 'HttpResponse'
+c:\users\bbgonzax\appdata\local\iocphttpd.03\iocphttpl\HttpResponse.h(38): warning C4251: 'HttpResponse::contenType' : class 'std::basic_string<wchar_t,std::char_traits<wchar_t>,std::allocator<wchar_t>>' needs to have dll-interface to be used by clients of class 'HttpResponse'
+c:\users\bbgonzax\appdata\local\iocphttpd.03\iocphttpl\HttpUrlRoute.h(31): warning C4251: 'HttpUrlRoute::urlRoutes' : class 'std::vector<HttpUrlRoute::ROUTEURL,std::allocator<_Ty>>' needs to have dll-interface to be used by clients of class 'HttpUrlRoute'
+          with
+          [
+              _Ty=HttpUrlRoute::ROUTEURL
+          ]
+c:\users\bbgonzax\appdata\local\iocphttpd.03\iocphttpl\HttpUrlRoute.h(32): warning C4251: 'HttpUrlRoute::staticAccessList' : class 'std::vector<HttpUrlRoute::STATICACCESS,std::allocator<_Ty>>' needs to have dll-interface to be used by clients of class 'HttpUrlRoute'
+          with
+          [
+              _Ty=HttpUrlRoute::STATICACCESS
+          ]
+c:\users\bbgonzax\appdata\local\iocphttpd.03\iocphttpl\HttpUrlRoute.h(36): warning C4251: 'HttpUrlRoute::pathExtension' : class 'std::basic_string<wchar_t,std::char_traits<wchar_t>,std::allocator<wchar_t>>' needs to have dll-interface to be used by clients of class 'HttpUrlRoute'
+c:\users\bbgonzax\appdata\local\iocphttpd.03\iocphttpl\HttpUrlRoute.h(37): warning C4251: 'HttpUrlRoute::contenType' : class 'std::basic_string<wchar_t,std::char_traits<wchar_t>,std::allocator<wchar_t>>' needs to have dll-interface to be used by clients of class 'HttpUrlRoute'
+SocketCompletionPortServer.cpp(123): warning C4313: 'fprintf'  : '%d' in format string conflicts with argument 2 of type 'FILE *'
+SocketCompletionPortServer.cpp(302): warning C4267: '=' : conversion from 'size_t' to 'ULONG', possible loss of data
+SocketCompletionPortServer.cpp(243): warning C4101: 'Flags' : unreferenced local variable
+SocketCompletionPortServer.cpp(242): warning C4101: 'RecvBytes' : unreferenced local variable
+     Creating library C:\Users\bbgonzaX\AppData\Local\iocphttpd.03\\lib\x64\Release\iocphttpl.lib and object C:\Users\bbgonzaX\AppData\Local\iocphttpd.03\\lib\x64\Release\iocphttpl.exp
+  Generating code
+  Finished generating code
+  iocphttpl.vcxproj -> C:\Users\bbgonzaX\AppData\Local\iocphttpd.03\\lib\x64\Release\iocphttpl.dll

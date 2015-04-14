@@ -1,0 +1,8 @@
+^httpparser.y
+C:\Users\bbgonzaX\AppData\Local\iocphttpd.03\iocphttpl\httpparser.tab.cpp
+^jsonp.y
+C:\Users\bbgonzaX\AppData\Local\iocphttpd.03\iocphttpl\jsonp.tab.cpp
+^httpparser.l
+C:\Users\bbgonzaX\AppData\Local\iocphttpd.03\iocphttpl\httpparser.flex.cpp
+^jsonp.l
+C:\Users\bbgonzaX\AppData\Local\iocphttpd.03\iocphttpl\jsonp.flex.cpp

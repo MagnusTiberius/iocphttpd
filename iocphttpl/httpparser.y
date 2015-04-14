@@ -1,27 +1,18 @@
 %define api.prefix hp
-
+%define api.pure
 %{
 #include "stdafx.h"
 #include "httpparserast.h"
+#include "httpparser.tab.h"
 
-#define yyerror hperror
-#define yylex hplex
-
-//#define yyparse hpparse
-//#define yylval hplval
-//#define yychar hpchar
-//#define yynerrs hpnerrs
-//#define yystype hpstype
-//#define YYSTYPE PARSERLIBSTYPE
+#define YYPARSE_PARAM hpparm
+#define YYLEX_PARAM hpparm
 
 
 int hperror(string s);
 int hperror(char *s);
-int hplex(void);
-
-//int yyerror(char *s);
-//int yyerror(string s);
-//int yylex(void);
+typedef void* yyscan_t;
+int hplex (YYSTYPE * yylval_param ,yyscan_t yyscanner);
 
 %}
 
@@ -50,9 +41,9 @@ input	: /* empty */
 		| input line 
 		;
 
-line	: line1 NEWLINE			{ printf("line1 seen\n"); }
-		| property NEWLINE		{ printf("property_item seen\n"); }
-		| NEWLINE				{ printf("content should follow after this marker.\n"); }
+line	: line1 NEWLINE			{ /*printf("line1 seen\n");*/ }
+		| property NEWLINE		{ /*printf("property_item seen\n");*/ }
+		| NEWLINE				{ /*printf("content should follow after this marker.\n");*/ }
 		;
 
 
@@ -122,7 +113,7 @@ int hperror(char *s)
 }
 
 /*
-int hplex(void)
+int hplex(HPSTYPE *p)
 {
 	return 0;
 }

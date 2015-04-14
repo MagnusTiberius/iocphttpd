@@ -96,7 +96,7 @@ void HttpHeader::Parse(char* content)
 			}
 			if (m_ps == PSTATE_GET || m_ps == PSTATE_POST) // url detected
 			{
-				fprintf(stderr, "%d::method found: %s\n", dwThreadId, buf1);
+				fprintf(stderr, "%d::url found: %s\n", dwThreadId, buf1);
 				ZeroMemory(m_url, DATA_BUFSIZE);
 				sprintf_s(m_url, DATA_BUFSIZE, "%s", buf1);
 				ZeroMemory(buf1, DATA_BUFSIZE);

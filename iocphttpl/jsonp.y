@@ -1,23 +1,26 @@
 %define api.prefix jp
-
+%define api.pure
 %{
 
 #include "stdafx.h"
+#include "jsonp.tab.h"
 
-#define yyerror jperror
-#define yylex jplex
-#define yyparse jpparse
-//#define yylval jplval
-#define yychar jpchar
-#define yynerrs jpnerrs
+//#define yyerror jperror
+//#define yylex jplex
+//#define yyparse jpparse
+//#define yychar jpchar
+//#define yynerrs jpnerrs
 
-//#define yystype jpstype
+#define YYPARSE_PARAM jpparm
+#define YYLEX_PARAM jpparm
+
 
 
 int jperror(char *s);
 int jperror(string s);
-int jplex(void);
 
+typedef void* yyscan_t;
+int jplex (YYSTYPE * yylval_param ,yyscan_t yyscanner);
 
 
 %}
