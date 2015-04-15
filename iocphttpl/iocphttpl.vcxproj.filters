@@ -19,6 +19,9 @@
     <Filter Include="jsonparser">
       <UniqueIdentifier>{fe4ab0cd-9e6b-44be-a2ba-dd665aa04a9e}</UniqueIdentifier>
     </Filter>
+    <Filter Include="sampleparser">
+      <UniqueIdentifier>{e1bc7a9b-377e-41c7-928b-cf70f56ad1fa}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <Text Include="ReadMe.txt" />
@@ -75,6 +78,9 @@
     <ClInclude Include="Parser1.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="httpTestParser.h">
+      <Filter>sampleparser</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="stdafx.cpp">
@@ -127,6 +133,9 @@
     </ClCompile>
     <ClCompile Include="Parser1.cpp">
       <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="httpTestParser.cpp">
+      <Filter>sampleparser</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
