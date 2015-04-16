@@ -66,10 +66,19 @@ bool ScannerA::AcceptRun(CHAR *str)
 	return true;
 } 
 
+bool ScannerA::IsEmpty()
+{
+	if (*m_c == '\t' || *m_c < '\n' || *m_c < '\r' || *m_c < '\0' || *m_c < ' ')
+	{
+		return true;
+	}
+	return false;
+}
+
 
 bool ScannerA::IsNumeric()
 {
-	if (*m_c > L'0' && *m_c < L'9')
+	if (*m_c > '0' && *m_c < '9')
 	{
 		return true;
 	}
@@ -78,7 +87,7 @@ bool ScannerA::IsNumeric()
 
 bool ScannerA::IsAlphabetic()
 {
-	if ((*m_c > L'a' && *m_c < L'z') || (*m_c > L'A' && *m_c < L'Z'))
+	if ((*m_c > 'a' && *m_c < 'z') || (*m_c > 'A' && *m_c < 'Z'))
 	{
 		return true;
 	}

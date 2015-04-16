@@ -72,6 +72,14 @@ bool ScannerW::AcceptRun(LPWSTR str)
 	return true;
 }
 
+bool ScannerW::IsEmpty()
+{
+	if (*m_c == L'\t' || *m_c < L'\n' || *m_c < L'\r' || *m_c < L'\0' || *m_c < L' ')
+	{
+		return true;
+	}
+	return false;
+}
 
 bool ScannerW::IsNumeric()
 {

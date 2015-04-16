@@ -17,6 +17,7 @@ public:
 	bool IsNumeric();
 	bool IsAlphabetic();
 	bool IsAlphanumeric();
+	bool IsEmpty();
 
 private:
 	LPWSTR m_str;
