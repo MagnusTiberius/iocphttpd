@@ -22,6 +22,9 @@
     <Filter Include="sampleparser">
       <UniqueIdentifier>{e1bc7a9b-377e-41c7-928b-cf70f56ad1fa}</UniqueIdentifier>
     </Filter>
+    <Filter Include="wparser">
+      <UniqueIdentifier>{dbd12283-e354-4d3c-ac66-03d8d94333a9}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <Text Include="ReadMe.txt" />
@@ -87,6 +90,9 @@
     <ClInclude Include="ScannerA.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="wparser.tab.h">
+      <Filter>wparser</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="stdafx.cpp">
@@ -149,6 +155,9 @@
     <ClCompile Include="ScannerA.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="wparser.tab.cpp">
+      <Filter>wparser</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <Flex Include="httpparser.l">
@@ -164,6 +173,9 @@
     </Bison>
     <Bison Include="jsonp.y">
       <Filter>jsonparser</Filter>
+    </Bison>
+    <Bison Include="wparser.y">
+      <Filter>wparser</Filter>
     </Bison>
   </ItemGroup>
 </Project>

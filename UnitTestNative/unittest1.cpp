@@ -2,6 +2,13 @@
 #include "CppUnitTest.h"
 #include "ScannerA.h"
 
+
+extern "C" {
+#include "wparser.tab.h"
+}
+
+extern void ww_parse_it();
+
 using namespace Microsoft::VisualStudio::CppUnitTestFramework;
 
 namespace UnitTestNative
@@ -41,6 +48,11 @@ namespace UnitTestNative
 			free(d3);
 		}
 
+
+		TEST_METHOD(TestMethod3)
+		{
+			ww_parse_it();
+		}
 
 	};
 }
