@@ -81,7 +81,10 @@
     <ClInclude Include="httpTestParser.h">
       <Filter>sampleparser</Filter>
     </ClInclude>
-    <ClInclude Include="Scanner.h">
+    <ClInclude Include="ScannerW.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="ScannerA.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
@@ -140,7 +143,10 @@
     <ClCompile Include="httpTestParser.cpp">
       <Filter>sampleparser</Filter>
     </ClCompile>
-    <ClCompile Include="Scanner.cpp">
+    <ClCompile Include="ScannerW.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="ScannerA.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
