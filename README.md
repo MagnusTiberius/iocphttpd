@@ -26,6 +26,7 @@ JOURNAL:
 
 4/15/15 - Sending images back to the browser is now correct, thanks to the person who helped me.
 
+4/16/15 - Decided a scanner will have to be written.
 
 Ref:
 
