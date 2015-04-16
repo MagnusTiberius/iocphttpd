@@ -2,7 +2,7 @@
 #include "stdafx.h"
 
 
-class ScannerA
+class IOCPHTTPL_API ScannerA
 {
 public:
 	ScannerA();
@@ -10,7 +10,7 @@ public:
 
 	void Input(CHAR* str);
 	bool Accept(CHAR* str);
-	bool AcceptRun(CHAR* str);
+	CHAR* AcceptRun(CHAR* str);
 	void Backup();
 	CHAR* Peek();
 	CHAR* Next();
@@ -18,12 +18,15 @@ public:
 	bool IsAlphabetic();
 	bool IsAlphanumeric();
 	bool IsEmpty();
+	void SkipEmpty();
 
 private:
 	CHAR* m_str;
-	int start;
+	int m_start;
+	int m_end;
 	int m_pos;
 	CHAR *m_c;
+	CHAR m_token[BUFSIZTOK];
 };
 
 /*

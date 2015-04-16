@@ -1,7 +1,7 @@
 #pragma once
 #include "stdafx.h"
 
-class ScannerW
+class IOCPHTTPL_API ScannerW
 {
 public:
 	ScannerW();
