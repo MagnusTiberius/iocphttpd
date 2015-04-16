@@ -26,13 +26,19 @@ namespace UnitTestNative
 			ScannerA scanner;
 			scanner.Input("GET /test HTTP/1.1\r\n\r\n");
 			CHAR *c1 = scanner.AcceptRun("GET");
-			printf("%s/n", c1);
+			CHAR *d1 = _strdup(c1);
+			printf("%s/n", d1);
 			scanner.SkipEmpty();
 			CHAR *c2 = scanner.AcceptRun("\/ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz-_");
-			printf("%s/n", c2);
+			CHAR *d2 = _strdup(c2);
+			printf("%s/n", d2);
 			scanner.SkipEmpty();
 			CHAR *c3 = scanner.AcceptRun("\/ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz-_.0123456789");
-			printf("%s/n", c3);
+			CHAR *d3 = _strdup(c3);
+			printf("%s/n", d3);
+			free(d1);
+			free(d2);
+			free(d3);
 		}
 
 
