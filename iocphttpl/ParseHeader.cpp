@@ -75,6 +75,7 @@ void ParseHeader::Parse()
 			{
 				printf("Content Follows Next\n");
 				token = token_t::ENDTOKEN;
+				ParseContent();
 				continue;
 			}
 			previous_token = token;
@@ -84,6 +85,59 @@ void ParseHeader::Parse()
 			previous_token = token;
 		}
 	}
+}
+
+void ParseHeader::ParseContent()
+{
+	CHAR *buf;
+	HEADERMAPLIST::iterator itr;
+	for (itr = m_headermap.begin(); itr != m_headermap.end(); itr++)
+	{
+		lpheadermap_t pitem = *itr;
+		std::string s = std::string(pitem->name);
+		if (s.compare("Content-Length:") == 0)
+		{
+			std::string n = std::string(pitem->value);
+			int len = atoi(pitem->value)+1;
+			buf = (CHAR*)malloc(len * sizeof(&pitem->value[0]));
+			memset(buf, 0, len);
+			//const CHAR *s = StripOut(pitem->value, "\r\n\t");
+			const CHAR *p = &m_str[m_pos+1];
+			strncpy_s(buf, len, p, len);
+			headermap_t *item = NULL;
+			item = new headermap_t{};
+			item->name = _strdup("Content:");
+			item->value = buf;
+			m_headermap.push_back(item);
+			item = NULL;
+			memset(buf, 0, len);
+		}
+	}
+}
+
+const CHAR* ParseHeader::StripOut(CHAR* item, const CHAR *strip)
+{
+	std::string rv = "";
+	int len = strlen(item);
+	for (int i= 0; i < len; i++)
+	{
+		CHAR c = item[i];
+		int striplen = strlen(strip);
+		bool ismatch = false;
+		for (int j = 0; j < striplen; j++)
+		{
+			CHAR u = strip[i];
+			if (c == u)
+			{
+				ismatch = true;
+			}
+		}
+		if (!ismatch)
+		{
+			rv.append(_strdup(&c));
+		}
+	}
+	return rv.c_str();
 }
 
 int ParseHeader::Token()

@@ -29,7 +29,9 @@ public:
 	int Token();
 	void Parse();
 
-private:
+protected:
 	CHAR *m_token;
 	HEADERMAPLIST m_headermap;
+	void ParseContent();
+	const CHAR* StripOut(CHAR* item, const CHAR *strip);
 };
