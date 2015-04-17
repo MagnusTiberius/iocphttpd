@@ -116,31 +116,3 @@ int hperror(char *s)
 {
   return hperror(string(s));
 }
-
-/*
-int hplex(HPSTYPE *p)
-{
-	return 0;
-}
-
-int yylex(void)
-{
-	return 0;
-}
-
-int yyerror(string s)
-{
-  extern int hplineno;	// defined and maintained in lex.c
-  extern char *hptext;	// defined and maintained in lex.c
-  
-  cerr << "PARSER sERROR: " << s << " at symbol \"" << hptext;
-  cerr << "\" on line " << hplineno << endl;
-  //exit(1);
-  return 1;
-}
-
-int yyerror(char *s)
-{
-  return yyerror(string(s));
-}
-*/

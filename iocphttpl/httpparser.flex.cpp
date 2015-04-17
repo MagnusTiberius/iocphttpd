@@ -2193,8 +2193,18 @@ void hpfree (void * ptr , yyscan_t yyscanner)
 
 
  
-int hpwrap() {
+int hpwrap(yyscan_t scanner) 
+{
 	return 1;
 }
 
+void hpParseIt(const char *str)
+{
+	yyscan_t scanner;
 
+	//hp_delete_buffer(YY_CURRENT_BUFFER);
+
+	hplex_init(&scanner);
+	YY_BUFFER_STATE  my_string_buffer = hp_scan_string(str, &scanner);
+	hpparse();
+}

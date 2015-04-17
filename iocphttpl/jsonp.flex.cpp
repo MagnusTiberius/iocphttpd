@@ -2104,6 +2104,7 @@ void jpfree (void * ptr , yyscan_t yyscanner)
 
 
 
-int jpwrap() {
+int jpwrap(yyscan_t scanner) 
+{
 	return 1;
 }

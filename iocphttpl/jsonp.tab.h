@@ -81,7 +81,7 @@ extern int jpdebug;
 typedef union JPSTYPE
 {
 /* Line 2058 of yacc.c  */
-#line 29 "jsonp.y"
+#line 33 "jsonp.y"
 
 	int		int_val;
 	char*	str_val;

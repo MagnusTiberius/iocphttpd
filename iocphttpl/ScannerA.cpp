@@ -14,10 +14,10 @@ ScannerA::~ScannerA()
 }
 
 
-void ScannerA::Input(CHAR* str)
+void ScannerA::Input(const CHAR* str)
 {
 	m_str = str;
-	CHAR *lpC = &m_str[m_pos];
+	const CHAR *lpC = &m_str[m_pos];
 	m_c = lpC;
 }
 
@@ -28,7 +28,7 @@ void ScannerA::Backup()
 	m_c = &m_str[m_pos];
 }
 
-CHAR* ScannerA::Next()
+const CHAR* ScannerA::Next()
 {
 	m_pos = m_pos + 1;
 	m_c = &m_str[m_pos];
@@ -40,10 +40,14 @@ void ScannerA::SkipEmpty()
 {
 	bool inLoop = false;
 
+	if (!IsEmpty())
+	{
+		return;
+	}
+
 	Next();
 	if (!IsEmpty())
 	{
-		Backup();
 		return;
 	}
 
@@ -52,12 +56,12 @@ void ScannerA::SkipEmpty()
 		Next();
 		inLoop = true;
 	}
-	
+
 }
 
-CHAR* ScannerA::Peek()
+const CHAR* ScannerA::Peek()
 {
-	CHAR *c = Next();
+	const CHAR *c = Next();
 	Backup();
 	return c;
 }
@@ -72,13 +76,28 @@ bool ScannerA::Accept(CHAR *str)
 	return false;
 }
 
+CHAR* ScannerA::AcceptUntil(CHAR *str)
+{
+	auto chr = strchr(str, *m_c);
+	m_start = m_pos;
+	const CHAR *p = &m_str[m_start];
+	while (chr == NULL)
+	{
+		Next();
+		chr = strchr(str, *m_c);
+	}
+	m_end = m_pos;
+	strncpy_s(m_token, BUFSIZTOK, p, m_end - m_start + 1);
+	return m_token;
+}
+
 CHAR* ScannerA::AcceptRun(CHAR *str)
 {
 	bool inLoop = false;
 	memset(m_token, '\0', BUFSIZTOK);
-	
+
 	m_start = m_pos;
-	CHAR *p = &m_str[m_start];
+	const CHAR *p = &m_str[m_start];
 
 	while (Accept(str))
 	{
@@ -98,9 +117,9 @@ CHAR* ScannerA::AcceptRun(CHAR *str)
 	m_end = m_pos;
 	strncpy_s(m_token, BUFSIZTOK, p, m_end - m_start + 1);
 	p = NULL;
-
+	Next();
 	return m_token;
-} 
+}
 
 bool ScannerA::IsEmpty()
 {

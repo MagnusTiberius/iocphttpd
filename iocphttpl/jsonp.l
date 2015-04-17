@@ -75,7 +75,7 @@ cnull       (null|NULL)
 
 %%
 
-int yywrap(yyscan_t scanner) 
+int jpwrap(yyscan_t scanner) 
 {
 	return 1;
 }

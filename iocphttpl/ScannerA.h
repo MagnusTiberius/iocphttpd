@@ -8,24 +8,25 @@ public:
 	ScannerA();
 	~ScannerA();
 
-	void Input(CHAR* str);
+	void Input(const CHAR* str);
 	bool Accept(CHAR* str);
 	CHAR* AcceptRun(CHAR* str);
 	void Backup();
-	CHAR* Peek();
-	CHAR* Next();
+	const CHAR* Peek();
+	const CHAR* Next();
 	bool IsNumeric();
 	bool IsAlphabetic();
 	bool IsAlphanumeric();
 	bool IsEmpty();
 	void SkipEmpty();
+	CHAR* AcceptUntil(CHAR *str);
 
 private:
-	CHAR* m_str;
+	const CHAR* m_str;
 	int m_start;
 	int m_end;
 	int m_pos;
-	CHAR *m_c;
+	const CHAR *m_c;
 	CHAR m_token[BUFSIZTOK];
 };
 
