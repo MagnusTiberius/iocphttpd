@@ -17,11 +17,11 @@ public:
 	bool IsNumeric();
 	bool IsAlphabetic();
 	bool IsAlphanumeric();
-	virtual bool IsEmpty();
+	bool IsEmpty();
 	void SkipEmpty();
 	CHAR* AcceptUntil(CHAR *str);
 
-private:
+protected:
 	const CHAR* m_str;
 	int m_start;
 	int m_end;
