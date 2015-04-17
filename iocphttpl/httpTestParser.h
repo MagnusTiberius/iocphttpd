@@ -12,7 +12,7 @@ public:
 	void Test1()
 	{
 		char *str = "GET / HTTP/1.1\r\n\r\n";
-		hpParseIt("GET / HTTP/1.1\r\n\r\n");
+		//hpParseIt("GET / HTTP/1.1\r\n\r\n");
 	}
 
 };

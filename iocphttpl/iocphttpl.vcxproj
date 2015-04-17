@@ -165,10 +165,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Enums.h" />
-    <ClInclude Include="HParser.h" />
     <ClInclude Include="HttpHeader.h" />
-    <ClInclude Include="httpparser.tab.h" />
-    <ClInclude Include="httpparserast.h" />
     <ClInclude Include="HttpRequest.h" />
     <ClInclude Include="HttpResponse.h" />
     <ClInclude Include="HttpTemplate.h" />
@@ -202,10 +199,7 @@
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
       </PrecompiledHeader>
     </ClCompile>
-    <ClCompile Include="HParser.cpp" />
     <ClCompile Include="HttpHeader.cpp" />
-    <ClCompile Include="httpparser.flex.cpp" />
-    <ClCompile Include="httpparser.tab.cpp" />
     <ClCompile Include="HttpRequest.cpp" />
     <ClCompile Include="HttpResponse.cpp" />
     <ClCompile Include="HttpTemplate.cpp" />
@@ -230,14 +224,6 @@
     <ClCompile Include="wparser.tab.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <Flex Include="httpparser.l">
-      <Prefix Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">hp</Prefix>
-      <Prefix Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">hp</Prefix>
-      <Prefix Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">hp</Prefix>
-      <Prefix Condition="'$(Configuration)|$(Platform)'=='Release|x64'">hp</Prefix>
-      <Reentrant Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</Reentrant>
-      <Reentrant Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">true</Reentrant>
-    </Flex>
     <Flex Include="jsonp.l">
       <Prefix Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">jp</Prefix>
       <Prefix Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">jp</Prefix>
@@ -246,12 +232,6 @@
     </Flex>
   </ItemGroup>
   <ItemGroup>
-    <Bison Include="httpparser.y">
-      <FilePrefix Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">hp</FilePrefix>
-      <FilePrefix Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">hp</FilePrefix>
-      <FilePrefix Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">hp</FilePrefix>
-      <FilePrefix Condition="'$(Configuration)|$(Platform)'=='Release|x64'">hp</FilePrefix>
-    </Bison>
     <Bison Include="jsonp.y">
       <FilePrefix Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">jp</FilePrefix>
       <FilePrefix Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">jp</FilePrefix>

@@ -190,6 +190,9 @@ void SocketCompletionPortServer::EvalPost(HttpRequest *httpRequest, HttpResponse
 
 void SocketCompletionPortServer::Dispatch(HttpRequest *httpRequest, HttpResponse *httpResponse)
 {
+	httpResponse->isStatic = false;
+	httpRequest->isStatic = false;
+
 	if (httpRequest->GetMethod() == MethodType::HTTP_GET)
 	{
 		EvalGet(httpRequest, httpResponse);
@@ -202,6 +205,8 @@ void SocketCompletionPortServer::Dispatch(HttpRequest *httpRequest, HttpResponse
 	if (IsStatic(httpRequest->GetUrl()))
 	{
 		printf("Static Directory\n");
+		httpResponse->isStatic = true;
+		httpRequest->isStatic = true;
 		EvalStatic(httpRequest, httpResponse);
 		return;
 	}
@@ -280,27 +285,28 @@ DWORD WINAPI SocketCompletionPortServer::ServerWorkerThread(LPVOID lpObject)
 		{
 			httpRequest.Parse(PerIoData->DataBuf.buf);
 			obj->Dispatch(&httpRequest, &httpResponse);
-			ZeroMemory(PerIoData->Buffer, DATA_BUFSIZE);
-			ZeroMemory(&(PerIoData->Overlapped), sizeof(OVERLAPPED));
-			PerIoData->DataBuf.buf = PerIoData->Buffer;
-			httpResponse.GetResponse(PerIoData->Buffer, &PerIoData->byteBuffer, DATA_BUFSIZE);
-			httpResponse.Write("");
-			auto n = strlen(PerIoData->Buffer);
-			PerIoData->DataBuf.len = (ULONG)n;
-			if (PerIoData->byteBuffer.size() > 0)
+			if (httpResponse.isStatic)
 			{
-				size_t bufsiz = PerIoData->byteBuffer.size() * sizeof(PerIoData->byteBuffer[0]); 
-				if (PerIoData->LPBuffer != NULL)
-				{
-					free(PerIoData->LPBuffer);
-					PerIoData->LPBuffer = NULL;
-				}
-				PerIoData->LPBuffer = (CHAR*)malloc(bufsiz);
-				memset(PerIoData->LPBuffer, '\0', bufsiz);
-				memcpy(PerIoData->LPBuffer, &PerIoData->byteBuffer[0], bufsiz);
+				int nBufSize = httpResponse.GetBufferSize() + 1;
+				fprintf(stderr, "%d::ServerWorkerThread: nBufSize=%d\n", dwThreadId, nBufSize);
+				PerIoData->LPBuffer = (CHAR*)malloc(nBufSize);
+				memset(PerIoData->LPBuffer, 0, nBufSize);
 				PerIoData->DataBuf.buf = PerIoData->LPBuffer;
-				PerIoData->DataBuf.len = bufsiz;
+				PerIoData->DataBuf.len = nBufSize;
+				PerIoData->LPBuffer = httpResponse.GetResponse2();
+				httpResponse.Write("");
 			}
+			else
+			{
+				ZeroMemory(PerIoData->Buffer, DATA_BUFSIZE);
+				ZeroMemory(&(PerIoData->Overlapped), sizeof(OVERLAPPED));
+				PerIoData->DataBuf.buf = PerIoData->Buffer;
+				httpResponse.GetResponse(PerIoData->Buffer, &PerIoData->byteBuffer, DATA_BUFSIZE);
+				httpResponse.Write("");
+				auto n = strlen(PerIoData->Buffer);
+				PerIoData->DataBuf.len = (ULONG)n;
+			}
+
 			PerIoData->BytesRECV = 0;
 			int res = WSASend(PerHandleData->Socket, &(PerIoData->DataBuf), 1, &SendBytes, 0, &(PerIoData->Overlapped), NULL);
 			if (res == SOCKET_ERROR)

@@ -148,10 +148,53 @@ void HttpResponse::GetResponse(char* pszResponse, vector<byte> *pvb, DWORD dwSiz
 	std::string str2(m_sbResponse.begin(), m_sbResponse.end());
 	str.insert(str.end(), str2.begin(), str2.end());
 	//pszResponse = str.c_str();
-	sprintf_s(pszResponse, dwSize, "%s", str.c_str());
+	//sprintf_s(pszResponse, dwSize, "%s", str.c_str());
+	memcpy(pszResponse, str.c_str(), str.size());
 	m_sbResponse.assign(str.begin(), str.end());
 	printf("%d::%s \n", dwThreadId, pszResponse);
 	//vector<byte> tpvb = *pvb;
 	//tpvb.assign(m_sbResponse.begin(), m_sbResponse.end());
 	pvb->assign(m_sbResponse.begin(), m_sbResponse.end());
+}
+
+CHAR* HttpResponse::GetResponse2()
+{
+	DWORD dwThreadId = GetCurrentThreadId();
+	CHAR pszResponse[DATA_BUFSIZE];
+	std::string rv = "";
+	ZeroMemory(&pszResponse, DATA_BUFSIZE);
+
+	sprintf_s(pszResponse, DATA_BUFSIZE, "%s%s", resp_ok, "\n");
+	rv.append(pszResponse);
+
+	ZeroMemory(&pszResponse, DATA_BUFSIZE);
+	sprintf_s(pszResponse, DATA_BUFSIZE, "%s%s%s", "Date: ", tmp_date, "\n");
+	rv.append(pszResponse);
+
+
+	std::string ctstr;
+	ctstr.assign(contenType.begin(), contenType.end());
+	ZeroMemory(&pszResponse, DATA_BUFSIZE);
+	sprintf_s(pszResponse, DATA_BUFSIZE, "%s%s%s", "Content-Type: ", ctstr.c_str(), "\n");
+	rv.append(pszResponse);
+
+	size_t siz = m_sbResponse.size();
+	ZeroMemory(&pszResponse, DATA_BUFSIZE);
+	sprintf_s(pszResponse, DATA_BUFSIZE, "%s%d%s", "Content-Length: ", siz, "\n\n");
+	rv.append(pszResponse);
+
+	std::string str2(m_sbResponse.begin(), m_sbResponse.end());
+	rv.append(str2);
+
+	CHAR *cv = (CHAR*)malloc(rv.size() + 1);
+	ZeroMemory(cv, rv.size() + 1);
+	memcpy(cv, rv.c_str(), rv.size());
+
+	return cv;
+}
+
+
+int HttpResponse::GetBufferSize()
+{
+	return m_sbResponse.size();
 }

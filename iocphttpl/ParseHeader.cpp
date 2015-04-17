@@ -14,6 +14,7 @@ ParseHeader::~ParseHeader()
 
 void ParseHeader::Parse()
 {
+	Reset();
 	headermap_t *item = NULL;
 	int previous_token = NULL;
 	int token = Token();
@@ -25,6 +26,7 @@ void ParseHeader::Parse()
 			item = new headermap_t{};
 			item->name = _strdup("METHOD");
 			item->value = _strdup(m_token);
+			printf("Parse: %s=%s \n", item->name, item->value);
 			m_headermap.push_back(item);
 			item = NULL;
 		}
@@ -33,6 +35,7 @@ void ParseHeader::Parse()
 			item = new headermap_t{};
 			item->name = _strdup("URL");
 			item->value = _strdup(m_token);
+			printf("Parse: %s=%s \n", item->name, item->value);
 			m_headermap.push_back(item);
 			item = NULL;
 		}
@@ -41,6 +44,7 @@ void ParseHeader::Parse()
 			item = new headermap_t{};
 			item->name = _strdup("VERSION");
 			item->value = _strdup(m_token);
+			printf("Parse: %s=%s \n", item->name, item->value);
 			m_headermap.push_back(item);
 			item = NULL;
 		}
@@ -49,6 +53,7 @@ void ParseHeader::Parse()
 			item = new headermap_t{};
 			item->name = _strdup("QUERYSTRING");
 			item->value = _strdup(m_token);
+			printf("Parse: %s=%s \n", item->name, item->value);
 			m_headermap.push_back(item);
 			item = NULL;
 		}
@@ -61,6 +66,7 @@ void ParseHeader::Parse()
 			CHAR *v = AcceptUntil("\n");
 
 			item->value = _strdup(v);
+			printf("Parse: %s=%s \n", item->name, item->value);
 			m_headermap.push_back(item);
 			item = NULL;
 
@@ -75,12 +81,12 @@ void ParseHeader::Parse()
 			{
 				printf("Content Follows Next\n");
 				token = token_t::ENDTOKEN;
-				ParseContent();
+				//ParseContent();
 				continue;
 			}
 			previous_token = token;
 		}
-		if (token >= 32)
+		if (token > 32)
 		{
 			previous_token = token;
 		}
@@ -183,7 +189,7 @@ int ParseHeader::Token()
 			return ParseHeader::token_t::PROPERTYNAME;
 		}
 	}
-	c1 = AcceptRun("ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz\/-0123456789.");
+	c1 = AcceptRun("ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz\/-0123456789._");
 	if (c1 != NULL)
 	{
 		m_token = _strdup(c1);
@@ -200,4 +206,60 @@ int ParseHeader::Token()
 	m_pos = begin_marker;
 	const CHAR *c = Next();
 	return *c;
+}
+
+CHAR* ParseHeader::GetUrl()
+{
+	HEADERMAPLIST::iterator itr;
+	for (itr = m_headermap.begin(); itr != m_headermap.end(); itr++)
+	{
+		lpheadermap_t pitem = *itr;
+		std::string s = std::string(pitem->name);
+		printf("GetUrl  %s\n",s.c_str());
+		if (s.compare("URL") == 0)
+		{
+			printf("GetUrl Found %s\n", pitem->value);
+			return pitem->value;
+		}
+	}
+	printf("GetUrl Not Found \n");
+	return NULL;
+}
+
+MethodType ParseHeader::GetMethod()
+{
+	HEADERMAPLIST::iterator itr;
+	for (itr = m_headermap.begin(); itr != m_headermap.end(); itr++)
+	{
+		lpheadermap_t pitem = *itr;
+		std::string s = std::string(pitem->name);
+		if (s.compare("METHOD") == 0)
+		{
+			if (strcmp(pitem->value, "GET") == 0)
+			{
+				return MethodType::HTTP_GET;
+			}
+			if (strcmp(pitem->value, "POST") == 0)
+			{
+				return MethodType::HTTP_POST;
+			}
+		}
+	}
+	return MethodType::HTTP_NONE;
+}
+
+void ParseHeader::Reset()
+{
+	HEADERMAPLIST::iterator itr;
+	for (itr = m_headermap.begin(); itr != m_headermap.end(); itr++)
+	{
+		lpheadermap_t pitem = *itr;
+		free(pitem->name);
+		pitem->name = NULL;
+		free(pitem->value);
+		pitem->value = NULL;
+		free(pitem);
+		pitem = NULL;
+	}
+	m_headermap.clear();
 }

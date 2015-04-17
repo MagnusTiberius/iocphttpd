@@ -23,6 +23,11 @@ public:
 	void SetContentTypeFromExtension();
 	PTSTR  GetPathExtension(const char* pszPath);
 	PTSTR  GetPathExtension(PTSTR pszPath);
+	int GetBufferSize();
+
+	bool isStatic;
+
+	CHAR* GetResponse2();
 
 private:
 	HttpHeader httpHeader;

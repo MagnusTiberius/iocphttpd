@@ -14,17 +14,18 @@ HttpRequest::~HttpRequest()
 void HttpRequest::Parse(char *content)
 {
 	httpHeader.Parse(content);
-	hParser.Parse(content);
+	parseHeader.Input(content);
+	parseHeader.Parse();
 }
 
 char* HttpRequest::GetUrl()
 {
 	char *url = httpHeader.GetUrl();
-	url = hParser.GetUrl();
+	url = parseHeader.GetUrl();
 	return url;
 }
 
 MethodType HttpRequest::GetMethod()
 {
-	return httpHeader.GetMethod();
+	return parseHeader.GetMethod();
 }

@@ -28,6 +28,9 @@ public:
 
 	int Token();
 	void Parse();
+	CHAR* GetUrl();
+	MethodType GetMethod();
+	void Reset();
 
 protected:
 	CHAR *m_token;
