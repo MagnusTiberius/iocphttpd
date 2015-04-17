@@ -21,7 +21,7 @@ void ParseHeader::Parse()
 		token = Token();
 		if (token == ParseHeader::token_t::PROPERTYNAME)
 		{
-			AcceptUntil("\n");
+			CHAR *s = AcceptUntil("\n");
 		}
 	}
 }

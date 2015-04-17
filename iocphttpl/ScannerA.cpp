@@ -30,6 +30,10 @@ void ScannerA::Backup()
 
 const CHAR* ScannerA::Next()
 {
+	if (m_pos == strlen(m_str))
+	{
+		return NULL;
+	}
 	m_pos = m_pos + 1;
 	m_c = &m_str[m_pos];
 
@@ -62,7 +66,8 @@ void ScannerA::SkipEmpty()
 const CHAR* ScannerA::Peek()
 {
 	const CHAR *c = Next();
-	Backup();
+	if (c != NULL)
+		Backup();
 	return c;
 }
 
