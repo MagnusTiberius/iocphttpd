@@ -213,6 +213,7 @@
     <ClCompile Include="Jsonp.cpp" />
     <ClCompile Include="jsonp.flex.cpp" />
     <ClCompile Include="jsonp.tab.cpp" />
+    <ClCompile Include="ParseHeader.cpp" />
     <ClCompile Include="Parser1.cpp" />
     <ClCompile Include="ParserHeader.cpp" />
     <ClCompile Include="ScannerA.cpp" />

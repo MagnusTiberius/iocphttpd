@@ -158,6 +158,9 @@
     <ClCompile Include="wparser.tab.cpp">
       <Filter>wparser</Filter>
     </ClCompile>
+    <ClCompile Include="ParseHeader.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <Flex Include="httpparser.l">
