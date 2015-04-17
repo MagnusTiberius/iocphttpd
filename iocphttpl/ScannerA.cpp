@@ -129,7 +129,7 @@ CHAR* ScannerA::AcceptRun(CHAR *str)
 bool ScannerA::IsEmpty()
 {
 	char c = *m_c;
-	if (c == '\t' || c < '\n' || c < '\r' || c < '\0' || c < ' ' || c == 32)
+	if (c == '\t' || c < '\r' || c < '\0' || c < ' ' || c == 32)
 	{
 		return true;
 	}

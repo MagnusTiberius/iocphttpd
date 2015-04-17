@@ -176,6 +176,7 @@
     <ClInclude Include="iocphttpl.h" />
     <ClInclude Include="Jsonp.h" />
     <ClInclude Include="jsonp.tab.h" />
+    <ClInclude Include="ParseHeader.h" />
     <ClInclude Include="Parser1.h" />
     <ClInclude Include="ParserHeader.h" />
     <ClInclude Include="ScannerA.h" />
