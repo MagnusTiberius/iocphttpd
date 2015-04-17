@@ -17,7 +17,7 @@ public:
 	bool IsNumeric();
 	bool IsAlphabetic();
 	bool IsAlphanumeric();
-	bool IsEmpty();
+	virtual bool IsEmpty();
 	void SkipEmpty();
 	CHAR* AcceptUntil(CHAR *str);
 

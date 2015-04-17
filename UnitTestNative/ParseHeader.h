@@ -14,12 +14,15 @@ public:
 		HTTPVERSION,
 		PROPERTYNAME,
 		PROPERTYVALUE,
-		ENDTOKEN
+		NEWLINE,
+		CONTENTFOLLOWSNEXT,
+		ENDTOKEN,
+		UNDEFINED
 	}token_t;
 
 	token_t Token();
 	void Parse();
-
+	bool IsEmpty();
 private:
 	CHAR *token;
 };
