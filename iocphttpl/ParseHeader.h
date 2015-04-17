@@ -15,7 +15,8 @@ public:
 		HTTPVERSION = 20003,
 		PROPERTYNAME = 20004,
 		PROPERTYVALUE = 20005,
-		ENDTOKEN = 20006
+		ENDTOKEN = 20006,
+		QUERYSTRING = 20007
 	}token_t;
 
 	typedef struct HeaderMap {

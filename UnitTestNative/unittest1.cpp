@@ -50,10 +50,10 @@ namespace UnitTestNative
 		}
 
 
-		TEST_METHOD(TestMethod3)
-		{
-			ww_parse_it();
-		}
+		//TEST_METHOD(TestMethod3)
+		//{
+		//	ww_parse_it();
+		//}
 
 		TEST_METHOD(TestMethod4)
 		{
@@ -70,7 +70,31 @@ namespace UnitTestNative
 				Pragma: no-cache \n\
 				Cache-Control: no-cache \n\
 				\n\
+				shdf hsfjksh dfjk sdh fjkshdf jkshf jksdhf jksdfh jksdfh jksdfh sdjkfh djf \n\
+				";
+
+			ParseHeader parser;
+
+			parser.Input(str_value.c_str());
+			parser.Parse();
+		}
+
+		TEST_METHOD(TestMethod5)
+		{
+			std::string str_value = "	GET /foo.php?first_name=John&last_name=Doe&action=Submit HTTP/1.1 \n\
+				Host: net.tutsplus.com \n\
+				User-Agent: Mozilla/5.0 (Windows; U; Windows NT 6.1; en-US; rv:1.9.1.5) Gecko/20091102 Firefox/3.5.5 (.NET CLR 3.5.30729) \n\
+				Accept: text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8 \n\
+				Accept-Language: en-us,en;q=0.5 \n\
+				Accept-Encoding: gzip,deflateAccept-Encoding: gzip,deflate; \n\
+				Accept-Charset: ISO-8859-1,utf-8;q=0.7,*;q=0.7 \n\
+				Keep-Alive: 300 \n\
+				Connection: keep-alive \n\
+				Cookie: PHPSESSID=r2t5uvjq435r4q7ib3vtdjq120 \n\
+				Pragma: no-cache \n\
+				Cache-Control: no-cache \n\
 				\n\
+				shdf hsfjksh dfjk sdh fjkshdf jkshf jksdhf jksdfh jksdfh jksdfh sdjkfh djf \n\
 				";
 
 			ParseHeader parser;

@@ -44,6 +44,15 @@ void ParseHeader::Parse()
 			m_headermap.push_back(item);
 			item = NULL;
 		}
+		if (token == ParseHeader::token_t::QUERYSTRING)
+		{
+			item = new headermap_t{};
+			item->name = _strdup("QUERYSTRING");
+			item->value = _strdup(m_token);
+			m_headermap.push_back(item);
+			item = NULL;
+		}
+		
 		if (token == ParseHeader::token_t::PROPERTYNAME)
 		{
 			item = new headermap_t{};
@@ -65,6 +74,8 @@ void ParseHeader::Parse()
 			if (previous_token == '\n')
 			{
 				printf("Content Follows Next\n");
+				token = token_t::ENDTOKEN;
+				continue;
 			}
 			previous_token = token;
 		}
@@ -118,11 +129,18 @@ int ParseHeader::Token()
 			return ParseHeader::token_t::PROPERTYNAME;
 		}
 	}
-	c1 = AcceptRun("ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz\/-0123456789");
+	c1 = AcceptRun("ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz\/-0123456789.");
 	if (c1 != NULL)
 	{
 		m_token = _strdup(c1);
 		return ParseHeader::token_t::URL;
+	}
+	c1 = AcceptRun("\?\&ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz-_=0123456789");
+	if (c1 != NULL)
+	{
+		value.append(c1);
+		m_token = _strdup(value.c_str());
+		return ParseHeader::token_t::QUERYSTRING;
 	}
 	int end_marker = m_pos;
 	m_pos = begin_marker;
