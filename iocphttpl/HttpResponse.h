@@ -28,6 +28,7 @@ public:
 	bool isStatic;
 
 	CHAR* GetResponse2();
+	const CHAR* GetStaticFileName();
 
 private:
 	HttpHeader httpHeader;

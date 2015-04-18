@@ -169,6 +169,10 @@ int SocketCompletionPortServer::Start()
 		else
 			fprintf(stderr, "%d::WSARecv() is OK!\n", dwThreadId);
 
+
+		printf("%d::RECV bytes: %d\n", dwThreadId, PerIoData->BytesRECV);
+		printf("\n%d\n\n---------------------------------------------------\nDATA: %s\n\n", dwThreadId, PerIoData->DataBuf.buf);
+
 	}
 	return 0;
 }
@@ -192,6 +196,8 @@ void SocketCompletionPortServer::Dispatch(HttpRequest *httpRequest, HttpResponse
 {
 	httpResponse->isStatic = false;
 	httpRequest->isStatic = false;
+
+	printf("Dispatching %s \n", httpRequest->GetUrl());
 
 	if (httpRequest->GetMethod() == MethodType::HTTP_GET)
 	{
@@ -254,36 +260,42 @@ DWORD WINAPI SocketCompletionPortServer::ServerWorkerThread(LPVOID lpObject)
 
 	while (TRUE)
 	{
+		fprintf(stderr, "%d::Calling GetQueuedCompletionStatus\n", dwThreadId);
 		BOOL res1 = GetQueuedCompletionStatus(CompletionPort, &BytesTransferred, (PULONG_PTR)&PerHandleData, (LPOVERLAPPED *)&PerIoData, INFINITE);
 		if (res1==0)
 		{
-			fprintf(stderr, "%d::ServerWorkerThread--GetQueuedCompletionStatus() failed with error %d\n", dwThreadId, GetLastError());
+			fprintf(stderr, "%d::++++++ServerWorkerThread--GetQueuedCompletionStatus() failed with error %d\n", dwThreadId, GetLastError());
 			return 0;
 		}
 		else
-			fprintf(stderr, "%d::ServerWorkerThread--GetQueuedCompletionStatus() is OK!\n", dwThreadId);
+			fprintf(stderr, "%d::++++++ServerWorkerThread--GetQueuedCompletionStatus() is OK!\n", dwThreadId);
+
+		printf("%d::BytesTransferred=%d; DataBuf.len=%d\n", dwThreadId, BytesTransferred, PerIoData->DataBuf.len);
+		printf("%d::BytesRECV=%d; BytesSEND=%d\n", dwThreadId, PerIoData->BytesRECV, PerIoData->BytesSEND);
+		printf("DATA FROM QUEUE:\n%s\n", PerIoData->DataBuf.buf);
 
 		// First check to see if an error has occurred on the socket and if so
 		// then close the socket and cleanup the SOCKET_INFORMATION structure
 		// associated with the socket
-		if (BytesTransferred == 0 || PerIoData->BytesRECV == 0)
+		if (BytesTransferred == 0 )
 		{
-			printf("%d::ServerWorkerThread--Closing socket %d\n", dwThreadId, PerHandleData->Socket);
+			printf("%d::++++++ServerWorkerThread--Closing socket %d\n", dwThreadId, PerHandleData->Socket);
 			if (closesocket(PerHandleData->Socket) == SOCKET_ERROR)
 			{
-				fprintf(stderr, "%d::ServerWorkerThread--closesocket() failed with error %d\n", dwThreadId, WSAGetLastError());
+				fprintf(stderr, "%d::++++++ServerWorkerThread--closesocket() failed with error %d\n", dwThreadId, WSAGetLastError());
 				return 0;
 			}
 			else
-				fprintf(stderr, "%d::ServerWorkerThread--closesocket() is fine!\n", dwThreadId);
+				fprintf(stderr, "%d::++++++ServerWorkerThread--closesocket() is fine!\n", dwThreadId);
 
 			GlobalFree(PerHandleData);
 			GlobalFree(PerIoData);
 			continue;
 		}
-		if (PerIoData->BytesRECV > 0)
+		if (BytesTransferred > 0 || PerIoData->BytesRECV > 0)
 		{
 			httpRequest.Parse(PerIoData->DataBuf.buf);
+			fprintf(stderr, "%d::++++++Calling dispatch\n", dwThreadId);
 			obj->Dispatch(&httpRequest, &httpResponse);
 			if (httpResponse.isStatic)
 			{
@@ -291,10 +303,15 @@ DWORD WINAPI SocketCompletionPortServer::ServerWorkerThread(LPVOID lpObject)
 				fprintf(stderr, "%d::ServerWorkerThread: nBufSize=%d\n", dwThreadId, nBufSize);
 				PerIoData->LPBuffer = (CHAR*)malloc(nBufSize);
 				memset(PerIoData->LPBuffer, 0, nBufSize);
+				PerIoData->LPBuffer = httpResponse.GetResponse2();
 				PerIoData->DataBuf.buf = PerIoData->LPBuffer;
 				PerIoData->DataBuf.len = nBufSize;
-				PerIoData->LPBuffer = httpResponse.GetResponse2();
+				PerIoData->BytesSEND = nBufSize;
+				PerIoData->BytesRECV = 0;
 				httpResponse.Write("");
+				printf("Buffer size: %d\n", nBufSize);
+				printf("Sending file out: %s\n", httpResponse.GetStaticFileName());
+				printf("DATA: \n %s\n", PerIoData->DataBuf.buf);
 			}
 			else
 			{
@@ -302,17 +319,24 @@ DWORD WINAPI SocketCompletionPortServer::ServerWorkerThread(LPVOID lpObject)
 				ZeroMemory(&(PerIoData->Overlapped), sizeof(OVERLAPPED));
 				PerIoData->DataBuf.buf = PerIoData->Buffer;
 				httpResponse.GetResponse(PerIoData->Buffer, &PerIoData->byteBuffer, DATA_BUFSIZE);
+				PerIoData->BytesSEND = PerIoData->byteBuffer.size();
+				PerIoData->BytesRECV = 0;
 				httpResponse.Write("");
 				auto n = strlen(PerIoData->Buffer);
 				PerIoData->DataBuf.len = (ULONG)n;
 			}
-
+			SendBytes = PerIoData->BytesSEND;
 			PerIoData->BytesRECV = 0;
 			int res = WSASend(PerHandleData->Socket, &(PerIoData->DataBuf), 1, &SendBytes, 0, &(PerIoData->Overlapped), NULL);
 			if (res == SOCKET_ERROR)
 			{
-				fprintf(stderr, "%d::ServerWorkerThread--WSASend() failed with error %d\n", dwThreadId, WSAGetLastError());
+				fprintf(stderr, "%d::++++++ServerWorkerThread--WSASend() failed with error %d\n", dwThreadId, WSAGetLastError());
 			}
+			printf("++++++Bytes sent: %d\n", SendBytes);
+		}
+		else
+		{
+			fprintf(stderr, "%d::++++++Nothing to do: BytesTransferred=%d; SendBytes=%d\n", dwThreadId, BytesTransferred, SendBytes);
 		}
 
 	}

@@ -16,6 +16,10 @@ ScannerA::~ScannerA()
 
 void ScannerA::Input(const CHAR* str)
 {
+	m_start = 0;
+	m_end = 0;
+	m_pos = 0;
+
 	m_str = str;
 	const CHAR *lpC = &m_str[m_pos];
 	m_c = lpC;
@@ -30,7 +34,7 @@ void ScannerA::Backup()
 
 const CHAR* ScannerA::Next()
 {
-	if (m_pos == strlen(m_str))
+	if (m_pos >= strlen(m_str))
 	{
 		return NULL;
 	}

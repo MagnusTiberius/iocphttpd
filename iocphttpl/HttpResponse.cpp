@@ -40,6 +40,11 @@ void HttpResponse::SetStaticFileName(string path)
 	SetContentTypeFromExtension();
 }
 
+const CHAR* HttpResponse::GetStaticFileName()
+{
+	return m_path.c_str();
+}
+
 PTSTR  HttpResponse::GetPathExtension(const char* pszPath)
 {
 	std::string str = std::string(pszPath);
@@ -111,6 +116,8 @@ std::vector<byte> HttpResponse::GetStaticContent(const char *path)
 		std::istream_iterator<BYTE>(file),
 		std::istream_iterator<BYTE>());
 
+	printf("GetStaticContent: %s is now read out of the file, copied into a buffer\n", path);
+
 	return vec;
 }
 
@@ -119,6 +126,7 @@ void HttpResponse::WriteStatic(const char *path)
 	if (strlen(path) > 0)
 	{
 		m_sbResponse = GetStaticContent(path);
+		printf("PATH: %s is now in the buffer\n", path);
 	}
 	else
 	{
@@ -151,7 +159,7 @@ void HttpResponse::GetResponse(char* pszResponse, vector<byte> *pvb, DWORD dwSiz
 	//sprintf_s(pszResponse, dwSize, "%s", str.c_str());
 	memcpy(pszResponse, str.c_str(), str.size());
 	m_sbResponse.assign(str.begin(), str.end());
-	printf("%d::%s \n", dwThreadId, pszResponse);
+	//printf("%d::%s \n", dwThreadId, pszResponse);
 	//vector<byte> tpvb = *pvb;
 	//tpvb.assign(m_sbResponse.begin(), m_sbResponse.end());
 	pvb->assign(m_sbResponse.begin(), m_sbResponse.end());

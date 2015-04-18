@@ -14,19 +14,21 @@ ParseHeader::~ParseHeader()
 
 void ParseHeader::Parse()
 {
+	DWORD dwThreadId = GetCurrentThreadId();
 	Reset();
 	headermap_t *item = NULL;
 	int previous_token = NULL;
 	int token = Token();
 	while (token != token_t::ENDTOKEN)
 	{
+		printf(".");
 		token = Token();
 		if (token == ParseHeader::token_t::GET || token == ParseHeader::token_t::POST)
 		{
 			item = new headermap_t{};
 			item->name = _strdup("METHOD");
 			item->value = _strdup(m_token);
-			printf("Parse: %s=%s \n", item->name, item->value);
+			printf("%d::Parse-POST: %s=%s \n", dwThreadId, item->name, item->value);
 			m_headermap.push_back(item);
 			item = NULL;
 		}
@@ -35,7 +37,7 @@ void ParseHeader::Parse()
 			item = new headermap_t{};
 			item->name = _strdup("URL");
 			item->value = _strdup(m_token);
-			printf("Parse: %s=%s \n", item->name, item->value);
+			printf("%d::Parse-URL: %s=%s \n", dwThreadId, item->name, item->value);
 			m_headermap.push_back(item);
 			item = NULL;
 		}
@@ -44,7 +46,7 @@ void ParseHeader::Parse()
 			item = new headermap_t{};
 			item->name = _strdup("VERSION");
 			item->value = _strdup(m_token);
-			printf("Parse: %s=%s \n", item->name, item->value);
+			//printf("%d::Parse-HTTPVERSION: %s=%s \n", dwThreadId, item->name, item->value);
 			m_headermap.push_back(item);
 			item = NULL;
 		}
@@ -53,7 +55,7 @@ void ParseHeader::Parse()
 			item = new headermap_t{};
 			item->name = _strdup("QUERYSTRING");
 			item->value = _strdup(m_token);
-			printf("Parse: %s=%s \n", item->name, item->value);
+			//printf("%d::Parse-QUERYSTRING: %s=%s \n", dwThreadId, item->name, item->value);
 			m_headermap.push_back(item);
 			item = NULL;
 		}
@@ -66,7 +68,7 @@ void ParseHeader::Parse()
 			CHAR *v = AcceptUntil("\n");
 
 			item->value = _strdup(v);
-			printf("Parse: %s=%s \n", item->name, item->value);
+			//printf("%d::Parse-PROPERTYNAME: %s=%s \n", dwThreadId, item->name, item->value);
 			m_headermap.push_back(item);
 			item = NULL;
 
@@ -76,10 +78,10 @@ void ParseHeader::Parse()
 		}
 		if (token == '\n')
 		{
-			printf("NewLine\n");
+			printf("%d::NewLine\n", dwThreadId);
 			if (previous_token == '\n')
 			{
-				printf("Content Follows Next\n");
+				printf("%d::Content Follows Next\n", dwThreadId);
 				token = token_t::ENDTOKEN;
 				//ParseContent();
 				continue;
@@ -189,11 +191,18 @@ int ParseHeader::Token()
 			return ParseHeader::token_t::PROPERTYNAME;
 		}
 	}
-	c1 = AcceptRun("ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz\/-0123456789._");
+	c1 = AcceptRun("\/");
 	if (c1 != NULL)
 	{
-		m_token = _strdup(c1);
-		return ParseHeader::token_t::URL;
+		printf("Slash detected.............................\n");
+		Backup();
+		c1 = AcceptRun("ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz\/-0123456789._");
+		if (c1 != NULL)
+		{
+			m_token = _strdup(c1);
+			printf("URL ====> %s\n", c1);
+			return ParseHeader::token_t::URL;
+		}
 	}
 	c1 = AcceptRun("\?\&ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz-_=0123456789");
 	if (c1 != NULL)
@@ -205,17 +214,22 @@ int ParseHeader::Token()
 	int end_marker = m_pos;
 	m_pos = begin_marker;
 	const CHAR *c = Next();
+	if (c == NULL)
+	{
+		return ParseHeader::token_t::ENDTOKEN;
+	}
 	return *c;
 }
 
 CHAR* ParseHeader::GetUrl()
 {
+	DWORD dwThreadId = GetCurrentThreadId();
 	HEADERMAPLIST::iterator itr;
 	for (itr = m_headermap.begin(); itr != m_headermap.end(); itr++)
 	{
 		lpheadermap_t pitem = *itr;
 		std::string s = std::string(pitem->name);
-		printf("GetUrl  %s\n",s.c_str());
+		//printf("%d::GetUrl  %s\n", dwThreadId, s.c_str());
 		if (s.compare("URL") == 0)
 		{
 			printf("GetUrl Found %s\n", pitem->value);
