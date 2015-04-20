@@ -129,7 +129,7 @@ closepar		\)
 
 
 [ \t]*		{}
-[\n]		{ yylineno++; hplval.identifier_tok = _strdup(yytext);  printf("Lexer::newline:\n"); return NEWLINE;	}
+[\n]		{ yylineno++; hplval.identifier_tok = _strdup(yytext);  /*printf("Lexer::newline:\n");*/ return NEWLINE;	}
 
 .			{ hplval.int_val = atoi(yytext); 	}
 

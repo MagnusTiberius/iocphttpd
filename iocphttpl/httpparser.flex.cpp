@@ -982,7 +982,7 @@ case 24:
 /* rule 24 can match eol */
 YY_RULE_SETUP
 #line 132 "httpparser.l"
-{ hplineno++; hplval.identifier_tok = _strdup(hptext);  printf("Lexer::newline:\n"); return NEWLINE;	}
+{ hplineno++; hplval.identifier_tok = _strdup(hptext);  /*printf("Lexer::newline:\n");*/ return NEWLINE;	}
 	YY_BREAK
 case 25:
 YY_RULE_SETUP

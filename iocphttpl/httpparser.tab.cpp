@@ -1446,19 +1446,19 @@ yyreduce:
         case 4:
 /* Line 1792 of yacc.c  */
 #line 53 "httpparser.y"
-    { printf("line1 seen\n"); }
+    { /*printf("line1 seen\n");*/ }
     break;
 
   case 5:
 /* Line 1792 of yacc.c  */
 #line 54 "httpparser.y"
-    { printf("property_item seen\n"); }
+    { /*printf("property_item seen\n");*/ }
     break;
 
   case 6:
 /* Line 1792 of yacc.c  */
 #line 55 "httpparser.y"
-    { printf("content should follow after this marker.\n"); }
+    { /*printf("content should follow after this marker.\n");*/ }
     break;
 
   case 7:

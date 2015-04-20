@@ -88,6 +88,8 @@ void HttpResponse::SetContentTypeFromExtension()
 
 std::vector<byte> HttpResponse::GetStaticContent(const char *path)
 {
+	DWORD dwThreadId = GetCurrentThreadId();
+	printf("%d::Reading filename: %s \n", dwThreadId, path);
 	::WaitForSingleObject(ghMutex, INFINITE);
 
 	// open the file:

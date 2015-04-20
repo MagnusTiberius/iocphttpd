@@ -50,9 +50,9 @@ input	: /* empty */
 		| input line 
 		;
 
-line	: line1 NEWLINE			{ printf("line1 seen\n"); }
-		| property NEWLINE		{ printf("property_item seen\n"); }
-		| NEWLINE				{ printf("content should follow after this marker.\n"); }
+line	: line1 NEWLINE			{ /*printf("line1 seen\n");*/ }
+		| property NEWLINE		{ /*printf("property_item seen\n");*/ }
+		| NEWLINE				{ /*printf("content should follow after this marker.\n");*/ }
 		;
 
 
