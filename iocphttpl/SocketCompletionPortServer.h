@@ -50,11 +50,11 @@ public:
 	virtual void Dispatch(HttpRequest *httpRequest, HttpResponse *httpResponse);
 	virtual void EvalStatic(HttpRequest *httpRequest, HttpResponse *httpResponse);
 	virtual void UrlNotFound(HttpRequest *httpRequest, HttpResponse *httpResponse);
+	HANDLE ghMutex;
 
 private:
 	static DWORD WINAPI ServerWorkerThread(LPVOID CompletionPortID);
 	HANDLE CompletionPort;
 	int m_PortNum = PORT;
-
 };
 

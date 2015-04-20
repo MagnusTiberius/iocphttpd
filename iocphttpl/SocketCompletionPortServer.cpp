@@ -3,11 +3,17 @@
 
 SocketCompletionPortServer::SocketCompletionPortServer()
 {
+	ghMutex = CreateMutex(
+		NULL,              // default security attributes
+		FALSE,             // initially not owned
+		NULL);
+
 }
 
 
 SocketCompletionPortServer::~SocketCompletionPortServer()
 {
+	::CloseHandle(ghMutex);
 }
 
 SocketCompletionPortServer::SocketCompletionPortServer(int PortNum)
@@ -286,6 +292,7 @@ DWORD WINAPI SocketCompletionPortServer::ServerWorkerThread(LPVOID lpObject)
 
 		if (PerIoData->BytesRECV > 0)
 		{
+			::WaitForSingleObject(obj->ghMutex, INFINITE);
 			if ((PerIoDataSend = (LPPER_IO_OPERATION_DATA)GlobalAlloc(GPTR, sizeof(PER_IO_OPERATION_DATA))) == NULL)
 			{
 
@@ -322,7 +329,7 @@ DWORD WINAPI SocketCompletionPortServer::ServerWorkerThread(LPVOID lpObject)
 			}
 			SendBytes = PerIoDataSend->BytesSEND;
 			printf("\n\n WSASEND: SendBytes=%d; PerIoDataSend->BytesRECV=%d; PerIoDataSend->BytesSEND=%d\n\n", SendBytes, PerIoDataSend->BytesRECV, PerIoDataSend->BytesSEND);
-
+			::ReleaseMutex(obj->ghMutex);
 		}
 
 	}
