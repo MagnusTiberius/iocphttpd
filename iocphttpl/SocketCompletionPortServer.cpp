@@ -68,7 +68,7 @@ int SocketCompletionPortServer::Start()
 
 	int nThreads = (int)SystemInfo.dwNumberOfProcessors * 2;
 
-	nThreads = 4;
+	//nThreads = 4;
 
 	// Create worker threads based on the number of processors available on the
 	// system. Create two worker threads for each processor
@@ -124,6 +124,12 @@ int SocketCompletionPortServer::Start()
 		{
 			fprintf(stderr, "%d::WSAAccept() failed with error %d\n", dwThreadId, WSAGetLastError());
 			isOK = false;
+			printf("####################################################################################\n");
+			printf("####################################################################################\n");
+			printf("###################### ERROR                                        ################\n");
+			printf("####################################################################################\n");
+			printf("####################################################################################\n");
+			exit(1);
 			continue;
 		}
 		else
@@ -142,6 +148,12 @@ int SocketCompletionPortServer::Start()
 		if (CreateIoCompletionPort((HANDLE)Accept, CompletionPort, (DWORD)PerHandleData, 0) == NULL)
 		{
 			fprintf(stderr, "%d::CreateIoCompletionPort() failed with error %d\n", dwThreadId, GetLastError());
+			printf("####################################################################################\n");
+			printf("####################################################################################\n");
+			printf("###################### ERROR                                        ################\n");
+			printf("####################################################################################\n");
+			printf("####################################################################################\n");
+			exit(1);
 			isOK = false;
 			continue;
 		}
@@ -152,6 +164,12 @@ int SocketCompletionPortServer::Start()
 		if ((PerIoData = (LPPER_IO_OPERATION_DATA)GlobalAlloc(GPTR, sizeof(PER_IO_OPERATION_DATA))) == NULL)
 		{
 			fprintf(stderr, "%d::GlobalAlloc() failed with error %d\n", dwThreadId, GetLastError());
+			printf("####################################################################################\n");
+			printf("####################################################################################\n");
+			printf("###################### ERROR                                        ################\n");
+			printf("####################################################################################\n");
+			printf("####################################################################################\n");
+			exit(1);
 			isOK = false;
 			continue;
 		}
@@ -173,6 +191,12 @@ int SocketCompletionPortServer::Start()
 			if (WSAGetLastError() != ERROR_IO_PENDING)
 			{
 				fprintf(stderr, "%d::WSARecv() failed with error %d\n", dwThreadId, WSAGetLastError());
+				printf("####################################################################################\n");
+				printf("####################################################################################\n");
+				printf("###################### ERROR                                        ################\n");
+				printf("####################################################################################\n");
+				printf("####################################################################################\n");
+				exit(1);
 				isOK = true;
 				continue;
 			}
