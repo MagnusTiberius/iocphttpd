@@ -411,7 +411,7 @@ static yyconst flex_int32_t yy_ec[256] =
        16,    1,   17,    1,   18,   18,   18,   18,   19,   18,
        20,   21,   18,   18,   18,   18,   18,   18,   22,   23,
        18,   18,   24,   25,   18,   18,   18,   18,   18,   18,
-       26,   26,   26,   26,   26,   26,   18,   18,   18,   18,
+       26,   26,   26,   26,   27,   26,   18,   18,   18,   18,
 
        18,   18,   18,   18,   18,   18,   18,   18,   18,   18,
        18,   18,   18,   18,   18,   18,   18,   18,   18,   18,
@@ -432,23 +432,23 @@ static yyconst flex_int32_t yy_ec[256] =
         1,    1,    1,    1,    1
     } ;
 
-static yyconst flex_int32_t yy_meta[27] =
+static yyconst flex_int32_t yy_meta[28] =
     {   0,
         1,    1,    2,    1,    1,    1,    1,    1,    1,    3,
         4,    4,    5,    6,    1,    1,    1,    7,    7,    7,
-        7,    7,    7,    7,    7,    6
+        7,    7,    7,    7,    7,    6,    8
     } ;
 
 static yyconst flex_int16_t yy_base[78] =
     {   0,
-        0,    0,   26,    0,    0,    0,  132,  171,  126,  171,
-      171,  171,  171,  171,  171,  171,  171,  114,  171,  171,
-       43,   60,   36,   49,  171,    0,  109,  171,  171,   77,
-       94,   35,   42,   52,  117,  105,  103,  103,  171,   96,
-       57,   53,   56,   65,  101,   98,   91,   71,   63,   64,
-       73,  171,   93,   82,   74,    0,   83,   79,   77,   86,
-       90,   71,    0,   55,  171,  171,  118,  123,   58,  128,
-      133,  138,  143,  147,  152,  156,  163
+        0,    0,   27,    0,    0,    0,  148,  190,  140,  190,
+      190,  190,  190,  190,  190,  190,  190,  122,  190,  190,
+       45,   63,   38,   51,  190,    0,  121,  190,  190,   81,
+       99,   37,   44,   54,  126,  111,  109,  109,  190,  101,
+       60,   50,   59,   69,  106,  103,   97,   74,   67,   68,
+       77,  190,  102,   92,   78,    0,   88,   86,   83,   85,
+      102,   72,    0,   54,  190,  190,  124,  130,  132,  138,
+      144,  150,  156,  161,  167,  173,  181
     } ;
 
 static yyconst flex_int16_t yy_def[78] =
@@ -463,56 +463,60 @@ static yyconst flex_int16_t yy_def[78] =
        66,   66,   66,   66,   66,   66,   66
     } ;
 
-static yyconst flex_int16_t yy_nxt[198] =
+static yyconst flex_int16_t yy_nxt[218] =
     {   0,
         8,    9,   10,    8,   11,   12,   13,   14,   15,    8,
        16,   17,   18,   19,   20,    8,    8,   21,   21,   22,
-       21,   21,   23,   21,   21,   24,    8,    9,   10,   25,
-       11,   12,   13,   14,   15,    8,   16,   26,   27,   19,
-       20,   28,   29,   30,   30,   31,   32,   30,   33,   30,
-       30,   34,   37,   47,   40,   38,   39,   43,   37,   50,
-       47,   46,   39,   51,   44,   39,   37,   65,   41,   37,
-       39,   40,   38,   39,   40,   56,   56,   54,   42,   55,
-       46,   47,   47,   63,   39,   41,   46,   58,   59,   38,
-       39,   47,   40,   56,   56,   47,   60,   47,   54,   61,
+       21,   21,   23,   21,   21,   24,   24,    8,    9,   10,
+       25,   11,   12,   13,   14,   15,    8,   16,   26,   27,
+       19,   20,   28,   29,   30,   30,   31,   32,   30,   33,
+       30,   30,   34,   34,   37,   47,   40,   38,   39,   43,
+       37,   50,   47,   46,   39,   51,   65,   39,   40,   37,
+       41,   41,   37,   39,   54,   38,   39,   40,   56,   56,
+       56,   42,   55,   46,   63,   47,   47,   39,   41,   41,
+       46,   58,   59,   38,   39,   47,   40,   56,   56,   56,
 
-       40,   62,   48,   46,   47,   53,   38,   39,   47,   47,
-       58,   39,   49,   45,   40,   53,   39,   36,   35,   48,
-       40,   45,   40,   40,   40,   41,   36,   35,   41,   41,
-       47,   66,   47,   47,   47,   48,   66,   66,   48,   48,
-       37,   66,   66,   37,   37,   52,   66,   52,   66,   52,
-       57,   66,   66,   57,   46,   66,   66,   46,   46,   56,
-       66,   66,   56,   64,   66,   64,   64,   64,   64,   64,
-        7,   66,   66,   66,   66,   66,   66,   66,   66,   66,
+       60,   47,   54,   47,   47,   61,   48,   48,   46,   58,
+       40,   38,   39,   62,   53,   47,   39,   49,   45,   40,
+       47,   53,   39,   36,   48,   48,   40,   35,   40,   40,
+       40,   40,   41,   45,   36,   41,   41,   41,   44,   44,
+       47,   35,   47,   47,   47,   47,   48,   66,   66,   48,
+       48,   48,   37,   66,   66,   37,   37,   37,   52,   66,
+       52,   66,   52,   57,   57,   66,   66,   57,   57,   46,
+       66,   66,   46,   46,   46,   56,   56,   66,   66,   56,
+       56,   64,   66,   64,   64,   64,   64,   64,   64,    7,
+       66,   66,   66,   66,   66,   66,   66,   66,   66,   66,
+
        66,   66,   66,   66,   66,   66,   66,   66,   66,   66,
        66,   66,   66,   66,   66,   66,   66
-
     } ;
 
-static yyconst flex_int16_t yy_chk[198] =
+static yyconst flex_int16_t yy_chk[218] =
     {   0,
         1,    1,    1,    1,    1,    1,    1,    1,    1,    1,
         1,    1,    1,    1,    1,    1,    1,    1,    1,    1,
-        1,    1,    1,    1,    1,    1,    3,    3,    3,    3,
+        1,    1,    1,    1,    1,    1,    1,    3,    3,    3,
         3,    3,    3,    3,    3,    3,    3,    3,    3,    3,
         3,    3,    3,    3,    3,    3,    3,    3,    3,    3,
-        3,    3,   21,   32,   23,   21,   21,   23,   24,   32,
-       33,   34,   24,   33,   69,   34,   41,   64,   21,   22,
-       41,   42,   22,   22,   43,   44,   44,   42,   22,   43,
-       48,   49,   50,   62,   48,   22,   30,   49,   50,   30,
-       30,   51,   55,   57,   57,   59,   51,   58,   55,   59,
+        3,    3,    3,    3,   21,   32,   23,   21,   21,   23,
+       24,   32,   33,   34,   24,   33,   64,   34,   42,   41,
+       21,   21,   22,   41,   42,   22,   22,   43,   44,   44,
+       44,   22,   43,   48,   62,   49,   50,   48,   22,   22,
+       30,   49,   50,   30,   30,   51,   55,   57,   57,   57,
 
-       54,   61,   30,   31,   60,   53,   31,   31,   61,   47,
-       60,   46,   31,   45,   40,   38,   37,   36,   35,   31,
-       67,   27,   67,   67,   67,   68,   18,    9,   68,   68,
-       70,    7,   70,   70,   70,   71,    0,    0,   71,   71,
-       72,    0,    0,   72,   72,   73,    0,   73,    0,   73,
-       74,    0,    0,   74,   75,    0,    0,   75,   75,   76,
-        0,    0,   76,   77,    0,   77,   77,   77,   77,   77,
+       51,   59,   55,   60,   58,   59,   30,   30,   31,   60,
+       54,   31,   31,   61,   53,   47,   46,   31,   45,   40,
+       61,   38,   37,   36,   31,   31,   67,   35,   67,   67,
+       67,   67,   68,   27,   18,   68,   68,   68,   69,   69,
+       70,    9,   70,   70,   70,   70,   71,    7,    0,   71,
+       71,   71,   72,    0,    0,   72,   72,   72,   73,    0,
+       73,    0,   73,   74,   74,    0,    0,   74,   74,   75,
+        0,    0,   75,   75,   75,   76,   76,    0,    0,   76,
+       76,   77,    0,   77,   77,   77,   77,   77,   77,   66,
        66,   66,   66,   66,   66,   66,   66,   66,   66,   66,
+
        66,   66,   66,   66,   66,   66,   66,   66,   66,   66,
        66,   66,   66,   66,   66,   66,   66
-
     } ;
 
 static yy_state_type yy_last_accepting_state;
@@ -542,7 +546,7 @@ char *hptext;
 //int yyerror(char *s);
 //int hplineno = 1;
 
-#line 546 "httpparser.flex.cpp"
+#line 550 "httpparser.flex.cpp"
 
 #define INITIAL 0
 #define ASTATE 1
@@ -726,7 +730,7 @@ YY_DECL
 #line 36 "httpparser.l"
 
 
-#line 730 "httpparser.flex.cpp"
+#line 734 "httpparser.flex.cpp"
 
 	if ( !(yy_init) )
 		{
@@ -785,7 +789,7 @@ yy_match:
 			yy_current_state = yy_nxt[yy_base[yy_current_state] + (unsigned int) yy_c];
 			++yy_cp;
 			}
-		while ( yy_base[yy_current_state] != 171 );
+		while ( yy_base[yy_current_state] != 190 );
 
 yy_find_action:
 		yy_act = yy_accept[yy_current_state];
@@ -812,7 +816,7 @@ do_action:	/* This label is used only to access EOF actions. */
 case 1:
 YY_RULE_SETUP
 #line 38 "httpparser.l"
-{ hplval.identifier_tok = _strdup(hptext); printf("Lexer::digits:=>%s\n",hptext); return DIGITS; }
+{ hplval.identifier_tok = _strdup(hptext); /*printf("Lexer::digits:=>%s\n",hptext);*/ return DIGITS; }
 	YY_BREAK
 case 2:
 YY_RULE_SETUP
@@ -827,19 +831,19 @@ YY_RULE_SETUP
 case 4:
 YY_RULE_SETUP
 #line 41 "httpparser.l"
-{ hplval.identifier_tok = _strdup(hptext); printf("Lexer::identifier\n"); return IDENTIFIER; }
+{ hplval.identifier_tok = _strdup(hptext); /*printf("Lexer::identifier\n");*/ return IDENTIFIER; }
 	YY_BREAK
 case 5:
 YY_RULE_SETUP
 #line 42 "httpparser.l"
-{ hplval.identifier_tok = _strdup(hptext); printf("Lexer::digit\n"); return DIGIT; }
+{ hplval.identifier_tok = _strdup(hptext); /*printf("Lexer::digit\n");*/ return DIGIT; }
 	YY_BREAK
 case 6:
 YY_RULE_SETUP
 #line 44 "httpparser.l"
 {	BEGIN ASTATE; 
 						hplval.identifier_tok = _strdup(hptext); 
-						printf("Lexer::methodaction:%s\n",hptext); 
+						/*printf("Lexer::methodaction:%s\n",hptext);*/ 
 						return METHODACTION; 
 					}
 	YY_BREAK
@@ -847,7 +851,7 @@ case 7:
 YY_RULE_SETUP
 #line 50 "httpparser.l"
 { hplval.identifier_tok = _strdup(hptext); 
-					  printf("Lexer::urlpath:%s\n",hptext); 
+					  /*printf("Lexer::urlpath:%s\n",hptext);*/ 
 					  return URLPATH; 
 					}
 	YY_BREAK
@@ -855,7 +859,7 @@ case 8:
 YY_RULE_SETUP
 #line 54 "httpparser.l"
 { hplval.identifier_tok = _strdup(hptext); 
-					  printf("Lexer::EQUAL:%s\n",hptext); 
+					  /*printf("Lexer::EQUAL:%s\n",hptext);*/ 
 					  return EQUAL; 
 					}
 	YY_BREAK
@@ -863,7 +867,7 @@ case 9:
 YY_RULE_SETUP
 #line 58 "httpparser.l"
 { hplval.identifier_tok = _strdup(hptext); 
-					  printf("Lexer::question:%s\n",hptext); 
+					  /*printf("Lexer::question:%s\n",hptext);*/ 
 					  return QUESTION; 
 					}
 	YY_BREAK
@@ -871,7 +875,7 @@ case 10:
 YY_RULE_SETUP
 #line 63 "httpparser.l"
 { hplval.identifier_tok = _strdup(hptext); 
-					  printf("Lexer::ampersand:%s\n",hptext); 
+					  /*printf("Lexer::ampersand:%s\n",hptext);*/ 
 					  return AMPERSAND; 
 					}
 	YY_BREAK
@@ -884,7 +888,7 @@ case 12:
 YY_RULE_SETUP
 #line 71 "httpparser.l"
 { hplval.identifier_tok = _strdup(hptext); 
-					  printf("Lexer::identifier2:%s\n",hptext); 
+					  /*printf("Lexer::identifier2:%s\n",hptext);*/ 
 					  return ID2; 
 					}
 	YY_BREAK
@@ -893,7 +897,7 @@ YY_RULE_SETUP
 #line 77 "httpparser.l"
 { BEGIN 0; 
 					  hplval.identifier_tok = _strdup(hptext); 
-					  printf("Lexer::methodver:=%s\n",hptext); 
+					  /*printf("Lexer::methodver:=%s\n",hptext);*/ 
 					  return METHODVER; 
 					}
 	YY_BREAK
@@ -901,7 +905,7 @@ case 14:
 YY_RULE_SETUP
 #line 83 "httpparser.l"
 { hplval.identifier_tok = _strdup(hptext); 
-					  printf("Lexer::identifier2:=%s\n",hptext); 
+					  /*printf("Lexer::identifier2:=%s\n",hptext);*/ 
 					  return ID2; 
 					}
 	YY_BREAK
@@ -909,7 +913,7 @@ case 15:
 YY_RULE_SETUP
 #line 88 "httpparser.l"
 { hplval.identifier_tok = _strdup(hptext); 
-					  printf("Lexer::PROPNAME:=%s\n",hptext); 
+					  /*printf("Lexer::PROPNAME:=%s\n",hptext);*/ 
 					  return PROPNAME; 
 					}
 	YY_BREAK
@@ -917,7 +921,7 @@ case 16:
 YY_RULE_SETUP
 #line 93 "httpparser.l"
 { hplval.identifier_tok = _strdup(hptext); 
-					  printf("Lexer::COMMA:=%s\n",hptext); 
+					  /*printf("Lexer::COMMA:=%s\n",hptext);*/ 
 					  return COMMA; 
 					}
 	YY_BREAK
@@ -925,7 +929,7 @@ case 17:
 YY_RULE_SETUP
 #line 98 "httpparser.l"
 { hplval.identifier_tok = _strdup(hptext); 
-					  printf("Lexer::SEMICOL:=%s\n",hptext); 
+					  /*printf("Lexer::SEMICOL:=%s\n",hptext);*/ 
 					  return SEMICOL; 
 					}
 	YY_BREAK
@@ -933,7 +937,7 @@ case 18:
 YY_RULE_SETUP
 #line 103 "httpparser.l"
 { hplval.identifier_tok = _strdup(hptext); 
-					  printf("Lexer::COLON:=%s\n",hptext); 
+					  /*printf("Lexer::COLON:=%s\n",hptext);*/ 
 					  return COLON; 
 					}
 	YY_BREAK
@@ -941,7 +945,7 @@ case 19:
 YY_RULE_SETUP
 #line 108 "httpparser.l"
 { hplval.identifier_tok = _strdup(hptext); 
-					  printf("Lexer::FSLASH:=%s\n",hptext); 
+					  /*printf("Lexer::FSLASH:=%s\n",hptext);*/ 
 					  return FSLASH; 
 					}
 	YY_BREAK
@@ -949,7 +953,7 @@ case 20:
 YY_RULE_SETUP
 #line 113 "httpparser.l"
 { hplval.identifier_tok = _strdup(hptext); 
-					  printf("Lexer::PERIOD:=%s\n",hptext); 
+					  /*printf("Lexer::PERIOD:=%s\n",hptext);*/ 
 					  return PERIOD; 
 					}
 	YY_BREAK
@@ -957,7 +961,7 @@ case 21:
 YY_RULE_SETUP
 #line 118 "httpparser.l"
 { hplval.identifier_tok = _strdup(hptext); 
-					  printf("Lexer::OPENPAR:=%s\n",hptext); 
+					  /*printf("Lexer::OPENPAR:=%s\n",hptext);*/ 
 					  return OPENPAR; 
 					}
 	YY_BREAK
@@ -965,7 +969,7 @@ case 22:
 YY_RULE_SETUP
 #line 123 "httpparser.l"
 { hplval.identifier_tok = _strdup(hptext); 
-					  printf("Lexer::CLOSEPAR:=%s\n",hptext); 
+					  /*printf("Lexer::CLOSEPAR:=%s\n",hptext);*/ 
 					  return CLOSEPAR; 
 					}
 	YY_BREAK
@@ -990,7 +994,7 @@ YY_RULE_SETUP
 #line 136 "httpparser.l"
 ECHO;
 	YY_BREAK
-#line 994 "httpparser.flex.cpp"
+#line 998 "httpparser.flex.cpp"
 case YY_STATE_EOF(INITIAL):
 case YY_STATE_EOF(ASTATE):
 case YY_STATE_EOF(BSTATE):

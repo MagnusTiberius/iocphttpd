@@ -59,9 +59,14 @@ int SocketCompletionPortServer::Start()
 
 	// Determine how many processors are on the system
 	GetSystemInfo(&SystemInfo);
+
+	int nThreads = (int)SystemInfo.dwNumberOfProcessors * 2;
+
+	nThreads = 4;
+
 	// Create worker threads based on the number of processors available on the
 	// system. Create two worker threads for each processor
-	for (i = 0; i < (int)SystemInfo.dwNumberOfProcessors * 2; i++)
+	for (i = 0; i < nThreads; i++)
 	{
 		// Create a server worker thread and pass the completion port to the thread
 		if ((ThreadHandle = CreateThread(NULL, 0, ServerWorkerThread, this, 0, &ThreadID)) == NULL)
@@ -238,7 +243,7 @@ DWORD WINAPI SocketCompletionPortServer::ServerWorkerThread(LPVOID lpObject)
 	HANDLE CompletionPort = (HANDLE)obj->GetCompletionPort();
 	DWORD BytesTransferred;
 	LPPER_HANDLE_DATA PerHandleData;
-	LPPER_IO_OPERATION_DATA PerIoData;
+	LPPER_IO_OPERATION_DATA PerIoData, PerIoDataSend;
 	DWORD SendBytes, RecvBytes;
 	DWORD Flags;
 
@@ -276,37 +281,48 @@ DWORD WINAPI SocketCompletionPortServer::ServerWorkerThread(LPVOID lpObject)
 			GlobalFree(PerIoData);
 			continue;
 		}
+
+		printf("\n\n WSARECV BytesTransferred=%d; PerIoData->BytesRECV=%d; PerIoData->BytesSEND=%d\n\n", BytesTransferred, PerIoData->BytesRECV, PerIoData->BytesSEND);
+
 		if (PerIoData->BytesRECV > 0)
 		{
+			if ((PerIoDataSend = (LPPER_IO_OPERATION_DATA)GlobalAlloc(GPTR, sizeof(PER_IO_OPERATION_DATA))) == NULL)
+			{
+
+			}
+
 			httpRequest.Parse(PerIoData->DataBuf.buf);
 			obj->Dispatch(&httpRequest, &httpResponse);
-			ZeroMemory(PerIoData->Buffer, DATA_BUFSIZE);
-			ZeroMemory(&(PerIoData->Overlapped), sizeof(OVERLAPPED));
-			PerIoData->DataBuf.buf = PerIoData->Buffer;
-			httpResponse.GetResponse(PerIoData->Buffer, &PerIoData->byteBuffer, DATA_BUFSIZE);
+			ZeroMemory(PerIoDataSend->Buffer, DATA_BUFSIZE);
+			ZeroMemory(&(PerIoDataSend->Overlapped), sizeof(OVERLAPPED));
+			PerIoDataSend->DataBuf.buf = PerIoDataSend->Buffer;
+			httpResponse.GetResponse(PerIoDataSend->Buffer, &PerIoDataSend->byteBuffer, DATA_BUFSIZE);
 			httpResponse.Write("");
-			auto n = strlen(PerIoData->Buffer);
-			PerIoData->DataBuf.len = (ULONG)n;
-			if (PerIoData->byteBuffer.size() > 0)
+			auto n = strlen(PerIoDataSend->Buffer);
+			PerIoDataSend->DataBuf.len = (ULONG)n;
+			if (PerIoDataSend->byteBuffer.size() > 0)
 			{
-				size_t bufsiz = PerIoData->byteBuffer.size() * sizeof(PerIoData->byteBuffer[0]); 
-				if (PerIoData->LPBuffer != NULL)
+				size_t bufsiz = PerIoDataSend->byteBuffer.size() * sizeof(PerIoDataSend->byteBuffer[0]);
+				if (PerIoDataSend->LPBuffer != NULL)
 				{
-					free(PerIoData->LPBuffer);
-					PerIoData->LPBuffer = NULL;
+					free(PerIoDataSend->LPBuffer);
+					PerIoDataSend->LPBuffer = NULL;
 				}
-				PerIoData->LPBuffer = (CHAR*)malloc(bufsiz);
-				memset(PerIoData->LPBuffer, '\0', bufsiz);
-				memcpy(PerIoData->LPBuffer, &PerIoData->byteBuffer[0], bufsiz);
-				PerIoData->DataBuf.buf = PerIoData->LPBuffer;
-				PerIoData->DataBuf.len = bufsiz;
+				PerIoDataSend->LPBuffer = (CHAR*)malloc(bufsiz);
+				memset(PerIoDataSend->LPBuffer, '\0', bufsiz);
+				memcpy(PerIoDataSend->LPBuffer, &PerIoDataSend->byteBuffer[0], bufsiz);
+				PerIoDataSend->DataBuf.buf = PerIoDataSend->LPBuffer;
+				PerIoDataSend->DataBuf.len = bufsiz;
 			}
-			PerIoData->BytesRECV = 0;
-			int res = WSASend(PerHandleData->Socket, &(PerIoData->DataBuf), 1, &SendBytes, 0, &(PerIoData->Overlapped), NULL);
+			PerIoDataSend->BytesRECV = 0;
+			int res = WSASend(PerHandleData->Socket, &(PerIoDataSend->DataBuf), 1, &PerIoDataSend->BytesSEND, 0, &(PerIoDataSend->Overlapped), NULL);
 			if (res == SOCKET_ERROR)
 			{
 				fprintf(stderr, "%d::ServerWorkerThread--WSASend() failed with error %d\n", dwThreadId, WSAGetLastError());
 			}
+			SendBytes = PerIoDataSend->BytesSEND;
+			printf("\n\n WSASEND: SendBytes=%d; PerIoDataSend->BytesRECV=%d; PerIoDataSend->BytesSEND=%d\n\n", SendBytes, PerIoDataSend->BytesRECV, PerIoDataSend->BytesSEND);
+
 		}
 
 	}

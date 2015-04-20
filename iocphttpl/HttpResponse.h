@@ -37,5 +37,8 @@ private:
 	std::wstring pathExtension;
 	std::wstring contenType;
 	const char *szPath;
+
+	HANDLE ghMutex;
+
 };
 

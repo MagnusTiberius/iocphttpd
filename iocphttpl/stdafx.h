@@ -23,7 +23,7 @@
 
 #define BUFSIZMAX		8*1024
 #define BUFSIZMIN		1024
-#define DATA_BUFSIZE	8192
+#define DATA_BUFSIZE	12288 //8192
 
 using namespace std;
 

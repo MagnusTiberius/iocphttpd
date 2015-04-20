@@ -38,7 +38,7 @@ void HttpHeader::Parse(char* content)
 
 			if (m_ps == PSTATE_URL) // url detected
 			{
-				fprintf(stderr, "%d::method found: %s\n", dwThreadId, buf1);
+				fprintf(stderr, "%d::version found: %s\n", dwThreadId, buf1);
 				ZeroMemory(m_httpVer, DATA_BUFSIZE);
 				sprintf_s(m_httpVer, DATA_BUFSIZE, "%s", buf1);
 				ZeroMemory(buf1, DATA_BUFSIZE);
@@ -76,7 +76,7 @@ void HttpHeader::Parse(char* content)
 		{
 			if (strcmp(buf1, "GET") == 0) // method detected
 			{
-				fprintf(stderr, "%d::method found: %s\n", dwThreadId, buf1);
+				fprintf(stderr, "%d::get found: %s\n", dwThreadId, buf1);
 				ZeroMemory(buf1, DATA_BUFSIZE);
 				buf1_ptr = 0;
 				m_method = HTTP_GET;
@@ -86,7 +86,7 @@ void HttpHeader::Parse(char* content)
 			}
 			if (strcmp(buf1, "POST") == 0) // method detected
 			{
-				fprintf(stderr, "%d::method found: %s\n", dwThreadId, buf1);
+				fprintf(stderr, "%d::post found: %s\n", dwThreadId, buf1);
 				ZeroMemory(buf1, DATA_BUFSIZE);
 				buf1_ptr = 0;
 				m_method = HTTP_POST;
@@ -96,7 +96,7 @@ void HttpHeader::Parse(char* content)
 			}
 			if (m_ps == PSTATE_GET || m_ps == PSTATE_POST) // url detected
 			{
-				fprintf(stderr, "%d::method found: %s\n", dwThreadId, buf1);
+				fprintf(stderr, "%d::get found: %s\n", dwThreadId, buf1);
 				ZeroMemory(m_url, DATA_BUFSIZE);
 				sprintf_s(m_url, DATA_BUFSIZE, "%s", buf1);
 				ZeroMemory(buf1, DATA_BUFSIZE);

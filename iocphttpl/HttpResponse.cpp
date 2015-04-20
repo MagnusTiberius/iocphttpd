@@ -3,6 +3,10 @@
 
 HttpResponse::HttpResponse()
 {
+	ghMutex = CreateMutex(
+		NULL,              // default security attributes
+		FALSE,             // initially not owned
+		NULL);
 }
 
 
@@ -76,12 +80,15 @@ void HttpResponse::SetContentTypeFromExtension()
 	}
 	if (wstr.compare(L".js") == 0)
 	{
-		contenType.assign(L"text/javascript");
+		contenType.assign(L"application/javascript");
+		printf("\nContent Type: application/javascript\n");
 	}
 }
 
 std::vector<byte> HttpResponse::GetStaticContent(const char *path)
 {
+	::WaitForSingleObject(ghMutex, INFINITE);
+
 	// open the file:
 	std::ifstream file(path, std::ios::binary);
 	
@@ -103,6 +110,8 @@ std::vector<byte> HttpResponse::GetStaticContent(const char *path)
 	vec.insert(vec.begin(),
 		std::istream_iterator<BYTE>(file),
 		std::istream_iterator<BYTE>());
+
+	::ReleaseMutex(ghMutex);
 
 	return vec;
 }
