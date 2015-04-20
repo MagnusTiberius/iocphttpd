@@ -19,6 +19,8 @@ namespace headerparser
 	private:
 		char m_Url[DATA_BUFSIZE];
 		char m_Method[DATA_BUFSIZE];
+
+		HANDLE ghMutex;
 	};
 
 }

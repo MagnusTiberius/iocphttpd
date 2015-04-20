@@ -12,6 +12,7 @@ HttpResponse::HttpResponse()
 
 HttpResponse::~HttpResponse()
 {
+	::CloseHandle(ghMutex);
 }
 
 

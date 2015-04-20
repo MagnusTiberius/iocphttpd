@@ -26,11 +26,16 @@ namespace headerparser
 
 	HParser::HParser()
 	{
+		ghMutex = CreateMutex(
+			NULL,              // default security attributes
+			FALSE,             // initially not owned
+			NULL);
 	}
 
 
 	HParser::~HParser()
 	{
+		::CloseHandle(ghMutex);
 	}
 
 	void HParser::Parse()
@@ -41,10 +46,12 @@ namespace headerparser
 
 	void HParser::Parse(char* content)
 	{
+		::WaitForSingleObject(ghMutex, INFINITE);
 		printf("HParser::Parse()\n %s \n", content);
 		YY_BUFFER_STATE  my_string_buffer = hp_scan_string(content);
 		int res = hpparse();
 		hp_delete_buffer(my_string_buffer);
+		::ReleaseMutex(ghMutex);
 	}
 
 	char* HParser::GetUrl()
