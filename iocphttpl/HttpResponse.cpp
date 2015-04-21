@@ -86,6 +86,14 @@ void HttpResponse::SetContentTypeFromExtension()
 	}
 }
 
+void HttpResponse::SetContentType(const char* str)
+{
+	std::string s;
+	s.assign(str);
+	contenType.assign(s.begin(), s.end());
+}
+
+
 std::vector<byte> HttpResponse::GetStaticContent(const char *path)
 {
 	DWORD dwThreadId = GetCurrentThreadId();
@@ -148,7 +156,7 @@ void HttpResponse::GetResponse(char* pszResponse, vector<byte> *pvb, DWORD dwSiz
 	//pszResponse = str.c_str();
 	sprintf_s(pszResponse, dwSize, "%s", str.c_str());
 	m_sbResponse.assign(str.begin(), str.end());
-	printf("%d::%s \n", dwThreadId, pszResponse);
+	//printf("%d::%s \n", dwThreadId, pszResponse);
 	//vector<byte> tpvb = *pvb;
 	//tpvb.assign(m_sbResponse.begin(), m_sbResponse.end());
 	pvb->assign(m_sbResponse.begin(), m_sbResponse.end());

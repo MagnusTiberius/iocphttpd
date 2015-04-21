@@ -68,7 +68,7 @@ int SocketCompletionPortServer::Start()
 
 	int nThreads = (int)SystemInfo.dwNumberOfProcessors * 2;
 
-	//nThreads = 4;
+	nThreads = (nThreads / 2);
 
 	// Create worker threads based on the number of processors available on the
 	// system. Create two worker threads for each processor

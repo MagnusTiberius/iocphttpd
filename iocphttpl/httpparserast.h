@@ -39,7 +39,7 @@
 		sprintf_s(doc->header.szHeaderUrl, siz, "%s", v);
 		//sprintf_s(g_Httpdoc.header.szHeaderUrl, siz, "%s", v);
 		doc->header.pszHeaderUrl = _strdup(v);
-		fprintf_s(stderr, "%d::SetUrl", dwThreadId);
+		//fprintf_s(stderr, "%d::SetUrl", dwThreadId);
 	}
 
 	void SetUrlParams(char* v, lpHttpdoc doc)
@@ -49,7 +49,7 @@
 		memset(doc->header.szUrlParams, '\0', BUFSIZMAX);
 		size_t siz = strlen(v) + 1;
 		sprintf_s(doc->header.szUrlParams, siz, "%s", v);
-		fprintf_s(stderr, "%d::SetUrlParams", dwThreadId);
+		//fprintf_s(stderr, "%d::SetUrlParams", dwThreadId);
 	}
 
 	void SetMethodVersion(char* v, lpHttpdoc doc)
@@ -60,7 +60,7 @@
 		size_t siz = strlen(v) + 1;
 		sprintf_s(doc->header.szHttpVersion, siz, "%s", v);
 		doc->header.pszHttpVersion = _strdup(v);
-		fprintf_s(stderr, "%d::SetMethodVersion", dwThreadId);
+		//fprintf_s(stderr, "%d::SetMethodVersion", dwThreadId);
 	}
 
 	void SetMethodAction(char* v, lpHttpdoc doc)
@@ -70,13 +70,13 @@
 		memset(doc->header.szMethodAction, '\0', BUFSIZMAX);
 		sprintf_s(doc->header.szMethodAction, BUFSIZMAX, "%s", v);
 		doc->header.pszMethodAction = _strdup(v);
-		fprintf_s(stderr, "%d::szMethodAction", dwThreadId);
+		//fprintf_s(stderr, "%d::szMethodAction", dwThreadId);
 	}
 
 	int GetHttpUrl(char *action, size_t size)
 	{
 		DWORD dwThreadId = GetCurrentThreadId();
-		printf("%d::GetHttpUrl\n", dwThreadId);
+		//printf("%d::GetHttpUrl\n", dwThreadId);
 		sprintf_s(action, size, "%s", g_Httpdoc.header.pszHeaderUrl);
 		return 1;
 	}

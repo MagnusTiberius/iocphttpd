@@ -3,6 +3,7 @@
 #include "HttpTemplate.h"
 #include <fstream>
 #include "Shlwapi.h"
+#include "json.h"
 
 class IOCPHTTPL_API HttpResponse : public HttpTemplate
 {
@@ -23,6 +24,7 @@ public:
 	void SetContentTypeFromExtension();
 	PTSTR  GetPathExtension(const char* pszPath);
 	PTSTR  GetPathExtension(PTSTR pszPath);
+	void SetContentType(const char* str);
 
 private:
 	HttpHeader httpHeader;
