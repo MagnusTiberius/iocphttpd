@@ -72,6 +72,12 @@
     <ClInclude Include="HttpTemplate.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="ScannerA.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="RequestParser.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="stdafx.cpp">
@@ -120,6 +126,12 @@
       <Filter>jsonparser</Filter>
     </ClCompile>
     <ClCompile Include="HttpTemplate.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="ScannerA.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="RequestParser.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>

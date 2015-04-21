@@ -140,7 +140,7 @@ void HttpResponse::GetResponse(char* pszResponse, vector<byte> *pvb, DWORD dwSiz
 	DWORD dwThreadId = GetCurrentThreadId();
 	ZeroMemory(pszResponse, dwSize);
 	sprintf_s(pszResponse, dwSize, "%s%s", resp_ok, "\n");
-	sprintf_s(pszResponse, dwSize, "%s%s%s%s", pszResponse, "Date: " , "HTTP/1.0 200 OK" , "\n");
+	sprintf_s(pszResponse, dwSize, "%s%s%s%s", pszResponse, "Date: " , "HTTP/1.x 200 OK" , "\n");
 	std::string ctstr;
 	ctstr.assign(contenType.begin(), contenType.end());
 	sprintf_s(pszResponse, dwSize, "%s%s%s%s", pszResponse, "Content-Type: ", ctstr.c_str(), "\n");

@@ -516,10 +516,10 @@ static const yytype_int8 yyrhs[] =
 /* YYRLINE[YYN] -- source line where rule number YYN was defined.  */
 static const yytype_uint8 yyrline[] =
 {
-       0,    49,    49,    50,    53,    54,    55,    59,    60,    61,
-      62,    65,    66,    69,    70,    71,    72,    73,    77,    78,
-      79,    80,    81,    82,    83,    87,    88,    89,    90,    91,
-      92,    93,    94,    95,    98,    99,   100,   101
+       0,    49,    49,    50,    53,    54,    55,    61,    62,    63,
+      64,    67,    68,    71,    72,    73,    74,    75,    79,    80,
+      81,    82,    83,    84,    85,    89,    90,    91,    92,    93,
+      94,    95,    96,    97,   100,   101,   102,   103
 };
 #endif
 
@@ -1463,175 +1463,175 @@ yyreduce:
 
   case 7:
 /* Line 1792 of yacc.c  */
-#line 59 "httpparser.y"
+#line 61 "httpparser.y"
     { SetMethodAction((yyvsp[(1) - (1)].identifier_tok), &g_Httpdoc); }
     break;
 
   case 8:
 /* Line 1792 of yacc.c  */
-#line 60 "httpparser.y"
+#line 62 "httpparser.y"
     { SetUrl((yyvsp[(2) - (2)].identifier_tok), &g_Httpdoc); }
     break;
 
   case 9:
 /* Line 1792 of yacc.c  */
-#line 61 "httpparser.y"
+#line 63 "httpparser.y"
     { printf("urlparams whole seen\n"); }
     break;
 
   case 10:
 /* Line 1792 of yacc.c  */
-#line 62 "httpparser.y"
+#line 64 "httpparser.y"
     { SetMethodVersion((yyvsp[(2) - (2)].identifier_tok), &g_Httpdoc); }
     break;
 
   case 13:
 /* Line 1792 of yacc.c  */
-#line 69 "httpparser.y"
+#line 71 "httpparser.y"
     { printf("urlparams 1 seen\n"); }
     break;
 
   case 14:
 /* Line 1792 of yacc.c  */
-#line 70 "httpparser.y"
+#line 72 "httpparser.y"
     { printf("urlparams 2 seen\n"); }
     break;
 
   case 15:
 /* Line 1792 of yacc.c  */
-#line 71 "httpparser.y"
+#line 73 "httpparser.y"
     { printf("urlparams 3 seen\n"); }
     break;
 
   case 16:
 /* Line 1792 of yacc.c  */
-#line 72 "httpparser.y"
+#line 74 "httpparser.y"
     { printf("urlparams 4 seen\n"); }
     break;
 
   case 17:
 /* Line 1792 of yacc.c  */
-#line 73 "httpparser.y"
+#line 75 "httpparser.y"
     { printf("urlparams 5 seen\n"); }
     break;
 
   case 18:
 /* Line 1792 of yacc.c  */
-#line 77 "httpparser.y"
+#line 79 "httpparser.y"
     {  (yyval.identifier_tok) = (yyvsp[(1) - (1)].identifier_tok); }
     break;
 
   case 19:
 /* Line 1792 of yacc.c  */
-#line 78 "httpparser.y"
+#line 80 "httpparser.y"
     {  (yyval.identifier_tok) = (yyvsp[(2) - (2)].identifier_tok); }
     break;
 
   case 20:
 /* Line 1792 of yacc.c  */
-#line 79 "httpparser.y"
+#line 81 "httpparser.y"
     {  (yyval.identifier_tok) = (yyvsp[(2) - (2)].identifier_tok); }
     break;
 
   case 21:
 /* Line 1792 of yacc.c  */
-#line 80 "httpparser.y"
+#line 82 "httpparser.y"
     {  (yyval.identifier_tok) = (yyvsp[(2) - (2)].identifier_tok); }
     break;
 
   case 22:
 /* Line 1792 of yacc.c  */
-#line 81 "httpparser.y"
+#line 83 "httpparser.y"
     {  (yyval.identifier_tok) = (yyvsp[(2) - (2)].identifier_tok); }
     break;
 
   case 23:
 /* Line 1792 of yacc.c  */
-#line 82 "httpparser.y"
+#line 84 "httpparser.y"
     {  (yyval.identifier_tok) = (yyvsp[(2) - (2)].identifier_tok); }
     break;
 
   case 24:
 /* Line 1792 of yacc.c  */
-#line 83 "httpparser.y"
+#line 85 "httpparser.y"
     {  (yyval.identifier_tok) = (yyvsp[(2) - (2)].identifier_tok); }
     break;
 
   case 25:
 /* Line 1792 of yacc.c  */
-#line 87 "httpparser.y"
+#line 89 "httpparser.y"
     {  (yyval.identifier_tok) = (yyvsp[(1) - (1)].identifier_tok); }
     break;
 
   case 26:
 /* Line 1792 of yacc.c  */
-#line 88 "httpparser.y"
+#line 90 "httpparser.y"
     {  (yyval.identifier_tok) = (yyvsp[(1) - (1)].identifier_tok); }
     break;
 
   case 27:
 /* Line 1792 of yacc.c  */
-#line 89 "httpparser.y"
+#line 91 "httpparser.y"
     {  (yyval.identifier_tok) = (yyvsp[(1) - (1)].identifier_tok); }
     break;
 
   case 28:
 /* Line 1792 of yacc.c  */
-#line 90 "httpparser.y"
+#line 92 "httpparser.y"
     {  (yyval.identifier_tok) = (yyvsp[(1) - (1)].identifier_tok); }
     break;
 
   case 29:
 /* Line 1792 of yacc.c  */
-#line 91 "httpparser.y"
+#line 93 "httpparser.y"
     {  (yyval.identifier_tok) = (yyvsp[(1) - (1)].identifier_tok); }
     break;
 
   case 30:
 /* Line 1792 of yacc.c  */
-#line 92 "httpparser.y"
+#line 94 "httpparser.y"
     {  (yyval.identifier_tok) = (yyvsp[(1) - (1)].identifier_tok); }
     break;
 
   case 31:
 /* Line 1792 of yacc.c  */
-#line 93 "httpparser.y"
+#line 95 "httpparser.y"
     {  (yyval.identifier_tok) = (yyvsp[(1) - (1)].identifier_tok); }
     break;
 
   case 32:
 /* Line 1792 of yacc.c  */
-#line 94 "httpparser.y"
+#line 96 "httpparser.y"
     {  (yyval.identifier_tok) = (yyvsp[(1) - (1)].identifier_tok); }
     break;
 
   case 33:
 /* Line 1792 of yacc.c  */
-#line 95 "httpparser.y"
+#line 97 "httpparser.y"
     {  (yyval.identifier_tok) = (yyvsp[(1) - (1)].identifier_tok); }
     break;
 
   case 34:
 /* Line 1792 of yacc.c  */
-#line 98 "httpparser.y"
+#line 100 "httpparser.y"
     {  (yyval.identifier_tok) = (yyvsp[(1) - (1)].identifier_tok); }
     break;
 
   case 35:
 /* Line 1792 of yacc.c  */
-#line 99 "httpparser.y"
+#line 101 "httpparser.y"
     {  (yyval.identifier_tok) = (yyvsp[(1) - (1)].identifier_tok); }
     break;
 
   case 36:
 /* Line 1792 of yacc.c  */
-#line 100 "httpparser.y"
+#line 102 "httpparser.y"
     {  (yyval.identifier_tok) = (yyvsp[(1) - (1)].identifier_tok); }
     break;
 
   case 37:
 /* Line 1792 of yacc.c  */
-#line 101 "httpparser.y"
+#line 103 "httpparser.y"
     {  (yyval.identifier_tok) = (yyvsp[(1) - (1)].identifier_tok); }
     break;
 
@@ -1869,7 +1869,7 @@ yyreturn:
 
 
 /* Line 2055 of yacc.c  */
-#line 104 "httpparser.y"
+#line 106 "httpparser.y"
 
 
 

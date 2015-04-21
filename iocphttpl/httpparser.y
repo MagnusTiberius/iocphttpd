@@ -52,8 +52,10 @@ input	: /* empty */
 
 line	: line1 NEWLINE			{ /*printf("line1 seen\n");*/ }
 		| property NEWLINE		{ /*printf("property_item seen\n");*/ }
-		| NEWLINE				{ /*printf("content should follow after this marker.\n");*/ }
+		| NEWLINE 		{ /*printf("content should follow after this marker.\n");*/ }
 		;
+
+
 
 
 line1	: METHODACTION		{ SetMethodAction($1, &g_Httpdoc); }

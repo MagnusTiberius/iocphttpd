@@ -167,6 +167,8 @@
     <ClInclude Include="Jsonp.h" />
     <ClInclude Include="jsonp.tab.h" />
     <ClInclude Include="ParserHeader.h" />
+    <ClInclude Include="RequestParser.h" />
+    <ClInclude Include="ScannerA.h" />
     <ClInclude Include="SocketCompletionPortServer.h" />
     <ClInclude Include="stdafx.h" />
     <ClInclude Include="targetver.h" />
@@ -199,6 +201,8 @@
     <ClCompile Include="jsonp.flex.cpp" />
     <ClCompile Include="jsonp.tab.cpp" />
     <ClCompile Include="ParserHeader.cpp" />
+    <ClCompile Include="RequestParser.cpp" />
+    <ClCompile Include="ScannerA.cpp" />
     <ClCompile Include="SocketCompletionPortServer.cpp" />
     <ClCompile Include="stdafx.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Create</PrecompiledHeader>

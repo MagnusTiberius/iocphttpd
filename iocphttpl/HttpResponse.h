@@ -11,7 +11,7 @@ public:
 	HttpResponse();
 	~HttpResponse();
 
-	const char* resp_ok = "HTTP/1.0 200 OK";
+	const char* resp_ok = "HTTP/1.x 200 OK";
 	const char* resp_ct = "text/html";
 	const char* tmp_date = "Fri, 31 Dec 1999 23:59:59 GMT";
 

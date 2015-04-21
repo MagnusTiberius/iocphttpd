@@ -3,6 +3,7 @@
 #include "HParser.h"
 #include "Enums.h"
 #include "HttpTemplate.h"
+#include "RequestParser.h"
 
 class IOCPHTTPL_API HttpRequest : public HttpTemplate
 {
@@ -17,5 +18,6 @@ public:
 private:
 	headerparser::HParser hParser;
 	HttpHeader httpHeader;
+	RequestParser requestParser;
 };
 
