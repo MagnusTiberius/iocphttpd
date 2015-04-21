@@ -24,6 +24,8 @@ JOURNAL:
 
 4/13/15 - Still figuring out how to copy a byte array to WSABUF.
 
+4/21/15 - Read http://www.json.org/JSONRequest.html doc.
+
 Ref:
 
 1) https://docs.freebsd.org/info/bison/bison.info.Pure_Calling.html
