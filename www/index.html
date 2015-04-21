@@ -15,7 +15,7 @@
 	
 	<p>
 	<form>
-	  <input id="btntest1" name="btntest1" type="button" value="get json">
+	  <input id="btntest1" name="btntest1" type="button" value="send json data format">
 	</form>
 	</p>
 	
@@ -25,6 +25,10 @@ The OneUp is the cheapest 3D printer in the world. At $199 for a self assembled 
 Fusce vitae lacus a nulla facilisis vulputate. Proin sed tellus justo. Aenean dignissim enim ut sapien blandit egestas. Duis aliquet imperdiet arcu. Sed iaculis nisl sed est vehicula auctor. Nam at mattis augue. Duis vitae augue enim. Nam ut mauris ac ligula euismod venenatis at non nisl. Integer suscipit lacus vitae auctor fermentum.
 	</p>
 
+	<form>
+	  <input id="btntest2" name="btntest2" type="button" value="send form data">
+	</form>
+	
 	<p>
 Praesent at massa cursus, malesuada nisl vitae, dignissim augue. Vivamus ligula turpis, luctus lobortis blandit malesuada, eleifend sit amet felis. Ut ut hendrerit est. Aliquam ultrices a ex quis euismod. Vestibulum ante ipsum primis in faucibus orci luctus et ultrices posuere cubilia Curae; Phasellus dictum sem id velit lacinia dignissim. Phasellus in arcu eget sem pulvinar euismod. Etiam sollicitudin metus sapien, ut finibus felis vehicula non.
 	</p>
@@ -42,6 +46,37 @@ Pellentesque fermentum sem a enim sagittis, id porttitor mi mollis. Praesent non
 	<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.2/jquery.min.js"></script>
 	<script>
 		$( "#btntest1" ).click(function() {
+			//alert( "Handler for .click() called." );
+		  
+			$.ajax({
+				url: "http://localhost:5150/json/testtwo",
+				contentType: 'application/json',
+				type: "POST",
+				data: "{ apiKey: \"23462\", method: \"example\", ip: \"208.74.35.5\" }",
+				dataType: "json",
+				success: function (result) {
+					//alert(result);
+					/*
+					switch (result) {
+						case true:
+							processResponse(result);
+							break;
+						default:
+							resultDiv.html(result);
+					}
+					*/
+				},
+				error: function (xhr, ajaxOptions, thrownError) {
+				//alert(xhr.status);
+				//alert(thrownError);
+				}
+			});	
+	
+		});	
+	</script>
+	
+	<script>
+		$( "#btntest2" ).click(function() {
 			//alert( "Handler for .click() called." );
 		  
 			$.ajax({
@@ -69,7 +104,6 @@ Pellentesque fermentum sem a enim sagittis, id porttitor mi mollis. Praesent non
 	
 		});	
 	</script>
-	
 	
 <body>	
 </html>

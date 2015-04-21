@@ -31,6 +31,7 @@ public:
 	CHAR* GetUrl();
 	MethodType GetMethod();
 	void Reset();
+	const char* GetParameterValue(const char *p);
 
 protected:
 	CHAR *m_token;

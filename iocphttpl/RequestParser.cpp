@@ -77,10 +77,10 @@ void RequestParser::Parse()
 		}
 		if (token == '\n')
 		{
-			printf("%d::NewLine\n", dwThreadId);
+			//printf("%d::NewLine\n", dwThreadId);
 			if (previous_token == '\n')
 			{
-				printf("%d::Content Follows Next\n", dwThreadId);
+				//printf("%d::Content Follows Next\n", dwThreadId);
 				token = token_t::ENDTOKEN;
 				ParseContent();
 				continue;
@@ -92,6 +92,24 @@ void RequestParser::Parse()
 			previous_token = token;
 		}
 	}
+}
+
+const char* RequestParser::GetParameterValue(const char *p)
+{
+	CHAR *buf;
+	HEADERMAPLIST::iterator itr;
+	for (itr = m_headermap.begin(); itr != m_headermap.end(); itr++)
+	{
+		lpheadermap_t pitem = *itr;
+		std::string s = std::string(pitem->name);
+		std::string t(p);
+		int d = s.compare(t);
+		if ( d < 1)
+		{
+			return pitem->value;
+		}
+	}
+	return NULL;
 }
 
 void RequestParser::ParseContent()
@@ -115,6 +133,8 @@ void RequestParser::ParseContent()
 			item = new headermap_t{};
 			item->name = _strdup("Content:");
 			item->value = buf;
+			printf("\nContent: %s \n", buf);
+			printf("Content-Type::%s\n", GetParameterValue("Content-Type:"));
 			m_headermap.push_back(item);
 			item = NULL;
 			memset(buf, 0, len);
