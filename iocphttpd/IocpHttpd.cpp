@@ -7,6 +7,7 @@ IocpHttpd::IocpHttpd()
 	AddRoute("/test", IocpHttpd::HandleTest);
 	AddRoute("/init", IocpHttpd::HandleInit);
 	AddRoute("/json/test", IocpHttpd::HandleJsonTest);
+	AddRoute("/json/testtwo", IocpHttpd::HandleJsonTestTwo);
 	SetStatic("\/static\/*", "c:\\www\\static\\");
 }
 
@@ -58,6 +59,28 @@ void IocpHttpd::HandleInit(HttpRequest *httpRequest, HttpResponse *httpResponse)
 void IocpHttpd::HandleJsonTest(HttpRequest *httpRequest, HttpResponse *httpResponse)
 {
 	printf("IocpHttpd::HandleJsonTest\n");
+
+	string json_example = "{\"array\": \
+							[\"item1\", \
+							\"item2\"], \
+							\"not an array\": \
+							\"asdf\" \
+							}";
+
+	Json::Value root;
+	Json::Reader reader;
+	bool parsedSuccess = reader.parse(json_example, root, false);
+	if (parsedSuccess)
+	{
+		std::string s = root.toStyledString();
+		httpResponse->Write(s.c_str());
+		httpResponse->SetContentType("application/json");
+	}
+}
+
+void IocpHttpd::HandleJsonTestTwo(HttpRequest *httpRequest, HttpResponse *httpResponse)
+{
+	printf("IocpHttpd::HandleJsonTestTwo\n");
 
 	string json_example = "{\"array\": \
 							[\"item1\", \

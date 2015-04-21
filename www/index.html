@@ -1,8 +1,9 @@
 <html>
 <head>
-
 	<link rel="stylesheet" type="text/css" href="/static/css/test.css">
-	<script src="/static/js/testtwo.js"></script>
+	<script type="text/javascript" src="/static/js/testtwo.js"></script>
+	
+	
 </head>
 
 <body>
@@ -11,6 +12,13 @@
 
 	<hr>
 	<img src="/static/img/intel.jpg">
+	
+	<p>
+	<form>
+	  <input id="btntest1" name="btntest1" type="button" value="get json">
+	</form>
+	</p>
+	
 	<p>
 The OneUp is the cheapest 3D printer in the world. At $199 for a self assembled kit, that includes everything you need, the OneUp is the easy choice to 'get your feet wet'. All corners of the internet recommend a self built printer as your first printer so you learn the ins and outs, the ups and downs of 3D printing before making a big purchase. Professional quality prints are a reality, equivalent to much more expensive machines at competitive speeds with the ability to expand the build area at at any time after purchase for only $79 (buy the TwoUp upgrade now in our online store!). Each kit includes a very reliable and forgiving extruder, that makes it easy to get great quality prints with minimal effort. The OneUp is optimized for PLA printing but with the optional heated bed upgrade, ABS and Nylon printing are a breeze! This is a Do-It-Yourself, Self-Assembly kit that generally takes 2-8 hours to assemble based on end user skill level. The only difference between the OneUp, TwoUp and ThreeUp is the build area, every other spec is the same.	</p>
 	<p>
@@ -26,8 +34,42 @@ Praesent at massa cursus, malesuada nisl vitae, dignissim augue. Vivamus ligula 
 Pellentesque fermentum sem a enim sagittis, id porttitor mi mollis. Praesent non metus ac neque viverra ultrices. Aliquam erat volutpat. Aenean mollis volutpat consequat. Cras in ligula neque. Praesent aliquet est sed est laoreet posuere. Praesent convallis mauris nec tincidunt vulputate. Duis maximus ligula sed felis fringilla condimentum. Nullam sollicitudin eu elit eget pretium. Fusce luctus faucibus feugiat. Integer posuere sem lacus, ac aliquet purus sollicitudin at. Proin pellentesque luctus porttitor.	
 	</p>
 
-	<script src="/static/js/test.js"></script>
+	<div id="resultDiv" name="resultDiv">
+	</div>
+	
+	<script type="text/javascript" src="/static/js/test.js"></script>
 
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.2/jquery.min.js"></script>
+	<script>
+		$( "#btntest1" ).click(function() {
+			//alert( "Handler for .click() called." );
+		  
+			$.ajax({
+				url: "http://localhost:5150/json/testtwo",
+				type: "POST",
+				data: { apiKey: "23462", method: "example", ip: "208.74.35.5" },
+				dataType: "json",
+				success: function (result) {
+					alert(result);
+					/*
+					switch (result) {
+						case true:
+							processResponse(result);
+							break;
+						default:
+							resultDiv.html(result);
+					}
+					*/
+				},
+				error: function (xhr, ajaxOptions, thrownError) {
+				alert(xhr.status);
+				alert(thrownError);
+				}
+			});	
+	
+		});	
+	</script>
+	
 	
 <body>	
 </html>
