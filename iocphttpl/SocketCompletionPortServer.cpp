@@ -186,6 +186,9 @@ int SocketCompletionPortServer::Start()
 		Flags = 0;
 		DWORD dwRes = WSARecv(Accept, &(PerIoData->DataBuf), 1, &PerIoData->BytesRECV, &Flags, &(PerIoData->Overlapped), NULL);
 		RecvBytes = PerIoData->BytesRECV;
+
+		printf("\n\n%d::WSARECV1 Socket=%d, PerIoData->BytesRECV=%d; PerIoData->BytesSEND=%d\n\n", dwThreadId, PerHandleData->Socket, PerIoData->BytesRECV, PerIoData->BytesSEND);
+
 		if (dwRes == SOCKET_ERROR)
 		{
 			if (WSAGetLastError() != ERROR_IO_PENDING)
@@ -284,6 +287,7 @@ DWORD WINAPI SocketCompletionPortServer::ServerWorkerThread(LPVOID lpObject)
 
 	while (TRUE)
 	{
+		BytesTransferred = 0;
 		BOOL res1 = GetQueuedCompletionStatus(CompletionPort, &BytesTransferred, (PULONG_PTR)&PerHandleData, (LPOVERLAPPED *)&PerIoData, INFINITE);
 		if (res1==0)
 		{
@@ -293,10 +297,57 @@ DWORD WINAPI SocketCompletionPortServer::ServerWorkerThread(LPVOID lpObject)
 		else
 			fprintf(stderr, "%d::ServerWorkerThread--GetQueuedCompletionStatus() is OK!\n", dwThreadId);
 
+		printf("\n\n%d::WSARECV2 Socket=%d, BytesTransferred=%d; PerIoData->BytesRECV=%d; PerIoData->BytesSEND=%d\n\n", dwThreadId, PerHandleData->Socket, BytesTransferred, PerIoData->BytesRECV, PerIoData->BytesSEND);
+
+
+		if (BytesTransferred > 0 && PerIoData->BytesRECV == 0 && PerIoData->BytesSEND == 0 && PerIoData->DataBuf.len > 0)
+		{
+			::WaitForSingleObject(obj->ghMutex, INFINITE);
+			if ((PerIoDataSend = (LPPER_IO_OPERATION_DATA)GlobalAlloc(GPTR, sizeof(PER_IO_OPERATION_DATA))) == NULL)
+			{
+
+			}
+
+			httpRequest.Parse(PerIoData->DataBuf.buf);
+			obj->Dispatch(&httpRequest, &httpResponse);
+			ZeroMemory(PerIoDataSend->Buffer, DATA_BUFSIZE);
+			ZeroMemory(&(PerIoDataSend->Overlapped), sizeof(OVERLAPPED));
+			PerIoDataSend->DataBuf.buf = PerIoDataSend->Buffer;
+			httpResponse.GetResponse(PerIoDataSend->Buffer, &PerIoDataSend->byteBuffer, DATA_BUFSIZE);
+			httpResponse.Write("");
+			auto n = strlen(PerIoDataSend->Buffer);
+			PerIoDataSend->DataBuf.len = (ULONG)n;
+			if (PerIoDataSend->byteBuffer.size() > 0)
+			{
+				size_t bufsiz = PerIoDataSend->byteBuffer.size() * sizeof(PerIoDataSend->byteBuffer[0]);
+				if (PerIoDataSend->LPBuffer != NULL)
+				{
+					free(PerIoDataSend->LPBuffer);
+					PerIoDataSend->LPBuffer = NULL;
+				}
+				PerIoDataSend->LPBuffer = (CHAR*)malloc(bufsiz);
+				memset(PerIoDataSend->LPBuffer, '\0', bufsiz);
+				memcpy(PerIoDataSend->LPBuffer, &PerIoDataSend->byteBuffer[0], bufsiz);
+				PerIoDataSend->DataBuf.buf = PerIoDataSend->LPBuffer;
+				PerIoDataSend->DataBuf.len = bufsiz;
+			}
+			PerIoDataSend->BytesRECV = 0;
+			int res = WSASend(PerHandleData->Socket, &(PerIoDataSend->DataBuf), 1, &PerIoDataSend->BytesSEND, 0, &(PerIoDataSend->Overlapped), NULL);
+			if (res == SOCKET_ERROR)
+			{
+				fprintf(stderr, "%d::ServerWorkerThread--WSASend() failed with error %d\n", dwThreadId, WSAGetLastError());
+			}
+			SendBytes = PerIoDataSend->BytesSEND;
+			printf("\n\n%d::WSASEND: Socket=%d; SendBytes=%d; PerIoDataSend->BytesRECV=%d; PerIoDataSend->BytesSEND=%d\n\n", dwThreadId, PerHandleData->Socket, SendBytes, PerIoDataSend->BytesRECV, PerIoDataSend->BytesSEND);
+			::ReleaseMutex(obj->ghMutex);
+
+			continue;
+		}
+
 		// First check to see if an error has occurred on the socket and if so
 		// then close the socket and cleanup the SOCKET_INFORMATION structure
 		// associated with the socket
-		if (BytesTransferred == 0 || PerIoData->BytesRECV == 0)
+		if (BytesTransferred == 0 || PerIoData->BytesRECV == 0 || PerIoData->DataBuf.len == 0)
 		{
 			printf("%d::ServerWorkerThread--Closing socket %d\n", dwThreadId, PerHandleData->Socket);
 			if (closesocket(PerHandleData->Socket) == SOCKET_ERROR)
@@ -312,7 +363,6 @@ DWORD WINAPI SocketCompletionPortServer::ServerWorkerThread(LPVOID lpObject)
 			continue;
 		}
 
-		printf("\n\n WSARECV BytesTransferred=%d; PerIoData->BytesRECV=%d; PerIoData->BytesSEND=%d\n\n", BytesTransferred, PerIoData->BytesRECV, PerIoData->BytesSEND);
 
 		if (PerIoData->BytesRECV > 0)
 		{
@@ -352,7 +402,7 @@ DWORD WINAPI SocketCompletionPortServer::ServerWorkerThread(LPVOID lpObject)
 				fprintf(stderr, "%d::ServerWorkerThread--WSASend() failed with error %d\n", dwThreadId, WSAGetLastError());
 			}
 			SendBytes = PerIoDataSend->BytesSEND;
-			printf("\n\n WSASEND: SendBytes=%d; PerIoDataSend->BytesRECV=%d; PerIoDataSend->BytesSEND=%d\n\n", SendBytes, PerIoDataSend->BytesRECV, PerIoDataSend->BytesSEND);
+			printf("\n\n%d::WSASEND: Socket=%d; SendBytes=%d; PerIoDataSend->BytesRECV=%d; PerIoDataSend->BytesSEND=%d\n\n", dwThreadId, PerHandleData->Socket, SendBytes, PerIoDataSend->BytesRECV, PerIoDataSend->BytesSEND);
 			::ReleaseMutex(obj->ghMutex);
 		}
 
