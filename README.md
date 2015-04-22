@@ -26,6 +26,8 @@ JOURNAL:
 
 4/21/15 - Read http://www.json.org/JSONRequest.html doc. Interesting read, see http://www.webalizer.org/simpleton.html
 
+4/22/15 - Screenshot showing browser load timing, http://postimg.org/image/jeyhl63ur/
+
 Ref:
 
 1) https://docs.freebsd.org/info/bison/bison.info.Pure_Calling.html
