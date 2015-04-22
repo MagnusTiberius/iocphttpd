@@ -1,8 +1,9 @@
 #pragma once
 #include "HttpHeader.h"
+#include "HParser.h"
 #include "Enums.h"
 #include "HttpTemplate.h"
-#include "ParseHeader.h"
+#include "RequestParser.h"
 
 class IOCPHTTPL_API HttpRequest : public HttpTemplate
 {
@@ -13,11 +14,11 @@ public:
 	void Parse(char *content);
 	char* GetUrl();
 	MethodType GetMethod();
-
-	bool isStatic;
+	const char* GetContent();
 
 private:
+	headerparser::HParser hParser;
 	HttpHeader httpHeader;
-	ParseHeader parseHeader;
+	RequestParser requestParser;
 };
 

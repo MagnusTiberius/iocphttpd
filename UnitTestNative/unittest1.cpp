@@ -1,7 +1,7 @@
 #include "stdafx.h"
 #include "CppUnitTest.h"
 #include "ScannerA.h"
-#include "ParseHeader.h"
+#include "RequestParser.h"
 
 
 extern "C" {
@@ -73,7 +73,7 @@ namespace UnitTestNative
 				shdf hsfjksh dfjk sdh fjkshdf jkshf jksdhf jksdfh jksdfh jksdfh sdjkfh djf \n\
 				";
 
-			ParseHeader parser;
+			RequestParser parser;
 
 			parser.Input(str_value.c_str());
 			parser.Parse();
@@ -97,7 +97,7 @@ namespace UnitTestNative
 				shdf hsfjksh dfjk sdh fjkshdf jkshf jksdhf jksdfh jksdfh jksdfh sdjkfh djf \n\
 				";
 
-			ParseHeader parser;
+			RequestParser parser;
 
 			parser.Input(str_value.c_str());
 			parser.Parse();
@@ -121,7 +121,7 @@ namespace UnitTestNative
 				Content-Length: 43 \n\
 				\nfirst_name=John&last_name=Doe&action=Submit";
 
-			ParseHeader parser;
+			RequestParser parser;
 
 			parser.Input(str_value.c_str());
 			parser.Parse();
@@ -146,7 +146,7 @@ namespace UnitTestNative
 				Content-Length: 43 \n\
 				\nfirst_name=John&last_name=Doe&action=Submit";
 
-			ParseHeader parser;
+			RequestParser parser;
 
 			parser.Input(str_value.c_str());
 			parser.Parse();
@@ -164,7 +164,7 @@ namespace UnitTestNative
 										Accept-Language: en-US,en;q=0.8 \n \
 										\n \
 								    ";
-			ParseHeader parser;
+			RequestParser parser;
 
 			parser.Input(str_value.c_str());
 			parser.Parse();

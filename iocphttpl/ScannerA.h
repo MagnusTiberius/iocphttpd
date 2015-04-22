@@ -27,7 +27,7 @@ protected:
 	int m_end;
 	int m_pos;
 	const CHAR *m_c;
-	CHAR m_token[BUFSIZTOK];
+	CHAR m_token[BUFSIZMIN];
 };
 
 /*

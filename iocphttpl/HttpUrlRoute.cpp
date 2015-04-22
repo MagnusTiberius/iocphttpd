@@ -146,8 +146,6 @@ int HttpUrlRoute::GetLen(char *s)
 
 bool HttpUrlRoute::IsStatic(char *path)
 {
-	if (path == NULL) return false;
-
 	for (STATICACCESSMAPITERATOR i = staticAccessList.begin(); i != staticAccessList.end(); ++i)
 	{
 		char* t_path = i->first;
@@ -175,8 +173,6 @@ void HttpUrlRoute::AddRoute(char *url, void* lpFunc)
 
 void* HttpUrlRoute::GetRoute(char* url)
 {
-	if (url == NULL) return NULL;
-
 	for (ROUTEMAPITERATOR i = urlRoutes.begin(); i != urlRoutes.end(); ++i)
 	{
 		char* t_url = i->first;

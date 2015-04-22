@@ -81,7 +81,7 @@ extern int jpdebug;
 typedef union JPSTYPE
 {
 /* Line 2058 of yacc.c  */
-#line 33 "jsonp.y"
+#line 25 "jsonp.y"
 
 	int		int_val;
 	char*	str_val;
@@ -95,6 +95,7 @@ typedef union JPSTYPE
 # define JPSTYPE_IS_DECLARED 1
 #endif
 
+extern JPSTYPE jplval;
 
 #ifdef YYPARSE_PARAM
 #if defined __STDC__ || defined __cplusplus

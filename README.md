@@ -8,7 +8,7 @@ Repository:
 https://github.com/MagnusTiberius/iocphttpd
 
 Continuous Integration:
-https://ci.appveyor.com/project/MagnusTiberius/iocphttpd
+https://ci.appveyor.com/api/projects/status/lpsxd8dcbxapj3b5
 
 Dependencies:
 
@@ -24,10 +24,9 @@ JOURNAL:
 
 4/13/15 - Still figuring out how to copy a byte array to WSABUF.
 
-4/15/15 - Sending images back to the browser is now correct, thanks to the person who helped me.
-
-4/16/15 - Decided a scanner will have to be written.
+4/21/15 - Read http://www.json.org/JSONRequest.html doc. Interesting read, see http://www.webalizer.org/simpleton.html
 
 Ref:
 
 1) https://docs.freebsd.org/info/bison/bison.info.Pure_Calling.html
+

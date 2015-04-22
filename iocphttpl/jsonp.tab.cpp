@@ -50,7 +50,7 @@
 #define YYSKELETON_NAME "yacc.c"
 
 /* Pure parsers.  */
-#define YYPURE 1
+#define YYPURE 0
 
 /* Push parsers.  */
 #define YYPUSH 0
@@ -75,34 +75,26 @@
 
 
 #include "stdafx.h"
-#include "jsonp.tab.h"
 
-//#define yyerror jperror
-//#define yylex jplex
-//#define yyparse jpparse
-//#define yychar jpchar
-//#define yynerrs jpnerrs
+#define yyerror jperror
+#define yylex jplex
+#define yyparse jpparse
+//#define yylval jplval
+#define yychar jpchar
+#define yynerrs jpnerrs
 
-
-void* jpscanner;
-#define jpparm jpscanner
-
-//#define YYPARSE_PARAM jpparm
-#define YYLEX_PARAM &jpparm
-
+//#define yystype jpstype
 
 
 int jperror(char *s);
 int jperror(string s);
+int jplex(void);
 
-typedef void* yyscan_t;
-extern int jplex (YYSTYPE * yylval_param ,yyscan_t yyscanner);
-//extern int jplex (YYSTYPE * yylval_param);
 
 
 
 /* Line 371 of yacc.c  */
-#line 106 "jsonp.tab.cpp"
+#line 98 "jsonp.tab.cpp"
 
 # ifndef YY_NULL
 #  if defined __cplusplus && 201103L <= __cplusplus
@@ -173,20 +165,21 @@ extern int jpdebug;
 typedef union JPSTYPE
 {
 /* Line 387 of yacc.c  */
-#line 33 "jsonp.y"
+#line 25 "jsonp.y"
 
 	int		int_val;
 	char*	str_val;
 
 
 /* Line 387 of yacc.c  */
-#line 184 "jsonp.tab.cpp"
+#line 176 "jsonp.tab.cpp"
 } JPSTYPE;
 # define JPSTYPE_IS_TRIVIAL 1
 # define jpstype JPSTYPE /* obsolescent; will be withdrawn */
 # define JPSTYPE_IS_DECLARED 1
 #endif
 
+extern JPSTYPE jplval;
 
 #ifdef YYPARSE_PARAM
 #if defined __STDC__ || defined __cplusplus
@@ -207,7 +200,7 @@ int jpparse ();
 /* Copy the second part of user declarations.  */
 
 /* Line 390 of yacc.c  */
-#line 211 "jsonp.tab.cpp"
+#line 204 "jsonp.tab.cpp"
 
 #ifdef short
 # undef short
@@ -505,10 +498,10 @@ static const yytype_int8 yyrhs[] =
 /* YYRLINE[YYN] -- source line where rule number YYN was defined.  */
 static const yytype_uint8 yyrline[] =
 {
-       0,    49,    49,    50,    51,    54,    55,    56,    59,    60,
-      63,    66,    67,    70,    73,    74,    78,    81,    82,    83,
-      84,    85,    86,    87,    88,    89,    92,    93,    94,    95,
-      96
+       0,    41,    41,    42,    43,    46,    47,    48,    51,    52,
+      55,    58,    59,    62,    65,    66,    70,    73,    74,    75,
+      76,    77,    78,    79,    80,    81,    84,    85,    86,    87,
+      88
 };
 #endif
 
@@ -687,9 +680,9 @@ while (YYID (0))
 
 /* YYLEX -- calling `yylex' with the right arguments.  */
 #ifdef YYLEX_PARAM
-# define YYLEX yylex (&yylval, YYLEX_PARAM)
+# define YYLEX yylex (YYLEX_PARAM)
 #else
-# define YYLEX yylex (&yylval)
+# define YYLEX yylex ()
 #endif
 
 /* Enable debugging if requested.  */
@@ -1150,6 +1143,25 @@ yydestruct (yymsg, yytype, yyvaluep)
 
 
 
+/* The lookahead symbol.  */
+int yychar;
+
+
+#ifndef YY_IGNORE_MAYBE_UNINITIALIZED_BEGIN
+# define YY_IGNORE_MAYBE_UNINITIALIZED_BEGIN
+# define YY_IGNORE_MAYBE_UNINITIALIZED_END
+#endif
+#ifndef YY_INITIAL_VALUE
+# define YY_INITIAL_VALUE(Value) /* Nothing. */
+#endif
+
+/* The semantic value of the lookahead symbol.  */
+YYSTYPE yylval YY_INITIAL_VALUE(yyval_default);
+
+/* Number of syntax errors so far.  */
+int yynerrs;
+
+
 /*----------.
 | yyparse.  |
 `----------*/
@@ -1176,38 +1188,6 @@ yyparse ()
 #endif
 #endif
 {
-/* The lookahead symbol.  */
-int yychar;
-
-
-#if defined __GNUC__ && 407 <= __GNUC__ * 100 + __GNUC_MINOR__
-/* Suppress an incorrect diagnostic about yylval being uninitialized.  */
-# define YY_IGNORE_MAYBE_UNINITIALIZED_BEGIN \
-    _Pragma ("GCC diagnostic push") \
-    _Pragma ("GCC diagnostic ignored \"-Wuninitialized\"")\
-    _Pragma ("GCC diagnostic ignored \"-Wmaybe-uninitialized\"")
-# define YY_IGNORE_MAYBE_UNINITIALIZED_END \
-    _Pragma ("GCC diagnostic pop")
-#else
-/* Default value used for initialization, for pacifying older GCCs
-   or non-GCC compilers.  */
-static YYSTYPE yyval_default;
-# define YY_INITIAL_VALUE(Value) = Value
-#endif
-#ifndef YY_IGNORE_MAYBE_UNINITIALIZED_BEGIN
-# define YY_IGNORE_MAYBE_UNINITIALIZED_BEGIN
-# define YY_IGNORE_MAYBE_UNINITIALIZED_END
-#endif
-#ifndef YY_INITIAL_VALUE
-# define YY_INITIAL_VALUE(Value) /* Nothing. */
-#endif
-
-/* The semantic value of the lookahead symbol.  */
-YYSTYPE yylval YY_INITIAL_VALUE(yyval_default);
-
-    /* Number of syntax errors so far.  */
-    int yynerrs;
-
     int yystate;
     /* Number of tokens to shift before error messages enabled.  */
     int yyerrstatus;
@@ -1442,85 +1422,85 @@ yyreduce:
     {
         case 3:
 /* Line 1792 of yacc.c  */
-#line 50 "jsonp.y"
+#line 42 "jsonp.y"
     { cout << "Result: " << (yyvsp[(1) - (1)].int_val) << endl; }
     break;
 
   case 5:
 /* Line 1792 of yacc.c  */
-#line 54 "jsonp.y"
+#line 46 "jsonp.y"
     { (yyval.int_val) = (yyvsp[(1) - (1)].int_val); }
     break;
 
   case 6:
 /* Line 1792 of yacc.c  */
-#line 55 "jsonp.y"
+#line 47 "jsonp.y"
     { (yyval.int_val) = (yyvsp[(1) - (3)].int_val) + (yyvsp[(3) - (3)].int_val); }
     break;
 
   case 7:
 /* Line 1792 of yacc.c  */
-#line 56 "jsonp.y"
+#line 48 "jsonp.y"
     { (yyval.int_val) = (yyvsp[(1) - (3)].int_val) * (yyvsp[(3) - (3)].int_val); }
     break;
 
   case 10:
 /* Line 1792 of yacc.c  */
-#line 63 "jsonp.y"
+#line 55 "jsonp.y"
     { printf(" OPENCURLY members CLOSECURLY\n"); }
     break;
 
   case 17:
 /* Line 1792 of yacc.c  */
-#line 81 "jsonp.y"
+#line 73 "jsonp.y"
     { printf("STRINGVAL\n"); }
     break;
 
   case 18:
 /* Line 1792 of yacc.c  */
-#line 82 "jsonp.y"
+#line 74 "jsonp.y"
     { printf("anumber\n"); }
     break;
 
   case 19:
 /* Line 1792 of yacc.c  */
-#line 83 "jsonp.y"
+#line 75 "jsonp.y"
     { printf("jsonobject\n"); }
     break;
 
   case 26:
 /* Line 1792 of yacc.c  */
-#line 92 "jsonp.y"
+#line 84 "jsonp.y"
     { printf("INTNUM\n"); }
     break;
 
   case 27:
 /* Line 1792 of yacc.c  */
-#line 93 "jsonp.y"
+#line 85 "jsonp.y"
     { printf("FRACTNUM\n"); }
     break;
 
   case 28:
 /* Line 1792 of yacc.c  */
-#line 94 "jsonp.y"
+#line 86 "jsonp.y"
     { printf("anumber  FRACTNUM\n"); }
     break;
 
   case 29:
 /* Line 1792 of yacc.c  */
-#line 95 "jsonp.y"
+#line 87 "jsonp.y"
     { printf("anumber  EXPONENT\n"); }
     break;
 
   case 30:
 /* Line 1792 of yacc.c  */
-#line 96 "jsonp.y"
+#line 88 "jsonp.y"
     { printf("anumber  INTNUM\n"); }
     break;
 
 
 /* Line 1792 of yacc.c  */
-#line 1524 "jsonp.tab.cpp"
+#line 1504 "jsonp.tab.cpp"
       default: break;
     }
   /* User semantic actions sometimes alter yychar, and that requires
@@ -1752,15 +1732,16 @@ yyreturn:
 
 
 /* Line 2055 of yacc.c  */
-#line 99 "jsonp.y"
+#line 91 "jsonp.y"
 
 int jperror(string s)
 {
-	//extern int jplineno;	// defined and maintained in lex.c
-	//extern char *jptext;	// defined and maintained in lex.c
+	extern int jplineno;	// defined and maintained in lex.c
+	extern char *jptext;	// defined and maintained in lex.c
 
-	//cerr << "ERROR: " << s << " at symbol \"" << jptext;
-	//cerr << "\" on line " << jplineno << endl;
+	cerr << "ERROR: " << s << " at symbol \"" << jptext;
+	cerr << "\" on line " << jplineno << endl;
+	//exit(1);
 	return 0;
 }
 int jperror(char *s)

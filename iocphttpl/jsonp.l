@@ -4,14 +4,9 @@
 #include "stdafx.h"
 #include "jsonp.tab.h"
 
-#define YYSTYPE JPSTYPE
-
 int jperror(char *s);
 //int yylineno = 1;
 %}
-
-%option reentrant
-%option bison-bridge
 
 plussign    \+
 minsign		\-
@@ -47,35 +42,34 @@ cnull       (null|NULL)
 
 %%
 
-{digits}		{ yyg->yylval_r->int_val = atoi(yytext); return INTEGER_LITERAL; }
-"+"				{ yyg->yylval_r->str_val = _strdup(yytext); return JPPLUS; }
-"*"				{ yyg->yylval_r->str_val = _strdup(yytext); return JPMULT; }
-{opencurly}		{ yyg->yylval_r->str_val = _strdup(yytext); printf("opencurly\n"); return OPENCURLY; }
-{closecurly}	{ yyg->yylval_r->str_val = _strdup(yytext); printf("closecurly\n"); return CLOSECURLY; }
-{opensqrbrk}	{ yyg->yylval_r->str_val = _strdup(yytext); printf("OPENSQRBRK\n"); return OPENSQRBRK; }
-{closesqrbrk}	{ yyg->yylval_r->str_val = _strdup(yytext); printf("CLOSESQRBRK\n"); return CLOSESQRBRK; }
-{commasep}		{ yyg->yylval_r->str_val = _strdup(yytext); printf("COMMASEP\n"); return COMMASEP; }
-{string}		{ yyg->yylval_r->str_val = _strdup(yytext); printf("STRINGVAL==%s\n",yytext); return STRINGVAL; }
-{colonsep}		{ yyg->yylval_r->str_val = _strdup(yytext); printf("COLONSEP\n"); return COLONSEP; }
-{ctrue}			{ yyg->yylval_r->str_val = _strdup(yytext); return CTRUE; }
-{cfalse}		{ yyg->yylval_r->str_val = _strdup(yytext); return CFALSE; }
-{cnull}			{ yyg->yylval_r->str_val = _strdup(yytext); return CNULL; }
-{intnum}		{ yyg->yylval_r->str_val = _strdup(yytext); printf("intnum==%s\n",yytext); return INTNUM; }
-{fract}			{ yyg->yylval_r->str_val = _strdup(yytext); printf("fract==%s\n",yytext); return FRACTNUM; }
-{exponent}		{ yyg->yylval_r->str_val = _strdup(yytext); printf("exponent==%s\n",yytext); return EXPONENT; }
-{fourhex}		{ yyg->yylval_r->str_val = _strdup(yytext); printf("fourhex==%s\n",yytext); return FOURHEX; }
+{digits}		{ jplval.int_val = atoi(yytext); return INTEGER_LITERAL; }
+"+"				{ jplval.str_val = _strdup(yytext); return JPPLUS; }
+"*"				{ jplval.str_val = _strdup(yytext); return JPMULT; }
+{opencurly}		{ jplval.str_val = _strdup(yytext); printf("opencurly\n"); return OPENCURLY; }
+{closecurly}	{ jplval.str_val = _strdup(yytext); printf("closecurly\n"); return CLOSECURLY; }
+{opensqrbrk}	{ jplval.str_val = _strdup(yytext); printf("OPENSQRBRK\n"); return OPENSQRBRK; }
+{closesqrbrk}	{ jplval.str_val = _strdup(yytext); printf("CLOSESQRBRK\n"); return CLOSESQRBRK; }
+{commasep}		{ jplval.str_val = _strdup(yytext); printf("COMMASEP\n"); return COMMASEP; }
+{string}		{ jplval.str_val = _strdup(yytext); printf("STRINGVAL==%s\n",yytext); return STRINGVAL; }
+{colonsep}		{ jplval.str_val = _strdup(yytext); printf("COLONSEP\n"); return COLONSEP; }
+{ctrue}			{ jplval.str_val = _strdup(yytext); return CTRUE; }
+{cfalse}		{ jplval.str_val = _strdup(yytext); return CFALSE; }
+{cnull}			{ jplval.str_val = _strdup(yytext); return CNULL; }
+{intnum}		{ jplval.str_val = _strdup(yytext); printf("intnum==%s\n",yytext); return INTNUM; }
+{fract}			{ jplval.str_val = _strdup(yytext); printf("fract==%s\n",yytext); return FRACTNUM; }
+{exponent}		{ jplval.str_val = _strdup(yytext); printf("exponent==%s\n",yytext); return EXPONENT; }
+{fourhex}		{ jplval.str_val = _strdup(yytext); printf("fourhex==%s\n",yytext); return FOURHEX; }
 
 
 
 
 [ \t]*		{}
-[\n]		{ yylineno++;	}
+[\n]		{ jplineno++;	}
 
-.		{ yyg->yylval_r->int_val = atoi(yytext); 	}
+.		{ jplval.int_val = atoi(yytext); 	}
 
 %%
 
-int jpwrap(yyscan_t scanner) 
-{
+int yywrap() {
 	return 1;
 }

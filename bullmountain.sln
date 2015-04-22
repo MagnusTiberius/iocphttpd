@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 2013
-VisualStudioVersion = 12.0.30723.0
+VisualStudioVersion = 12.0.31101.0
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "iocphttpd", "iocphttpd\iocphttpd.vcxproj", "{54F797E9-FB21-4BBE-914C-4EFD66861330}"
 	ProjectSection(ProjectDependencies) = postProject
@@ -9,6 +9,11 @@ Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "iocphttpd", "iocphttpd\iocp
 	EndProjectSection
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "iocphttpl", "iocphttpl\iocphttpl.vcxproj", "{9C9048D6-37C8-44BF-BD8E-7D7F6B5AC42B}"
+	ProjectSection(ProjectDependencies) = postProject
+		{C8430F27-BC5C-4F41-882E-F8E5A5FA0CD9} = {C8430F27-BC5C-4F41-882E-F8E5A5FA0CD9}
+	EndProjectSection
+EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "jsoncp", "jsoncp\jsoncp.vcxproj", "{C8430F27-BC5C-4F41-882E-F8E5A5FA0CD9}"
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "UnitTestNative", "UnitTestNative\UnitTestNative.vcxproj", "{8F4A621C-54F8-409C-A301-191340C84C16}"
 EndProject
@@ -24,26 +29,31 @@ Global
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
 		{54F797E9-FB21-4BBE-914C-4EFD66861330}.Debug|Win32.ActiveCfg = Debug|Win32
 		{54F797E9-FB21-4BBE-914C-4EFD66861330}.Debug|Win32.Build.0 = Debug|Win32
-		{54F797E9-FB21-4BBE-914C-4EFD66861330}.Debug|x64.ActiveCfg = Debug|x64
-		{54F797E9-FB21-4BBE-914C-4EFD66861330}.Debug|x64.Build.0 = Debug|x64
+		{54F797E9-FB21-4BBE-914C-4EFD66861330}.Debug|x64.ActiveCfg = Debug|Win32
 		{54F797E9-FB21-4BBE-914C-4EFD66861330}.dummy|Win32.ActiveCfg = Debug|Win32
 		{54F797E9-FB21-4BBE-914C-4EFD66861330}.dummy|Win32.Build.0 = Debug|Win32
 		{54F797E9-FB21-4BBE-914C-4EFD66861330}.dummy|x64.ActiveCfg = Debug|Win32
 		{54F797E9-FB21-4BBE-914C-4EFD66861330}.Release|Win32.ActiveCfg = Release|Win32
 		{54F797E9-FB21-4BBE-914C-4EFD66861330}.Release|Win32.Build.0 = Release|Win32
-		{54F797E9-FB21-4BBE-914C-4EFD66861330}.Release|x64.ActiveCfg = Release|x64
-		{54F797E9-FB21-4BBE-914C-4EFD66861330}.Release|x64.Build.0 = Release|x64
+		{54F797E9-FB21-4BBE-914C-4EFD66861330}.Release|x64.ActiveCfg = Release|Win32
 		{9C9048D6-37C8-44BF-BD8E-7D7F6B5AC42B}.Debug|Win32.ActiveCfg = Debug|Win32
 		{9C9048D6-37C8-44BF-BD8E-7D7F6B5AC42B}.Debug|Win32.Build.0 = Debug|Win32
-		{9C9048D6-37C8-44BF-BD8E-7D7F6B5AC42B}.Debug|x64.ActiveCfg = Debug|x64
-		{9C9048D6-37C8-44BF-BD8E-7D7F6B5AC42B}.Debug|x64.Build.0 = Debug|x64
+		{9C9048D6-37C8-44BF-BD8E-7D7F6B5AC42B}.Debug|x64.ActiveCfg = Debug|Win32
 		{9C9048D6-37C8-44BF-BD8E-7D7F6B5AC42B}.dummy|Win32.ActiveCfg = Debug|Win32
 		{9C9048D6-37C8-44BF-BD8E-7D7F6B5AC42B}.dummy|Win32.Build.0 = Debug|Win32
 		{9C9048D6-37C8-44BF-BD8E-7D7F6B5AC42B}.dummy|x64.ActiveCfg = Debug|Win32
 		{9C9048D6-37C8-44BF-BD8E-7D7F6B5AC42B}.Release|Win32.ActiveCfg = Release|Win32
 		{9C9048D6-37C8-44BF-BD8E-7D7F6B5AC42B}.Release|Win32.Build.0 = Release|Win32
-		{9C9048D6-37C8-44BF-BD8E-7D7F6B5AC42B}.Release|x64.ActiveCfg = Release|x64
-		{9C9048D6-37C8-44BF-BD8E-7D7F6B5AC42B}.Release|x64.Build.0 = Release|x64
+		{9C9048D6-37C8-44BF-BD8E-7D7F6B5AC42B}.Release|x64.ActiveCfg = Release|Win32
+		{C8430F27-BC5C-4F41-882E-F8E5A5FA0CD9}.Debug|Win32.ActiveCfg = Debug|Win32
+		{C8430F27-BC5C-4F41-882E-F8E5A5FA0CD9}.Debug|Win32.Build.0 = Debug|Win32
+		{C8430F27-BC5C-4F41-882E-F8E5A5FA0CD9}.Debug|x64.ActiveCfg = Debug|Win32
+		{C8430F27-BC5C-4F41-882E-F8E5A5FA0CD9}.dummy|Win32.ActiveCfg = Debug|Win32
+		{C8430F27-BC5C-4F41-882E-F8E5A5FA0CD9}.dummy|Win32.Build.0 = Debug|Win32
+		{C8430F27-BC5C-4F41-882E-F8E5A5FA0CD9}.dummy|x64.ActiveCfg = Debug|Win32
+		{C8430F27-BC5C-4F41-882E-F8E5A5FA0CD9}.Release|Win32.ActiveCfg = Release|Win32
+		{C8430F27-BC5C-4F41-882E-F8E5A5FA0CD9}.Release|Win32.Build.0 = Release|Win32
+		{C8430F27-BC5C-4F41-882E-F8E5A5FA0CD9}.Release|x64.ActiveCfg = Release|Win32
 		{8F4A621C-54F8-409C-A301-191340C84C16}.Debug|Win32.ActiveCfg = Debug|Win32
 		{8F4A621C-54F8-409C-A301-191340C84C16}.Debug|Win32.Build.0 = Debug|Win32
 		{8F4A621C-54F8-409C-A301-191340C84C16}.Debug|x64.ActiveCfg = Debug|Win32

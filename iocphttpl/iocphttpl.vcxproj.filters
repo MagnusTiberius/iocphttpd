@@ -13,14 +13,11 @@
       <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
       <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
     </Filter>
+    <Filter Include="httpparser">
+      <UniqueIdentifier>{f7c57502-5cf6-4899-9e58-dc4095ac9f7e}</UniqueIdentifier>
+    </Filter>
     <Filter Include="jsonparser">
       <UniqueIdentifier>{fe4ab0cd-9e6b-44be-a2ba-dd665aa04a9e}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="sampleparser">
-      <UniqueIdentifier>{e1bc7a9b-377e-41c7-928b-cf70f56ad1fa}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="wparser">
-      <UniqueIdentifier>{dbd12283-e354-4d3c-ac66-03d8d94333a9}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -57,8 +54,17 @@
     <ClInclude Include="Enums.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="httpparser.tab.h">
+      <Filter>httpparser</Filter>
+    </ClInclude>
+    <ClInclude Include="httpparserast.h">
+      <Filter>httpparser</Filter>
+    </ClInclude>
     <ClInclude Include="jsonp.tab.h">
       <Filter>jsonparser</Filter>
+    </ClInclude>
+    <ClInclude Include="HParser.h">
+      <Filter>httpparser</Filter>
     </ClInclude>
     <ClInclude Include="Jsonp.h">
       <Filter>jsonparser</Filter>
@@ -66,22 +72,10 @@
     <ClInclude Include="HttpTemplate.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="Parser1.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="httpTestParser.h">
-      <Filter>sampleparser</Filter>
-    </ClInclude>
-    <ClInclude Include="ScannerW.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="ScannerA.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="wparser.tab.h">
-      <Filter>wparser</Filter>
-    </ClInclude>
-    <ClInclude Include="ParseHeader.h">
+    <ClInclude Include="RequestParser.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
@@ -113,11 +107,20 @@
     <ClCompile Include="HttpHeader.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="httpparser.flex.cpp">
+      <Filter>httpparser</Filter>
+    </ClCompile>
+    <ClCompile Include="httpparser.tab.cpp">
+      <Filter>httpparser</Filter>
+    </ClCompile>
     <ClCompile Include="jsonp.flex.cpp">
       <Filter>jsonparser</Filter>
     </ClCompile>
     <ClCompile Include="jsonp.tab.cpp">
       <Filter>jsonparser</Filter>
+    </ClCompile>
+    <ClCompile Include="HParser.cpp">
+      <Filter>httpparser</Filter>
     </ClCompile>
     <ClCompile Include="Jsonp.cpp">
       <Filter>jsonparser</Filter>
@@ -125,36 +128,27 @@
     <ClCompile Include="HttpTemplate.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="Parser1.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="httpTestParser.cpp">
-      <Filter>sampleparser</Filter>
-    </ClCompile>
-    <ClCompile Include="ScannerW.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="ScannerA.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="wparser.tab.cpp">
-      <Filter>wparser</Filter>
-    </ClCompile>
-    <ClCompile Include="ParseHeader.cpp">
+    <ClCompile Include="RequestParser.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
+    <Flex Include="httpparser.l">
+      <Filter>httpparser</Filter>
+    </Flex>
     <Flex Include="jsonp.l">
       <Filter>jsonparser</Filter>
     </Flex>
   </ItemGroup>
   <ItemGroup>
+    <Bison Include="httpparser.y">
+      <Filter>httpparser</Filter>
+    </Bison>
     <Bison Include="jsonp.y">
       <Filter>jsonparser</Filter>
-    </Bison>
-    <Bison Include="wparser.y">
-      <Filter>wparser</Filter>
     </Bison>
   </ItemGroup>
 </Project>

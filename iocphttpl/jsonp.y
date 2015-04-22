@@ -1,31 +1,23 @@
 %define api.prefix jp
-%define api.pure
+
 %{
 
 #include "stdafx.h"
-#include "jsonp.tab.h"
 
-//#define yyerror jperror
-//#define yylex jplex
-//#define yyparse jpparse
-//#define yychar jpchar
-//#define yynerrs jpnerrs
+#define yyerror jperror
+#define yylex jplex
+#define yyparse jpparse
+//#define yylval jplval
+#define yychar jpchar
+#define yynerrs jpnerrs
 
-
-void* jpscanner;
-#define jpparm jpscanner
-
-//#define YYPARSE_PARAM jpparm
-#define YYLEX_PARAM &jpparm
-
+//#define yystype jpstype
 
 
 int jperror(char *s);
 int jperror(string s);
+int jplex(void);
 
-typedef void* yyscan_t;
-extern int jplex (YYSTYPE * yylval_param ,yyscan_t yyscanner);
-//extern int jplex (YYSTYPE * yylval_param);
 
 
 %}
@@ -99,11 +91,12 @@ anumber		: INTNUM				{ printf("INTNUM\n"); }
 %%
 int jperror(string s)
 {
-	//extern int jplineno;	// defined and maintained in lex.c
-	//extern char *jptext;	// defined and maintained in lex.c
+	extern int jplineno;	// defined and maintained in lex.c
+	extern char *jptext;	// defined and maintained in lex.c
 
-	//cerr << "ERROR: " << s << " at symbol \"" << jptext;
-	//cerr << "\" on line " << jplineno << endl;
+	cerr << "ERROR: " << s << " at symbol \"" << jptext;
+	cerr << "\" on line " << jplineno << endl;
+	//exit(1);
 	return 0;
 }
 int jperror(char *s)

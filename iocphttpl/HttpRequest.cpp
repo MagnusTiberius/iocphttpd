@@ -14,19 +14,30 @@ HttpRequest::~HttpRequest()
 void HttpRequest::Parse(char *content)
 {
 	//httpHeader.Parse(content);
-	parseHeader.Input(content);
-	parseHeader.Parse();
+	//hParser.Parse(content);
+	requestParser.Input(content);
+	requestParser.Parse();
 }
 
 char* HttpRequest::GetUrl()
 {
-	//char *url = httpHeader.GetUrl();
-	char *url = NULL;
-	url = parseHeader.GetUrl();
+	char *url;
+	//url  = httpHeader.GetUrl();
+	//url = hParser.GetUrl();
+	url = requestParser.GetUrl();
 	return url;
 }
 
 MethodType HttpRequest::GetMethod()
 {
-	return parseHeader.GetMethod();
+	MethodType mt;
+	//mt = httpHeader.GetMethod();
+	mt = requestParser.GetMethod();
+	return httpHeader.GetMethod();
+}
+
+const char* HttpRequest::GetContent()
+{
+	const char* rv = requestParser.GetParameterValue("Content:");
+	return rv;
 }

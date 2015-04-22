@@ -2,11 +2,11 @@
 #include "stdafx.h"
 #include "ScannerA.h"
 
-class IOCPHTTPL_API ParseHeader : public ScannerA
+class IOCPHTTPL_API RequestParser : public ScannerA
 {
 public:
-	ParseHeader();
-	~ParseHeader();
+	RequestParser();
+	~RequestParser();
 
 	typedef enum TOKEN {
 		GET = 20000,
@@ -31,6 +31,7 @@ public:
 	CHAR* GetUrl();
 	MethodType GetMethod();
 	void Reset();
+	const char* GetParameterValue(const char *p);
 
 protected:
 	CHAR *m_token;

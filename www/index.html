@@ -1,7 +1,9 @@
 <html>
 <head>
-	<script src="/static/js/test.js"></script>
 	<link rel="stylesheet" type="text/css" href="/static/css/test.css">
+	<script type="text/javascript" src="/static/js/testtwo.js"></script>
+	
+	
 </head>
 
 <body>
@@ -10,21 +12,98 @@
 
 	<hr>
 	<img src="/static/img/intel.jpg">
+	
 	<p>
-Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aenean rhoncus risus at elit consectetur, sit amet ornare lectus mollis. Nulla facilisi. Pellentesque iaculis finibus elementum. Pellentesque vitae scelerisque arcu, eget pretium justo. Mauris pretium mi nec risus cursus, dignissim dapibus enim tempor. Aenean lacinia ipsum ut porttitor suscipit. Maecenas sollicitudin dui enim, vehicula varius purus scelerisque id. Praesent malesuada nibh dictum tortor bibendum, consequat fermentum nisl euismod. Mauris dictum nisi ut nisi imperdiet dictum. Nullam suscipit malesuada felis. Duis bibendum risus ac ligula tempus volutpat. Etiam sagittis vitae nisi ac volutpat. Proin egestas arcu nec risus rhoncus, et iaculis velit ullamcorper. Morbi elementum non odio a hendrerit. Praesent in nisi id leo finibus aliquet non sed sem. Sed pretium velit consequat dolor blandit blandit a eu metus.
+	<form>
+	  <input id="btntest1" name="btntest1" type="button" value="send json data format">
+	</form>
 	</p>
-	<img src="/static/img/intel_desktop_roadmap.jpg">
+	
+	<p>
+The OneUp is the cheapest 3D printer in the world. At $199 for a self assembled kit, that includes everything you need, the OneUp is the easy choice to 'get your feet wet'. All corners of the internet recommend a self built printer as your first printer so you learn the ins and outs, the ups and downs of 3D printing before making a big purchase. Professional quality prints are a reality, equivalent to much more expensive machines at competitive speeds with the ability to expand the build area at at any time after purchase for only $79 (buy the TwoUp upgrade now in our online store!). Each kit includes a very reliable and forgiving extruder, that makes it easy to get great quality prints with minimal effort. The OneUp is optimized for PLA printing but with the optional heated bed upgrade, ABS and Nylon printing are a breeze! This is a Do-It-Yourself, Self-Assembly kit that generally takes 2-8 hours to assemble based on end user skill level. The only difference between the OneUp, TwoUp and ThreeUp is the build area, every other spec is the same.	</p>
 	<p>
 Fusce vitae lacus a nulla facilisis vulputate. Proin sed tellus justo. Aenean dignissim enim ut sapien blandit egestas. Duis aliquet imperdiet arcu. Sed iaculis nisl sed est vehicula auctor. Nam at mattis augue. Duis vitae augue enim. Nam ut mauris ac ligula euismod venenatis at non nisl. Integer suscipit lacus vitae auctor fermentum.
 	</p>
 
+	<form>
+	  <input id="btntest2" name="btntest2" type="button" value="send form data">
+	</form>
+	
 	<p>
 Praesent at massa cursus, malesuada nisl vitae, dignissim augue. Vivamus ligula turpis, luctus lobortis blandit malesuada, eleifend sit amet felis. Ut ut hendrerit est. Aliquam ultrices a ex quis euismod. Vestibulum ante ipsum primis in faucibus orci luctus et ultrices posuere cubilia Curae; Phasellus dictum sem id velit lacinia dignissim. Phasellus in arcu eget sem pulvinar euismod. Etiam sollicitudin metus sapien, ut finibus felis vehicula non.
 	</p>
 
+<a href='http://postimg.org/image/dajijbvh3/' target='_blank'><img src='http://s15.postimg.org/dajijbvh3/iocp_02.jpg' border='0' alt="iocp 02" /></a>	
 	<p>
 Pellentesque fermentum sem a enim sagittis, id porttitor mi mollis. Praesent non metus ac neque viverra ultrices. Aliquam erat volutpat. Aenean mollis volutpat consequat. Cras in ligula neque. Praesent aliquet est sed est laoreet posuere. Praesent convallis mauris nec tincidunt vulputate. Duis maximus ligula sed felis fringilla condimentum. Nullam sollicitudin eu elit eget pretium. Fusce luctus faucibus feugiat. Integer posuere sem lacus, ac aliquet purus sollicitudin at. Proin pellentesque luctus porttitor.	
 	</p>
+
+	<div id="resultDiv" name="resultDiv">
+	</div>
+	
+	<script type="text/javascript" src="/static/js/test.js"></script>
+
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.2/jquery.min.js"></script>
+	<script>
+		$( "#btntest1" ).click(function() {
+			//alert( "Handler for .click() called." );
+		  
+			$.ajax({
+				url: "http://localhost:5150/json/testtwo",
+				contentType: 'application/json',
+				type: "POST",
+				data: "{ apiKey: \"23462\", method: \"example\", ip: \"208.74.35.5\" }",
+				dataType: "json",
+				success: function (result) {
+					//alert(result);
+					/*
+					switch (result) {
+						case true:
+							processResponse(result);
+							break;
+						default:
+							resultDiv.html(result);
+					}
+					*/
+				},
+				error: function (xhr, ajaxOptions, thrownError) {
+				//alert(xhr.status);
+				//alert(thrownError);
+				}
+			});	
+	
+		});	
+	</script>
+	
+	<script>
+		$( "#btntest2" ).click(function() {
+			//alert( "Handler for .click() called." );
+		  
+			$.ajax({
+				url: "http://localhost:5150/json/testtwo",
+				type: "POST",
+				data: { apiKey: "23462", method: "example", ip: "208.74.35.5" },
+				dataType: "json",
+				success: function (result) {
+					//alert(result);
+					/*
+					switch (result) {
+						case true:
+							processResponse(result);
+							break;
+						default:
+							resultDiv.html(result);
+					}
+					*/
+				},
+				error: function (xhr, ajaxOptions, thrownError) {
+				//alert(xhr.status);
+				//alert(thrownError);
+				}
+			});	
+	
+		});	
+	</script>
 	
 <body>	
 </html>

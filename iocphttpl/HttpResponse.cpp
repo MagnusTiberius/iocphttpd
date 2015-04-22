@@ -3,11 +3,16 @@
 
 HttpResponse::HttpResponse()
 {
+	ghMutex = CreateMutex(
+		NULL,              // default security attributes
+		FALSE,             // initially not owned
+		NULL);
 }
 
 
 HttpResponse::~HttpResponse()
 {
+	::CloseHandle(ghMutex);
 }
 
 
@@ -38,11 +43,6 @@ void HttpResponse::SetStaticFileName(string path)
 	m_path = path;
 	GetPathExtension(path.c_str());
 	SetContentTypeFromExtension();
-}
-
-const CHAR* HttpResponse::GetStaticFileName()
-{
-	return m_path.c_str();
 }
 
 PTSTR  HttpResponse::GetPathExtension(const char* pszPath)
@@ -81,18 +81,28 @@ void HttpResponse::SetContentTypeFromExtension()
 	}
 	if (wstr.compare(L".js") == 0)
 	{
-		contenType.assign(L"text/javascript");
+		contenType.assign(L"application/javascript");
+		printf("\nContent Type: application/javascript\n");
 	}
+}
+
+void HttpResponse::SetContentType(const char* str)
+{
+	std::string s;
+	s.assign(str);
+	contenType.assign(s.begin(), s.end());
+}
+
+const char* HttpResponse::GetContent()
+{
+	return "";
 }
 
 std::vector<byte> HttpResponse::GetStaticContent(const char *path)
 {
-
-	if (strlen(path)==0)
-	{
-		std::vector<BYTE> vec;
-		return vec;
-	}
+	DWORD dwThreadId = GetCurrentThreadId();
+	printf("%d::Reading filename: %s \n", dwThreadId, path);
+	::WaitForSingleObject(ghMutex, INFINITE);
 
 	// open the file:
 	std::ifstream file(path, std::ios::binary);
@@ -116,22 +126,14 @@ std::vector<byte> HttpResponse::GetStaticContent(const char *path)
 		std::istream_iterator<BYTE>(file),
 		std::istream_iterator<BYTE>());
 
-	printf("GetStaticContent: %s is now read out of the file, copied into a buffer\n", path);
+	::ReleaseMutex(ghMutex);
 
 	return vec;
 }
 
 void HttpResponse::WriteStatic(const char *path)
 {
-	if (strlen(path) > 0)
-	{
-		m_sbResponse = GetStaticContent(path);
-		printf("PATH: %s is now in the buffer\n", path);
-	}
-	else
-	{
-		printf("Static filepath is empty\n");
-	}
+	m_sbResponse = GetStaticContent(path);
 }
 
 
@@ -142,7 +144,7 @@ void HttpResponse::GetResponse(char* pszResponse, vector<byte> *pvb, DWORD dwSiz
 	DWORD dwThreadId = GetCurrentThreadId();
 	ZeroMemory(pszResponse, dwSize);
 	sprintf_s(pszResponse, dwSize, "%s%s", resp_ok, "\n");
-	sprintf_s(pszResponse, dwSize, "%s%s%s%s", pszResponse, "Date: " , "HTTP/1.0 200 OK" , "\n");
+	sprintf_s(pszResponse, dwSize, "%s%s%s%s", pszResponse, "Date: " , "HTTP/1.x 200 OK" , "\n");
 	std::string ctstr;
 	ctstr.assign(contenType.begin(), contenType.end());
 	sprintf_s(pszResponse, dwSize, "%s%s%s%s", pszResponse, "Content-Type: ", ctstr.c_str(), "\n");
@@ -156,53 +158,10 @@ void HttpResponse::GetResponse(char* pszResponse, vector<byte> *pvb, DWORD dwSiz
 	std::string str2(m_sbResponse.begin(), m_sbResponse.end());
 	str.insert(str.end(), str2.begin(), str2.end());
 	//pszResponse = str.c_str();
-	//sprintf_s(pszResponse, dwSize, "%s", str.c_str());
-	memcpy(pszResponse, str.c_str(), str.size());
+	sprintf_s(pszResponse, dwSize, "%s", str.c_str());
 	m_sbResponse.assign(str.begin(), str.end());
 	//printf("%d::%s \n", dwThreadId, pszResponse);
 	//vector<byte> tpvb = *pvb;
 	//tpvb.assign(m_sbResponse.begin(), m_sbResponse.end());
 	pvb->assign(m_sbResponse.begin(), m_sbResponse.end());
-}
-
-CHAR* HttpResponse::GetResponse2()
-{
-	DWORD dwThreadId = GetCurrentThreadId();
-	CHAR pszResponse[DATA_BUFSIZE];
-	std::string rv = "";
-	ZeroMemory(&pszResponse, DATA_BUFSIZE);
-
-	sprintf_s(pszResponse, DATA_BUFSIZE, "%s%s", resp_ok, "\n");
-	rv.append(pszResponse);
-
-	ZeroMemory(&pszResponse, DATA_BUFSIZE);
-	sprintf_s(pszResponse, DATA_BUFSIZE, "%s%s%s", "Date: ", tmp_date, "\n");
-	rv.append(pszResponse);
-
-
-	std::string ctstr;
-	ctstr.assign(contenType.begin(), contenType.end());
-	ZeroMemory(&pszResponse, DATA_BUFSIZE);
-	sprintf_s(pszResponse, DATA_BUFSIZE, "%s%s%s", "Content-Type: ", ctstr.c_str(), "\n");
-	rv.append(pszResponse);
-
-	size_t siz = m_sbResponse.size();
-	ZeroMemory(&pszResponse, DATA_BUFSIZE);
-	sprintf_s(pszResponse, DATA_BUFSIZE, "%s%d%s", "Content-Length: ", siz, "\n\n");
-	rv.append(pszResponse);
-
-	std::string str2(m_sbResponse.begin(), m_sbResponse.end());
-	rv.append(str2);
-
-	CHAR *cv = (CHAR*)malloc(rv.size() + 1);
-	ZeroMemory(cv, rv.size() + 1);
-	memcpy(cv, rv.c_str(), rv.size());
-
-	return cv;
-}
-
-
-int HttpResponse::GetBufferSize()
-{
-	return m_sbResponse.size();
 }

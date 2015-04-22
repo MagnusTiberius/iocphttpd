@@ -12,7 +12,7 @@
 #include "HttpTemplate.h"
 
 #define PORT 5150
-#define DATA_BUFSIZE 8192*4
+//#define DATA_BUFSIZE 8192
 
 class IOCPHTTPL_API SocketCompletionPortServer : public HttpUrlRoute
 {
@@ -50,11 +50,11 @@ public:
 	virtual void Dispatch(HttpRequest *httpRequest, HttpResponse *httpResponse);
 	virtual void EvalStatic(HttpRequest *httpRequest, HttpResponse *httpResponse);
 	virtual void UrlNotFound(HttpRequest *httpRequest, HttpResponse *httpResponse);
+	HANDLE ghMutex;
 
 private:
 	static DWORD WINAPI ServerWorkerThread(LPVOID CompletionPortID);
 	HANDLE CompletionPort;
 	int m_PortNum = PORT;
-
 };
 

@@ -71,6 +71,7 @@
     <LinkIncremental>true</LinkIncremental>
     <OutDir>$(SolutionDir)\lib\$(Platform)\$(Configuration)\</OutDir>
     <IntDir>$(SolutionDir)obj\$(ProjectName)\$(Platform)\$(Configuration)\</IntDir>
+    <IncludePath>$(SolutionDir)\jsoncp\json\;$(IncludePath)</IncludePath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <LinkIncremental>true</LinkIncremental>
@@ -89,20 +90,15 @@
       <PrecompiledHeader>NotUsing</PrecompiledHeader>
       <WarningLevel>Level3</WarningLevel>
       <Optimization>Disabled</Optimization>
-      <PreprocessorDefinitions>WIN32;UNICODE;_UNICODE;IOCPHTTPL_EXPORTS</PreprocessorDefinitions>
+      <PreprocessorDefinitions>WIN32;_DEBUG;_WINDOWS;_USRDLL;IOCPHTTPL_EXPORTS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <SDLCheck>true</SDLCheck>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
-      <AdditionalDependencies>version.lib;ws2_32.lib;Shlwapi.lib</AdditionalDependencies>
+      <AdditionalDependencies>version.lib;ws2_32.lib;Shlwapi.lib;jsoncp.lib</AdditionalDependencies>
+      <AdditionalLibraryDirectories>$(SolutionDir)\lib\$(Platform)\$(Configuration)\</AdditionalLibraryDirectories>
     </Link>
-    <Flex>
-      <Reentrant>true</Reentrant>
-      <Cpp>false</Cpp>
-      <CppClassName>
-      </CppClassName>
-    </Flex>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <ClCompile>
@@ -125,7 +121,7 @@
       <Optimization>MaxSpeed</Optimization>
       <FunctionLevelLinking>true</FunctionLevelLinking>
       <IntrinsicFunctions>true</IntrinsicFunctions>
-      <PreprocessorDefinitions>WIN32;UNICODE;_UNICODE;IOCPHTTPL_EXPORTS</PreprocessorDefinitions>
+      <PreprocessorDefinitions>WIN32;NDEBUG;_WINDOWS;_USRDLL;IOCPHTTPL_EXPORTS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <SDLCheck>true</SDLCheck>
     </ClCompile>
     <Link>
@@ -135,12 +131,6 @@
       <OptimizeReferences>true</OptimizeReferences>
       <AdditionalDependencies>version.lib;ws2_32.lib;Shlwapi.lib</AdditionalDependencies>
     </Link>
-    <Flex>
-      <Reentrant>true</Reentrant>
-      <Cpp>false</Cpp>
-      <CppClassName>
-      </CppClassName>
-    </Flex>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
     <ClCompile>
@@ -165,24 +155,23 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Enums.h" />
+    <ClInclude Include="HParser.h" />
     <ClInclude Include="HttpHeader.h" />
+    <ClInclude Include="httpparser.tab.h" />
+    <ClInclude Include="httpparserast.h" />
     <ClInclude Include="HttpRequest.h" />
     <ClInclude Include="HttpResponse.h" />
     <ClInclude Include="HttpTemplate.h" />
-    <ClInclude Include="httpTestParser.h" />
     <ClInclude Include="HttpUrlRoute.h" />
     <ClInclude Include="iocphttpl.h" />
     <ClInclude Include="Jsonp.h" />
     <ClInclude Include="jsonp.tab.h" />
-    <ClInclude Include="ParseHeader.h" />
-    <ClInclude Include="Parser1.h" />
     <ClInclude Include="ParserHeader.h" />
+    <ClInclude Include="RequestParser.h" />
     <ClInclude Include="ScannerA.h" />
-    <ClInclude Include="ScannerW.h" />
     <ClInclude Include="SocketCompletionPortServer.h" />
     <ClInclude Include="stdafx.h" />
     <ClInclude Include="targetver.h" />
-    <ClInclude Include="wparser.tab.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="dllmain.cpp">
@@ -199,21 +188,21 @@
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
       </PrecompiledHeader>
     </ClCompile>
+    <ClCompile Include="HParser.cpp" />
     <ClCompile Include="HttpHeader.cpp" />
+    <ClCompile Include="httpparser.flex.cpp" />
+    <ClCompile Include="httpparser.tab.cpp" />
     <ClCompile Include="HttpRequest.cpp" />
     <ClCompile Include="HttpResponse.cpp" />
     <ClCompile Include="HttpTemplate.cpp" />
-    <ClCompile Include="httpTestParser.cpp" />
     <ClCompile Include="HttpUrlRoute.cpp" />
     <ClCompile Include="iocphttpl.cpp" />
     <ClCompile Include="Jsonp.cpp" />
     <ClCompile Include="jsonp.flex.cpp" />
     <ClCompile Include="jsonp.tab.cpp" />
-    <ClCompile Include="ParseHeader.cpp" />
-    <ClCompile Include="Parser1.cpp" />
     <ClCompile Include="ParserHeader.cpp" />
+    <ClCompile Include="RequestParser.cpp" />
     <ClCompile Include="ScannerA.cpp" />
-    <ClCompile Include="ScannerW.cpp" />
     <ClCompile Include="SocketCompletionPortServer.cpp" />
     <ClCompile Include="stdafx.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Create</PrecompiledHeader>
@@ -221,9 +210,14 @@
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Create</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Create</PrecompiledHeader>
     </ClCompile>
-    <ClCompile Include="wparser.tab.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <Flex Include="httpparser.l">
+      <Prefix Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">hp</Prefix>
+      <Prefix Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">hp</Prefix>
+      <Prefix Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">hp</Prefix>
+      <Prefix Condition="'$(Configuration)|$(Platform)'=='Release|x64'">hp</Prefix>
+    </Flex>
     <Flex Include="jsonp.l">
       <Prefix Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">jp</Prefix>
       <Prefix Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">jp</Prefix>
@@ -232,14 +226,17 @@
     </Flex>
   </ItemGroup>
   <ItemGroup>
+    <Bison Include="httpparser.y">
+      <FilePrefix Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">hp</FilePrefix>
+      <FilePrefix Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">hp</FilePrefix>
+      <FilePrefix Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">hp</FilePrefix>
+      <FilePrefix Condition="'$(Configuration)|$(Platform)'=='Release|x64'">hp</FilePrefix>
+    </Bison>
     <Bison Include="jsonp.y">
       <FilePrefix Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">jp</FilePrefix>
       <FilePrefix Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">jp</FilePrefix>
       <FilePrefix Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">jp</FilePrefix>
       <FilePrefix Condition="'$(Configuration)|$(Platform)'=='Release|x64'">jp</FilePrefix>
-    </Bison>
-    <Bison Include="wparser.y">
-      <FilePrefix Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">ww</FilePrefix>
     </Bison>
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
