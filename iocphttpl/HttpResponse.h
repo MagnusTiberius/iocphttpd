@@ -25,6 +25,7 @@ public:
 	PTSTR  GetPathExtension(const char* pszPath);
 	PTSTR  GetPathExtension(PTSTR pszPath);
 	void SetContentType(const char* str);
+	const char* GetContent();
 
 private:
 	HttpHeader httpHeader;

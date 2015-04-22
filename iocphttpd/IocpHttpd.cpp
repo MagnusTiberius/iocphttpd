@@ -60,16 +60,12 @@ void IocpHttpd::HandleJsonTest(HttpRequest *httpRequest, HttpResponse *httpRespo
 {
 	printf("IocpHttpd::HandleJsonTest\n");
 
-	string json_example = "{\"array\": \
-							[\"item1\", \
-							\"item2\"], \
-							\"not an array\": \
-							\"asdf\" \
-							}";
+	const char *content = httpRequest->GetContent();
+	std::string scontent(content);
 
 	Json::Value root;
 	Json::Reader reader;
-	bool parsedSuccess = reader.parse(json_example, root, false);
+	bool parsedSuccess = reader.parse(scontent, root, false);
 	if (parsedSuccess)
 	{
 		std::string s = root.toStyledString();

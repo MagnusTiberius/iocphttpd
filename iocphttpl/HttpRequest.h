@@ -14,6 +14,7 @@ public:
 	void Parse(char *content);
 	char* GetUrl();
 	MethodType GetMethod();
+	const char* GetContent();
 
 private:
 	headerparser::HParser hParser;

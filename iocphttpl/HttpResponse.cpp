@@ -93,6 +93,10 @@ void HttpResponse::SetContentType(const char* str)
 	contenType.assign(s.begin(), s.end());
 }
 
+const char* HttpResponse::GetContent()
+{
+	return "";
+}
 
 std::vector<byte> HttpResponse::GetStaticContent(const char *path)
 {

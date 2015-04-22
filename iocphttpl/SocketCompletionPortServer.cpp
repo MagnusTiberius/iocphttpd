@@ -309,6 +309,7 @@ DWORD WINAPI SocketCompletionPortServer::ServerWorkerThread(LPVOID lpObject)
 			}
 
 			httpRequest.Parse(PerIoData->DataBuf.buf);
+			printf("%d::Content: %d\n", dwThreadId, httpRequest.GetContent());
 			obj->Dispatch(&httpRequest, &httpResponse);
 			ZeroMemory(PerIoDataSend->Buffer, DATA_BUFSIZE);
 			ZeroMemory(&(PerIoDataSend->Overlapped), sizeof(OVERLAPPED));
@@ -373,6 +374,7 @@ DWORD WINAPI SocketCompletionPortServer::ServerWorkerThread(LPVOID lpObject)
 			}
 
 			httpRequest.Parse(PerIoData->DataBuf.buf);
+			printf("%d::Content: %d\n", dwThreadId, httpRequest.GetContent());
 			obj->Dispatch(&httpRequest, &httpResponse);
 			ZeroMemory(PerIoDataSend->Buffer, DATA_BUFSIZE);
 			ZeroMemory(&(PerIoDataSend->Overlapped), sizeof(OVERLAPPED));

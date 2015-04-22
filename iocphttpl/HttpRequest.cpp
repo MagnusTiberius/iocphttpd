@@ -35,3 +35,9 @@ MethodType HttpRequest::GetMethod()
 	mt = requestParser.GetMethod();
 	return httpHeader.GetMethod();
 }
+
+const char* HttpRequest::GetContent()
+{
+	const char* rv = requestParser.GetParameterValue("Content:");
+	return rv;
+}

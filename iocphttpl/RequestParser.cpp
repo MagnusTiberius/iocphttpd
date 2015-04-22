@@ -104,7 +104,7 @@ const char* RequestParser::GetParameterValue(const char *p)
 		std::string s = std::string(pitem->name);
 		std::string t(p);
 		int d = s.compare(t);
-		if ( d < 1)
+		if ( d == 0)
 		{
 			return pitem->value;
 		}
@@ -132,14 +132,16 @@ void RequestParser::ParseContent()
 			headermap_t *item = NULL;
 			item = new headermap_t{};
 			item->name = _strdup("Content:");
-			item->value = buf;
+			item->value = _strdup(buf);
 			printf("\nContent: %s \n", buf);
 			printf("Content-Type::%s\n", GetParameterValue("Content-Type:"));
 			m_headermap.push_back(item);
 			item = NULL;
 			memset(buf, 0, len);
+			return;
 		}
 	}
+	return;
 }
 
 const CHAR* RequestParser::StripOut(CHAR* item, const CHAR *strip)
