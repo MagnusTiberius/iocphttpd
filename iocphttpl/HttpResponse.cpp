@@ -17,9 +17,20 @@ HttpResponse::~HttpResponse()
 	ibuflist_t itr;
 	for (itr = m_bufferList.begin(); itr != m_bufferList.end(); itr++)
 	{
-		char *p = *itr;
+		lpstatic_content_t p = *itr;
 		if (p != NULL)
 		{
+			if (p->name	!= NULL)
+			{
+				free(p->name);
+				p->name = NULL;
+			}
+			if (p->content != NULL)
+			{
+				free(p->content);
+				p->content = NULL;
+			}
+			//free(p->bytcontent);
 			free(p);
 			p = NULL;
 		}
@@ -116,6 +127,20 @@ std::vector<byte> HttpResponse::GetStaticContent(const char *path)
 	printf("%d::Reading filename: %s \n", dwThreadId, path);
 	::WaitForSingleObject(ghMutex, INFINITE);
 
+	ibuflist_t itr;
+	for (itr = m_bufferList.begin(); itr != m_bufferList.end(); itr++)
+	{
+		lpstatic_content_t pitem = *itr;
+		int diff = strcmp(pitem->name, path);
+		if (diff == 0)
+		{
+			pitem->rawtime = time(0);
+			::ReleaseMutex(ghMutex);
+			return *pitem->bytcontent;
+		}
+	}
+
+
 	// open the file:
 	std::ifstream file(path, std::ios::binary);
 	
@@ -138,18 +163,56 @@ std::vector<byte> HttpResponse::GetStaticContent(const char *path)
 		std::istream_iterator<BYTE>(file),
 		std::istream_iterator<BYTE>());
 
+	lpstatic_content_t p1 = (lpstatic_content_t)malloc(sizeof(static_content_t));
+	p1->name = _strdup(path);
+	p1->bytcontent = new std::vector<byte>();
+	p1->bytcontent->assign(vec.begin(), vec.end());
+	p1->rawtime = time(0);
+		
+	m_bufferList.push_back(p1);
+
+
 	::ReleaseMutex(ghMutex);
 
 	return vec;
 }
 
+std::vector<byte> HttpResponse::GetStaticContent3(const char *file_name)
+{
+	char *buf = GetStaticContent2(file_name);
+	std::vector<byte> bytbuf;
+	std::string str;
+	str.assign(buf);
+	bytbuf.assign(str.begin(), str.end());
+	return bytbuf;
+}
+
 char* HttpResponse::GetStaticContent2(const char *file_name)
 {
 	::WaitForSingleObject(ghMutex, INFINITE);
+	
+	/*
+	time_t now = time(0);
+	ibuflist_t itr;
+	for (itr = m_bufferList.begin(); itr != m_bufferList.end(); itr++)
+	{
+		lpstatic_content_t pitem = *itr;
+		int diff = strcmp(pitem->name, file_name);
+		if (diff == 0)
+		{
+			pitem->rawtime = time(0);
+			::ReleaseMutex(ghMutex);
+			return pitem->content;
+		}
+		double dt = difftime(now, pitem->rawtime);
+
+	}
+	*/
+
 	FILE *fp;
 	char *buf = NULL;
 
-	fopen_s(&fp, file_name, "r");
+	fopen_s(&fp, file_name, "rb");
 	if (fp == NULL)
 	{
 		return NULL;
@@ -170,7 +233,13 @@ char* HttpResponse::GetStaticContent2(const char *file_name)
 
 	fclose(fp);
 
-	m_bufferList.push_back(buf);
+	/*
+	lpstatic_content_t p1 = (lpstatic_content_t)malloc(sizeof(static_content_t));
+	p1->name = _strdup(file_name);
+	p1->content = buf;
+	p1->rawtime = time(0);
+	m_bufferList.push_back(p1);
+	*/
 
 	::ReleaseMutex(ghMutex);
 

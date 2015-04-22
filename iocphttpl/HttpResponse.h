@@ -4,6 +4,7 @@
 #include <fstream>
 #include "Shlwapi.h"
 #include "json.h"
+#include <time.h>
 
 class IOCPHTTPL_API HttpResponse : public HttpTemplate
 {
@@ -11,8 +12,15 @@ public:
 	HttpResponse();
 	~HttpResponse();
 
-	typedef std::vector<char*> buflist_t;
-	typedef std::vector<char*>::iterator ibuflist_t;
+	typedef struct {
+		char *name;
+		char *content;
+		vector<byte> *bytcontent;
+		time_t rawtime;
+
+	} static_content_t, *lpstatic_content_t;
+	typedef std::vector<lpstatic_content_t> buflist_t;
+	typedef std::vector<lpstatic_content_t>::iterator ibuflist_t;
 
 	const char* resp_ok = "HTTP/1.x 200 OK";
 	const char* resp_ct = "text/html";
@@ -25,6 +33,7 @@ public:
 	std::vector<byte> GetStaticContent(const char *path);
 	char* GetStaticContent(std::wstring wfile_name); 
 	char* GetStaticContent2(const char *file_name);
+	std::vector<byte> GetStaticContent3(const char *file_name);
 	void WriteStatic(const char *path);
 	void SetContentTypeFromExtension();
 	PTSTR  GetPathExtension(const char* pszPath);
