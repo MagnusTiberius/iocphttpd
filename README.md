@@ -24,7 +24,7 @@ JOURNAL:
 
 4/13/15 - Still figuring out how to copy a byte array to WSABUF.
 
-4/21/15 - Read http://www.json.org/JSONRequest.html doc.
+4/21/15 - Read http://www.json.org/JSONRequest.html doc. Interesting read, see http://www.webalizer.org/simpleton.html
 
 Ref:
 
