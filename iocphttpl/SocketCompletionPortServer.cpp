@@ -285,6 +285,8 @@ DWORD WINAPI SocketCompletionPortServer::ServerWorkerThread(LPVOID lpObject)
 
 	DWORD dwThreadId = GetCurrentThreadId();
 
+
+
 	while (TRUE)
 	{
 		BytesTransferred = 0;
@@ -348,7 +350,7 @@ DWORD WINAPI SocketCompletionPortServer::ServerWorkerThread(LPVOID lpObject)
 		// First check to see if an error has occurred on the socket and if so
 		// then close the socket and cleanup the SOCKET_INFORMATION structure
 		// associated with the socket
-		if (BytesTransferred == 0 || PerIoData->BytesRECV == 0 || PerIoData->DataBuf.len == 0)
+		if (BytesTransferred == 0 && PerIoData->BytesRECV == 0 && PerIoData->DataBuf.len == 0)
 		{
 			printf("%d::ServerWorkerThread--Closing socket %d\n", dwThreadId, PerHandleData->Socket);
 			if (closesocket(PerHandleData->Socket) == SOCKET_ERROR)
