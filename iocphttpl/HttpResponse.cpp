@@ -12,7 +12,8 @@ HttpResponse::HttpResponse()
 
 HttpResponse::~HttpResponse()
 {
-	::CloseHandle(ghMutex);
+
+	::WaitForSingleObject(ghMutex, INFINITE);
 	ibuflist_t itr;
 	for (itr = m_bufferList.begin(); itr != m_bufferList.end(); itr++)
 	{
@@ -23,6 +24,8 @@ HttpResponse::~HttpResponse()
 			p = NULL;
 		}
 	}
+	::ReleaseMutex(ghMutex);
+	::CloseHandle(ghMutex);
 }
 
 
@@ -92,7 +95,6 @@ void HttpResponse::SetContentTypeFromExtension()
 	if (wstr.compare(L".js") == 0)
 	{
 		contenType.assign(L"application/javascript"); 
-		printf("\nContent Type: application/javascript\n");
 	}
 }
 
@@ -143,6 +145,7 @@ std::vector<byte> HttpResponse::GetStaticContent(const char *path)
 
 char* HttpResponse::GetStaticContent2(const char *file_name)
 {
+	::WaitForSingleObject(ghMutex, INFINITE);
 	FILE *fp;
 	char *buf = NULL;
 
@@ -168,6 +171,8 @@ char* HttpResponse::GetStaticContent2(const char *file_name)
 	fclose(fp);
 
 	m_bufferList.push_back(buf);
+
+	::ReleaseMutex(ghMutex);
 
 	return buf;
 
@@ -204,14 +209,9 @@ void HttpResponse::GetResponse(char* pszResponse, vector<byte> *pvb, DWORD dwSiz
 	std::string str;
 	str.assign(pszResponse);
 
-	//sprintf_s(pszResponse, dwSize, "%s%s%s", pszResponse, m_sbResponse, "\n");
 	std::string str2(m_sbResponse.begin(), m_sbResponse.end());
 	str.insert(str.end(), str2.begin(), str2.end());
-	//pszResponse = str.c_str();
 	sprintf_s(pszResponse, dwSize, "%s", str.c_str());
 	m_sbResponse.assign(str.begin(), str.end());
-	//printf("%d::%s \n", dwThreadId, pszResponse);
-	//vector<byte> tpvb = *pvb;
-	//tpvb.assign(m_sbResponse.begin(), m_sbResponse.end());
 	pvb->assign(m_sbResponse.begin(), m_sbResponse.end());
 }
