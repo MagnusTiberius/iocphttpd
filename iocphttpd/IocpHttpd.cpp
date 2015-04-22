@@ -39,11 +39,11 @@ void IocpHttpd::HandleHome(HttpRequest *httpRequest, HttpResponse *httpResponse)
 void IocpHttpd::HandleTest(HttpRequest *httpRequest, HttpResponse *httpResponse)
 {
 	printf("IocpHttpd::HandleTest\n");
-	if (httpResponse->FindTemplate("Home") == false)
+	if (httpResponse->FindTemplate("Test") == false)
 	{
-		httpResponse->AddTemplate("Home", "C:\\www\\index.html");
+		httpResponse->AddTemplate("Test", "C:\\www\\test.html");
 	}
-	httpResponse->WriteTemplate("Home");
+	httpResponse->WriteTemplate("Test");
 }
 
 void IocpHttpd::HandleInit(HttpRequest *httpRequest, HttpResponse *httpResponse)
