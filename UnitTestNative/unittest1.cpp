@@ -2,6 +2,7 @@
 #include "CppUnitTest.h"
 #include "ScannerA.h"
 #include "RequestParser.h"
+#include "HttpResponse.h"
 
 
 extern "C" {
@@ -170,7 +171,15 @@ namespace UnitTestNative
 			parser.Parse();
 		}
 
+		TEST_METHOD(TestMethod9)
+		{
 
+			HttpResponse httpResponse;
+			char *s;
+			s = httpResponse.GetStaticContent2("C:\\www\\index.html");
+			s = httpResponse.GetStaticContent2("C:\\www\\init.html");
+			s = httpResponse.GetStaticContent2("C:\\www\\index.html");
+		}
 	};
 }
 
