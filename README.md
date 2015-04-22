@@ -32,3 +32,6 @@ Ref:
 
 1) https://docs.freebsd.org/info/bison/bison.info.Pure_Calling.html
 
+2) http://www.informit.com/articles/article.aspx?p=2036582&seqNum=3
+   Secure Coding in C and C++: Strings and Buffer Overflows
+
