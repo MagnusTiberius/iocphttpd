@@ -13,6 +13,16 @@ HttpResponse::HttpResponse()
 HttpResponse::~HttpResponse()
 {
 	::CloseHandle(ghMutex);
+	ibuflist_t itr;
+	for (itr = m_bufferList.begin(); itr != m_bufferList.end(); itr++)
+	{
+		char *p = *itr;
+		if (p != NULL)
+		{
+			free(p);
+			p = NULL;
+		}
+	}
 }
 
 
@@ -81,7 +91,7 @@ void HttpResponse::SetContentTypeFromExtension()
 	}
 	if (wstr.compare(L".js") == 0)
 	{
-		contenType.assign(L"application/javascript");
+		contenType.assign(L"application/javascript"); 
 		printf("\nContent Type: application/javascript\n");
 	}
 }
@@ -131,12 +141,52 @@ std::vector<byte> HttpResponse::GetStaticContent(const char *path)
 	return vec;
 }
 
+char* HttpResponse::GetStaticContent2(const char *file_name)
+{
+	FILE *fp;
+	char *buf = NULL;
+
+	fopen_s(&fp, file_name, "r");
+	if (fp == NULL)
+	{
+		return NULL;
+	}
+	fseek(fp, 0, SEEK_END);
+	long size = ftell(fp);
+	rewind(fp);
+
+	buf = (char*)malloc(size + 1);
+	memset(buf, 0, size);
+
+	int i = 0;
+	int ch;
+	while ((ch = fgetc(fp)) != EOF)
+	{
+		buf[i++] = ch;
+	}
+
+	fclose(fp);
+
+	m_bufferList.push_back(buf);
+
+	return buf;
+
+}
+
+char* HttpResponse::GetStaticContent(std::wstring wfile_name)
+{
+
+	std::string file_name;
+	file_name.assign(wfile_name.begin(), wfile_name.end());
+	char *buf = GetStaticContent2(file_name.c_str());
+
+	return buf;
+}
+
 void HttpResponse::WriteStatic(const char *path)
 {
 	m_sbResponse = GetStaticContent(path);
 }
-
-
 
 
 void HttpResponse::GetResponse(char* pszResponse, vector<byte> *pvb, DWORD dwSize)
