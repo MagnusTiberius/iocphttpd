@@ -137,9 +137,9 @@ int SocketCompletionPortServer::Start()
 
 		// Create a socket information structure to associate with the socket
 		if ((PerHandleData = (LPPER_HANDLE_DATA)GlobalAlloc(GPTR, sizeof(PER_HANDLE_DATA))) == NULL)
-			fprintf(stderr, "%d::GlobalAlloc() failed with error %d\n", GetLastError());
+			fprintf(stderr, "%d::GlobalAlloc() failed with error %d\n", dwThreadId, GetLastError());
 		else
-			fprintf(stderr, "%d::GlobalAlloc() for LPPER_HANDLE_DATA is OK!\n", dwThreadId, dwThreadId);
+			fprintf(stderr, "%d::GlobalAlloc() for LPPER_HANDLE_DATA is OK!\n", dwThreadId);
 
 		// Associate the accepted socket with the original completion port
 		fprintf(stderr, "%d::Socket number %d got connected...\n", dwThreadId, Accept);
@@ -302,7 +302,9 @@ DWORD WINAPI SocketCompletionPortServer::ServerWorkerThread(LPVOID lpObject)
 		printf("\n\n%d::WSARECV2 Socket=%d, BytesTransferred=%d; PerIoData->BytesRECV=%d; PerIoData->BytesSEND=%d\n\n", dwThreadId, PerHandleData->Socket, BytesTransferred, PerIoData->BytesRECV, PerIoData->BytesSEND);
 
 
-		if (BytesTransferred > 0 && PerIoData->BytesRECV == 0 && PerIoData->BytesSEND == 0 && PerIoData->DataBuf.len > 0)
+		bool cond1 = (BytesTransferred > 0 && PerIoData->BytesRECV == 0 && PerIoData->BytesSEND == 0 && PerIoData->DataBuf.len > 0);
+		bool cond2 = (PerIoData->BytesRECV > 0);
+		if (cond1 || cond2)
 		{
 			::WaitForSingleObject(obj->ghMutex, INFINITE);
 			if ((PerIoDataSend = (LPPER_IO_OPERATION_DATA)GlobalAlloc(GPTR, sizeof(PER_IO_OPERATION_DATA))) == NULL)
@@ -311,7 +313,7 @@ DWORD WINAPI SocketCompletionPortServer::ServerWorkerThread(LPVOID lpObject)
 			}
 
 			httpRequest.Parse(PerIoData->DataBuf.buf);
-			printf("%d::Content: %d\n", dwThreadId, httpRequest.GetContent());
+			//printf("%d::Content: %d\n", dwThreadId, httpRequest.GetContent());
 			obj->Dispatch(&httpRequest, &httpResponse);
 			ZeroMemory(PerIoDataSend->Buffer, DATA_BUFSIZE);
 			ZeroMemory(&(PerIoDataSend->Overlapped), sizeof(OVERLAPPED));
@@ -368,50 +370,7 @@ DWORD WINAPI SocketCompletionPortServer::ServerWorkerThread(LPVOID lpObject)
 			continue;
 		}
 
-
-		if (PerIoData->BytesRECV > 0)
-		{
-			::WaitForSingleObject(obj->ghMutex, INFINITE);
-			if ((PerIoDataSend = (LPPER_IO_OPERATION_DATA)GlobalAlloc(GPTR, sizeof(PER_IO_OPERATION_DATA))) == NULL)
-			{
-
-			}
-
-			httpRequest.Parse(PerIoData->DataBuf.buf);
-			printf("%d::Content: %d\n", dwThreadId, httpRequest.GetContent());
-			obj->Dispatch(&httpRequest, &httpResponse);
-			ZeroMemory(PerIoDataSend->Buffer, DATA_BUFSIZE);
-			ZeroMemory(&(PerIoDataSend->Overlapped), sizeof(OVERLAPPED));
-			PerIoDataSend->DataBuf.buf = PerIoDataSend->Buffer;
-			httpResponse.GetResponse(PerIoDataSend->Buffer, &PerIoDataSend->byteBuffer, DATA_BUFSIZE);
-			httpResponse.Write("");
-			auto n = strlen(PerIoDataSend->Buffer);
-			PerIoDataSend->DataBuf.len = (ULONG)n;
-			if (PerIoDataSend->byteBuffer.size() > 0)
-			{
-				size_t bufsiz = PerIoDataSend->byteBuffer.size() * sizeof(PerIoDataSend->byteBuffer[0]);
-				if (PerIoDataSend->LPBuffer != NULL)
-				{
-					free(PerIoDataSend->LPBuffer);
-					PerIoDataSend->LPBuffer = NULL;
-				}
-				PerIoDataSend->LPBuffer = (CHAR*)malloc(bufsiz);
-				memset(PerIoDataSend->LPBuffer, '\0', bufsiz);
-				memcpy(PerIoDataSend->LPBuffer, &PerIoDataSend->byteBuffer[0], bufsiz);
-				PerIoDataSend->DataBuf.buf = PerIoDataSend->LPBuffer;
-				PerIoDataSend->DataBuf.len = bufsiz;
-			}
-			PerIoDataSend->BytesRECV = 0;
-			int res = WSASend(PerHandleData->Socket, &(PerIoDataSend->DataBuf), 1, &PerIoDataSend->BytesSEND, 0, &(PerIoDataSend->Overlapped), NULL);
-			if (res == SOCKET_ERROR)
-			{
-				fprintf(stderr, "%d::ServerWorkerThread--WSASend() failed with error %d\n", dwThreadId, WSAGetLastError());
-			}
-			SendBytes = PerIoDataSend->BytesSEND;
-			printf("\n\n%d::WSASEND: Socket=%d; SendBytes=%d; PerIoDataSend->BytesRECV=%d; PerIoDataSend->BytesSEND=%d\n\n", dwThreadId, PerHandleData->Socket, SendBytes, PerIoDataSend->BytesRECV, PerIoDataSend->BytesSEND);
-			::ReleaseMutex(obj->ghMutex);
-			continue;
-		}
-
+		printf("\n\n\n\nUnhandled condition. IP should not reach line. \n\n\n\n");
+		exit(1);
 	}
 }
