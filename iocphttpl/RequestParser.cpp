@@ -17,7 +17,7 @@ void RequestParser::Parse()
 	Reset();
 	headermap_t *item = NULL;
 	int previous_token = NULL;
-	int token = Token();
+	int token = token_t::BEGIN;
 	while (token != token_t::ENDTOKEN)
 	{
 		printf(".");

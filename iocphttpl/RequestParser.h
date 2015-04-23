@@ -16,7 +16,8 @@ public:
 		PROPERTYNAME = 20004,
 		PROPERTYVALUE = 20005,
 		ENDTOKEN = 20006,
-		QUERYSTRING = 20007
+		QUERYSTRING = 20007,
+		BEGIN = 20008
 	}token_t;
 
 	typedef struct HeaderMap {
@@ -25,6 +26,9 @@ public:
 	} headermap_t, *lpheadermap_t;
 
 	typedef vector<lpheadermap_t> HEADERMAPLIST;
+
+	typedef vector<char*> tokenlist_t;
+	typedef vector<char*>::iterator itokenlist_t;
 
 	int Token();
 	void Parse();
@@ -38,4 +42,5 @@ protected:
 	HEADERMAPLIST m_headermap;
 	void ParseContent();
 	const CHAR* StripOut(CHAR* item, const CHAR *strip);
+	tokenlist_t tokenlist;
 };
