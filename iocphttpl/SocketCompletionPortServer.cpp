@@ -313,28 +313,35 @@ DWORD WINAPI SocketCompletionPortServer::ServerWorkerThread(LPVOID lpObject)
 			}
 
 			httpRequest.Parse(PerIoData->DataBuf.buf);
-			//printf("%d::Content: %d\n", dwThreadId, httpRequest.GetContent());
+
 			obj->Dispatch(&httpRequest, &httpResponse);
 			ZeroMemory(PerIoDataSend->Buffer, DATA_BUFSIZE);
 			ZeroMemory(&(PerIoDataSend->Overlapped), sizeof(OVERLAPPED));
-			PerIoDataSend->DataBuf.buf = PerIoDataSend->Buffer;
-			httpResponse.GetResponse(PerIoDataSend->Buffer, &PerIoDataSend->byteBuffer, DATA_BUFSIZE);
-			httpResponse.Write("");
-			auto n = strlen(PerIoDataSend->Buffer);
-			PerIoDataSend->DataBuf.len = (ULONG)n;
-			if (PerIoDataSend->byteBuffer.size() > 0)
+			if (true)
 			{
-				size_t bufsiz = PerIoDataSend->byteBuffer.size() * sizeof(PerIoDataSend->byteBuffer[0]);
-				if (PerIoDataSend->LPBuffer != NULL)
+				PerIoDataSend->DataBuf.buf = (char*)httpResponse.GetResponse2(&PerIoDataSend->DataBuf.len);
+			}
+			else
+			{
+				PerIoDataSend->DataBuf.buf = PerIoDataSend->Buffer;
+				httpResponse.GetResponse(PerIoDataSend->Buffer, &PerIoDataSend->byteBuffer, DATA_BUFSIZE);
+				httpResponse.Write("");
+				auto n = strlen(PerIoDataSend->Buffer);
+				PerIoDataSend->DataBuf.len = (ULONG)n;
+				if (PerIoDataSend->byteBuffer.size() > 0)
 				{
-					free(PerIoDataSend->LPBuffer);
-					PerIoDataSend->LPBuffer = NULL;
+					size_t bufsiz = PerIoDataSend->byteBuffer.size() * sizeof(PerIoDataSend->byteBuffer[0]);
+					if (PerIoDataSend->LPBuffer != NULL)
+					{
+						free(PerIoDataSend->LPBuffer);
+						PerIoDataSend->LPBuffer = NULL;
+					}
+					PerIoDataSend->LPBuffer = (byte*)malloc(bufsiz);
+					memset(PerIoDataSend->LPBuffer, '\0', bufsiz);
+					memcpy(PerIoDataSend->LPBuffer, &PerIoDataSend->byteBuffer[0], bufsiz);
+					PerIoDataSend->DataBuf.buf = (char*)PerIoDataSend->LPBuffer;
+					PerIoDataSend->DataBuf.len = bufsiz;
 				}
-				PerIoDataSend->LPBuffer = (CHAR*)malloc(bufsiz);
-				memset(PerIoDataSend->LPBuffer, '\0', bufsiz);
-				memcpy(PerIoDataSend->LPBuffer, &PerIoDataSend->byteBuffer[0], bufsiz);
-				PerIoDataSend->DataBuf.buf = PerIoDataSend->LPBuffer;
-				PerIoDataSend->DataBuf.len = bufsiz;
 			}
 			PerIoDataSend->BytesRECV = 0;
 			int res = WSASend(PerHandleData->Socket, &(PerIoDataSend->DataBuf), 1, &PerIoDataSend->BytesSEND, 0, &(PerIoDataSend->Overlapped), NULL);

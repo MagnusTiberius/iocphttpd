@@ -40,6 +40,7 @@ public:
 	PTSTR  GetPathExtension(PTSTR pszPath);
 	void SetContentType(const char* str);
 	const char* GetContent();
+	byte* GetResponse2(ULONG *len);
 
 private:
 	HttpHeader httpHeader;

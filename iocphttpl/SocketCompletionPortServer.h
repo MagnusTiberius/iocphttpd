@@ -29,7 +29,7 @@ public:
 		OVERLAPPED Overlapped;
 		WSABUF DataBuf;
 		CHAR Buffer[DATA_BUFSIZE];
-		CHAR *LPBuffer;
+		byte *LPBuffer;
 		vector<byte> byteBuffer;
 		DWORD BytesSEND;
 		DWORD BytesRECV;

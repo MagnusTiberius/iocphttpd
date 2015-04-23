@@ -127,6 +127,7 @@ std::vector<byte> HttpResponse::GetStaticContent(const char *path)
 	printf("%d::Reading filename: %s \n", dwThreadId, path);
 	::WaitForSingleObject(ghMutex, INFINITE);
 
+	/*
 	ibuflist_t itr;
 	for (itr = m_bufferList.begin(); itr != m_bufferList.end(); itr++)
 	{
@@ -139,7 +140,7 @@ std::vector<byte> HttpResponse::GetStaticContent(const char *path)
 			return *pitem->bytcontent;
 		}
 	}
-
+	*/
 
 	// open the file:
 	std::ifstream file(path, std::ios::binary);
@@ -163,14 +164,14 @@ std::vector<byte> HttpResponse::GetStaticContent(const char *path)
 		std::istream_iterator<BYTE>(file),
 		std::istream_iterator<BYTE>());
 
+	/*
 	lpstatic_content_t p1 = (lpstatic_content_t)malloc(sizeof(static_content_t));
 	p1->name = _strdup(path);
 	p1->bytcontent = new std::vector<byte>();
 	p1->bytcontent->assign(vec.begin(), vec.end());
 	p1->rawtime = time(0);
-		
 	m_bufferList.push_back(p1);
-
+	*/
 
 	::ReleaseMutex(ghMutex);
 
@@ -179,6 +180,8 @@ std::vector<byte> HttpResponse::GetStaticContent(const char *path)
 
 std::vector<byte> HttpResponse::GetStaticContent3(const char *file_name)
 {
+	// There's a bug here, str will stop at '\0' for binary chars.
+	// Won't work for images and other bin files.
 	char *buf = GetStaticContent2(file_name);
 	std::vector<byte> bytbuf;
 	std::string str;
@@ -283,4 +286,48 @@ void HttpResponse::GetResponse(char* pszResponse, vector<byte> *pvb, DWORD dwSiz
 	sprintf_s(pszResponse, dwSize, "%s", str.c_str());
 	m_sbResponse.assign(str.begin(), str.end());
 	pvb->assign(m_sbResponse.begin(), m_sbResponse.end());
+}
+
+byte* HttpResponse::GetResponse2(ULONG *len)
+{
+	DWORD dwThreadId = GetCurrentThreadId();
+	char *buffer = (char*)malloc(DATA_BUFSIZE);
+	memset(buffer, 0, DATA_BUFSIZE);
+
+	std::vector<byte> binbuffer = m_sbResponse;
+
+	std::string ctstr;
+	ctstr.assign(contenType.begin(), contenType.end());
+	size_t siz = binbuffer.size();
+	std::string ssiz = std::to_string(siz);
+
+	strcpy_s(buffer, DATA_BUFSIZE, resp_ok);
+	strcat_s(buffer, DATA_BUFSIZE, "\n");
+	strcat_s(buffer, DATA_BUFSIZE, "Date: ");
+	strcat_s(buffer, DATA_BUFSIZE, "May 10, 2015");
+	strcat_s(buffer, DATA_BUFSIZE, "\n");
+	strcat_s(buffer, DATA_BUFSIZE, "Content-Type: ");
+	strcat_s(buffer, DATA_BUFSIZE, ctstr.c_str());
+	strcat_s(buffer, DATA_BUFSIZE, "\n");
+	strcat_s(buffer, DATA_BUFSIZE, "Content-Length: ");
+	strcat_s(buffer, DATA_BUFSIZE, ssiz.c_str());
+	strcat_s(buffer, DATA_BUFSIZE, "\n");
+	strcat_s(buffer, DATA_BUFSIZE, "\n");
+
+	int bufsiz = strlen(buffer) + binbuffer.size() + 1;
+	byte* buffer2 = (byte*)malloc(bufsiz);
+	memset(buffer2, 0, bufsiz);
+	strcpy_s((char*)buffer2, strlen(buffer)+1, buffer);
+	int n = strlen((char*)buffer2);
+
+	std::vector<byte>::iterator it;
+	for (it = binbuffer.begin(); it != binbuffer.end(); it++)
+	{
+		byte b = *it;
+		buffer2[n++] = b;
+	}
+
+	*len = strlen((char*)buffer2);
+
+	return buffer2;
 }
