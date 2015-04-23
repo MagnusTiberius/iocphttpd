@@ -324,7 +324,7 @@ byte*  HttpResponse::GetResponse2(ULONG *len)
 {
 	byte *content = NULL;
 	DWORD dwThreadId = GetCurrentThreadId();
-	char *txtbuf = (char*)malloc(DATA_BUFSIZE);
+	char txtbuf[DATA_BUFSIZE];
 	memset(txtbuf, 0, DATA_BUFSIZE);
 
 	std::vector<byte> binbuffer = m_sbResponsePackage;
@@ -337,6 +337,9 @@ byte*  HttpResponse::GetResponse2(ULONG *len)
 	if (contentsiz == 0)
 	{
 		strcpy_s(txtbuf, DATA_BUFSIZE, resp_ok);
+		strcat_s(txtbuf, DATA_BUFSIZE, "\n");
+		strcat_s(txtbuf, DATA_BUFSIZE, "Date: ");
+		strcat_s(txtbuf, DATA_BUFSIZE, "May 10, 2015");
 		strcat_s(txtbuf, DATA_BUFSIZE, "\n");
 		strcat_s(txtbuf, DATA_BUFSIZE, "\n");
 		int nbuffersize = strlen(txtbuf);
