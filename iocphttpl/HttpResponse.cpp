@@ -182,15 +182,15 @@ std::vector<byte> HttpResponse::GetStaticContent3(const char *file_name)
 {
 	// There's a bug here, str will stop at '\0' for binary chars.
 	// Won't work for images and other bin files.
-	char *buf = GetStaticContent2(file_name);
+	byte *buf = GetStaticContent2(file_name, &bufsize);
 	std::vector<byte> bytbuf;
 	std::string str;
-	str.assign(buf);
+	str.assign((char*)buf);
 	bytbuf.assign(str.begin(), str.end());
 	return bytbuf;
 }
 
-char* HttpResponse::GetStaticContent2(const char *file_name)
+byte* HttpResponse::GetStaticContent2(const char *file_name, long *len)
 {
 	::WaitForSingleObject(ghMutex, INFINITE);
 	
@@ -222,6 +222,7 @@ char* HttpResponse::GetStaticContent2(const char *file_name)
 	}
 	fseek(fp, 0, SEEK_END);
 	long size = ftell(fp);
+	*len = size;
 	rewind(fp);
 
 	buf = (char*)malloc(size + 1);
@@ -246,7 +247,7 @@ char* HttpResponse::GetStaticContent2(const char *file_name)
 
 	::ReleaseMutex(ghMutex);
 
-	return buf;
+	return (byte*)buf;
 
 }
 
@@ -255,15 +256,15 @@ char* HttpResponse::GetStaticContent(std::wstring wfile_name)
 
 	std::string file_name;
 	file_name.assign(wfile_name.begin(), wfile_name.end());
-	char *buf = GetStaticContent2(file_name.c_str());
+	byte *buf = GetStaticContent2(file_name.c_str(), &bufsize);
 
-	return buf;
+	return (char*)buf;
 }
 
 void HttpResponse::WriteStatic(const char *path)
 {
 	m_sbResponsePackage = GetStaticContent(path);
-	m_pszResponsePackage = GetStaticContent2(path);
+	m_byteContent = GetStaticContent2(path, &bufsize);
 }
 
 
@@ -319,67 +320,92 @@ byte* HttpResponse::GetResponse2(ULONG *len)
 }
 */
 
-byte* HttpResponse::GetResponse2(ULONG *len)
+byte*  HttpResponse::GetResponse2(ULONG *len)
 {
+	byte *content = NULL;
 	DWORD dwThreadId = GetCurrentThreadId();
-	char *buffer = (char*)malloc(DATA_BUFSIZE);
-	memset(buffer, 0, DATA_BUFSIZE);
+	char *txtbuf = (char*)malloc(DATA_BUFSIZE);
+	memset(txtbuf, 0, DATA_BUFSIZE);
 
 	std::vector<byte> binbuffer = m_sbResponsePackage;
 
 	std::string ctstr;
 	ctstr.assign(contenType.begin(), contenType.end());
-	size_t siz = binbuffer.size();
-	std::string ssiz = std::to_string(siz);
+	size_t contentsiz = binbuffer.size();
+	std::string ssiz = std::to_string(contentsiz);
 
-	strcpy_s(buffer, DATA_BUFSIZE, resp_ok);
-	strcat_s(buffer, DATA_BUFSIZE, "\n");
-	strcat_s(buffer, DATA_BUFSIZE, "Date: ");
-	strcat_s(buffer, DATA_BUFSIZE, "May 10, 2015");
-	strcat_s(buffer, DATA_BUFSIZE, "\n");
-	strcat_s(buffer, DATA_BUFSIZE, "Content-Type: ");
-	strcat_s(buffer, DATA_BUFSIZE, ctstr.c_str());
-	strcat_s(buffer, DATA_BUFSIZE, "\n");
-	strcat_s(buffer, DATA_BUFSIZE, "Content-Length: ");
-	strcat_s(buffer, DATA_BUFSIZE, ssiz.c_str());
-	strcat_s(buffer, DATA_BUFSIZE, "\n");
-	strcat_s(buffer, DATA_BUFSIZE, "\n");
-
-	int bufsiz = strlen(buffer) + binbuffer.size() + 1;
-	byte* buffer2 = (byte*)malloc(bufsiz);
-	memset(buffer2, 0, bufsiz);
-	strcpy_s((char*)buffer2, strlen(buffer)+1, buffer);
-	int n = strlen((char*)buffer2);
-
-	std::vector<byte>::iterator it;
-	for (it = binbuffer.begin(); it != binbuffer.end(); it++)
+	if (contentsiz == 0)
 	{
-		byte b = (byte)*it;
-		buffer2[n++] = b;
+		strcpy_s(txtbuf, DATA_BUFSIZE, resp_ok);
+		strcat_s(txtbuf, DATA_BUFSIZE, "\n");
+		strcat_s(txtbuf, DATA_BUFSIZE, "\n");
+		int nbuffersize = strlen(txtbuf);
+		content = (byte*)malloc(nbuffersize);
+		memset(content, 0, nbuffersize);
+		memcpy(content, txtbuf, nbuffersize);
+		*len = nbuffersize;
+		return content;
 	}
 
-	*len = strlen((char*)buffer2);
 
-	return buffer2;
+	strcpy_s(txtbuf, DATA_BUFSIZE, resp_ok);
+	strcat_s(txtbuf, DATA_BUFSIZE, "\n");
+	strcat_s(txtbuf, DATA_BUFSIZE, "Date: ");
+	strcat_s(txtbuf, DATA_BUFSIZE, "May 10, 2015");
+	strcat_s(txtbuf, DATA_BUFSIZE, "\n");
+	strcat_s(txtbuf, DATA_BUFSIZE, "Content-Type: ");
+	strcat_s(txtbuf, DATA_BUFSIZE, ctstr.c_str());
+	strcat_s(txtbuf, DATA_BUFSIZE, "\n");
+	strcat_s(txtbuf, DATA_BUFSIZE, "Content-Length: ");
+	strcat_s(txtbuf, DATA_BUFSIZE, ssiz.c_str());
+	strcat_s(txtbuf, DATA_BUFSIZE, "\n");
+	strcat_s(txtbuf, DATA_BUFSIZE, "\n");
+
+	int nbuffersize = strlen(txtbuf);
+	int bufsiz = strlen(txtbuf) + binbuffer.size() + 1;
+	content = (byte*)malloc(bufsiz);
+	memset(content, 0, bufsiz);
+
+	memcpy(content, txtbuf, nbuffersize);
+
+	byte *p = &content[nbuffersize];
+	memcpy(p, &binbuffer[0], binbuffer.size());
+	//memcpy(p, m_byteContent, bufsize);
+
+	*len = bufsiz;
+	return content;
 }
 
 void HttpResponse::GetResponse3(std::vector<byte> *pvbHeaderContent)
 {
 	DWORD dwThreadId = GetCurrentThreadId();
+	std::ostringstream oss;
 
 	std::string ctstr;
 	ctstr.assign(contenType.begin(), contenType.end());
 
-	std::ostringstream oss;
+	if (m_sbResponsePackage.size() == 0)
+	{
+		oss << resp_ok << "\n";
+		oss << "Date: " << "May 10, 2015" << "\n";
+		oss << "\n";
+		std::string headerBuffer = oss.str();
+		std::vector<byte> tmp;
+		tmp.insert(tmp.end(), headerBuffer.begin(), headerBuffer.end());
+		pvbHeaderContent->clear();
+		pvbHeaderContent->assign(tmp.begin(), tmp.end());
+		return;
+	}
+
 	oss << resp_ok << "\n";
 	oss << "Date: " << "May 10, 2015" << "\n";
 	oss << "Content-Type: " << ctstr.c_str() << "\n";
 	oss << "Content-Length: " << m_sbResponsePackage.size() << "\n";
 	oss << "\n";
-	std::string textBuffer = oss.str();
+	std::string headerBuffer = oss.str();
 
 	std::vector<byte> tmp;
-	tmp.insert(tmp.end(), textBuffer.begin(), textBuffer.end());
+	tmp.insert(tmp.end(), headerBuffer.begin(), headerBuffer.end());
 	tmp.insert(tmp.end(), m_sbResponsePackage.begin(), m_sbResponsePackage.end());
 	
 	pvbHeaderContent->clear();

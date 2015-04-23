@@ -33,7 +33,7 @@ public:
 	void SetStaticFileName(string path);
 	std::vector<byte> GetStaticContent(const char *path);
 	char* GetStaticContent(std::wstring wfile_name); 
-	char* GetStaticContent2(const char *file_name);
+	byte* GetStaticContent2(const char *file_name, long *len);
 	std::vector<byte> GetStaticContent3(const char *file_name);
 	void WriteStatic(const char *path);
 	void SetContentTypeFromExtension();
@@ -41,7 +41,7 @@ public:
 	PTSTR  GetPathExtension(PTSTR pszPath);
 	void SetContentType(const char* str);
 	const char* GetContent();
-	byte* GetResponse2(ULONG *len);
+	byte*  GetResponse2(ULONG *len);
 	void GetResponse3(std::vector<byte> *pvb);
 
 private:
@@ -53,12 +53,12 @@ private:
 	std::string m_szResponse;
 	std::string m_path;
 	std::vector<byte> m_sbResponsePackage;
-	char *m_pszResponsePackage;
+	byte *m_byteContent;
 
 	std::wstring pathExtension;
 	std::wstring contenType;
 	const char *szPath;
-
+	long bufsize;
 	HANDLE ghMutex;
 
 	buflist_t m_bufferList;

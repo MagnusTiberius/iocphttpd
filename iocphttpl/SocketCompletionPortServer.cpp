@@ -319,9 +319,17 @@ DWORD WINAPI SocketCompletionPortServer::ServerWorkerThread(LPVOID lpObject)
 			ZeroMemory(&(PerIoDataSend->Overlapped), sizeof(OVERLAPPED));
 			if (true)
 			{
-				httpResponse.GetResponse3(&PerIoDataSend->byteBuffer);
-				PerIoDataSend->DataBuf.buf = (char*)&PerIoDataSend->byteBuffer[0];
-				PerIoDataSend->DataBuf.len = PerIoDataSend->byteBuffer.size();
+				if (false)
+				{
+					PerIoDataSend->LPBuffer = httpResponse.GetResponse2( &PerIoDataSend->DataBuf.len);
+					PerIoDataSend->DataBuf.buf = (char*)PerIoDataSend->LPBuffer;
+				}
+				else
+				{
+					httpResponse.GetResponse3(&PerIoDataSend->byteBuffer);
+					PerIoDataSend->DataBuf.buf = (char*)&PerIoDataSend->byteBuffer[0];
+					PerIoDataSend->DataBuf.len = PerIoDataSend->byteBuffer.size();
+				}
 			}
 			else
 			{
