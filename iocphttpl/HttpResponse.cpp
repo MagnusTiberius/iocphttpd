@@ -44,7 +44,7 @@ void HttpResponse::Write(const char* str)
 {
 	std::vector<byte> rv;
 	rv.assign(str, str + strlen(str));
-	m_sbResponse = rv;
+	m_sbResponsePackage = rv;
 	//m_szResponse = std::string(str);
 }
 
@@ -59,7 +59,7 @@ void HttpResponse::WriteTemplate(char* code)
 	std::vector<byte> rv;
 	const char *ret = str.c_str();
 	rv.assign(ret, ret + strlen(ret));
-	m_sbResponse = rv;
+	m_sbResponsePackage = rv;
 }
 
 void HttpResponse::SetStaticFileName(string path)
@@ -262,7 +262,8 @@ char* HttpResponse::GetStaticContent(std::wstring wfile_name)
 
 void HttpResponse::WriteStatic(const char *path)
 {
-	m_sbResponse = GetStaticContent(path);
+	m_sbResponsePackage = GetStaticContent(path);
+	m_pszResponsePackage = GetStaticContent2(path);
 }
 
 
@@ -276,17 +277,47 @@ void HttpResponse::GetResponse(char* pszResponse, vector<byte> *pvb, DWORD dwSiz
 	ctstr.assign(contenType.begin(), contenType.end());
 	sprintf_s(pszResponse, dwSize, "%s%s%s%s", pszResponse, "Content-Type: ", ctstr.c_str(), "\n");
 
-	size_t siz = m_sbResponse.size();
+	size_t siz = m_sbResponsePackage.size();
 	sprintf_s(pszResponse, dwSize, "%s%s%d%s", pszResponse, "Content-Length: ", siz, "\n\n");
 	std::string str;
 	str.assign(pszResponse);
 
-	std::string str2(m_sbResponse.begin(), m_sbResponse.end());
+	std::string str2(m_sbResponsePackage.begin(), m_sbResponsePackage.end());
 	str.insert(str.end(), str2.begin(), str2.end());
 	sprintf_s(pszResponse, dwSize, "%s", str.c_str());
-	m_sbResponse.assign(str.begin(), str.end());
-	pvb->assign(m_sbResponse.begin(), m_sbResponse.end());
+	m_sbResponsePackage.assign(str.begin(), str.end());
+	pvb->assign(m_sbResponsePackage.begin(), m_sbResponsePackage.end());
 }
+
+/*
+byte* HttpResponse::GetResponse2(ULONG *len)
+{
+	*len = 0;
+
+	std::string ctstr;
+	ctstr.assign(contenType.begin(), contenType.end());
+
+	std::ostringstream oss;
+	oss << resp_ok << "\n";
+	oss << "Date: " << "May 10, 2015" << "\n";
+	oss << "Content-Type: " << ctstr.c_str() << "\n";
+	oss << "Content-Length: " << m_sbResponse.size() << "\n";
+	oss << "\n";
+
+	std::string s = oss.str();
+
+	int bufsiz = s.length() + m_sbResponse.size();
+	byte* buffer2 = (byte*)malloc(bufsiz);
+	if (buffer2)
+	{
+		std::copy(s.begin(), s.end(), buffer2);
+		std::copy(m_sbResponse.begin(), m_sbResponse.end(), &buffer2[s.length()]);
+		*len = bufsiz;
+	}
+
+	return buffer2;
+}
+*/
 
 byte* HttpResponse::GetResponse2(ULONG *len)
 {
@@ -294,7 +325,7 @@ byte* HttpResponse::GetResponse2(ULONG *len)
 	char *buffer = (char*)malloc(DATA_BUFSIZE);
 	memset(buffer, 0, DATA_BUFSIZE);
 
-	std::vector<byte> binbuffer = m_sbResponse;
+	std::vector<byte> binbuffer = m_sbResponsePackage;
 
 	std::string ctstr;
 	ctstr.assign(contenType.begin(), contenType.end());
@@ -323,11 +354,36 @@ byte* HttpResponse::GetResponse2(ULONG *len)
 	std::vector<byte>::iterator it;
 	for (it = binbuffer.begin(); it != binbuffer.end(); it++)
 	{
-		byte b = *it;
+		byte b = (byte)*it;
 		buffer2[n++] = b;
 	}
 
 	*len = strlen((char*)buffer2);
 
 	return buffer2;
+}
+
+void HttpResponse::GetResponse3(std::vector<byte> *pvbHeaderContent)
+{
+	DWORD dwThreadId = GetCurrentThreadId();
+
+	std::string ctstr;
+	ctstr.assign(contenType.begin(), contenType.end());
+
+	std::ostringstream oss;
+	oss << resp_ok << "\n";
+	oss << "Date: " << "May 10, 2015" << "\n";
+	oss << "Content-Type: " << ctstr.c_str() << "\n";
+	oss << "Content-Length: " << m_sbResponsePackage.size() << "\n";
+	oss << "\n";
+	std::string textBuffer = oss.str();
+
+	std::vector<byte> tmp;
+	tmp.insert(tmp.end(), textBuffer.begin(), textBuffer.end());
+	tmp.insert(tmp.end(), m_sbResponsePackage.begin(), m_sbResponsePackage.end());
+	
+	pvbHeaderContent->clear();
+	pvbHeaderContent->assign(tmp.begin(), tmp.end());
+
+	return;
 }

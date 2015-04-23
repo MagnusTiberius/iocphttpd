@@ -5,6 +5,7 @@
 #include "Shlwapi.h"
 #include "json.h"
 #include <time.h>
+#include <sstream>
 
 class IOCPHTTPL_API HttpResponse : public HttpTemplate
 {
@@ -41,6 +42,7 @@ public:
 	void SetContentType(const char* str);
 	const char* GetContent();
 	byte* GetResponse2(ULONG *len);
+	void GetResponse3(std::vector<byte> *pvb);
 
 private:
 	HttpHeader httpHeader;
@@ -50,7 +52,8 @@ private:
 	char* m_date[DATA_BUFSIZE];
 	std::string m_szResponse;
 	std::string m_path;
-	std::vector<byte> m_sbResponse;
+	std::vector<byte> m_sbResponsePackage;
+	char *m_pszResponsePackage;
 
 	std::wstring pathExtension;
 	std::wstring contenType;
