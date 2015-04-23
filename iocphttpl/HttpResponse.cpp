@@ -372,7 +372,8 @@ byte*  HttpResponse::GetResponse2(ULONG *len)
 	memcpy(content, txtbuf, nbuffersize);
 
 	byte *p = &content[nbuffersize];
-	memcpy(p, &binbuffer[0], binbuffer.size());
+	//memcpy(p, &binbuffer[0], binbuffer.size());
+	memcpy(content + nbuffersize, &binbuffer[0], binbuffer.size());
 	//memcpy(p, m_byteContent, bufsize);
 
 	*len = bufsiz;
