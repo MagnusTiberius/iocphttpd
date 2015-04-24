@@ -5,6 +5,11 @@
 #include <regex>
 #include "UrlParam.h"
 
+#include "HttpRequest.h"
+#include "HttpResponse.h"
+#include "HttpUrlRoute.h"
+#include "HttpTemplate.h"
+
 class IOCPHTTPL_API HttpUrlRoute 
 {
 public:
@@ -17,6 +22,7 @@ public:
 	typedef std::vector<STATICACCESS> STATICACCESSMAP;
 	typedef ROUTEMAP::iterator ROUTEMAPITERATOR;
 	typedef STATICACCESSMAP::iterator STATICACCESSMAPITERATOR;
+
 
 	void AddRoute(char *url, void* lpFunc);
 	void* GetRoute(char* url);
