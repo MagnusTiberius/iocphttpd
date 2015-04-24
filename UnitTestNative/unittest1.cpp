@@ -156,14 +156,14 @@ namespace UnitTestNative
 		TEST_METHOD(TestMethod8)
 		{
 			std::string str_value = "	GET /favicon.ico HTTP/1.1 \n\
-										Host: localhost:5150 \n \
-										Connection: keep-alive \n \
-										User-Agent: Mozilla/5.0 (Windows NT 6.3; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/42.0.2311.90 Safari/537.36 \n \
-										Accept: */* \n \
-										Referer: http://localhost:5150/test \n \
-										Accept-Encoding: gzip, deflate, sdch \n \
-										Accept-Language: en-US,en;q=0.8 \n \
-										\n \
+				Host: localhost:5150 \n \
+				Connection: keep-alive \n \
+				User-Agent: Mozilla/5.0 (Windows NT 6.3; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/42.0.2311.90 Safari/537.36 \n \
+				Accept: */* \n \
+				Referer: http://localhost:5150/test \n \
+				Accept-Encoding: gzip, deflate, sdch \n \
+				Accept-Language: en-US,en;q=0.8 \n \
+				\n \
 								    ";
 			RequestParser parser;
 
@@ -175,10 +175,11 @@ namespace UnitTestNative
 		{
 
 			HttpResponse httpResponse;
-			char *s;
-			s = httpResponse.GetStaticContent2("C:\\www\\index.html");
-			s = httpResponse.GetStaticContent2("C:\\www\\init.html");
-			s = httpResponse.GetStaticContent2("C:\\www\\index.html");
+			byte *s;
+			long len;
+			s = httpResponse.GetStaticContent2("C:\\www\\index.html", &len);
+			s = httpResponse.GetStaticContent2("C:\\www\\init.html", &len);
+			s = httpResponse.GetStaticContent2("C:\\www\\index.html", &len);
 		}
 	};
 }
