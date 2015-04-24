@@ -146,6 +146,9 @@ int HttpUrlRoute::GetLen(char *s)
 
 bool HttpUrlRoute::IsStatic(char *path)
 {
+	if (staticAccessList.size() == 0)
+		return false;
+
 	for (STATICACCESSMAPITERATOR i = staticAccessList.begin(); i != staticAccessList.end(); ++i)
 	{
 		char* t_path = i->first;
@@ -165,6 +168,11 @@ bool HttpUrlRoute::IsStatic(char *path)
 }
 
 
+bool HttpUrlRoute::HasUrlParams(char *path)
+{
+	return false;
+}
+
 void HttpUrlRoute::AddRoute(char *url, void* lpFunc)
 {
 	ROUTEURL w = std::make_pair(url, lpFunc);
@@ -173,6 +181,9 @@ void HttpUrlRoute::AddRoute(char *url, void* lpFunc)
 
 void* HttpUrlRoute::GetRoute(char* url)
 {
+	if (urlRoutes.size() == 0)
+		return NULL;
+
 	for (ROUTEMAPITERATOR i = urlRoutes.begin(); i != urlRoutes.end(); ++i)
 	{
 		char* t_url = i->first;

@@ -26,8 +26,9 @@ public:
 	PTSTR  GetPathExtension(PTSTR pszPath);
 	PTSTR  GetPathExtension(const char* pszPath);
 	void SetContentTypeFromExtension();
+	bool HasUrlParams(char *path);
 
-private:
+protected:
 	ROUTEMAP urlRoutes;
 	STATICACCESSMAP staticAccessList;
 	int GetLen(char *s);

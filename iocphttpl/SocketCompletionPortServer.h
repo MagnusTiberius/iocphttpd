@@ -50,6 +50,8 @@ public:
 	virtual void Dispatch(HttpRequest *httpRequest, HttpResponse *httpResponse);
 	virtual void EvalStatic(HttpRequest *httpRequest, HttpResponse *httpResponse);
 	virtual void UrlNotFound(HttpRequest *httpRequest, HttpResponse *httpResponse);
+	virtual void EvalHasUrlParams(HttpRequest *httpRequest, HttpResponse *httpResponse);
+
 	HANDLE ghMutex;
 
 private:

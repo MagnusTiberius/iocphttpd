@@ -17,6 +17,7 @@ public:
 	static void HandleInit(HttpRequest *httpRequest, HttpResponse *httpResponse);
 	static void HandleJsonTest(HttpRequest *httpRequest, HttpResponse *httpResponse);
 	static void HandleJsonTestTwo(HttpRequest *httpRequest, HttpResponse *httpResponse);
+	static void HandleJsonUrlParam1(HttpRequest *httpRequest, HttpResponse *httpResponse);
 
 private:
 

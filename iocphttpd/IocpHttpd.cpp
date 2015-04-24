@@ -3,12 +3,15 @@
 
 IocpHttpd::IocpHttpd()
 {
+	SetStatic("\/static\/*", "c:\\www\\static\\");
+
 	AddRoute("/", IocpHttpd::HandleHome);
 	AddRoute("/test", IocpHttpd::HandleTest);
 	AddRoute("/init", IocpHttpd::HandleInit);
 	AddRoute("/json/test", IocpHttpd::HandleJsonTest);
 	AddRoute("/json/testtwo", IocpHttpd::HandleJsonTestTwo);
-	SetStatic("\/static\/*", "c:\\www\\static\\");
+
+	AddRoute("/user/profile/{id:[0-9]+}/", IocpHttpd::HandleJsonUrlParam1);
 }
 
 
@@ -94,4 +97,11 @@ void IocpHttpd::HandleJsonTestTwo(HttpRequest *httpRequest, HttpResponse *httpRe
 		httpResponse->Write(s.c_str());
 		httpResponse->SetContentType("application/json");
 	}
+}
+
+void IocpHttpd::HandleJsonUrlParam1(HttpRequest *httpRequest, HttpResponse *httpResponse)
+{
+	printf("IocpHttpd::HandleJsonUrlParam1\n");
+
+
 }

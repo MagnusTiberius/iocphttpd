@@ -244,6 +244,12 @@ void SocketCompletionPortServer::Dispatch(HttpRequest *httpRequest, HttpResponse
 		return;
 	}
 
+	if (HasUrlParams(httpRequest->GetUrl()))
+	{
+		printf("Has URL Params\n");
+		return;
+	}
+
 	LPSTATICFUNC lpFunc = (LPSTATICFUNC)GetRoute(httpRequest->GetUrl());
 	if (lpFunc != NULL)
 	{
@@ -262,6 +268,10 @@ void SocketCompletionPortServer::EvalStatic(HttpRequest *httpRequest, HttpRespon
 	printf("Static %s\n", s.c_str());
 	httpResponse->SetStaticFileName(s);
 	httpResponse->WriteStatic(s.c_str());
+}
+
+void SocketCompletionPortServer::EvalHasUrlParams(HttpRequest *httpRequest, HttpResponse *httpResponse)
+{
 }
 
 
@@ -321,8 +331,6 @@ DWORD WINAPI SocketCompletionPortServer::ServerWorkerThread(LPVOID lpObject)
 			{
 				if (true)
 				{
-					//PerIoDataSend->LPBuffer = httpResponse.GetResponse2( &PerIoDataSend->DataBuf.len);
-					//PerIoDataSend->DataBuf.buf = (char*)PerIoDataSend->LPBuffer;
 					PerIoDataSend->DataBuf.buf = (char*)httpResponse.GetResponse2(&PerIoDataSend->DataBuf.len);
 				}
 				else
