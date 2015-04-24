@@ -3,7 +3,8 @@
 #include "ScannerA.h"
 #include "RequestParser.h"
 #include "HttpResponse.h"
-
+#include "HttpResponse.h"
+#include "HttpUrlRoute.h"
 
 extern "C" {
 #include "wparser.tab.h"
@@ -181,6 +182,19 @@ namespace UnitTestNative
 			s = httpResponse.GetStaticContent2("C:\\www\\init.html", &len);
 			s = httpResponse.GetStaticContent2("C:\\www\\index.html", &len);
 		}
+
+		TEST_METHOD(TestMethod10)
+		{
+			HttpUrlRoute httpUrlRoute;
+			httpUrlRoute.AddRoute("/json/testtwo", NULL);
+			httpUrlRoute.AddRoute("/user/profile/<id:[0-9]+>/", NULL);
+
+			if (httpUrlRoute.HasUrlParams("/user/profile/42344/"))
+			{
+
+			}
+		}
+
 	};
 }
 

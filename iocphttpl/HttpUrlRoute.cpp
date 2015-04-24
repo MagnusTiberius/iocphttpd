@@ -170,6 +170,37 @@ bool HttpUrlRoute::IsStatic(char *path)
 
 bool HttpUrlRoute::HasUrlParams(char *path)
 {
+	if (urlRoutes.size() == 0)
+		return false;
+
+	for (ROUTEMAPITERATOR i = urlRoutes.begin(); i != urlRoutes.end(); ++i)
+	{
+		char* url = i->first;
+		auto second = i->second;
+		std::string subject(url);
+		std::regex re("<.+>");
+		std::smatch match;
+		auto bOk = std::regex_search(subject, match, re);
+		if (bOk)
+		{
+			std::regex re2("[^<]*");
+			std::smatch match2;
+			auto bOk2 = std::regex_search(subject, match2, re2);
+			if (bOk2)
+			{
+				std::string sm = match2[0];
+				std::string mpath(path);
+				std::smatch match3;
+				std::regex re3(sm);
+				auto bOk3 = std::regex_search(mpath, match3, re3);
+				if (bOk3)
+				{
+					printf("Url Param Pre Match\n");
+					return false;
+				}
+			}
+		}
+	}
 	return false;
 }
 

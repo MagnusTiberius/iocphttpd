@@ -3,8 +3,9 @@
 #include <map>
 #include <vector>
 #include <regex>
+#include "UrlParam.h"
 
-class IOCPHTTPL_API HttpUrlRoute
+class IOCPHTTPL_API HttpUrlRoute 
 {
 public:
 	HttpUrlRoute();
@@ -36,5 +37,8 @@ protected:
 	int GetMergePoint(char *path1, char *path2);
 	std::wstring pathExtension;
 	std::wstring contenType;
+
+	UrlParam urlParam;
+
 };
 
