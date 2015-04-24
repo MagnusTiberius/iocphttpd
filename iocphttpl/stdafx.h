@@ -19,8 +19,6 @@
 #include "Shlwapi.h"
 #include "Enums.h"
 
-
-
 #define WIN32_LEAN_AND_MEAN             // Exclude rarely-used stuff from Windows headers
 
 #define BUFSIZMAX		8*1024
@@ -36,6 +34,3 @@ using namespace std;
 #else
 #define IOCPHTTPL_API __declspec(dllimport)
 #endif
-
-
-

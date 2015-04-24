@@ -16,6 +16,8 @@ public:
 	MethodType GetMethod();
 	const char* GetContent();
 
+	std::vector<std::string> urlParams;
+
 private:
 	headerparser::HParser hParser;
 	HttpHeader httpHeader;

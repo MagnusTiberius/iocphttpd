@@ -167,16 +167,25 @@ bool HttpUrlRoute::IsStatic(char *path)
 	return false;
 }
 
+void* HttpUrlRoute::GetUrlParamHandler(char *path)
+{
+	if (HasUrlParams(path))
+	{
+		return urlParamHandler;
+	}
+}
 
 bool HttpUrlRoute::HasUrlParams(char *path)
 {
 	if (urlRoutes.size() == 0)
 		return false;
 
+	urlParams.clear();
+
 	for (ROUTEMAPITERATOR i = urlRoutes.begin(); i != urlRoutes.end(); ++i)
 	{
 		char* url = i->first;
-		auto second = i->second;
+		urlParamHandler = i->second;
 		std::string subject(url);
 		std::regex re("<.+>");
 		std::smatch match;

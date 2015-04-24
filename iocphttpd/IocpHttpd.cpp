@@ -11,7 +11,7 @@ IocpHttpd::IocpHttpd()
 	AddRoute("/json/test", IocpHttpd::HandleJsonTest);
 	AddRoute("/json/testtwo", IocpHttpd::HandleJsonTestTwo);
 
-	AddRoute("/user/profile/{id:[0-9]+}/", IocpHttpd::HandleJsonUrlParam1);
+	AddRoute("/user/profile/<id:[0-9]+>/", IocpHttpd::HandleJsonUrlParam1);
 }
 
 
@@ -102,6 +102,26 @@ void IocpHttpd::HandleJsonTestTwo(HttpRequest *httpRequest, HttpResponse *httpRe
 void IocpHttpd::HandleJsonUrlParam1(HttpRequest *httpRequest, HttpResponse *httpResponse)
 {
 	printf("IocpHttpd::HandleJsonUrlParam1\n");
+
+	int n = httpRequest->urlParams.size();
+	printf("urlParams size=%d \n", n);
+
+	string json_example1 = "{\"name1\":";
+	json_example1.append("\"");
+	auto v = httpRequest->urlParams[0];
+	json_example1.append(v);
+	json_example1.append("\"");
+	json_example1.append("}");
+
+	Json::Value root;
+	Json::Reader reader;
+	bool parsedSuccess = reader.parse(json_example1, root, false);
+	if (parsedSuccess)
+	{
+		std::string s = root.toStyledString();
+		httpResponse->Write(s.c_str());
+		httpResponse->SetContentType("application/json");
+	}
 
 
 }

@@ -247,6 +247,16 @@ void SocketCompletionPortServer::Dispatch(HttpRequest *httpRequest, HttpResponse
 	if (HasUrlParams(httpRequest->GetUrl()))
 	{
 		printf("Has URL Params\n");
+		LPSTATICFUNC lpFunc = (LPSTATICFUNC)GetUrlParamHandler(httpRequest->GetUrl());
+		httpRequest->urlParams.assign(urlParams.begin(), urlParams.end());
+		if (lpFunc != NULL)
+		{
+			(*lpFunc)(httpRequest, httpResponse);
+		}
+		else
+		{
+			UrlNotFound(httpRequest, httpResponse);
+		}
 		return;
 	}
 
