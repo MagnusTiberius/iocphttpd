@@ -38,6 +38,8 @@ protected:
 	std::wstring pathExtension;
 	std::wstring contenType;
 
+	std::vector<std::string> urlParams;
+
 	UrlParam urlParam;
 
 };

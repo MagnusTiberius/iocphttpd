@@ -195,7 +195,27 @@ bool HttpUrlRoute::HasUrlParams(char *path)
 				auto bOk3 = std::regex_search(mpath, match3, re3);
 				if (bOk3)
 				{
+					std::string sm30 = match3[0];
+					std::string sm31 = match3[1];
+					std::string sm3p = match3.prefix();
+					std::string sm3s = match3.suffix();
 					printf("Url Param Pre Match\n");
+					std::regex re4("[^/]*");
+					std::smatch match4;
+					auto bOk4 = std::regex_search(sm3s, match4, re4);
+					if (bOk4)
+					{
+						std::string sm40 = match4[0];
+						std::string sm41 = match4[1];
+						std::string sm4p = match4.prefix();
+						std::string sm4s = match4.suffix();
+						urlParams.push_back(sm40);
+						if (sm4s.compare("/") == 0 || sm4s.size() == 0)
+						{
+							return true;
+						}
+						printf("Url Param Pre Match 2\n");
+					}
 					return false;
 				}
 			}
