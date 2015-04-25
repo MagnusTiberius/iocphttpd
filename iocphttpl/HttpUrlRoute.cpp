@@ -187,47 +187,55 @@ bool HttpUrlRoute::HasUrlParams(char *path)
 		char* url = i->first;
 		urlParamHandler = i->second;
 		std::string subject(url);
-		std::regex re("<.+>");
+		std::regex re("<(.*?)>");
+		//<(.*?)>
+		//<.+>
 		std::smatch match;
+		std::smatch::iterator itr1;
 		auto bOk = std::regex_search(subject, match, re);
 		if (bOk)
 		{
-			std::regex re2("[^<]*");
-			std::smatch match2;
-			auto bOk2 = std::regex_search(subject, match2, re2);
-			if (bOk2)
+			for (itr1 = match.begin(); itr1 != match.end(); itr1++)
 			{
-				std::string sm = match2[0];
-				std::string mpath(path);
-				std::smatch match3;
-				std::regex re3(sm);
-				auto bOk3 = std::regex_search(mpath, match3, re3);
-				if (bOk3)
+				auto iv = *itr1;
+				std::regex re2("[^<]*");
+				std::smatch match2;
+				auto bOk2 = std::regex_search(subject, match2, re2);
+				if (bOk2)
 				{
-					std::string sm30 = match3[0];
-					std::string sm31 = match3[1];
-					std::string sm3p = match3.prefix();
-					std::string sm3s = match3.suffix();
-					printf("Url Param Pre Match\n");
-					std::regex re4("[^/]*");
-					std::smatch match4;
-					auto bOk4 = std::regex_search(sm3s, match4, re4);
-					if (bOk4)
+					std::string sm = match2[0];
+					sm.append("*");
+					std::string mpath(path);
+					std::smatch match3;
+					std::regex re3(sm);
+					auto bOk3 = std::regex_search(mpath, match3, re3);
+					if (bOk3)
 					{
-						std::string sm40 = match4[0];
-						std::string sm41 = match4[1];
-						std::string sm4p = match4.prefix();
-						std::string sm4s = match4.suffix();
-						urlParams.push_back(sm40);
-						if (sm4s.compare("/") == 0 || sm4s.size() == 0)
+						std::string sm30 = match3[0];
+						std::string sm31 = match3[1];
+						std::string sm3p = match3.prefix();
+						std::string sm3s = match3.suffix();
+						printf("Url Param Pre Match\n");
+						std::regex re4("[^/]*");
+						std::smatch match4;
+						auto bOk4 = std::regex_search(sm3s, match4, re4);
+						if (bOk4)
 						{
-							return true;
+							std::string sm40 = match4[0];
+							std::string sm41 = match4[1];
+							std::string sm4p = match4.prefix();
+							std::string sm4s = match4.suffix();
+							urlParams.push_back(sm40);
+							if (sm4s.compare("/") == 0 || sm4s.size() == 0)
+							{
+								return true;
+							}
+							printf("Url Param Pre Match 2\n");
 						}
-						printf("Url Param Pre Match 2\n");
 					}
-					return false;
 				}
 			}
+			return false;
 		}
 	}
 	return false;
