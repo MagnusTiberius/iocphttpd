@@ -182,22 +182,59 @@ bool HttpUrlRoute::HasUrlParams(char *path)
 
 	urlParams.clear();
 
+	std::vector<std::string> tparams;
+
+	for (ROUTEMAPITERATOR i = urlRoutes.begin(); i != urlRoutes.end(); ++i)
+	{
+		char* url = i->first;
+		urlParamHandler = i->second;
+
+		if (urlParam.IsMatching(path, url))
+		{
+			urlParam.Parse(path, url, &tparams);
+			urlParams.assign(tparams.begin(), tparams.end());
+			return true;
+		}
+
+
+	}
+	urlParamHandler = NULL;
+	return false;
+}
+
+
+/*
+
+bool HttpUrlRoute::HasUrlParams(char *path)
+{
+	if (urlRoutes.size() == 0)
+		return false;
+
+	urlParams.clear();
+
 	for (ROUTEMAPITERATOR i = urlRoutes.begin(); i != urlRoutes.end(); ++i)
 	{
 		char* url = i->first;
 		urlParamHandler = i->second;
 		std::string subject(url);
+		std::string repl_subject;
 		std::regex re("<(.*?)>");
+		//std::regex re("<");
 		//<(.*?)>
 		//<.+>
 		std::smatch match;
 		std::smatch::iterator itr1;
 		auto bOk = std::regex_search(subject, match, re);
+		auto bOks = std::regex_match(subject, re);
 		if (bOk)
 		{
 			for (itr1 = match.begin(); itr1 != match.end(); itr1++)
 			{
 				auto iv = *itr1;
+				const char *siv11 = &iv.first[0];
+				const auto *siv21 = &iv.second[0];
+				auto siv3 = iv.str();
+
 				std::regex re2("[^<]*");
 				std::smatch match2;
 				auto bOk2 = std::regex_search(subject, match2, re2);
@@ -230,6 +267,13 @@ bool HttpUrlRoute::HasUrlParams(char *path)
 							{
 								return true;
 							}
+							repl_subject.append(sm30);
+							repl_subject.append(sm40);
+							//repl_subject.append(siv3);
+							repl_subject.append(siv21);
+							
+							subject.assign(repl_subject);
+							//subject.assign(sm4s);
 							printf("Url Param Pre Match 2\n");
 						}
 					}
@@ -240,6 +284,8 @@ bool HttpUrlRoute::HasUrlParams(char *path)
 	}
 	return false;
 }
+
+*/
 
 void HttpUrlRoute::AddRoute(char *url, void* lpFunc)
 {

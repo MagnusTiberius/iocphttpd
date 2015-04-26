@@ -12,7 +12,7 @@ IocpHttpd::IocpHttpd()
 	AddRoute("/json/testtwo", IocpHttpd::HandleJsonTestTwo);
 
 	//AddRoute("/user/profile/<id:[0-9]+>/", IocpHttpd::HandleJsonUrlParam1);
-	AddRoute("/product/country/<id:[0-9]+>/city/<id:[0-9]+>.json", IocpHttpd::HandleJsonUrlParam1);
+	AddRoute("/product/country/<id1:[0-9]+>/city/<id2:[0-9]+>/g.json", IocpHttpd::HandleJsonUrlParam1);
 }
 
 

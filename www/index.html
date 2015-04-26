@@ -25,6 +25,11 @@
 	</form>
 	</p>
 
+	<p>
+	<form>
+	  <input id="btntest4" name="btntest4" type="button" value="test multiple url params">
+	</form>
+	</p>
 	
 	<p>
 The OneUp is the cheapest 3D printer in the world. At $199 for a self assembled kit, that includes everything you need, the OneUp is the easy choice to 'get your feet wet'. All corners of the internet recommend a self built printer as your first printer so you learn the ins and outs, the ups and downs of 3D printing before making a big purchase. Professional quality prints are a reality, equivalent to much more expensive machines at competitive speeds with the ability to expand the build area at at any time after purchase for only $79 (buy the TwoUp upgrade now in our online store!). Each kit includes a very reliable and forgiving extruder, that makes it easy to get great quality prints with minimal effort. The OneUp is optimized for PLA printing but with the optional heated bed upgrade, ABS and Nylon printing are a breeze! This is a Do-It-Yourself, Self-Assembly kit that generally takes 2-8 hours to assemble based on end user skill level. The only difference between the OneUp, TwoUp and ThreeUp is the build area, every other spec is the same.	</p>
@@ -142,6 +147,36 @@ Pellentesque fermentum sem a enim sagittis, id porttitor mi mollis. Praesent non
 		});	
 	</script>
 
+	
+	<script>
+		$( "#btntest4" ).click(function() {
+			//alert( "Handler for .click() called." );
+		  
+			$.ajax({
+				url: "http://localhost:5150/product/country/123456/city/7890/g.json",
+				method: "POST",
+				data: { apiKey: "23462", method: "example", ip: "208.74.35.5" },
+				dataType: "html",
+				success: function (result) {
+					//alert(result);
+					/*
+					switch (result) {
+						case true:
+							processResponse(result);
+							break;
+						default:
+							resultDiv.html(result);
+					}
+					*/
+				},
+				error: function (xhr, ajaxOptions, thrownError) {
+				//alert(xhr.status);
+				//alert(thrownError);
+				}
+			});	
+	
+		});	
+	</script>
 	
 <body>	
 </html>
