@@ -15,6 +15,7 @@ bool UrlParam::IsMatching(char *path, char* urlRoute)
 	const DWORD BUFSZ = 2000;
 	char buf[BUFSZ];
 	DWORD dwSize = strlen(urlRoute);
+	DWORD dwSize2 = strlen(path);
 	urlParams.clear();
 
 	int j = 0;
@@ -27,14 +28,14 @@ bool UrlParam::IsMatching(char *path, char* urlRoute)
 		if (c2 == '<')
 		{
 			good = true;
-			while (c2 != '/')
+			while (c2 != '/' && i < dwSize)
 			{ 
 				i++;
 				c2 = urlRoute[i];
 			}
 			int k = 0;
 			memset(buf, 0, BUFSZ);
-			while (c1 != '/')
+			while (c1 != '/' && j < dwSize2)
 			{
 				buf[k++] = c1;
 				c1 = path[j++];
