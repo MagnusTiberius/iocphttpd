@@ -68,7 +68,9 @@ int SocketCompletionPortServer::Start()
 
 	int nThreads = (int)SystemInfo.dwNumberOfProcessors * 2;
 
-	nThreads = (nThreads / 2);
+	nThreads = 2;
+
+	//nThreads = (nThreads / 2);
 
 	// Create worker threads based on the number of processors available on the
 	// system. Create two worker threads for each processor
@@ -99,13 +101,14 @@ int SocketCompletionPortServer::Start()
 	InternetAddr.sin_addr.s_addr = htonl(INADDR_ANY);
 	InternetAddr.sin_port = htons(m_PortNum);
 
-	if (bind(Listen, (PSOCKADDR)&InternetAddr, sizeof(InternetAddr)) == SOCKET_ERROR)
+	int bRes = bind(Listen, (PSOCKADDR)&InternetAddr, sizeof(InternetAddr)) ;
+	while (bRes == SOCKET_ERROR)
 	{
-		fprintf(stderr, "%d::bind() failed with error %d\n", dwThreadId, WSAGetLastError());
-		return 1;
+		fprintf(stderr, "%d::bind() failed with error %d\nLooking for next port...\n", dwThreadId, WSAGetLastError());
+		InternetAddr.sin_port = htons(++m_PortNum);
+		bRes = bind(Listen, (PSOCKADDR)&InternetAddr, sizeof(InternetAddr));
 	}
-	else
-		fprintf(stderr, "%d::bind() is fine!\n", dwThreadId);
+	fprintf(stderr, "%d::bind() is fine! Port number at  %d\n", dwThreadId, m_PortNum);
 
 	// Prepare socket for listening
 	if (listen(Listen, 5) == SOCKET_ERROR)
