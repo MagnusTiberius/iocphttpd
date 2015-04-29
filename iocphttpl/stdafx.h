@@ -19,6 +19,8 @@
 #include "Shlwapi.h"
 #include "Enums.h"
 
+#define PORT 5150
+
 #define WIN32_LEAN_AND_MEAN             // Exclude rarely-used stuff from Windows headers
 
 #define BUFSIZMAX		8*1024

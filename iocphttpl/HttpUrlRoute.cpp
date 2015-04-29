@@ -10,6 +10,11 @@ HttpUrlRoute::~HttpUrlRoute()
 {
 }
 
+void HttpUrlRoute::SetHomeDir(char *path)
+{
+	homeDir.assign(path);
+}
+
 void HttpUrlRoute::SetStatic(char *code, char *path)
 {
 	STATICACCESS sa = std::make_pair(code, path);

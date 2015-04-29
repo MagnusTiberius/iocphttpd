@@ -14,8 +14,8 @@ bool UrlParam::IsMatching(char *path, char* urlRoute)
 {
 	const DWORD BUFSZ = 2000;
 	char buf[BUFSZ];
-	DWORD dwSize = strlen(urlRoute);
-	DWORD dwSize2 = strlen(path);
+	int dwSize = strlen(urlRoute);
+	int dwSize2 = strlen(path);
 	urlParams.clear();
 
 	int j = 0;

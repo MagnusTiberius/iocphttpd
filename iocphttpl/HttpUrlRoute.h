@@ -29,6 +29,7 @@ public:
 	void SetContentTypeFromExtension();
 	bool HasUrlParams(char *path);
 	void* GetUrlParamHandler(char *path);
+	void SetHomeDir(char *path);
 
 protected:
 	ROUTEMAP urlRoutes;
@@ -43,6 +44,6 @@ protected:
 
 	UrlParam urlParam;
 	void* urlParamHandler;
-	
+	std::string homeDir;
 };
 

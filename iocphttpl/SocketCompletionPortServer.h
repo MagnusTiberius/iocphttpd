@@ -11,7 +11,7 @@
 #include "HttpUrlRoute.h"
 #include "HttpTemplate.h"
 
-#define PORT 5150
+
 //#define DATA_BUFSIZE 8192
 
 class IOCPHTTPL_API SocketCompletionPortServer : public HttpUrlRoute
