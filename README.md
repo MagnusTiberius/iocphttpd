@@ -18,6 +18,8 @@ iocphttpd features:
 4.  JSON support is available in the API, see jsoncpp for details.
 
 
+Here is screenshot showing browser load timing, http://postimg.org/image/jeyhl63ur/
+
 Dependencies:
 
 1) Uses jsoncpp, see https://github.com/open-source-parsers/jsoncpp for details.
