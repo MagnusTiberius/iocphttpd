@@ -14,7 +14,7 @@ iocphttpd features:
 
 1.  Small footprint means you can use it on a low spec machine. One good example is a Virtual Server having 1GB Ram.
 2.  URL routing makes it easy for you to write a handler for a given URL route.
-3.  URL parameters, you can simply retrieve the parameters from a list.
+3.  URL parameters, you can simply retrieve parameters from a list.
 4.  JSON support is available in the API, see jsoncpp for details.
 
 
