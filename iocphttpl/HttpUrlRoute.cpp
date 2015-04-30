@@ -52,12 +52,12 @@ PTSTR  HttpUrlRoute::GetPathExtension(PTSTR pszPath)
 
 void HttpUrlRoute::SetContentTypeFromExtension()
 {
+	contenType.assign(L"text/html");
 	std::wstring wstr;
 	wstr.assign(pathExtension);
-	if (wstr.compare(L".jpg") == 0)
-	{
-		contenType.assign(L"image/jpg");
-	}
+
+	mimeTypes.AssignContentType(wstr, &contenType);
+
 }
 
 string HttpUrlRoute::GetFullPath(char *path)

@@ -91,22 +91,9 @@ void HttpResponse::SetContentTypeFromExtension()
 	contenType.assign(L"text/html");
 	std::wstring wstr;
 	wstr.assign(pathExtension);
-	if (wstr.compare(L".jpg") == 0)
-	{
-		contenType.assign(L"image/jpg");
-	}
-	if (wstr.compare(L".png") == 0)
-	{
-		contenType.assign(L"image/png");
-	}
-	if (wstr.compare(L".css") == 0)
-	{
-		contenType.assign(L"text/css");
-	}
-	if (wstr.compare(L".js") == 0)
-	{
-		contenType.assign(L"application/javascript"); 
-	}
+
+	mimeTypes.AssignContentType(wstr, &contenType);
+
 }
 
 void HttpResponse::SetContentType(const char* str)

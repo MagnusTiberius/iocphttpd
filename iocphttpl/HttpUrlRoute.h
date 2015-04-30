@@ -4,6 +4,7 @@
 #include <vector>
 #include <regex>
 #include "UrlParam.h"
+#include "MimeTypes.h"
 
 class IOCPHTTPL_API HttpUrlRoute 
 {
@@ -45,5 +46,7 @@ protected:
 	UrlParam urlParam;
 	void* urlParamHandler;
 	std::string homeDir;
+
+	MimeTypes mimeTypes;
 };
 

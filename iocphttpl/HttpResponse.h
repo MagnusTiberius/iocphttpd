@@ -6,6 +6,7 @@
 #include "json.h"
 #include <time.h>
 #include <sstream>
+#include "MimeTypes.h"
 
 class IOCPHTTPL_API HttpResponse : public HttpTemplate
 {
@@ -62,5 +63,7 @@ private:
 	HANDLE ghMutex;
 
 	buflist_t m_bufferList;
+
+	MimeTypes mimeTypes;
 };
 

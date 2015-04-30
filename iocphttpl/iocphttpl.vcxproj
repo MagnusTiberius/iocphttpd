@@ -173,6 +173,7 @@
     <ClInclude Include="iocphttpl.h" />
     <ClInclude Include="Jsonp.h" />
     <ClInclude Include="jsonp.tab.h" />
+    <ClInclude Include="MimeTypes.h" />
     <ClInclude Include="ParserHeader.h" />
     <ClInclude Include="RequestParser.h" />
     <ClInclude Include="ScannerA.h" />
@@ -210,6 +211,7 @@
     <ClCompile Include="Jsonp.cpp" />
     <ClCompile Include="jsonp.flex.cpp" />
     <ClCompile Include="jsonp.tab.cpp" />
+    <ClCompile Include="MimeTypes.cpp" />
     <ClCompile Include="ParserHeader.cpp" />
     <ClCompile Include="RequestParser.cpp" />
     <ClCompile Include="ScannerA.cpp" />

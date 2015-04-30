@@ -58,5 +58,6 @@ private:
 	static DWORD WINAPI ServerWorkerThread(LPVOID CompletionPortID);
 	HANDLE CompletionPort;
 	int m_PortNum = PORT;
+	bool FileExist(const TCHAR *fileName);
 };
 

@@ -282,14 +282,25 @@ void SocketCompletionPortServer::Dispatch(HttpRequest *httpRequest, HttpResponse
 			PTSTR str = GetPathExtension(buffer);
 			std::wstring wsbuffer(buffer);
 			std::string sbuffer(wsbuffer.begin(), wsbuffer.end());
-			httpResponse->SetStaticFileName(sbuffer.c_str());
-			httpResponse->WriteStatic(sbuffer.c_str());
-		}
-		else
-		{
-			UrlNotFound(httpRequest, httpResponse);
+			if (FileExist(wsbuffer.c_str()))
+			{
+				httpResponse->SetStaticFileName(sbuffer.c_str());
+				httpResponse->WriteStatic(sbuffer.c_str());
+				return;
+			}
+			else
+			{
+				printf("File not found: %s \n", sbuffer.c_str());
+			}
 		}
 	}
+	UrlNotFound(httpRequest, httpResponse);
+}
+
+bool SocketCompletionPortServer::FileExist(const TCHAR *fileName)
+{
+	std::ifstream infile(fileName);
+	return infile.good();
 }
 
 void SocketCompletionPortServer::EvalStatic(HttpRequest *httpRequest, HttpResponse *httpResponse)
