@@ -19,8 +19,9 @@ iocphttpd features:
 
 
 Screenshots:
-1.   Browser load timing, http://postimg.org/image/jeyhl63ur/
-2.   MelonJS test load, http://postimg.org/image/3zbkoqw0f/ 
+1.  Browser load timing, http://postimg.org/image/jeyhl63ur/
+
+2.  MelonJS test load, http://postimg.org/image/3zbkoqw0f/ 
 
 Dependencies:
 
