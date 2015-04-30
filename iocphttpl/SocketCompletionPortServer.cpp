@@ -293,8 +293,8 @@ void SocketCompletionPortServer::Dispatch(HttpRequest *httpRequest, HttpResponse
 				printf("File not found: %s \n", sbuffer.c_str());
 			}
 		}
+		UrlNotFound(httpRequest, httpResponse);
 	}
-	UrlNotFound(httpRequest, httpResponse);
 }
 
 bool SocketCompletionPortServer::FileExist(const TCHAR *fileName)
