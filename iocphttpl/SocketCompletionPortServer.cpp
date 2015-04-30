@@ -270,7 +270,25 @@ void SocketCompletionPortServer::Dispatch(HttpRequest *httpRequest, HttpResponse
 	}
 	else
 	{
-		UrlNotFound(httpRequest, httpResponse);
+		WCHAR  buffer[BUFSIZMIN];
+		char *url = httpRequest->GetUrl();
+		std::string surl;
+		surl.append("./");
+		surl.append(url);
+		std::wstring wsurl(surl.begin(), surl.end());
+		DWORD dwres = GetFullPathName(wsurl.c_str(), BUFSIZMIN, buffer, NULL);
+		if (dwres > 0)
+		{
+			PTSTR str = GetPathExtension(buffer);
+			std::wstring wsbuffer(buffer);
+			std::string sbuffer(wsbuffer.begin(), wsbuffer.end());
+			httpResponse->SetStaticFileName(sbuffer.c_str());
+			httpResponse->WriteStatic(sbuffer.c_str());
+		}
+		else
+		{
+			UrlNotFound(httpRequest, httpResponse);
+		}
 	}
 }
 

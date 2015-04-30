@@ -12,7 +12,20 @@ HttpUrlRoute::~HttpUrlRoute()
 
 void HttpUrlRoute::SetHomeDir(char *path)
 {
+	std::string str(path);
+	std::wstring wstr(str.begin(), str.end());
+	bool bres = SetCurrentDirectory(wstr.c_str());
+	if (!bres)
+	{
+		printf("Cannot set Home Dir, dying now.\n");
+		exit(1);
+	}
+	else
+	{
+		printf("Home Dir is now at: %s \n", path);
+	}
 	homeDir.assign(path);
+
 }
 
 void HttpUrlRoute::SetStatic(char *code, char *path)

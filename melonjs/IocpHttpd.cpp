@@ -3,8 +3,8 @@
 
 IocpHttpd::IocpHttpd()
 {
-	SetStatic("\/static\/*", "c:\\wwwmelonJS-2.0.x\\static\\");
-	SetHomeDir("c:\\wwwmelonJS-2.0.x\\");
+	SetStatic("\/static\/*", "C:\\wwwmelonJS-2.0.x\\examples\\platformer\\static\\");
+	SetHomeDir("C:\\wwwmelonJS-2.0.x\\examples\\platformer\\");
 
 	AddRoute("/", IocpHttpd::HandleHome);
 	AddRoute("/test", IocpHttpd::HandleTest);
@@ -37,7 +37,7 @@ void IocpHttpd::HandleHome(HttpRequest *httpRequest, HttpResponse *httpResponse)
 	printf("IocpHttpd::HandleHome\n");
 	if (httpResponse->FindTemplate("Home") == false)
 	{
-		httpResponse->AddTemplate("Home", "c:\\wwwmelonJS-2.0.x\\index.html");
+		httpResponse->AddTemplate("Home", "C:\\wwwmelonJS-2.0.x\\examples\\platformer\\index.html");
 	}
 	httpResponse->WriteTemplate("Home");
 }
