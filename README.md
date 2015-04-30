@@ -18,7 +18,9 @@ iocphttpd features:
 4.  JSON support is available in the API, see jsoncpp for details.
 
 
-Here is screenshot showing browser load timing, http://postimg.org/image/jeyhl63ur/
+Screenshots:
+1. Browser load timing, http://postimg.org/image/jeyhl63ur/
+2. MelonJS test load, http://postimg.org/image/3zbkoqw0f/ 
 
 Dependencies:
 
