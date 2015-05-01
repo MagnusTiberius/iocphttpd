@@ -5,7 +5,7 @@
 
 
 	typedef struct header {
-		char szMethodAction[BUFSIZMIN];
+		char szMethodAction[BUFSIZMAX];
 		char szHeaderUrl[BUFSIZMAX];
 		char szUrlParams[BUFSIZMAX];
 		char szHttpVersion[BUFSIZMIN];

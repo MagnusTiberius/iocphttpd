@@ -361,7 +361,8 @@ DWORD WINAPI SocketCompletionPortServer::ServerWorkerThread(LPVOID lpObject)
 			::WaitForSingleObject(obj->ghMutex, INFINITE);
 			if ((PerIoDataSend = (LPPER_IO_OPERATION_DATA)GlobalAlloc(GPTR, sizeof(PER_IO_OPERATION_DATA))) == NULL)
 			{
-
+				printf("%d::ERROR: allocate of PerIoDataSend is null \n", dwThreadId);
+				continue;
 			}
 
 			httpRequest.Parse(PerIoData->DataBuf.buf);
