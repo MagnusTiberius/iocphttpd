@@ -27,5 +27,6 @@ Dependencies:
 
 1) Uses jsoncpp, see https://github.com/open-source-parsers/jsoncpp for details.
 
+2) Demo web game taken from melonJS, see https://github.com/melonjs/melonJS for details.
 
 
