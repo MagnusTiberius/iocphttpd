@@ -53,7 +53,7 @@ int SocketCompletionPortServer::Start()
 	else
 		fprintf(stderr, "%d::WSAStartup() is OK!\n", dwThreadId);
 
-	// Setup an I/O completion port
+
 	if ((CompletionPort = CreateIoCompletionPort(INVALID_HANDLE_VALUE, NULL, 0, 0)) == NULL)
 	{
 		fprintf(stderr, "%d::CreateIoCompletionPort() failed with error %d\n", dwThreadId, GetLastError());
@@ -63,7 +63,7 @@ int SocketCompletionPortServer::Start()
 		fprintf(stderr, "%d::CreateIoCompletionPort() is damn OK!\n", dwThreadId);
 
 
-	// Determine how many processors are on the system
+
 	GetSystemInfo(&SystemInfo);
 
 	int nThreads = (int)SystemInfo.dwNumberOfProcessors * 2;
@@ -72,11 +72,10 @@ int SocketCompletionPortServer::Start()
 
 	//nThreads = (nThreads / 2);
 
-	// Create worker threads based on the number of processors available on the
-	// system. Create two worker threads for each processor
+
 	for (i = 0; i < nThreads; i++)
 	{
-		// Create a server worker thread and pass the completion port to the thread
+
 		if ((ThreadHandle = CreateThread(NULL, 0, ServerWorkerThread, this, 0, &ThreadID)) == NULL)
 		{
 			fprintf(stderr, "%d::CreateThread() failed with error %d\n", dwThreadId, GetLastError());
@@ -84,11 +83,11 @@ int SocketCompletionPortServer::Start()
 		}
 		else
 			fprintf(stderr, "%d::CreateThread() is OK!\n", dwThreadId);
-		// Close the thread handle
+
 		CloseHandle(ThreadHandle);
 	}
 
-	// Create a listening socket
+
 	if ((Listen = WSASocket(AF_INET, SOCK_STREAM, 0, NULL, 0, WSA_FLAG_OVERLAPPED)) == INVALID_SOCKET)
 	{
 		fprintf(stderr, "%d::WSASocket() failed with error %d\n", dwThreadId, WSAGetLastError());
@@ -119,7 +118,6 @@ int SocketCompletionPortServer::Start()
 	else
 		fprintf(stderr, "%d::listen() is working...\n", dwThreadId);
 
-	// Accept connections and assign to the completion port
 	BOOL isOK = true;
 	while (isOK)
 	{
@@ -127,35 +125,27 @@ int SocketCompletionPortServer::Start()
 		{
 			fprintf(stderr, "%d::WSAAccept() failed with error %d\n", dwThreadId, WSAGetLastError());
 			isOK = false;
-			printf("####################################################################################\n");
-			printf("####################################################################################\n");
-			printf("###################### ERROR                                        ################\n");
-			printf("####################################################################################\n");
-			printf("####################################################################################\n");
+
 			exit(1);
 			continue;
 		}
 		else
 			fprintf(stderr, "%d::WSAAccept() looks fine!\n", dwThreadId);
 
-		// Create a socket information structure to associate with the socket
+
 		if ((PerHandleData = (LPPER_HANDLE_DATA)GlobalAlloc(GPTR, sizeof(PER_HANDLE_DATA))) == NULL)
 			fprintf(stderr, "%d::GlobalAlloc() failed with error %d\n", dwThreadId, GetLastError());
 		else
 			fprintf(stderr, "%d::GlobalAlloc() for LPPER_HANDLE_DATA is OK!\n", dwThreadId);
 
-		// Associate the accepted socket with the original completion port
+
 		fprintf(stderr, "%d::Socket number %d got connected...\n", dwThreadId, Accept);
 		PerHandleData->Socket = Accept;
 
 		if (CreateIoCompletionPort((HANDLE)Accept, CompletionPort, (DWORD)PerHandleData, 0) == NULL)
 		{
 			fprintf(stderr, "%d::CreateIoCompletionPort() failed with error %d\n", dwThreadId, GetLastError());
-			printf("####################################################################################\n");
-			printf("####################################################################################\n");
-			printf("###################### ERROR                                        ################\n");
-			printf("####################################################################################\n");
-			printf("####################################################################################\n");
+
 			exit(1);
 			isOK = false;
 			continue;
@@ -163,15 +153,11 @@ int SocketCompletionPortServer::Start()
 		else
 			fprintf(stderr, "%d::CreateIoCompletionPort() is OK!\n", dwThreadId);
 
-		// Create per I/O socket information structure to associate with the WSARecv call below
+
 		if ((PerIoData = (LPPER_IO_OPERATION_DATA)GlobalAlloc(GPTR, sizeof(PER_IO_OPERATION_DATA))) == NULL)
 		{
 			fprintf(stderr, "%d::GlobalAlloc() failed with error %d\n", dwThreadId, GetLastError());
-			printf("####################################################################################\n");
-			printf("####################################################################################\n");
-			printf("###################### ERROR                                        ################\n");
-			printf("####################################################################################\n");
-			printf("####################################################################################\n");
+
 			exit(1);
 			isOK = false;
 			continue;
@@ -197,12 +183,7 @@ int SocketCompletionPortServer::Start()
 			if (WSAGetLastError() != ERROR_IO_PENDING)
 			{
 				fprintf(stderr, "%d::WSARecv() failed with error %d\n", dwThreadId, WSAGetLastError());
-				printf("####################################################################################\n");
-				printf("####################################################################################\n");
-				printf("###################### ERROR                                        ################\n");
-				printf("####################################################################################\n");
-				printf("####################################################################################\n");
-				exit(1);
+
 				isOK = true;
 				continue;
 			}
@@ -384,11 +365,10 @@ DWORD WINAPI SocketCompletionPortServer::ServerWorkerThread(LPVOID lpObject)
 			continue;
 		}
 
-		// First check to see if an error has occurred on the socket and if so
-		// then close the socket and cleanup the SOCKET_INFORMATION structure
+
 		bool b1 = BytesTransferred > 0 && PerIoData->BytesRECV == 0 && PerIoData->DataBuf.len > 0;
 		bool b2 = BytesTransferred == 0 && PerIoData->BytesRECV == 0 && PerIoData->DataBuf.len > 0;
-		// associated with the socket
+
 		if (b1 || b2)
 		{
 			printf("%d::ServerWorkerThread--Closing socket %d\n", dwThreadId, PerHandleData->Socket);
