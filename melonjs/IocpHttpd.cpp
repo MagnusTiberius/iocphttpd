@@ -7,10 +7,10 @@ IocpHttpd::IocpHttpd()
 	SetHomeDir("C:\\wwwmelonJS-2.0.x\\examples\\platformer\\");
 
 	AddRoute("/", IocpHttpd::HandleHome);
-	AddRoute("/test", IocpHttpd::HandleTest);
-	AddRoute("/init", IocpHttpd::HandleInit);
-	AddRoute("/json/test", IocpHttpd::HandleJsonTest);
-	AddRoute("/json/testtwo", IocpHttpd::HandleJsonTestTwo);
+	//AddRoute("/test", IocpHttpd::HandleTest);
+	//AddRoute("/init", IocpHttpd::HandleInit);
+	//AddRoute("/json/test", IocpHttpd::HandleJsonTest);
+	//AddRoute("/json/testtwo", IocpHttpd::HandleJsonTestTwo);
 
 	//AddRoute("/user/profile/<id:[0-9]+>/", IocpHttpd::HandleJsonUrlParam1);
 	AddRoute("/product/country/<id1:[0-9]+>/city/<id2:[0-9]+>/g.json", IocpHttpd::HandleJsonUrlParam1);
@@ -85,11 +85,11 @@ void IocpHttpd::HandleJsonTestTwo(HttpRequest *httpRequest, HttpResponse *httpRe
 	printf("IocpHttpd::HandleJsonTestTwo\n");
 
 	string json_example = "{\"array\": \
-						  							[\"item1\", \
-																				\"item2\"], \
-																											\"not an array\": \
-																																		\"asdf\" \
-																																									}";
+		[\"item1\", \
+		\"item2\"], \
+		\"not an array\": \
+		\"asdf\" \
+		}";
 
 	Json::Value root;
 	Json::Reader reader;
