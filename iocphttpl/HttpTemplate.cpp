@@ -20,18 +20,16 @@ void HttpTemplate::AddTemplate(char *code, char* filepath)
 	else
 	{
 		LPTEMPLATEITEM item = (LPTEMPLATEITEM)malloc(sizeof(TEMPLATEITEM));
-		if (item != NULL)
+		assert(item != NULL);
+		memset(item, 0, sizeof(TEMPLATEITEM));
+		item->code = _strdup(code);
+		item->filename = _strdup(filepath);
+		if (item->count == 0)
 		{
-			memset(item, 0, sizeof(TEMPLATEITEM));
-			item->code = _strdup(code);
-			item->filename = _strdup(filepath);
-			if (item->count == 0)
-			{
-				LoadContent(item->filename, item->content);
-				item->count++;
-			}
-			m_TemplateList.push_back(item);
+			LoadContent(item->filename, item->content);
+			item->count++;
 		}
+		m_TemplateList.push_back(item);
 	}
 }
 

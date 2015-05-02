@@ -174,7 +174,6 @@ bool HttpUrlRoute::IsStatic(char *path)
 		std::string result;
 		std::regex re(t_path);
 		std::smatch match;
-		//std::size_t found = subject.find()
 		auto res = std::regex_search(subject, match, re);
 		auto siz = match.size();
 		if (res &&  siz >= 1)
@@ -220,90 +219,6 @@ bool HttpUrlRoute::HasUrlParams(char *path)
 	return false;
 }
 
-
-/*
-
-bool HttpUrlRoute::HasUrlParams(char *path)
-{
-	if (urlRoutes.size() == 0)
-		return false;
-
-	urlParams.clear();
-
-	for (ROUTEMAPITERATOR i = urlRoutes.begin(); i != urlRoutes.end(); ++i)
-	{
-		char* url = i->first;
-		urlParamHandler = i->second;
-		std::string subject(url);
-		std::string repl_subject;
-		std::regex re("<(.*?)>");
-		//std::regex re("<");
-		//<(.*?)>
-		//<.+>
-		std::smatch match;
-		std::smatch::iterator itr1;
-		auto bOk = std::regex_search(subject, match, re);
-		auto bOks = std::regex_match(subject, re);
-		if (bOk)
-		{
-			for (itr1 = match.begin(); itr1 != match.end(); itr1++)
-			{
-				auto iv = *itr1;
-				const char *siv11 = &iv.first[0];
-				const auto *siv21 = &iv.second[0];
-				auto siv3 = iv.str();
-
-				std::regex re2("[^<]*");
-				std::smatch match2;
-				auto bOk2 = std::regex_search(subject, match2, re2);
-				if (bOk2)
-				{
-					std::string sm = match2[0];
-					sm.append("*");
-					std::string mpath(path);
-					std::smatch match3;
-					std::regex re3(sm);
-					auto bOk3 = std::regex_search(mpath, match3, re3);
-					if (bOk3)
-					{
-						std::string sm30 = match3[0];
-						std::string sm31 = match3[1];
-						std::string sm3p = match3.prefix();
-						std::string sm3s = match3.suffix();
-						printf("Url Param Pre Match\n");
-						std::regex re4("[^/]*");
-						std::smatch match4;
-						auto bOk4 = std::regex_search(sm3s, match4, re4);
-						if (bOk4)
-						{
-							std::string sm40 = match4[0];
-							std::string sm41 = match4[1];
-							std::string sm4p = match4.prefix();
-							std::string sm4s = match4.suffix();
-							urlParams.push_back(sm40);
-							if (sm4s.compare("/") == 0 || sm4s.size() == 0)
-							{
-								return true;
-							}
-							repl_subject.append(sm30);
-							repl_subject.append(sm40);
-							//repl_subject.append(siv3);
-							repl_subject.append(siv21);
-							
-							subject.assign(repl_subject);
-							//subject.assign(sm4s);
-							printf("Url Param Pre Match 2\n");
-						}
-					}
-				}
-			}
-			return false;
-		}
-	}
-	return false;
-}
-
-*/
 
 void HttpUrlRoute::AddRoute(char *url, void* lpFunc)
 {

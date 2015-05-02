@@ -9,8 +9,9 @@
 
 #include <stdio.h>
 #include <tchar.h>
-
-
+#include <assertions.h>
+#include <cassert>
+#include <assert.h> 
 #include <Windows.h>
 #include <iostream>
 #include <vector>

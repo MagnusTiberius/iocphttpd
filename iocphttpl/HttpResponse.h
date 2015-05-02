@@ -7,6 +7,7 @@
 #include <time.h>
 #include <sstream>
 #include "MimeTypes.h"
+#include <assert.h> 
 
 class IOCPHTTPL_API HttpResponse : public HttpTemplate
 {

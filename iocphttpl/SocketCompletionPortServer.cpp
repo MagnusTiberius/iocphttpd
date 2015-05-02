@@ -364,47 +364,13 @@ DWORD WINAPI SocketCompletionPortServer::ServerWorkerThread(LPVOID lpObject)
 				printf("%d::ERROR: allocate of PerIoDataSend is null \n", dwThreadId);
 				continue;
 			}
-
+			assert(PerIoDataSend != NULL);
 			httpRequest.Parse(PerIoData->DataBuf.buf);
 
 			obj->Dispatch(&httpRequest, &httpResponse);
 			ZeroMemory(PerIoDataSend->Buffer, DATA_BUFSIZE);
 			ZeroMemory(&(PerIoDataSend->Overlapped), sizeof(OVERLAPPED));
-			if (true)
-			{
-				if (true)
-				{
-					PerIoDataSend->DataBuf.buf = (char*)httpResponse.GetResponse2(&PerIoDataSend->DataBuf.len);
-				}
-				else
-				{
-					httpResponse.GetResponse3(&PerIoDataSend->byteBuffer);
-					PerIoDataSend->DataBuf.buf = (char*)&PerIoDataSend->byteBuffer[0];
-					PerIoDataSend->DataBuf.len = PerIoDataSend->byteBuffer.size();
-				}
-			}
-			else
-			{
-				PerIoDataSend->DataBuf.buf = PerIoDataSend->Buffer;
-				httpResponse.GetResponse(PerIoDataSend->Buffer, &PerIoDataSend->byteBuffer, DATA_BUFSIZE);
-				httpResponse.Write("");
-				auto n = strlen(PerIoDataSend->Buffer);
-				PerIoDataSend->DataBuf.len = (ULONG)n;
-				if (PerIoDataSend->byteBuffer.size() > 0)
-				{
-					size_t bufsiz = PerIoDataSend->byteBuffer.size() * sizeof(PerIoDataSend->byteBuffer[0]);
-					if (PerIoDataSend->LPBuffer != NULL)
-					{
-						free(PerIoDataSend->LPBuffer);
-						PerIoDataSend->LPBuffer = NULL;
-					}
-					PerIoDataSend->LPBuffer = (byte*)malloc(bufsiz);
-					memset(PerIoDataSend->LPBuffer, '\0', bufsiz);
-					memcpy(PerIoDataSend->LPBuffer, &PerIoDataSend->byteBuffer[0], bufsiz);
-					PerIoDataSend->DataBuf.buf = (char*)PerIoDataSend->LPBuffer;
-					PerIoDataSend->DataBuf.len = bufsiz;
-				}
-			}
+			PerIoDataSend->DataBuf.buf = (char*)httpResponse.GetResponse2(&PerIoDataSend->DataBuf.len);
 			PerIoDataSend->BytesRECV = 0;
 			int res = WSASend(PerHandleData->Socket, &(PerIoDataSend->DataBuf), 1, &PerIoDataSend->BytesSEND, 0, &(PerIoDataSend->Overlapped), NULL);
 			if (res == SOCKET_ERROR)

@@ -30,7 +30,6 @@ HttpResponse::~HttpResponse()
 				free(p->content);
 				p->content = NULL;
 			}
-			//free(p->bytcontent);
 			free(p);
 			p = NULL;
 		}
@@ -45,7 +44,6 @@ void HttpResponse::Write(const char* str)
 	std::vector<byte> rv;
 	rv.assign(str, str + strlen(str));
 	m_sbResponsePackage = rv;
-	//m_szResponse = std::string(str);
 }
 
 void HttpResponse::WriteTemplate(char* code)
@@ -203,32 +201,29 @@ byte* HttpResponse::GetStaticContent2(const char *file_name, long *len)
 	char *buf = NULL;
 
 	fopen_s(&fp, file_name, "rb");
-	if (fp == NULL)
-	{
-		return NULL;
-	}
+
+	assert(fp != NULL);
+
+	//if (fp == NULL)
+	//{
+	//	return NULL;
+	//}
 	fseek(fp, 0, SEEK_END);
 	long size = ftell(fp);
 	*len = size;
 	rewind(fp);
 
 	buf = (char*)malloc(size + 1);
+	assert(buf != NULL);
 	memset(buf, 0, size);
 
-	if (buf != NULL)
+	int i = 0;
+	int ch;
+	while ((ch = fgetc(fp)) != EOF)
 	{
-		int i = 0;
-		int ch;
-		while ((ch = fgetc(fp)) != EOF)
-		{
-			buf[i++] = ch;
-		}
+		buf[i++] = ch;
 	}
-	else
-	{
-		printf("malloc() failure in GetStaticContent2(), dying now...\n");
-		exit(1);
-	}
+
 	fclose(fp);
 
 	/*
@@ -338,17 +333,11 @@ byte*  HttpResponse::GetResponse2(ULONG *len)
 		strcat_s(txtbuf, DATA_BUFSIZE, "\n");
 		int nbuffersize = strlen(txtbuf);
 		content = (byte*)malloc(nbuffersize);
-		if (content != NULL)
-		{
-			memset(content, 0, nbuffersize);
-			memcpy(content, txtbuf, nbuffersize);
-			*len = nbuffersize;
-		}
-		else
-		{
-			printf("%d::ERROR: malloc() failed in GetResponse2(), dying...\n", dwThreadId);
-			exit(1);
-		}
+		assert(content != NULL);
+		memset(content, 0, nbuffersize);
+		memcpy(content, txtbuf, nbuffersize);
+		*len = nbuffersize;
+
 		return content;
 	}
 
@@ -369,19 +358,12 @@ byte*  HttpResponse::GetResponse2(ULONG *len)
 	int nbuffersize = strlen(txtbuf);
 	int bufsiz = strlen(txtbuf) + binbuffer.size() + 1;
 	content = (byte*)malloc(bufsiz);
-	if (content != NULL)
-	{
-		memset(content, 0, bufsiz);
-		memcpy(content, txtbuf, nbuffersize);
-		byte *p = &content[nbuffersize];
-		memcpy(content + nbuffersize, &binbuffer[0], binbuffer.size());
-		*len = bufsiz;
-	}
-	else
-	{
-		printf("%d::ERROR: malloc() failed in GetResponse2(), dying...\n", dwThreadId);
-		exit(1);
-	}
+	assert(content != NULL);
+	memset(content, 0, bufsiz);
+	memcpy(content, txtbuf, nbuffersize);
+	byte *p = &content[nbuffersize];
+	memcpy(content + nbuffersize, &binbuffer[0], binbuffer.size());
+	*len = bufsiz;
 	return content;
 }
 
