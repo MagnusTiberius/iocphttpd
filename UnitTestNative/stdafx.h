@@ -12,3 +12,10 @@
 #include "ScannerA.h"
 #include "RequestParser.h"
 // TODO: reference additional headers your program requires here
+
+
+/*
+
+Websocket
+https://tools.ietf.org/html/rfc6455
+*/

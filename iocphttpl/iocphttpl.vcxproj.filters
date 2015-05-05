@@ -19,6 +19,9 @@
     <Filter Include="jsonparser">
       <UniqueIdentifier>{fe4ab0cd-9e6b-44be-a2ba-dd665aa04a9e}</UniqueIdentifier>
     </Filter>
+    <Filter Include="resource manager">
+      <UniqueIdentifier>{1fa6d351-e0bc-491f-b830-0faf23184acf}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <Text Include="ReadMe.txt" />
@@ -90,6 +93,15 @@
     <ClInclude Include="MimeTypes.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="BTree.h">
+      <Filter>resource manager</Filter>
+    </ClInclude>
+    <ClInclude Include="Entity.h">
+      <Filter>resource manager</Filter>
+    </ClInclude>
+    <ClInclude Include="Object.h">
+      <Filter>resource manager</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="stdafx.cpp">
@@ -157,6 +169,12 @@
     </ClCompile>
     <ClCompile Include="MimeTypes.cpp">
       <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Entity.cpp">
+      <Filter>resource manager</Filter>
+    </ClCompile>
+    <ClCompile Include="Object.cpp">
+      <Filter>resource manager</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

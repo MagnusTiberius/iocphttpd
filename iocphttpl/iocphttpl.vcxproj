@@ -161,6 +161,8 @@
     <Text Include="ReadMe.txt" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="BTree.h" />
+    <ClInclude Include="Entity.h" />
     <ClInclude Include="Enums.h" />
     <ClInclude Include="HParser.h" />
     <ClInclude Include="HttpHeader.h" />
@@ -174,6 +176,7 @@
     <ClInclude Include="Jsonp.h" />
     <ClInclude Include="jsonp.tab.h" />
     <ClInclude Include="MimeTypes.h" />
+    <ClInclude Include="Object.h" />
     <ClInclude Include="ParserHeader.h" />
     <ClInclude Include="RequestParser.h" />
     <ClInclude Include="ScannerA.h" />
@@ -199,6 +202,7 @@
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
       </PrecompiledHeader>
     </ClCompile>
+    <ClCompile Include="Entity.cpp" />
     <ClCompile Include="HParser.cpp" />
     <ClCompile Include="HttpHeader.cpp" />
     <ClCompile Include="httpparser.flex.cpp" />
@@ -212,6 +216,7 @@
     <ClCompile Include="jsonp.flex.cpp" />
     <ClCompile Include="jsonp.tab.cpp" />
     <ClCompile Include="MimeTypes.cpp" />
+    <ClCompile Include="Object.cpp" />
     <ClCompile Include="ParserHeader.cpp" />
     <ClCompile Include="RequestParser.cpp" />
     <ClCompile Include="ScannerA.cpp" />
