@@ -22,6 +22,12 @@
     <Filter Include="resource manager">
       <UniqueIdentifier>{1fa6d351-e0bc-491f-b830-0faf23184acf}</UniqueIdentifier>
     </Filter>
+    <Filter Include="resource manager\kernel">
+      <UniqueIdentifier>{ac39a2c6-790e-406c-9ba9-ddf9c6c89878}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="resource manager\socket_io">
+      <UniqueIdentifier>{5efc8690-7ccc-4a3a-ac17-b7410a92c888}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <Text Include="ReadMe.txt" />
@@ -94,13 +100,16 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="BTree.h">
-      <Filter>resource manager</Filter>
+      <Filter>resource manager\kernel</Filter>
     </ClInclude>
     <ClInclude Include="Entity.h">
-      <Filter>resource manager</Filter>
+      <Filter>resource manager\kernel</Filter>
     </ClInclude>
     <ClInclude Include="Object.h">
-      <Filter>resource manager</Filter>
+      <Filter>resource manager\kernel</Filter>
+    </ClInclude>
+    <ClInclude Include="SocketIocpController.h">
+      <Filter>resource manager\socket_io</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -171,10 +180,13 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="Entity.cpp">
-      <Filter>resource manager</Filter>
+      <Filter>resource manager\kernel</Filter>
     </ClCompile>
     <ClCompile Include="Object.cpp">
-      <Filter>resource manager</Filter>
+      <Filter>resource manager\kernel</Filter>
+    </ClCompile>
+    <ClCompile Include="SocketIocpController.cpp">
+      <Filter>resource manager\socket_io</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
