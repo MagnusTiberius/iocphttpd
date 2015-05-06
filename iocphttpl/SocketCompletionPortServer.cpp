@@ -35,8 +35,8 @@ int SocketCompletionPortServer::Start()
 	SOCKET Accept;
 	
 	SYSTEM_INFO SystemInfo;
-	LPPER_HANDLE_DATA PerHandleData;
-	LPPER_IO_OPERATION_DATA PerIoData;
+	SocketIocpController::LPPER_HANDLE_DATA PerHandleData;
+	SocketIocpController::LPPER_IO_OPERATION_DATA PerIoData;
 	int i;
 	DWORD RecvBytes;
 	DWORD Flags;
@@ -121,7 +121,8 @@ int SocketCompletionPortServer::Start()
 	BOOL isOK = true;
 	while (isOK)
 	{
-		if ((Accept = WSAAccept(Listen, NULL, NULL, NULL, 0)) == SOCKET_ERROR)
+		Accept = WSAAccept(Listen, NULL, NULL, NULL, 0);
+		if (Accept == SOCKET_ERROR)
 		{
 			fprintf(stderr, "%d::WSAAccept() failed with error %d\n", dwThreadId, WSAGetLastError());
 			isOK = false;
@@ -133,10 +134,16 @@ int SocketCompletionPortServer::Start()
 			fprintf(stderr, "%d::WSAAccept() looks fine!\n", dwThreadId);
 
 
-		if ((PerHandleData = (LPPER_HANDLE_DATA)GlobalAlloc(GPTR, sizeof(PER_HANDLE_DATA))) == NULL)
-			fprintf(stderr, "%d::GlobalAlloc() failed with error %d\n", dwThreadId, GetLastError());
-		else
-			fprintf(stderr, "%d::GlobalAlloc() for LPPER_HANDLE_DATA is OK!\n", dwThreadId);
+		SocketIocpController::LPSOCKET_IO_DATA lpiodata = socketIocpController.Allocate();
+
+		assert(lpiodata != NULL);
+
+		PerHandleData = &lpiodata->handleData;
+
+		//if ((PerHandleData = (LPPER_HANDLE_DATA)GlobalAlloc(GPTR, sizeof(PER_HANDLE_DATA))) == NULL)
+		//	fprintf(stderr, "%d::GlobalAlloc() failed with error %d\n", dwThreadId, GetLastError());
+		//else
+		//	fprintf(stderr, "%d::GlobalAlloc() for LPPER_HANDLE_DATA is OK!\n", dwThreadId);
 
 
 		fprintf(stderr, "%d::Socket number %d got connected...\n", dwThreadId, Accept);
@@ -154,16 +161,18 @@ int SocketCompletionPortServer::Start()
 			fprintf(stderr, "%d::CreateIoCompletionPort() is OK!\n", dwThreadId);
 
 
-		if ((PerIoData = (LPPER_IO_OPERATION_DATA)GlobalAlloc(GPTR, sizeof(PER_IO_OPERATION_DATA))) == NULL)
-		{
-			fprintf(stderr, "%d::GlobalAlloc() failed with error %d\n", dwThreadId, GetLastError());
+		PerIoData = &lpiodata->operationData;
 
-			exit(1);
-			isOK = false;
-			continue;
-		}
-		else
-			fprintf(stderr, "%d::GlobalAlloc() for LPPER_IO_OPERATION_DATA is OK!\n", dwThreadId);
+		//if ((PerIoData = (LPPER_IO_OPERATION_DATA)GlobalAlloc(GPTR, sizeof(PER_IO_OPERATION_DATA))) == NULL)
+		//{
+		//	fprintf(stderr, "%d::GlobalAlloc() failed with error %d\n", dwThreadId, GetLastError());
+
+		//	exit(1);
+		//	isOK = false;
+		//	continue;
+		//}
+		//else
+		//	fprintf(stderr, "%d::GlobalAlloc() for LPPER_IO_OPERATION_DATA is OK!\n", dwThreadId);
 
 		ZeroMemory(&(PerIoData->Overlapped), sizeof(OVERLAPPED));
 		PerIoData->BytesSEND = 0;
@@ -308,8 +317,8 @@ DWORD WINAPI SocketCompletionPortServer::ServerWorkerThread(LPVOID lpObject)
 	SocketCompletionPortServer *obj = (SocketCompletionPortServer*)lpObject;
 	HANDLE CompletionPort = (HANDLE)obj->GetCompletionPort();
 	DWORD BytesTransferred;
-	LPPER_HANDLE_DATA PerHandleData;
-	LPPER_IO_OPERATION_DATA PerIoData, PerIoDataSend;
+	SocketIocpController::LPPER_HANDLE_DATA PerHandleData;
+	SocketIocpController::LPPER_IO_OPERATION_DATA PerIoData, PerIoDataSend;
 	DWORD SendBytes, RecvBytes;
 	DWORD Flags;
 
@@ -339,12 +348,16 @@ DWORD WINAPI SocketCompletionPortServer::ServerWorkerThread(LPVOID lpObject)
 		bool cond2 = (PerIoData->BytesRECV > 0);
 		if (cond1 || cond2)
 		{
+			SocketIocpController::LPSOCKET_IO_DATA lpiodata = obj->socketIocpController.Allocate();
+			assert(lpiodata != NULL);
 			::WaitForSingleObject(obj->ghMutex, INFINITE);
-			if ((PerIoDataSend = (LPPER_IO_OPERATION_DATA)GlobalAlloc(GPTR, sizeof(PER_IO_OPERATION_DATA))) == NULL)
-			{
-				printf("%d::ERROR: allocate of PerIoDataSend is null \n", dwThreadId);
-				continue;
-			}
+			PerIoDataSend = &lpiodata->operationData;
+			lpiodata->handleData.Socket = PerHandleData->Socket;
+			//if ((PerIoDataSend = (LPPER_IO_OPERATION_DATA)GlobalAlloc(GPTR, sizeof(PER_IO_OPERATION_DATA))) == NULL)
+			//{
+			//	printf("%d::ERROR: allocate of PerIoDataSend is null \n", dwThreadId);
+			//	continue;
+			//}
 			assert(PerIoDataSend != NULL);
 			httpRequest.Parse(PerIoData->DataBuf.buf);
 
@@ -372,6 +385,7 @@ DWORD WINAPI SocketCompletionPortServer::ServerWorkerThread(LPVOID lpObject)
 		if (b1 || b2)
 		{
 			printf("%d::ServerWorkerThread--Closing socket %d\n", dwThreadId, PerHandleData->Socket);
+			SOCKET ts = PerHandleData->Socket;
 			if (closesocket(PerHandleData->Socket) == SOCKET_ERROR)
 			{
 				fprintf(stderr, "%d::ServerWorkerThread--closesocket() failed with error %d\n", dwThreadId, WSAGetLastError());
@@ -380,8 +394,11 @@ DWORD WINAPI SocketCompletionPortServer::ServerWorkerThread(LPVOID lpObject)
 			else
 				fprintf(stderr, "%d::ServerWorkerThread--closesocket() is fine!\n", dwThreadId);
 
-			GlobalFree(PerHandleData);
-			GlobalFree(PerIoData);
+			obj->socketIocpController.FreeBySocket(ts);
+			//obj->socketIocpController.Free(PerIoData->sequence);
+
+			//(PerHandleData);
+			//GlobalFree(PerIoData);
 			continue;
 		}
 

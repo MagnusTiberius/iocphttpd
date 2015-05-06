@@ -17,11 +17,12 @@ public:
 	{
 		OVERLAPPED Overlapped;
 		WSABUF DataBuf;
-		CHAR *Buffer;
+		CHAR Buffer[DATA_BUFSIZE];
 		byte *LPBuffer;
 		vector<byte> byteBuffer;
 		DWORD BytesSEND;
 		DWORD BytesRECV;
+		int sequence;
 	} PER_IO_OPERATION_DATA, *LPPER_IO_OPERATION_DATA;
 
 	typedef struct
@@ -40,10 +41,11 @@ public:
 	LPSOCKET_IO_DATA Allocate();
 	void Free(LPSOCKET_IO_DATA data);
 	void Free(int index);
+	void FreeBySocket(SOCKET index);
 
 private:
-	LPSOCKET_IO_DATA m_DataBuffer;
-	bool m_ActiveFlag[DATASIZMIN];
+	SOCKET_IO_DATA m_DataBuffer[DATASIZMIN];
+	int m_ActiveFlag[DATASIZMIN];
 	HANDLE ghMutex;
 	DWORD m_DataBufferSize;
 };
