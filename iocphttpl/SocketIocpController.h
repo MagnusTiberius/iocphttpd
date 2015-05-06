@@ -41,7 +41,7 @@ public:
 
 	LPSOCKET_IO_DATA Allocate();
 	void Free(LPSOCKET_IO_DATA data);
-	void Free(int index);
+	void FreeByIndex(int index);
 	void FreeBySocket(SOCKET index);
 
 private:

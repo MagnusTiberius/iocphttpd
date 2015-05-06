@@ -4,8 +4,8 @@
 SocketIocpController::SocketIocpController()
 {
 
-	int n = sizeof(SOCKET_IO_DATA);
-	int siz = n * DATASIZMIN;
+	//int n = sizeof(SocketIocpController::SOCKET_IO_DATA);
+	//int siz = n * DATASIZMIN;
 
 	for (int i = 0; i < DATASIZMIN; i++)
 	{
@@ -52,6 +52,8 @@ SocketIocpController::LPSOCKET_IO_DATA SocketIocpController::Allocate()
 			rv->operationData.sequence = i;
 			rv->operationData.mallocFlag = 0;
 			m_ActiveFlag[i] = 1;
+			std::wstring szName(std::to_wstring(i));
+			rv->operationData.Overlapped.hEvent = CreateEvent(NULL, TRUE, FALSE, szName.c_str());
 			::ReleaseMutex(ghMutex);
 			return rv;
 		}
@@ -75,13 +77,13 @@ void SocketIocpController::Free(LPSOCKET_IO_DATA data)
 		//data->handleData.Socket = 0;
 		//m_ActiveFlag[data->sequence] = 0;
 
-		Free(data->sequence);
+		FreeByIndex(data->sequence);
 	}
 	//::ReleaseMutex(ghMutex);
 }
 
 
-void SocketIocpController::Free(int index)
+void SocketIocpController::FreeByIndex(int index)
 {
 	::WaitForSingleObject(ghMutex, INFINITE);
 	LPSOCKET_IO_DATA rv = NULL;
@@ -89,8 +91,6 @@ void SocketIocpController::Free(int index)
 	if (index < m_DataBufferSize && m_ActiveFlag[index])
 	{
 		rv = &m_DataBuffer[index];
-		ZeroMemory(&(rv->operationData.Overlapped), sizeof(OVERLAPPED));
-		memset(rv->operationData.Buffer, 0, BUFSIZMIN);
 		rv->operationData.BytesRECV = 0;
 		rv->operationData.BytesSEND = 0;
 		rv->operationData.LPBuffer = NULL;
@@ -103,6 +103,10 @@ void SocketIocpController::Free(int index)
 		rv->operationData.DataBuf.len = 0;
 		rv->handleData.Socket = 0;
 		m_ActiveFlag[rv->sequence] = 0;
+		CloseHandle(rv->operationData.Overlapped.hEvent);
+
+		ZeroMemory(&(rv->operationData.Overlapped), sizeof(OVERLAPPED));
+		memset(rv->operationData.Buffer, 0, BUFSIZMIN);
 	}
 	::ReleaseMutex(ghMutex);
 }
@@ -119,7 +123,7 @@ void SocketIocpController::FreeBySocket(SOCKET index)
 			{
 				if (rv->handleData.Socket == index)
 				{
-					Free(i);
+					FreeByIndex(i);
 				}
 			}
 		}

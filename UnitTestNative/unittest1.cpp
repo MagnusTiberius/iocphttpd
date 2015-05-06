@@ -206,7 +206,7 @@ namespace UnitTestNative
 			}
 			for (int i = 0; i < DATASIZMIN; i++)
 			{
-				ctlr.Free(i);
+				ctlr.FreeByIndex(i);
 			}
 		}
 

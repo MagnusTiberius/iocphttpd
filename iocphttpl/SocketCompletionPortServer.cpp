@@ -174,7 +174,7 @@ int SocketCompletionPortServer::Start()
 		//else
 		//	fprintf(stderr, "%d::GlobalAlloc() for LPPER_IO_OPERATION_DATA is OK!\n", dwThreadId);
 
-		ZeroMemory(&(PerIoData->Overlapped), sizeof(OVERLAPPED));
+		//ZeroMemory(&(PerIoData->Overlapped), sizeof(OVERLAPPED));
 		PerIoData->BytesSEND = 0;
 		PerIoData->BytesRECV = 0;
 		PerIoData->DataBuf.len = DATA_BUFSIZE;
@@ -362,7 +362,7 @@ DWORD WINAPI SocketCompletionPortServer::ServerWorkerThread(LPVOID lpObject)
 
 			obj->Dispatch(&httpRequest, &httpResponse);
 			ZeroMemory(PerIoDataSend->Buffer, BUFSIZMIN);
-			ZeroMemory(&(PerIoDataSend->Overlapped), sizeof(OVERLAPPED));
+			//ZeroMemory(&(PerIoDataSend->Overlapped), sizeof(OVERLAPPED));
 			PerIoDataSend->DataBuf.buf = (char*)httpResponse.GetResponse2(&PerIoDataSend->DataBuf.len);
 			PerIoDataSend->BytesRECV = 0;
 			PerIoDataSend->mallocFlag = 1;
@@ -383,6 +383,17 @@ DWORD WINAPI SocketCompletionPortServer::ServerWorkerThread(LPVOID lpObject)
 			{
 				printf("Testing this area of logic A2 \n");
 				//obj->socketIocpController.Free(PerIoData->sequence);
+			}
+
+			DWORD dwWaitResult = WaitForSingleObject(PerIoData->Overlapped.hEvent, INFINITE);
+			switch (dwWaitResult)
+			{
+			case WAIT_OBJECT_0:
+				//obj->socketIocpController.FreeByIndex(PerIoData->sequence);
+				printf("Thread %d :: Done performing the IO\n",	GetCurrentThreadId());
+				break;
+			default:
+				printf("Wait error (%d)\n", GetLastError());
 			}
 
 			::ReleaseMutex(obj->ghMutex);
@@ -408,10 +419,6 @@ DWORD WINAPI SocketCompletionPortServer::ServerWorkerThread(LPVOID lpObject)
 				fprintf(stderr, "%d::ServerWorkerThread--closesocket() is fine!\n", dwThreadId);
 
 			obj->socketIocpController.FreeBySocket(ts);
-			//obj->socketIocpController.Free(PerIoData->sequence);
-
-			//(PerHandleData);
-			//GlobalFree(PerIoData);
 			continue;
 		}
 
