@@ -25,7 +25,7 @@
     <Filter Include="resource manager\kernel">
       <UniqueIdentifier>{ac39a2c6-790e-406c-9ba9-ddf9c6c89878}</UniqueIdentifier>
     </Filter>
-    <Filter Include="resource manager\socket_io">
+    <Filter Include="resource manager\socket io data">
       <UniqueIdentifier>{5efc8690-7ccc-4a3a-ac17-b7410a92c888}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
@@ -109,7 +109,7 @@
       <Filter>resource manager\kernel</Filter>
     </ClInclude>
     <ClInclude Include="SocketIocpController.h">
-      <Filter>resource manager\socket_io</Filter>
+      <Filter>resource manager\socket io data</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -186,7 +186,7 @@
       <Filter>resource manager\kernel</Filter>
     </ClCompile>
     <ClCompile Include="SocketIocpController.cpp">
-      <Filter>resource manager\socket_io</Filter>
+      <Filter>resource manager\socket io data</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

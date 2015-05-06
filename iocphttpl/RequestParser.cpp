@@ -9,6 +9,7 @@ RequestParser::RequestParser()
 
 RequestParser::~RequestParser()
 {
+	Reset();
 }
 
 void RequestParser::Parse()

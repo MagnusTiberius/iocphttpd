@@ -6,11 +6,13 @@
 #pragma once
 
 #include "targetver.h"
+#include <winsock2.h>
+#include <Windows.h>
+#include <stdio.h>
+#include "SocketIocpController.h"
+
 
 // Headers for CppUnitTest
-#include "CppUnitTest.h"
-#include "ScannerA.h"
-#include "RequestParser.h"
 // TODO: reference additional headers your program requires here
 
 

@@ -6,7 +6,7 @@
 #include "stdafx.h"
 
 
-class SocketIocpController
+class IOCPHTTPL_API SocketIocpController
 {
 public:
 	SocketIocpController();
@@ -36,8 +36,12 @@ public:
 	} SOCKET_IO_DATA, *LPSOCKET_IO_DATA;
 
 
+	LPSOCKET_IO_DATA Allocate();
+
 private:
-
-
+	LPSOCKET_IO_DATA m_DataBuffer;
+	bool m_ActiveFlag[BUFSIZMIN];
+	HANDLE ghMutex;
+	DWORD m_DataBufferSize;
 };
 

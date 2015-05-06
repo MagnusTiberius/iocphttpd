@@ -1,3 +1,4 @@
+#pragma once
 #include "stdafx.h"
 #include "CppUnitTest.h"
 #include "ScannerA.h"
@@ -5,6 +6,7 @@
 #include "HttpResponse.h"
 #include "HttpResponse.h"
 #include "HttpUrlRoute.h"
+
 
 extern "C" {
 #include "wparser.tab.h"
@@ -194,6 +196,13 @@ namespace UnitTestNative
 
 			}
 		}
+
+		TEST_METHOD(TestMethod11)
+		{
+			SocketIocpController ctlr;
+			ctlr.Allocate();
+		}
+
 
 	};
 }
