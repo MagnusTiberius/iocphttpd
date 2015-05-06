@@ -362,10 +362,11 @@ DWORD WINAPI SocketCompletionPortServer::ServerWorkerThread(LPVOID lpObject)
 			httpRequest.Parse(PerIoData->DataBuf.buf);
 
 			obj->Dispatch(&httpRequest, &httpResponse);
-			ZeroMemory(PerIoDataSend->Buffer, DATA_BUFSIZE);
+			ZeroMemory(PerIoDataSend->Buffer, BUFSIZMIN);
 			ZeroMemory(&(PerIoDataSend->Overlapped), sizeof(OVERLAPPED));
 			PerIoDataSend->DataBuf.buf = (char*)httpResponse.GetResponse2(&PerIoDataSend->DataBuf.len);
 			PerIoDataSend->BytesRECV = 0;
+			PerIoDataSend->mallocFlag = 1;
 			int res = WSASend(PerHandleData->Socket, &(PerIoDataSend->DataBuf), 1, &PerIoDataSend->BytesSEND, 0, &(PerIoDataSend->Overlapped), NULL);
 			if (res == SOCKET_ERROR)
 			{

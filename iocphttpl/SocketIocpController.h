@@ -17,12 +17,13 @@ public:
 	{
 		OVERLAPPED Overlapped;
 		WSABUF DataBuf;
-		CHAR Buffer[DATA_BUFSIZE];
+		CHAR Buffer[BUFSIZMIN];
 		byte *LPBuffer;
 		vector<byte> byteBuffer;
 		DWORD BytesSEND;
 		DWORD BytesRECV;
 		int sequence;
+		int mallocFlag;
 	} PER_IO_OPERATION_DATA, *LPPER_IO_OPERATION_DATA;
 
 	typedef struct
