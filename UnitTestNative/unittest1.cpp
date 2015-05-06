@@ -200,7 +200,14 @@ namespace UnitTestNative
 		TEST_METHOD(TestMethod11)
 		{
 			SocketIocpController ctlr;
-			ctlr.Allocate();
+			for (int i = 0; i < DATASIZMIN; i++)
+			{
+				ctlr.Allocate();
+			}
+			for (int i = 0; i < DATASIZMIN; i++)
+			{
+				ctlr.Free(i);
+			}
 		}
 
 

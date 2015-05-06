@@ -31,16 +31,19 @@ public:
 
 	typedef struct
 	{
+		int sequence;
 		PER_IO_OPERATION_DATA operationData;
 		PER_HANDLE_DATA handleData;
 	} SOCKET_IO_DATA, *LPSOCKET_IO_DATA;
 
 
 	LPSOCKET_IO_DATA Allocate();
+	void Free(LPSOCKET_IO_DATA data);
+	void Free(int index);
 
 private:
 	LPSOCKET_IO_DATA m_DataBuffer;
-	bool m_ActiveFlag[BUFSIZMIN];
+	bool m_ActiveFlag[DATASIZMIN];
 	HANDLE ghMutex;
 	DWORD m_DataBufferSize;
 };
