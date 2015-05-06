@@ -68,7 +68,7 @@ int SocketCompletionPortServer::Start()
 
 	int nThreads = (int)SystemInfo.dwNumberOfProcessors * 2;
 
-	nThreads = 2;
+	nThreads = 6;
 
 	//nThreads = (nThreads / 2);
 
@@ -163,18 +163,6 @@ int SocketCompletionPortServer::Start()
 
 		PerIoData = &lpiodata->operationData;
 
-		//if ((PerIoData = (LPPER_IO_OPERATION_DATA)GlobalAlloc(GPTR, sizeof(PER_IO_OPERATION_DATA))) == NULL)
-		//{
-		//	fprintf(stderr, "%d::GlobalAlloc() failed with error %d\n", dwThreadId, GetLastError());
-
-		//	exit(1);
-		//	isOK = false;
-		//	continue;
-		//}
-		//else
-		//	fprintf(stderr, "%d::GlobalAlloc() for LPPER_IO_OPERATION_DATA is OK!\n", dwThreadId);
-
-		//ZeroMemory(&(PerIoData->Overlapped), sizeof(OVERLAPPED));
 		PerIoData->BytesSEND = 0;
 		PerIoData->BytesRECV = 0;
 		PerIoData->DataBuf.len = DATA_BUFSIZE;
@@ -352,11 +340,7 @@ DWORD WINAPI SocketCompletionPortServer::ServerWorkerThread(LPVOID lpObject)
 			::WaitForSingleObject(obj->ghMutex, INFINITE);
 			PerIoDataSend = &lpiodata->operationData;
 			lpiodata->handleData.Socket = PerHandleData->Socket;
-			//if ((PerIoDataSend = (LPPER_IO_OPERATION_DATA)GlobalAlloc(GPTR, sizeof(PER_IO_OPERATION_DATA))) == NULL)
-			//{
-			//	printf("%d::ERROR: allocate of PerIoDataSend is null \n", dwThreadId);
-			//	continue;
-			//}
+
 			assert(PerIoDataSend != NULL);
 			httpRequest.Parse(PerIoData->DataBuf.buf);
 
