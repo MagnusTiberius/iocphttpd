@@ -62,20 +62,22 @@ SocketIocpController::LPSOCKET_IO_DATA SocketIocpController::Allocate()
 
 void SocketIocpController::Free(LPSOCKET_IO_DATA data)
 {
-	::WaitForSingleObject(ghMutex, INFINITE);
+	//::WaitForSingleObject(ghMutex, INFINITE);
 	if (m_ActiveFlag[data->sequence])
 	{
-		ZeroMemory(&(data->operationData.Overlapped), sizeof(OVERLAPPED));
-		memset(data->operationData.Buffer, 0, BUFSIZMIN);
-		data->operationData.BytesRECV = 0;
-		data->operationData.BytesSEND = 0;
-		data->operationData.LPBuffer = NULL;
-		data->operationData.DataBuf.buf = NULL;
-		data->operationData.DataBuf.len = 0;
-		data->handleData.Socket = 0;
-		m_ActiveFlag[data->sequence] = 0;
+		//ZeroMemory(&(data->operationData.Overlapped), sizeof(OVERLAPPED));
+		//memset(data->operationData.Buffer, 0, BUFSIZMIN);
+		//data->operationData.BytesRECV = 0;
+		//data->operationData.BytesSEND = 0;
+		//data->operationData.LPBuffer = NULL;
+		//data->operationData.DataBuf.buf = NULL;
+		//data->operationData.DataBuf.len = 0;
+		//data->handleData.Socket = 0;
+		//m_ActiveFlag[data->sequence] = 0;
+
+		Free(data->sequence);
 	}
-	::ReleaseMutex(ghMutex);
+	//::ReleaseMutex(ghMutex);
 }
 
 
