@@ -343,7 +343,6 @@ DWORD WINAPI SocketCompletionPortServer::ServerWorkerThread(LPVOID lpObject)
 
 		printf("\n\n%d::WSARECV2 Socket=%d, BytesTransferred=%d; PerIoData->BytesRECV=%d; PerIoData->BytesSEND=%d\n\n", dwThreadId, PerHandleData->Socket, BytesTransferred, PerIoData->BytesRECV, PerIoData->BytesSEND);
 
-
 		bool cond1 = (BytesTransferred > 0 && PerIoData->BytesRECV == 0 && PerIoData->BytesSEND == 0 && PerIoData->DataBuf.len > 0);
 		bool cond2 = (PerIoData->BytesRECV > 0);
 		if (cond1 || cond2)
@@ -374,7 +373,20 @@ DWORD WINAPI SocketCompletionPortServer::ServerWorkerThread(LPVOID lpObject)
 			}
 			SendBytes = PerIoDataSend->BytesSEND;
 			printf("\n\n%d::WSASEND: Socket=%d; SendBytes=%d; PerIoDataSend->BytesRECV=%d; PerIoDataSend->BytesSEND=%d\n\n", dwThreadId, PerHandleData->Socket, SendBytes, PerIoDataSend->BytesRECV, PerIoDataSend->BytesSEND);
+
+			if (PerIoData->Overlapped.Internal > 0)
+			{
+				printf("Testing this area of logic A1 \n");
+				//obj->socketIocpController.Free(PerIoData->sequence);
+			}
+			if (PerIoData->Overlapped.InternalHigh == 0)
+			{
+				printf("Testing this area of logic A2 \n");
+				//obj->socketIocpController.Free(PerIoData->sequence);
+			}
+
 			::ReleaseMutex(obj->ghMutex);
+
 
 			continue;
 		}
