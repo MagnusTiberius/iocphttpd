@@ -192,6 +192,117 @@ int SocketCompletionPortServer::Start()
 	return 0;
 }
 
+DWORD WINAPI SocketCompletionPortServer::ServerWorkerThread(LPVOID lpObject)
+{
+	SocketCompletionPortServer *obj = (SocketCompletionPortServer*)lpObject;
+	HANDLE CompletionPort = (HANDLE)obj->GetCompletionPort();
+	DWORD BytesTransferred;
+	SocketIocpController::LPPER_HANDLE_DATA PerHandleData;
+	SocketIocpController::LPPER_IO_OPERATION_DATA PerIoData, PerIoDataSend;
+	DWORD SendBytes, RecvBytes;
+	DWORD Flags;
+
+	HttpRequest httpRequest;
+	HttpResponse httpResponse;
+
+	DWORD dwThreadId = GetCurrentThreadId();
+
+
+
+	while (TRUE)
+	{
+		BytesTransferred = 0;
+		BOOL res1 = GetQueuedCompletionStatus(CompletionPort, &BytesTransferred, (PULONG_PTR)&PerHandleData, (LPOVERLAPPED *)&PerIoData, INFINITE);
+		if (res1 == 0)
+		{
+			fprintf(stderr, "%d::ServerWorkerThread--GetQueuedCompletionStatus() failed with error %d\n", dwThreadId, GetLastError());
+			return 0;
+		}
+		else
+			fprintf(stderr, "%d::ServerWorkerThread--GetQueuedCompletionStatus() is OK!\n", dwThreadId);
+
+		printf("\n\n%d::WSARECV2 Socket=%d, BytesTransferred=%d; PerIoData->BytesRECV=%d; PerIoData->BytesSEND=%d\n\n", dwThreadId, PerHandleData->Socket, BytesTransferred, PerIoData->BytesRECV, PerIoData->BytesSEND);
+
+		bool bCond1 = (BytesTransferred > 0 && PerIoData->BytesRECV == 0 && PerIoData->BytesSEND == 0 && PerIoData->DataBuf.len > 0);
+		bool bCond2 = (PerIoData->BytesRECV > 0);
+		if (bCond1 || bCond2)
+		{
+			SocketIocpController::LPSOCKET_IO_DATA lpiodata = obj->socketIocpController.Allocate();
+			assert(lpiodata != NULL);
+			::WaitForSingleObject(obj->ghMutex, INFINITE);
+			PerIoDataSend = &lpiodata->operationData;
+			lpiodata->handleData.Socket = PerHandleData->Socket;
+
+			assert(PerIoDataSend != NULL);
+			httpRequest.Parse(PerIoData->DataBuf.buf);
+
+			obj->Dispatch(&httpRequest, &httpResponse);
+			ZeroMemory(PerIoDataSend->Buffer, BUFSIZMIN);
+			//ZeroMemory(&(PerIoDataSend->Overlapped), sizeof(OVERLAPPED));
+			PerIoDataSend->DataBuf.buf = (char*)httpResponse.GetResponse2(&PerIoDataSend->DataBuf.len);
+			PerIoDataSend->BytesRECV = 0;
+			PerIoDataSend->mallocFlag = 1;
+			int res = WSASend(PerHandleData->Socket, &(PerIoDataSend->DataBuf), 1, &PerIoDataSend->BytesSEND, 0, &(PerIoDataSend->Overlapped), NULL);
+			if (res == SOCKET_ERROR)
+			{
+				fprintf(stderr, "%d::ServerWorkerThread--WSASend() failed with error %d\n", dwThreadId, WSAGetLastError());
+			}
+			SendBytes = PerIoDataSend->BytesSEND;
+			printf("\n\n%d::WSASEND: Socket=%d; SendBytes=%d; PerIoDataSend->BytesRECV=%d; PerIoDataSend->BytesSEND=%d\n\n", dwThreadId, PerHandleData->Socket, SendBytes, PerIoDataSend->BytesRECV, PerIoDataSend->BytesSEND);
+
+			if (PerIoData->Overlapped.Internal > 0)
+			{
+				printf("Testing this area of logic A1 \n");
+				//obj->socketIocpController.Free(PerIoData->sequence);
+			}
+			if (PerIoData->Overlapped.InternalHigh == 0)
+			{
+				printf("Testing this area of logic A2 \n");
+				//obj->socketIocpController.Free(PerIoData->sequence);
+			}
+
+			DWORD dwWaitResult = WaitForSingleObject(PerIoData->Overlapped.hEvent, INFINITE);
+			switch (dwWaitResult)
+			{
+			case WAIT_OBJECT_0:
+				//obj->socketIocpController.FreeByIndex(PerIoData->sequence);
+				printf("Thread %d :: Done performing the IO\n", GetCurrentThreadId());
+				break;
+			default:
+				printf("Wait error (%d)\n", GetLastError());
+			}
+
+			::ReleaseMutex(obj->ghMutex);
+
+
+			continue;
+		}
+
+
+		bool bCond3 = BytesTransferred > 0 && PerIoData->BytesRECV == 0 && PerIoData->DataBuf.len > 0;
+		bool bCond4 = BytesTransferred == 0 && PerIoData->BytesRECV == 0 && PerIoData->DataBuf.len > 0;
+
+		if (bCond3 || bCond4)
+		{
+			printf("%d::ServerWorkerThread--Closing socket %d\n", dwThreadId, PerHandleData->Socket);
+			SOCKET ts = PerHandleData->Socket;
+			if (closesocket(PerHandleData->Socket) == SOCKET_ERROR)
+			{
+				fprintf(stderr, "%d::ServerWorkerThread--closesocket() failed with error %d\n", dwThreadId, WSAGetLastError());
+				return 0;
+			}
+			else
+				fprintf(stderr, "%d::ServerWorkerThread--closesocket() is fine!\n", dwThreadId);
+
+			obj->socketIocpController.FreeBySocket(ts);
+			continue;
+		}
+
+		printf("\n\n\n\nUnhandled condition. IP should not reach line. \n\n\n\n");
+		exit(1);
+	}
+}
+
 HANDLE SocketCompletionPortServer::GetCompletionPort()
 {
 	return CompletionPort;
@@ -300,113 +411,3 @@ void SocketCompletionPortServer::UrlNotFound(HttpRequest *httpRequest, HttpRespo
 	fprintf(stderr, "SocketCompletionPortServer::UrlNotFound: \n");
 }
 
-DWORD WINAPI SocketCompletionPortServer::ServerWorkerThread(LPVOID lpObject)
-{
-	SocketCompletionPortServer *obj = (SocketCompletionPortServer*)lpObject;
-	HANDLE CompletionPort = (HANDLE)obj->GetCompletionPort();
-	DWORD BytesTransferred;
-	SocketIocpController::LPPER_HANDLE_DATA PerHandleData;
-	SocketIocpController::LPPER_IO_OPERATION_DATA PerIoData, PerIoDataSend;
-	DWORD SendBytes, RecvBytes;
-	DWORD Flags;
-
-	HttpRequest httpRequest;
-	HttpResponse httpResponse;
-
-	DWORD dwThreadId = GetCurrentThreadId();
-
-
-
-	while (TRUE)
-	{
-		BytesTransferred = 0;
-		BOOL res1 = GetQueuedCompletionStatus(CompletionPort, &BytesTransferred, (PULONG_PTR)&PerHandleData, (LPOVERLAPPED *)&PerIoData, INFINITE);
-		if (res1==0)
-		{
-			fprintf(stderr, "%d::ServerWorkerThread--GetQueuedCompletionStatus() failed with error %d\n", dwThreadId, GetLastError());
-			return 0;
-		}
-		else
-			fprintf(stderr, "%d::ServerWorkerThread--GetQueuedCompletionStatus() is OK!\n", dwThreadId);
-
-		printf("\n\n%d::WSARECV2 Socket=%d, BytesTransferred=%d; PerIoData->BytesRECV=%d; PerIoData->BytesSEND=%d\n\n", dwThreadId, PerHandleData->Socket, BytesTransferred, PerIoData->BytesRECV, PerIoData->BytesSEND);
-
-		bool cond1 = (BytesTransferred > 0 && PerIoData->BytesRECV == 0 && PerIoData->BytesSEND == 0 && PerIoData->DataBuf.len > 0);
-		bool cond2 = (PerIoData->BytesRECV > 0);
-		if (cond1 || cond2)
-		{
-			SocketIocpController::LPSOCKET_IO_DATA lpiodata = obj->socketIocpController.Allocate();
-			assert(lpiodata != NULL);
-			::WaitForSingleObject(obj->ghMutex, INFINITE);
-			PerIoDataSend = &lpiodata->operationData;
-			lpiodata->handleData.Socket = PerHandleData->Socket;
-
-			assert(PerIoDataSend != NULL);
-			httpRequest.Parse(PerIoData->DataBuf.buf);
-
-			obj->Dispatch(&httpRequest, &httpResponse);
-			ZeroMemory(PerIoDataSend->Buffer, BUFSIZMIN);
-			//ZeroMemory(&(PerIoDataSend->Overlapped), sizeof(OVERLAPPED));
-			PerIoDataSend->DataBuf.buf = (char*)httpResponse.GetResponse2(&PerIoDataSend->DataBuf.len);
-			PerIoDataSend->BytesRECV = 0;
-			PerIoDataSend->mallocFlag = 1;
-			int res = WSASend(PerHandleData->Socket, &(PerIoDataSend->DataBuf), 1, &PerIoDataSend->BytesSEND, 0, &(PerIoDataSend->Overlapped), NULL);
-			if (res == SOCKET_ERROR)
-			{
-				fprintf(stderr, "%d::ServerWorkerThread--WSASend() failed with error %d\n", dwThreadId, WSAGetLastError());
-			}
-			SendBytes = PerIoDataSend->BytesSEND;
-			printf("\n\n%d::WSASEND: Socket=%d; SendBytes=%d; PerIoDataSend->BytesRECV=%d; PerIoDataSend->BytesSEND=%d\n\n", dwThreadId, PerHandleData->Socket, SendBytes, PerIoDataSend->BytesRECV, PerIoDataSend->BytesSEND);
-
-			if (PerIoData->Overlapped.Internal > 0)
-			{
-				printf("Testing this area of logic A1 \n");
-				//obj->socketIocpController.Free(PerIoData->sequence);
-			}
-			if (PerIoData->Overlapped.InternalHigh == 0)
-			{
-				printf("Testing this area of logic A2 \n");
-				//obj->socketIocpController.Free(PerIoData->sequence);
-			}
-
-			DWORD dwWaitResult = WaitForSingleObject(PerIoData->Overlapped.hEvent, INFINITE);
-			switch (dwWaitResult)
-			{
-			case WAIT_OBJECT_0:
-				//obj->socketIocpController.FreeByIndex(PerIoData->sequence);
-				printf("Thread %d :: Done performing the IO\n",	GetCurrentThreadId());
-				break;
-			default:
-				printf("Wait error (%d)\n", GetLastError());
-			}
-
-			::ReleaseMutex(obj->ghMutex);
-
-
-			continue;
-		}
-
-
-		bool b1 = BytesTransferred > 0 && PerIoData->BytesRECV == 0 && PerIoData->DataBuf.len > 0;
-		bool b2 = BytesTransferred == 0 && PerIoData->BytesRECV == 0 && PerIoData->DataBuf.len > 0;
-
-		if (b1 || b2)
-		{
-			printf("%d::ServerWorkerThread--Closing socket %d\n", dwThreadId, PerHandleData->Socket);
-			SOCKET ts = PerHandleData->Socket;
-			if (closesocket(PerHandleData->Socket) == SOCKET_ERROR)
-			{
-				fprintf(stderr, "%d::ServerWorkerThread--closesocket() failed with error %d\n", dwThreadId, WSAGetLastError());
-				return 0;
-			}
-			else
-				fprintf(stderr, "%d::ServerWorkerThread--closesocket() is fine!\n", dwThreadId);
-
-			obj->socketIocpController.FreeBySocket(ts);
-			continue;
-		}
-
-		printf("\n\n\n\nUnhandled condition. IP should not reach line. \n\n\n\n");
-		exit(1);
-	}
-}
