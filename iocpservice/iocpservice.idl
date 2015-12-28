@@ -1,0 +1,18 @@
+// iocpservice.idl : IDL source for iocpservice
+//
+
+// This file will be processed by the MIDL tool to
+// produce the type library (iocpservice.tlb) and marshalling code.
+
+import "oaidl.idl";
+import "ocidl.idl";
+
+[
+	uuid(10BF7C37-3CF5-4D14-B5B6-D4D86753268C),
+	version(1.0),
+]
+library iocpserviceLib
+{
+	importlib("stdole2.tlb");
+};
+
