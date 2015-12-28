@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 2013
-VisualStudioVersion = 12.0.30723.0
+VisualStudioVersion = 12.0.31101.0
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "iocphttpd", "iocphttpd\iocphttpd.vcxproj", "{54F797E9-FB21-4BBE-914C-4EFD66861330}"
 	ProjectSection(ProjectDependencies) = postProject
@@ -25,6 +25,13 @@ Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "melonjs", "melonjs\melonjs.
 	ProjectSection(ProjectDependencies) = postProject
 		{C8430F27-BC5C-4F41-882E-F8E5A5FA0CD9} = {C8430F27-BC5C-4F41-882E-F8E5A5FA0CD9}
 		{9C9048D6-37C8-44BF-BD8E-7D7F6B5AC42B} = {9C9048D6-37C8-44BF-BD8E-7D7F6B5AC42B}
+	EndProjectSection
+EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "iocpservice", "iocpservice\iocpservice.vcxproj", "{0C77A4C8-9077-405A-8622-661CAD732040}"
+EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "iocpservicePS", "iocpservice\iocpservicePS.vcxproj", "{3FEADDD6-7436-4A57-B448-FA71D9E4CDF8}"
+	ProjectSection(ProjectDependencies) = postProject
+		{0C77A4C8-9077-405A-8622-661CAD732040} = {0C77A4C8-9077-405A-8622-661CAD732040}
 	EndProjectSection
 EndProject
 Global
@@ -90,6 +97,21 @@ Global
 		{BD9E08DC-14AB-42E9-8410-2F55E20704FF}.Release|Win32.ActiveCfg = Release|Win32
 		{BD9E08DC-14AB-42E9-8410-2F55E20704FF}.Release|Win32.Build.0 = Release|Win32
 		{BD9E08DC-14AB-42E9-8410-2F55E20704FF}.Release|x64.ActiveCfg = Release|Win32
+		{0C77A4C8-9077-405A-8622-661CAD732040}.Debug|Win32.ActiveCfg = Debug|Win32
+		{0C77A4C8-9077-405A-8622-661CAD732040}.Debug|Win32.Build.0 = Debug|Win32
+		{0C77A4C8-9077-405A-8622-661CAD732040}.Debug|x64.ActiveCfg = Debug|Win32
+		{0C77A4C8-9077-405A-8622-661CAD732040}.dummy|Win32.ActiveCfg = Debug|Win32
+		{0C77A4C8-9077-405A-8622-661CAD732040}.dummy|Win32.Build.0 = Debug|Win32
+		{0C77A4C8-9077-405A-8622-661CAD732040}.dummy|x64.ActiveCfg = Debug|Win32
+		{0C77A4C8-9077-405A-8622-661CAD732040}.Release|Win32.ActiveCfg = Release|Win32
+		{0C77A4C8-9077-405A-8622-661CAD732040}.Release|Win32.Build.0 = Release|Win32
+		{0C77A4C8-9077-405A-8622-661CAD732040}.Release|x64.ActiveCfg = Release|Win32
+		{3FEADDD6-7436-4A57-B448-FA71D9E4CDF8}.Debug|Win32.ActiveCfg = Debug|Win32
+		{3FEADDD6-7436-4A57-B448-FA71D9E4CDF8}.Debug|x64.ActiveCfg = Debug|Win32
+		{3FEADDD6-7436-4A57-B448-FA71D9E4CDF8}.dummy|Win32.ActiveCfg = Debug|Win32
+		{3FEADDD6-7436-4A57-B448-FA71D9E4CDF8}.dummy|x64.ActiveCfg = Debug|Win32
+		{3FEADDD6-7436-4A57-B448-FA71D9E4CDF8}.Release|Win32.ActiveCfg = Release|Win32
+		{3FEADDD6-7436-4A57-B448-FA71D9E4CDF8}.Release|x64.ActiveCfg = Release|Win32
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
