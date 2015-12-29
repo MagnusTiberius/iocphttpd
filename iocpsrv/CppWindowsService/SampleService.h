@@ -17,6 +17,8 @@
 * WARRANTIES OF MERCHANTABILITY AND/OR FITNESS FOR A PARTICULAR PURPOSE.
 \***************************************************************************/
 
+// https://code.msdn.microsoft.com/windowsapps/CppWindowsService-cacf4948
+
 #pragma once
 
 #include "ServiceBase.h"
