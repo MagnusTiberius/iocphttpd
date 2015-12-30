@@ -95,11 +95,14 @@
       <PrecompiledHeader />
       <WarningLevel>Level3</WarningLevel>
       <DebugInformationFormat>EditAndContinue</DebugInformationFormat>
+      <AdditionalIncludeDirectories>$(SolutionDir)\iocphttpdlib\;$(SolutionDir)\jsoncp\json\;$(SolutionDir)\httpparserdll\;$(SolutionDir)\jsondll\;$(SolutionDir)\iocphttpl\</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <SubSystem>Console</SubSystem>
       <TargetMachine>MachineX86</TargetMachine>
+      <AdditionalLibraryDirectories>$(SolutionDir)\lib\$(Platform)\$(Configuration)\</AdditionalLibraryDirectories>
+      <AdditionalDependencies>iocphttpl.lib;jsoncp.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
@@ -165,14 +168,19 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="CppWindowsService.cpp" />
+    <ClCompile Include="IocpHttpd.cpp" />
     <ClCompile Include="SampleService.cpp" />
     <ClCompile Include="ServiceBase.cpp" />
     <ClCompile Include="ServiceInstaller.cpp" />
+    <ClCompile Include="stdafx.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="IocpHttpd.h" />
     <ClInclude Include="SampleService.h" />
     <ClInclude Include="ServiceBase.h" />
     <ClInclude Include="ServiceInstaller.h" />
+    <ClInclude Include="stdafx.h" />
+    <ClInclude Include="targetver.h" />
     <ClInclude Include="ThreadPool.h" />
   </ItemGroup>
   <ItemGroup>

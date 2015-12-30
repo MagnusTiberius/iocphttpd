@@ -68,7 +68,7 @@ int SocketCompletionPortServer::Start()
 
 	int nThreads = (int)SystemInfo.dwNumberOfProcessors * 2;
 
-	nThreads = 6;
+	//nThreads = 6;
 
 	//nThreads = (nThreads / 2);
 
