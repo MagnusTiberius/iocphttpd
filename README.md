@@ -29,4 +29,6 @@ Dependencies:
 
 2) Demo web game taken from melonJS, see https://github.com/melonjs/melonJS for details.
 
+Progress:
 
+12/30/2015 - Service is now able to load the executable. Start will run it and Stop will terminate the executable.
