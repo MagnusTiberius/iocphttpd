@@ -22,7 +22,7 @@
 #pragma once
 
 #include "ServiceBase.h"
-
+#include "LogCtrl.h"
 
 class CSampleService : public CServiceBase
 {
@@ -42,6 +42,8 @@ protected:
     void ServiceWorkerThread(void);
 
 private:
+	PROCESS_INFORMATION pi;
+	void StartIt(void);
 
     BOOL m_fStopping;
     HANDLE m_hStoppedEvent;

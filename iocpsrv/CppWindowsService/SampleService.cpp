@@ -31,6 +31,8 @@ CSampleService::CSampleService(PWSTR pszServiceName,
 {
     m_fStopping = FALSE;
 
+	LogCtrl::LogIt("CServiceBase()");
+
     // Create a manual-reset event that is not signaled at first to indicate 
     // the stopped signal of the service.
     m_hStoppedEvent = CreateEvent(NULL, TRUE, FALSE, NULL);
@@ -99,12 +101,65 @@ void CSampleService::ServiceWorkerThread(void)
     while (!m_fStopping)
     {
         // Perform main service function here...
+		try
+		{
+			WriteEventLogEntry(L"CppWindowsService in ServiceWorkerThread()",
+				EVENTLOG_INFORMATION_TYPE);
+			StartIt();
+		}
+		catch (...)
+		{
+			WriteEventLogEntry(L"Exception ServiceWorkerThread()",
+				EVENTLOG_INFORMATION_TYPE);
+		}
 
-        ::Sleep(2000);  // Simulate some lengthy operations.
+		::Sleep(5000);  // Simulate some lengthy operations.
     }
 
     // Signal the stopped event.
     SetEvent(m_hStoppedEvent);
+}
+
+void CSampleService::StartIt(void)
+{
+	STARTUPINFO si;
+	//PROCESS_INFORMATION pi;
+
+	ZeroMemory(&si, sizeof(si));
+	si.cb = sizeof(si);
+	ZeroMemory(&pi, sizeof(pi));
+
+	LPWSTR pProgName = L"C:\\packages\\git2\\iocphttpd\\lib\\Win32\\Debug\\iocphttpd.exe";
+	WriteEventLogEntry(L"C:\\packages\\git2\\iocphttpd\\lib\\Win32\\Debug\\iocphttpd.exe",
+		EVENTLOG_INFORMATION_TYPE);
+
+	// Start the child process. 
+	if (!CreateProcess(pProgName,   // No module name (use command line)
+		NULL,        // Command line
+		NULL,           // Process handle not inheritable
+		NULL,           // Thread handle not inheritable
+		FALSE,          // Set handle inheritance to FALSE
+		0,              // No creation flags
+		NULL,           // Use parent's environment block
+		NULL,           // Use parent's starting directory 
+		&si,            // Pointer to STARTUPINFO structure
+		&pi)           // Pointer to PROCESS_INFORMATION structure
+		)
+	{
+		printf("CreateProcess failed (%d).\n", GetLastError());
+		return;
+	}
+
+	WriteEventLogEntry(L"StartIt 222222222",
+		EVENTLOG_INFORMATION_TYPE);
+
+
+	// Wait until child process exits.
+	WaitForSingleObject(pi.hProcess, INFINITE);
+
+	// Close process and thread handles. 
+	CloseHandle(pi.hProcess);
+	CloseHandle(pi.hThread);
 }
 
 
@@ -125,6 +180,8 @@ void CSampleService::OnStop()
     // Log a service stop message to the Application log.
     WriteEventLogEntry(L"CppWindowsService in OnStop", 
         EVENTLOG_INFORMATION_TYPE);
+
+	TerminateProcess(pi.hProcess, 0);
 
     // Indicate that the service is stopping and wait for the finish of the 
     // main service function (ServiceWorkerThread).
