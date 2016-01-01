@@ -24,6 +24,7 @@ public:
 		DWORD BytesRECV;
 		int sequence;
 		int mallocFlag;
+		int state;
 	} PER_IO_OPERATION_DATA, *LPPER_IO_OPERATION_DATA;
 
 	typedef struct

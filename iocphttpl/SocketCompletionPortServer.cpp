@@ -68,6 +68,13 @@ int SocketCompletionPortServer::Start()
 
 	int nThreads = (int)SystemInfo.dwNumberOfProcessors * 2;
 
+	if (nThreads <= 8)
+	{
+		nThreads = 8;
+	}
+
+	fprintf(stderr, "%d::Threads created %d\n", dwThreadId, nThreads);
+
 	//nThreads = 6;
 
 	//nThreads = (nThreads / 2);
@@ -221,13 +228,23 @@ DWORD WINAPI SocketCompletionPortServer::ServerWorkerThread(LPVOID lpObject)
 		else
 			fprintf(stderr, "%d::ServerWorkerThread--GetQueuedCompletionStatus() is OK!\n", dwThreadId);
 
+		::WaitForSingleObject(PerIoData->Overlapped.hEvent, INFINITE);
+
 		printf("\n\n%d::WSARECV2 Socket=%d, BytesTransferred=%d; PerIoData->BytesRECV=%d; PerIoData->BytesSEND=%d\n\n", dwThreadId, PerHandleData->Socket, BytesTransferred, PerIoData->BytesRECV, PerIoData->BytesSEND);
+		printf("%d::BytesTransferred = %d\n", GetCurrentThreadId(), BytesTransferred);
+		printf("%d::        BytesRECV = %d\n", GetCurrentThreadId(), PerIoData->BytesRECV);
+		printf("%d::        BytesSEND = %d\n", GetCurrentThreadId(), PerIoData->BytesSEND);
+		printf("%d::      DataBuf.len = %d\n", GetCurrentThreadId(), PerIoData->DataBuf.len);
+		//printf("%d::      DataBuf.buf = %s\n", GetCurrentThreadId(), PerIoData->DataBuf.buf);
+		printf("%d::  PerIoData.state = %d\n", GetCurrentThreadId(), PerIoData->state);
 
 		bool bCond1 = (BytesTransferred > 0 && PerIoData->BytesRECV == 0 && PerIoData->BytesSEND == 0 && PerIoData->DataBuf.len > 0);
 		bool bCond2 = (PerIoData->BytesRECV > 0);
-		if (bCond1 || bCond2)
+		//if (bCond1 || bCond2)
+		if (PerIoData->state == 0)
 		{
 			SocketIocpController::LPSOCKET_IO_DATA lpiodata = obj->socketIocpController.Allocate();
+			lpiodata->operationData.state = 1;
 			assert(lpiodata != NULL);
 			::WaitForSingleObject(obj->ghMutex, INFINITE);
 			PerIoDataSend = &lpiodata->operationData;
@@ -243,33 +260,38 @@ DWORD WINAPI SocketCompletionPortServer::ServerWorkerThread(LPVOID lpObject)
 			PerIoDataSend->BytesRECV = 0;
 			PerIoDataSend->mallocFlag = 1;
 			int res = WSASend(PerHandleData->Socket, &(PerIoDataSend->DataBuf), 1, &PerIoDataSend->BytesSEND, 0, &(PerIoDataSend->Overlapped), NULL);
-			if (res == SOCKET_ERROR)
+
+			if (res == 0)
+			{
+				SendBytes = PerIoDataSend->BytesSEND;
+				printf("\n\n%d::WSASEND: Socket=%d; SendBytes=%d; PerIoDataSend->BytesRECV=%d; PerIoDataSend->BytesSEND=%d\n\n", dwThreadId, PerHandleData->Socket, SendBytes, PerIoDataSend->BytesRECV, PerIoDataSend->BytesSEND);
+
+				//if (PerIoData->Overlapped.Internal > 0)
+				//{
+				//	printf("Testing this area of logic A1 \n");
+				//	//obj->socketIocpController.FreeByIndex(PerIoData->sequence);
+				//}
+				//if (PerIoData->Overlapped.InternalHigh == 0)
+				//{
+				//	printf("Testing this area of logic A2 \n");
+				//	//obj->socketIocpController.FreeByIndex(PerIoData->sequence);
+				//}
+
+				//DWORD dwWaitResult = WaitForSingleObject(PerIoDataSend->Overlapped.hEvent, INFINITE);
+				//switch (dwWaitResult)
+				//{
+				//case WAIT_OBJECT_0:
+				//	printf("Thread %d :: Done performing the IO\n", GetCurrentThreadId());
+				//	obj->socketIocpController.FreeByIndex(PerIoData->sequence);
+				//	break;
+				//default:
+				//	printf("Wait error (%d)\n", GetLastError());
+				//}
+			}
+			else
 			{
 				fprintf(stderr, "%d::ServerWorkerThread--WSASend() failed with error %d\n", dwThreadId, WSAGetLastError());
-			}
-			SendBytes = PerIoDataSend->BytesSEND;
-			printf("\n\n%d::WSASEND: Socket=%d; SendBytes=%d; PerIoDataSend->BytesRECV=%d; PerIoDataSend->BytesSEND=%d\n\n", dwThreadId, PerHandleData->Socket, SendBytes, PerIoDataSend->BytesRECV, PerIoDataSend->BytesSEND);
-
-			if (PerIoData->Overlapped.Internal > 0)
-			{
-				printf("Testing this area of logic A1 \n");
-				//obj->socketIocpController.Free(PerIoData->sequence);
-			}
-			if (PerIoData->Overlapped.InternalHigh == 0)
-			{
-				printf("Testing this area of logic A2 \n");
-				//obj->socketIocpController.Free(PerIoData->sequence);
-			}
-
-			DWORD dwWaitResult = WaitForSingleObject(PerIoData->Overlapped.hEvent, INFINITE);
-			switch (dwWaitResult)
-			{
-			case WAIT_OBJECT_0:
-				//obj->socketIocpController.FreeByIndex(PerIoData->sequence);
-				printf("Thread %d :: Done performing the IO\n", GetCurrentThreadId());
-				break;
-			default:
-				printf("Wait error (%d)\n", GetLastError());
+				//return 0;
 			}
 
 			::ReleaseMutex(obj->ghMutex);
@@ -278,28 +300,31 @@ DWORD WINAPI SocketCompletionPortServer::ServerWorkerThread(LPVOID lpObject)
 			continue;
 		}
 
+		//bool bCond3 = BytesTransferred > 0 && PerIoData->BytesRECV == 0 && PerIoData->DataBuf.len > 0;
+		//bool bCond4 = BytesTransferred == 0 && PerIoData->BytesRECV == 0 && PerIoData->DataBuf.len > 0;
 
-		bool bCond3 = BytesTransferred > 0 && PerIoData->BytesRECV == 0 && PerIoData->DataBuf.len > 0;
-		bool bCond4 = BytesTransferred == 0 && PerIoData->BytesRECV == 0 && PerIoData->DataBuf.len > 0;
-
-		if (bCond3 || bCond4)
+		//if (bCond3 || bCond4)
+		//{
+		if (PerIoData->state == 1)
 		{
 			printf("%d::ServerWorkerThread--Closing socket %d\n", dwThreadId, PerHandleData->Socket);
 			SOCKET ts = PerHandleData->Socket;
 			if (closesocket(PerHandleData->Socket) == SOCKET_ERROR)
 			{
 				fprintf(stderr, "%d::ServerWorkerThread--closesocket() failed with error %d\n", dwThreadId, WSAGetLastError());
-				return 0;
+				//return 0;
 			}
 			else
+			{
 				fprintf(stderr, "%d::ServerWorkerThread--closesocket() is fine!\n", dwThreadId);
-
-			obj->socketIocpController.FreeBySocket(ts);
+				obj->socketIocpController.FreeBySocket(ts);
+			}
 			continue;
 		}
+		//}
 
-		printf("\n\n\n\nUnhandled condition. IP should not reach line. \n\n\n\n");
-		exit(1);
+		printf("\n\nZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZ\n\nUnhandled condition. IP should not reach line. \n\n\n\n");
+		//exit(1);
 	}
 }
 
@@ -352,37 +377,41 @@ void SocketCompletionPortServer::Dispatch(HttpRequest *httpRequest, HttpResponse
 		return;
 	}
 
-	LPSTATICFUNC lpFunc = (LPSTATICFUNC)GetRoute(httpRequest->GetUrl());
-	if (lpFunc != NULL)
+
+	if (httpRequest->GetUrl() != NULL)
 	{
-		(*lpFunc)(httpRequest, httpResponse);
-	}
-	else
-	{
-		WCHAR  buffer[BUFSIZMIN];
-		char *url = httpRequest->GetUrl();
-		std::string surl;
-		surl.append("./");
-		surl.append(url);
-		std::wstring wsurl(surl.begin(), surl.end());
-		DWORD dwres = GetFullPathName(wsurl.c_str(), BUFSIZMIN, buffer, NULL);
-		if (dwres > 0)
+		LPSTATICFUNC lpFunc = (LPSTATICFUNC)GetRoute(httpRequest->GetUrl());
+		if (lpFunc != NULL)
 		{
-			PTSTR str = GetPathExtension(buffer);
-			std::wstring wsbuffer(buffer);
-			std::string sbuffer(wsbuffer.begin(), wsbuffer.end());
-			if (FileExist(wsbuffer.c_str()))
-			{
-				httpResponse->SetStaticFileName(sbuffer.c_str());
-				httpResponse->WriteStatic(sbuffer.c_str());
-				return;
-			}
-			else
-			{
-				printf("File not found: %s \n", sbuffer.c_str());
-			}
+			(*lpFunc)(httpRequest, httpResponse);
 		}
-		UrlNotFound(httpRequest, httpResponse);
+		else
+		{
+			WCHAR  buffer[BUFSIZMIN];
+			char *url = httpRequest->GetUrl();
+			std::string surl;
+			surl.append("./");
+			surl.append(url);
+			std::wstring wsurl(surl.begin(), surl.end());
+			DWORD dwres = GetFullPathName(wsurl.c_str(), BUFSIZMIN, buffer, NULL);
+			if (dwres > 0)
+			{
+				PTSTR str = GetPathExtension(buffer);
+				std::wstring wsbuffer(buffer);
+				std::string sbuffer(wsbuffer.begin(), wsbuffer.end());
+				if (FileExist(wsbuffer.c_str()))
+				{
+					httpResponse->SetStaticFileName(sbuffer.c_str());
+					httpResponse->WriteStatic(sbuffer.c_str());
+					return;
+				}
+				else
+				{
+					printf("File not found: %s \n", sbuffer.c_str());
+				}
+			}
+			UrlNotFound(httpRequest, httpResponse);
+		}
 	}
 }
 
@@ -394,11 +423,19 @@ bool SocketCompletionPortServer::FileExist(const TCHAR *fileName)
 
 void SocketCompletionPortServer::EvalStatic(HttpRequest *httpRequest, HttpResponse *httpResponse)
 {
-	char *str = httpRequest->GetUrl();
-	string s = GetFullPath(str);
-	printf("Static %s\n", s.c_str());
-	httpResponse->SetStaticFileName(s);
-	httpResponse->WriteStatic(s.c_str());
+	try
+	{
+		char *str = httpRequest->GetUrl();
+		string s = GetFullPath(str);
+		printf("Static %s\n", s.c_str());
+		httpResponse->SetStaticFileName(s);
+		httpResponse->WriteStatic(s.c_str());
+	}
+	catch (...)
+	{
+		printf("Exception in SocketCompletionPortServer::EvalStatic \n");
+		exit(0);
+	}
 }
 
 void SocketCompletionPortServer::EvalHasUrlParams(HttpRequest *httpRequest, HttpResponse *httpResponse)

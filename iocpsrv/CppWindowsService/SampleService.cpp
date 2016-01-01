@@ -129,8 +129,8 @@ void CSampleService::StartIt(void)
 	si.cb = sizeof(si);
 	ZeroMemory(&pi, sizeof(pi));
 
-	LPWSTR pProgName = L"C:\\packages\\git2\\iocphttpd\\lib\\Win32\\Debug\\iocphttpd.exe";
-	WriteEventLogEntry(L"C:\\packages\\git2\\iocphttpd\\lib\\Win32\\Debug\\iocphttpd.exe",
+	LPWSTR pProgName = L"C:\\packages\\git2\\iocphttpd\\lib\\Win32\\Release\\iocphttpd.exe";
+	WriteEventLogEntry(L"C:\\packages\\git2\\iocphttpd\\lib\\Win32\\Release\\iocphttpd.exe",
 		EVENTLOG_INFORMATION_TYPE);
 
 	// Start the child process. 

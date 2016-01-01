@@ -46,6 +46,8 @@ void HttpTemplate::SetTemplateRootDir(char* rootdir)
 
 std::string HttpTemplate::GetTemplateFilepath(char* code)
 {
+	if (code == NULL) return false;
+
 	for (TEMPLATEITERATOR i = m_TemplateList.begin(); i != m_TemplateList.end(); ++i)
 	{
 		LPTEMPLATEITEM item = *i;
@@ -64,6 +66,8 @@ std::string HttpTemplate::GetTemplateFilepath(char* code)
 
 std::string HttpTemplate::GetTemplateContent(char* code)
 {
+	if (code == NULL) return false;
+
 	for (TEMPLATEITERATOR i = m_TemplateList.begin(); i != m_TemplateList.end(); ++i)
 	{
 		LPTEMPLATEITEM item = *i;
@@ -83,6 +87,8 @@ std::string HttpTemplate::GetTemplateContent(char* code)
 
 bool HttpTemplate::FindTemplate(char *code)
 {
+	if (code == NULL) return false;
+
 	for (TEMPLATEITERATOR i = m_TemplateList.begin(); i != m_TemplateList.end(); ++i)
 	{
 		LPTEMPLATEITEM item = *i;

@@ -30,6 +30,11 @@ EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "iocpservicePS", "iocpservice\iocpservicePS.vcxproj", "{3FEADDD6-7436-4A57-B448-FA71D9E4CDF8}"
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "CppWindowsService", "iocpsrv\CppWindowsService\CppWindowsService.vcxproj", "{DE70E2D1-6A4D-4984-BD82-CE750889F0D3}"
+	ProjectSection(ProjectDependencies) = postProject
+		{C8430F27-BC5C-4F41-882E-F8E5A5FA0CD9} = {C8430F27-BC5C-4F41-882E-F8E5A5FA0CD9}
+		{9C9048D6-37C8-44BF-BD8E-7D7F6B5AC42B} = {9C9048D6-37C8-44BF-BD8E-7D7F6B5AC42B}
+		{54F797E9-FB21-4BBE-914C-4EFD66861330} = {54F797E9-FB21-4BBE-914C-4EFD66861330}
+	EndProjectSection
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

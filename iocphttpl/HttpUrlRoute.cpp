@@ -164,6 +164,12 @@ int HttpUrlRoute::GetLen(char *s)
 
 bool HttpUrlRoute::IsStatic(char *path)
 {
+	if (path == NULL)
+	{
+		printf("HttpUrlRoute::IsStatic path arg is NULL.\n");
+		return false;
+	}
+
 	if (staticAccessList.size() == 0)
 		return false;
 
@@ -194,6 +200,12 @@ void* HttpUrlRoute::GetUrlParamHandler(char *path)
 
 bool HttpUrlRoute::HasUrlParams(char *path)
 {
+	if (path == NULL)
+	{
+		printf("HttpUrlRoute::HasUrlParams path arg is NULL.\n");
+		return false;
+	}
+
 	if (urlRoutes.size() == 0)
 		return false;
 
