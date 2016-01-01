@@ -24,7 +24,7 @@ int _tmain(int argc, _TCHAR* argv[])
 
 
 	IocpHttpd server;
-	server.Start();
+	server.Start(8080);
 	return 0;
 }
 
