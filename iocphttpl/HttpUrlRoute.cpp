@@ -196,6 +196,7 @@ void* HttpUrlRoute::GetUrlParamHandler(char *path)
 	{
 		return urlParamHandler;
 	}
+	return NULL;
 }
 
 bool HttpUrlRoute::HasUrlParams(char *path)

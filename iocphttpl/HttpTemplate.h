@@ -12,7 +12,8 @@ public:
 	typedef struct {
 		char *code;
 		char *filename;
-		char content[DATA_BUFSIZE];
+		//char content[DATA_BUFSIZE];
+		char *pcontent;
 		DWORD count;
 	}TEMPLATEITEM, *LPTEMPLATEITEM;
 
@@ -32,7 +33,7 @@ protected:
 
 private:
 	char m_RootDir[DATA_BUFSIZE];
-	void LoadContent(char* filename, char *content);
+	void LoadContent(char* filename, char **content);
 
 };
 

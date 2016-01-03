@@ -26,7 +26,7 @@ void HttpTemplate::AddTemplate(char *code, char* filepath)
 		item->filename = _strdup(filepath);
 		if (item->count == 0)
 		{
-			LoadContent(item->filename, item->content);
+			LoadContent(item->filename, &item->pcontent);
 			item->count++;
 		}
 		m_TemplateList.push_back(item);
@@ -68,6 +68,8 @@ std::string HttpTemplate::GetTemplateContent(char* code)
 {
 	if (code == NULL) return false;
 
+	int siz = m_TemplateList.size();
+
 	for (TEMPLATEITERATOR i = m_TemplateList.begin(); i != m_TemplateList.end(); ++i)
 	{
 		LPTEMPLATEITEM item = *i;
@@ -75,10 +77,10 @@ std::string HttpTemplate::GetTemplateContent(char* code)
 		{
 			if (item->count == 0)
 			{
-				LoadContent(item->filename, item->content);
+				LoadContent(item->filename, &item->pcontent);
 				item->count++;
 			}
-			std::string str = std::string(item->content);
+			std::string str = std::string(item->pcontent);
 			return str;
 		}
 	}
@@ -100,7 +102,7 @@ bool HttpTemplate::FindTemplate(char *code)
 	return false;
 }
 
-void HttpTemplate::LoadContent(char* filename, char *content)
+void HttpTemplate::LoadContent(char* filename, char **content)
 {
 	FILE * pFile;
 	long lSize;
@@ -132,14 +134,22 @@ void HttpTemplate::LoadContent(char* filename, char *content)
 		return;
 	}
 
-	if (DATA_BUFSIZE < result) {
-		fputs("DATA_BUFSIZE oversize error", stderr);
-		return;
+	if (*content != NULL)
+	{
+		free(*content);
 	}
 
-	memset(content,  '\0', DATA_BUFSIZE);
-	sprintf_s(content, DATA_BUFSIZE, "%s", buffer);
+	//*content = (char*)malloc(result+1);
+	*content = buffer;
+
+	if (DATA_BUFSIZE < result) {
+		fputs("\nXXXXXXXXXXXXXXXXXX\nDATA_BUFSIZE oversize error\nXXXXXXXXXXXXXXXXX\n", stderr);
+		//return;
+	}
+
+	//memset(*content, '\0', result);
+	//sprintf_s(*content, result, "%s", buffer);
 
 	fclose(pFile);
-	free(buffer);
+	//free(buffer);
 }

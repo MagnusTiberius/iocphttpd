@@ -427,9 +427,19 @@ void SocketCompletionPortServer::EvalStatic(HttpRequest *httpRequest, HttpRespon
 	{
 		char *str = httpRequest->GetUrl();
 		string s = GetFullPath(str);
-		printf("Static %s\n", s.c_str());
-		httpResponse->SetStaticFileName(s);
-		httpResponse->WriteStatic(s.c_str());
+
+		ifstream file(s);
+		if (file)
+		{
+			printf("Static %s\n", s.c_str());
+			httpResponse->SetStaticFileName(s);
+			httpResponse->WriteStatic(s.c_str());
+		}
+		else
+		{
+			printf("Static %s not found\n", s.c_str());
+		}
+
 	}
 	catch (...)
 	{

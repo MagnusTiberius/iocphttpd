@@ -34,6 +34,9 @@ void ScannerA::Backup()
 
 const CHAR* ScannerA::Next()
 {
+	if (m_str == NULL)
+		return NULL;
+
 	if (m_pos >= strlen(m_str))
 	{
 		return NULL;
@@ -77,6 +80,9 @@ const CHAR* ScannerA::Peek()
 
 bool ScannerA::Accept(CHAR *str)
 {
+	if (m_c == NULL)
+		return false;
+
 	auto chr = strchr(str, *m_c);
 	if (chr != NULL)
 	{
