@@ -220,15 +220,23 @@ DWORD WINAPI SocketCompletionPortServer::ServerWorkerThread(LPVOID lpObject)
 	{
 		BytesTransferred = 0;
 		BOOL res1 = GetQueuedCompletionStatus(CompletionPort, &BytesTransferred, (PULONG_PTR)&PerHandleData, (LPOVERLAPPED *)&PerIoData, INFINITE);
+		if(res1 == 0)
+		{
+			continue;
+		}
 		if (res1 == 0)
 		{
 			fprintf(stderr, "%d::ServerWorkerThread--GetQueuedCompletionStatus() failed with error %d\n", dwThreadId, GetLastError());
+			continue;
 			return 0;
 		}
 		else
 			fprintf(stderr, "%d::ServerWorkerThread--GetQueuedCompletionStatus() is OK!\n", dwThreadId);
 
-		::WaitForSingleObject(PerIoData->Overlapped.hEvent, INFINITE);
+		if (::WaitForSingleObject(PerIoData->Overlapped.hEvent, INFINITE) != WAIT_OBJECT_0)
+		{
+			continue;
+		}
 
 		printf("\n\n%d::WSARECV2 Socket=%d, BytesTransferred=%d; PerIoData->BytesRECV=%d; PerIoData->BytesSEND=%d\n\n", dwThreadId, PerHandleData->Socket, BytesTransferred, PerIoData->BytesRECV, PerIoData->BytesSEND);
 		printf("%d::BytesTransferred = %d\n", GetCurrentThreadId(), BytesTransferred);

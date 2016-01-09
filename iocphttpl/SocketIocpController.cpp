@@ -89,6 +89,12 @@ void SocketIocpController::FreeByIndex(int index)
 			free(rv->operationData.DataBuf.buf);
 			rv->operationData.mallocFlag = 0;
 		}
+		if (rv->operationData.DataBuf.buf != NULL)
+		{
+			//free(rv->operationData.DataBuf.buf);
+			//rv->operationData.mallocFlag = 0;
+		}
+
 		rv->operationData.DataBuf.buf = NULL;
 		rv->operationData.DataBuf.len = 0;
 		rv->handleData.Socket = 0;
