@@ -213,28 +213,33 @@ DWORD WINAPI SocketCompletionPortServer::ServerWorkerThread(LPVOID lpObject)
 	HttpResponse httpResponse;
 
 	DWORD dwThreadId = GetCurrentThreadId();
-
+	
 
 
 	while (TRUE)
 	{
 		BytesTransferred = 0;
 		BOOL res1 = GetQueuedCompletionStatus(CompletionPort, &BytesTransferred, (PULONG_PTR)&PerHandleData, (LPOVERLAPPED *)&PerIoData, INFINITE);
-		if(res1 == 0)
+		SOCKET ts = PerHandleData->Socket;
+		if(res1 == NULL)
 		{
+			obj->socketIocpController.FreeBySocket(ts);
 			continue;
 		}
 		if (res1 == 0)
 		{
 			fprintf(stderr, "%d::ServerWorkerThread--GetQueuedCompletionStatus() failed with error %d\n", dwThreadId, GetLastError());
+			obj->socketIocpController.FreeBySocket(ts);
 			continue;
 			return 0;
 		}
 		else
 			fprintf(stderr, "%d::ServerWorkerThread--GetQueuedCompletionStatus() is OK!\n", dwThreadId);
 
-		if (::WaitForSingleObject(PerIoData->Overlapped.hEvent, INFINITE) != WAIT_OBJECT_0)
+		//if (::WaitForSingleObject(PerIoData->Overlapped.hEvent, INFINITE) != WAIT_OBJECT_0)
+		if (::WaitForSingleObject(PerIoData->Overlapped.hEvent, 10000) != WAIT_OBJECT_0)
 		{
+			obj->socketIocpController.FreeBySocket(ts);
 			continue;
 		}
 
@@ -316,17 +321,17 @@ DWORD WINAPI SocketCompletionPortServer::ServerWorkerThread(LPVOID lpObject)
 		if (PerIoData->state == 1)
 		{
 			printf("%d::ServerWorkerThread--Closing socket %d\n", dwThreadId, PerHandleData->Socket);
-			SOCKET ts = PerHandleData->Socket;
-			if (closesocket(PerHandleData->Socket) == SOCKET_ERROR)
-			{
-				fprintf(stderr, "%d::ServerWorkerThread--closesocket() failed with error %d\n", dwThreadId, WSAGetLastError());
-				//return 0;
-			}
-			else
-			{
-				fprintf(stderr, "%d::ServerWorkerThread--closesocket() is fine!\n", dwThreadId);
-				obj->socketIocpController.FreeBySocket(ts);
-			}
+			obj->socketIocpController.FreeBySocket(PerHandleData->Socket);
+			//if (closesocket(PerHandleData->Socket) == SOCKET_ERROR)
+			//{
+			//	fprintf(stderr, "%d::ServerWorkerThread--closesocket() failed with error %d\n", dwThreadId, WSAGetLastError());
+			//	//return 0;
+			//}
+			//else
+			//{
+			//	fprintf(stderr, "%d::ServerWorkerThread--closesocket() is fine!\n", dwThreadId);
+			//	obj->socketIocpController.FreeBySocket(ts);
+			//}
 			continue;
 		}
 		//}

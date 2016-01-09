@@ -127,6 +127,7 @@ void SocketIocpController::FreeBySocket(SOCKET index)
 				if (rv->handleData.Socket == index)
 				{
 					FreeByIndex(i);
+					closesocket(index);
 				}
 			}
 		}
