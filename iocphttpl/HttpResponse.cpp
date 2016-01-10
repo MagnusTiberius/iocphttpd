@@ -13,25 +13,27 @@ HttpResponse::HttpResponse()
 HttpResponse::~HttpResponse()
 {
 
-	::WaitForSingleObject(ghMutex, INFINITE);
-	ibuflist_t itr;
-	for (itr = m_bufferList.begin(); itr != m_bufferList.end(); itr++)
+	if (::WaitForSingleObject(ghMutex, 10000) == WAIT_OBJECT_0)
 	{
-		lpstatic_content_t p = *itr;
-		if (p != NULL)
+		ibuflist_t itr;
+		for (itr = m_bufferList.begin(); itr != m_bufferList.end(); itr++)
 		{
-			if (p->name	!= NULL)
+			lpstatic_content_t p = *itr;
+			if (p != NULL)
 			{
-				free(p->name);
-				p->name = NULL;
+				if (p->name != NULL)
+				{
+					free(p->name);
+					p->name = NULL;
+				}
+				if (p->content != NULL)
+				{
+					free(p->content);
+					p->content = NULL;
+				}
+				free(p);
+				p = NULL;
 			}
-			if (p->content != NULL)
-			{
-				free(p->content);
-				p->content = NULL;
-			}
-			free(p);
-			p = NULL;
 		}
 	}
 	::ReleaseMutex(ghMutex);
@@ -108,56 +110,57 @@ const char* HttpResponse::GetContent()
 
 std::vector<byte> HttpResponse::GetStaticContent(const char *path)
 {
+	std::vector<BYTE> vec;
 	DWORD dwThreadId = GetCurrentThreadId();
-	printf("%d::Reading filename: %s \n", dwThreadId, path);
-	::WaitForSingleObject(ghMutex, INFINITE);
-
-	/*
-	ibuflist_t itr;
-	for (itr = m_bufferList.begin(); itr != m_bufferList.end(); itr++)
+	if (::WaitForSingleObject(ghMutex, 10000) == WAIT_OBJECT_0)
 	{
+		printf("%d::Reading filename: %s \n", dwThreadId, path);
+		/*
+		ibuflist_t itr;
+		for (itr = m_bufferList.begin(); itr != m_bufferList.end(); itr++)
+		{
 		lpstatic_content_t pitem = *itr;
 		int diff = strcmp(pitem->name, path);
 		if (diff == 0)
 		{
-			pitem->rawtime = time(0);
-			::ReleaseMutex(ghMutex);
-			return *pitem->bytcontent;
+		pitem->rawtime = time(0);
+		::ReleaseMutex(ghMutex);
+		return *pitem->bytcontent;
 		}
+		}
+		*/
+
+		// open the file:
+		std::ifstream file(path, std::ios::binary);
+
+		// Stop eating new lines in binary mode!!!
+		file.unsetf(std::ios::skipws);
+
+		// get its size:
+		std::streampos fileSize;
+
+		file.seekg(0, std::ios::end);
+		fileSize = file.tellg();
+		file.seekg(0, std::ios::beg);
+
+		// reserve capacity
+		
+		vec.reserve(fileSize);
+
+		// read the data:
+		vec.insert(vec.begin(),
+			std::istream_iterator<BYTE>(file),
+			std::istream_iterator<BYTE>());
+
+		/*
+		lpstatic_content_t p1 = (lpstatic_content_t)malloc(sizeof(static_content_t));
+		p1->name = _strdup(path);
+		p1->bytcontent = new std::vector<byte>();
+		p1->bytcontent->assign(vec.begin(), vec.end());
+		p1->rawtime = time(0);
+		m_bufferList.push_back(p1);
+		*/
 	}
-	*/
-
-	// open the file:
-	std::ifstream file(path, std::ios::binary);
-	
-	// Stop eating new lines in binary mode!!!
-	file.unsetf(std::ios::skipws);
-
-	// get its size:
-	std::streampos fileSize;
-
-	file.seekg(0, std::ios::end);
-	fileSize = file.tellg();
-	file.seekg(0, std::ios::beg);
-
-	// reserve capacity
-	std::vector<BYTE> vec;
-	vec.reserve(fileSize);
-
-	// read the data:
-	vec.insert(vec.begin(),
-		std::istream_iterator<BYTE>(file),
-		std::istream_iterator<BYTE>());
-
-	/*
-	lpstatic_content_t p1 = (lpstatic_content_t)malloc(sizeof(static_content_t));
-	p1->name = _strdup(path);
-	p1->bytcontent = new std::vector<byte>();
-	p1->bytcontent->assign(vec.begin(), vec.end());
-	p1->rawtime = time(0);
-	m_bufferList.push_back(p1);
-	*/
-
 	::ReleaseMutex(ghMutex);
 
 	return vec;
@@ -177,62 +180,67 @@ std::vector<byte> HttpResponse::GetStaticContent3(const char *file_name)
 
 byte* HttpResponse::GetStaticContent2(const char *file_name, long *len)
 {
-	::WaitForSingleObject(ghMutex, INFINITE);
-	
-	/*
-	time_t now = time(0);
-	ibuflist_t itr;
-	for (itr = m_bufferList.begin(); itr != m_bufferList.end(); itr++)
-	{
-		lpstatic_content_t pitem = *itr;
-		int diff = strcmp(pitem->name, file_name);
-		if (diff == 0)
-		{
-			pitem->rawtime = time(0);
-			::ReleaseMutex(ghMutex);
-			return pitem->content;
-		}
-		double dt = difftime(now, pitem->rawtime);
-
-	}
-	*/
-
 	FILE *fp;
 	char *buf = NULL;
 
-	fopen_s(&fp, file_name, "rb");
-
-	assert(fp != NULL);
-
-	//if (fp == NULL)
-	//{
-	//	return NULL;
-	//}
-	fseek(fp, 0, SEEK_END);
-	long size = ftell(fp);
-	*len = size;
-	rewind(fp);
-
-	buf = (char*)malloc(size + 1);
-	assert(buf != NULL);
-	memset(buf, 0, size);
-
-	int i = 0;
-	int ch;
-	while ((ch = fgetc(fp)) != EOF)
+	if (::WaitForSingleObject(ghMutex, 10000) == WAIT_OBJECT_0)
 	{
-		buf[i++] = ch;
+
+		/*
+		time_t now = time(0);
+		ibuflist_t itr;
+		for (itr = m_bufferList.begin(); itr != m_bufferList.end(); itr++)
+		{
+			lpstatic_content_t pitem = *itr;
+			int diff = strcmp(pitem->name, file_name);
+			if (diff == 0)
+			{
+				pitem->rawtime = time(0);
+				::ReleaseMutex(ghMutex);
+				return pitem->content;
+			}
+			double dt = difftime(now, pitem->rawtime);
+
+		}
+		*/
+
+		
+		
+
+		fopen_s(&fp, file_name, "rb");
+
+		assert(fp != NULL);
+
+		//if (fp == NULL)
+		//{
+		//	return NULL;
+		//}
+		fseek(fp, 0, SEEK_END);
+		long size = ftell(fp);
+		*len = size;
+		rewind(fp);
+
+		buf = (char*)malloc(size + 1);
+		assert(buf != NULL);
+		memset(buf, 0, size);
+
+		int i = 0;
+		int ch;
+		while ((ch = fgetc(fp)) != EOF)
+		{
+			buf[i++] = ch;
+		}
+
+		fclose(fp);
+
+		/*
+		lpstatic_content_t p1 = (lpstatic_content_t)malloc(sizeof(static_content_t));
+		p1->name = _strdup(file_name);
+		p1->content = buf;
+		p1->rawtime = time(0);
+		m_bufferList.push_back(p1);
+		*/
 	}
-
-	fclose(fp);
-
-	/*
-	lpstatic_content_t p1 = (lpstatic_content_t)malloc(sizeof(static_content_t));
-	p1->name = _strdup(file_name);
-	p1->content = buf;
-	p1->rawtime = time(0);
-	m_bufferList.push_back(p1);
-	*/
 
 	::ReleaseMutex(ghMutex);
 

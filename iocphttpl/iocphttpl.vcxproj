@@ -167,6 +167,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="BTree.h" />
+    <ClInclude Include="CacheController.h" />
     <ClInclude Include="Entity.h" />
     <ClInclude Include="Enums.h" />
     <ClInclude Include="HParser.h" />
@@ -194,6 +195,7 @@
     <ClInclude Include="UrlParam.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="CacheController.cpp" />
     <ClCompile Include="dllmain.cpp">
       <CompileAsManaged Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">false</CompileAsManaged>
       <CompileAsManaged Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">false</CompileAsManaged>

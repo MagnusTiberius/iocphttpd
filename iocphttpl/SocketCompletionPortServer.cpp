@@ -259,7 +259,12 @@ DWORD WINAPI SocketCompletionPortServer::ServerWorkerThread(LPVOID lpObject)
 			SocketIocpController::LPSOCKET_IO_DATA lpiodata = obj->socketIocpController.Allocate();
 			lpiodata->operationData.state = 1;
 			assert(lpiodata != NULL);
-			::WaitForSingleObject(obj->ghMutex, INFINITE);
+			if (::WaitForSingleObject(obj->ghMutex, 15000) != WAIT_OBJECT_0)
+			{
+				obj->socketIocpController.FreeBySocket(ts);
+				::ReleaseMutex(obj->ghMutex);
+				continue;
+			}
 			PerIoDataSend = &lpiodata->operationData;
 			lpiodata->handleData.Socket = PerHandleData->Socket;
 
