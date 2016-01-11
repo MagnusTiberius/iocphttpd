@@ -212,6 +212,8 @@ DWORD WINAPI SocketCompletionPortServer::ServerWorkerThread(LPVOID lpObject)
 	HttpRequest httpRequest;
 	HttpResponse httpResponse;
 
+	httpResponse.SetCacheController(&(obj->cacheController));
+
 	DWORD dwThreadId = GetCurrentThreadId();
 	
 

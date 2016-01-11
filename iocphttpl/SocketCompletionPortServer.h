@@ -11,6 +11,7 @@
 #include "HttpUrlRoute.h"
 #include "HttpTemplate.h"
 #include "SocketIocpController.h"
+#include "CacheController.h"
 
 //#define DATA_BUFSIZE 8192
 
@@ -60,5 +61,6 @@ private:
 	HANDLE CompletionPort;
 	int m_PortNum = PORT;
 	bool FileExist(const TCHAR *fileName);
+	CacheController cacheController;
 };
 

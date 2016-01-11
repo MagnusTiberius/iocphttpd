@@ -7,8 +7,16 @@ HttpResponse::HttpResponse()
 		NULL,              // default security attributes
 		FALSE,             // initially not owned
 		NULL);
+
+
+
 }
 
+
+void HttpResponse::SetCacheController(CacheController* controller)
+{
+	cacheController = controller;
+}
 
 HttpResponse::~HttpResponse()
 {
@@ -183,8 +191,25 @@ byte* HttpResponse::GetStaticContent2(const char *file_name, long *len)
 	FILE *fp;
 	char *buf = NULL;
 
-	if (::WaitForSingleObject(ghMutex, 10000) == WAIT_OBJECT_0)
+	DWORD res = ::WaitForSingleObject(ghMutex, 10000);
+	if (res == WAIT_OBJECT_0)
 	{
+		char* fname = _strdup(file_name);
+		if (cacheController->FindTemplate(fname))
+		{
+			string mcontent = cacheController->GetTemplateContent(fname);
+			byte* result = (byte*)mcontent.c_str();
+			return result;
+		}
+		else
+		{
+			cacheController->AddTemplate(fname, fname);
+			string mcontent = cacheController->GetTemplateContent(fname);
+			byte* result = (byte*)mcontent.c_str();
+			return result;
+		}
+		/*
+		*/
 
 		/*
 		time_t now = time(0);
@@ -240,6 +265,7 @@ byte* HttpResponse::GetStaticContent2(const char *file_name, long *len)
 		p1->rawtime = time(0);
 		m_bufferList.push_back(p1);
 		*/
+
 	}
 
 	::ReleaseMutex(ghMutex);

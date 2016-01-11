@@ -8,6 +8,7 @@
 #include <sstream>
 #include "MimeTypes.h"
 #include <assert.h> 
+#include "CacheController.h"
 
 class IOCPHTTPL_API HttpResponse : public HttpTemplate
 {
@@ -45,6 +46,7 @@ public:
 	const char* GetContent();
 	byte*  GetResponse2(ULONG *len);
 	void GetResponse3(std::vector<byte> *pvb);
+	void SetCacheController(CacheController* controller);
 
 private:
 	HttpHeader httpHeader;
@@ -66,5 +68,7 @@ private:
 	buflist_t m_bufferList;
 
 	MimeTypes mimeTypes;
+	CacheController* cacheController;
+	
 };
 
