@@ -208,8 +208,6 @@ byte* HttpResponse::GetStaticContent2(const char *file_name, long *len)
 			byte* result = (byte*)mcontent.c_str();
 			return result;
 		}
-		/*
-		*/
 
 		/*
 		time_t now = time(0);

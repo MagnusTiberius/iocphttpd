@@ -74,48 +74,60 @@ void SocketIocpController::Free(LPSOCKET_IO_DATA data)
 
 void SocketIocpController::FreeByIndex(int index)
 {
-	printf("%d::SocketIocpController::FreeByIndex = %d\n", GetCurrentThreadId(), index);
-
-	if (::WaitForSingleObject(ghMutex, 10000) == WAIT_OBJECT_0)
+	try
 	{
-		LPSOCKET_IO_DATA rv = NULL;
+		printf("%d::SocketIocpController::FreeByIndex = %d\n", GetCurrentThreadId(), index);
 
-		if (index < m_DataBufferSize && m_ActiveFlag[index])
+		if (::WaitForSingleObject(ghMutex, 10000) == WAIT_OBJECT_0)
 		{
-			rv = &m_DataBuffer[index];
-			printf("%d::SocketIocpController::FreeByIndex = %d :: socket %d freeing item in list \n", GetCurrentThreadId(), index, rv->handleData.Socket);
-			rv->operationData.BytesRECV = 0;
-			rv->operationData.BytesSEND = 0;
-			rv->operationData.LPBuffer = NULL;
-			if (rv->operationData.DataBuf.buf != NULL && rv->operationData.mallocFlag == 1)
-			{
-				free(rv->operationData.DataBuf.buf);
-				rv->operationData.mallocFlag = 0;
-			}
-			if (rv->operationData.DataBuf.buf != NULL)
-			{
-				//free(rv->operationData.DataBuf.buf);
-				//rv->operationData.mallocFlag = 0;
-			}
+			LPSOCKET_IO_DATA rv = NULL;
 
-			rv->operationData.DataBuf.buf = NULL;
-			rv->operationData.DataBuf.len = 0;
-			rv->handleData.Socket = 0;
-			m_ActiveFlag[rv->sequence] = 0;
-			if (rv->operationData.Overlapped.hEvent != NULL)
+			if (index < m_DataBufferSize && m_ActiveFlag[index])
 			{
-				if (!CloseHandle(rv->operationData.Overlapped.hEvent))
+				rv = &m_DataBuffer[index];
+				printf("%d::SocketIocpController::FreeByIndex = %d :: socket %d freeing item in list \n", GetCurrentThreadId(), index, rv->handleData.Socket);
+				rv->operationData.BytesRECV = 0;
+				rv->operationData.BytesSEND = 0;
+				rv->operationData.LPBuffer = NULL;
+				if (rv->operationData.DataBuf.buf != NULL && rv->operationData.mallocFlag == 1)
 				{
-					printf("%d::SocketIocpController::FreeByIndex = %d Overlapped.hEvent CloseHandle returned false.\n", GetCurrentThreadId(), index);
+					free(rv->operationData.DataBuf.buf);
+					rv->operationData.mallocFlag = 0;
 				}
-				rv->operationData.Overlapped.hEvent = NULL;
+				if (rv->operationData.DataBuf.buf != NULL)
+				{
+					//free(rv->operationData.DataBuf.buf);
+					//rv->operationData.mallocFlag = 0;
+				}
+
+				rv->operationData.DataBuf.buf = NULL;
+				rv->operationData.DataBuf.len = 0;
+				if (rv->handleData.Socket != NULL)
+				{
+					closesocket(rv->handleData.Socket);
+					rv->handleData.Socket = NULL;
+				}
+				//rv->handleData.Socket = 0;
+				m_ActiveFlag[rv->sequence] = 0;
+				if (rv->operationData.Overlapped.hEvent != NULL)
+				{
+					if (!CloseHandle(rv->operationData.Overlapped.hEvent))
+					{
+						printf("%d::SocketIocpController::FreeByIndex = %d Overlapped.hEvent CloseHandle returned false.\n", GetCurrentThreadId(), index);
+					}
+					rv->operationData.Overlapped.hEvent = NULL;
+				}
+				ZeroMemory(&(rv->operationData.Overlapped), sizeof(OVERLAPPED));
+				memset(rv->operationData.Buffer, 0, BUFSIZMIN);
+				printf("%d::SocketIocpController::FreeByIndex = %d done\n", GetCurrentThreadId(), index);
 			}
-			ZeroMemory(&(rv->operationData.Overlapped), sizeof(OVERLAPPED));
-			memset(rv->operationData.Buffer, 0, BUFSIZMIN);
-			printf("%d::SocketIocpController::FreeByIndex = %d done\n", GetCurrentThreadId(), index);
 		}
+		::ReleaseMutex(ghMutex);
 	}
-	::ReleaseMutex(ghMutex);
+	catch(...)
+	{
+		printf("%d::SocketIocpController::FreeByIndex Exception Handler = %d done\nGGGGGGGGGGGGGGGGGGGGGGGGGGG\n", GetCurrentThreadId(), index);
+	}
 }
 
 void SocketIocpController::FreeBySocket(SOCKET index)
@@ -132,6 +144,7 @@ void SocketIocpController::FreeBySocket(SOCKET index)
 				{
 					FreeByIndex(i);
 					closesocket(index);
+					rv->handleData.Socket = NULL;
 				}
 			}
 		}

@@ -241,6 +241,7 @@ DWORD WINAPI SocketCompletionPortServer::ServerWorkerThread(LPVOID lpObject)
 		//if (::WaitForSingleObject(PerIoData->Overlapped.hEvent, INFINITE) != WAIT_OBJECT_0)
 		if (::WaitForSingleObject(PerIoData->Overlapped.hEvent, 10000) != WAIT_OBJECT_0)
 		{
+			fprintf(stderr, "%d::WaitForSingleObject 1 WAIT_OBJECT_0 Mismatch\n", dwThreadId);
 			obj->socketIocpController.FreeBySocket(ts);
 			continue;
 		}
@@ -263,8 +264,10 @@ DWORD WINAPI SocketCompletionPortServer::ServerWorkerThread(LPVOID lpObject)
 			assert(lpiodata != NULL);
 			if (::WaitForSingleObject(obj->ghMutex, 15000) != WAIT_OBJECT_0)
 			{
+				fprintf(stderr, "%d::WaitForSingleObject 2 WAIT_OBJECT_0 Mismatch\n", dwThreadId);
 				obj->socketIocpController.FreeBySocket(ts);
 				::ReleaseMutex(obj->ghMutex);
+				::ReleaseMutex(PerIoData->Overlapped.hEvent);
 				continue;
 			}
 			PerIoDataSend = &lpiodata->operationData;
@@ -315,7 +318,7 @@ DWORD WINAPI SocketCompletionPortServer::ServerWorkerThread(LPVOID lpObject)
 			}
 
 			::ReleaseMutex(obj->ghMutex);
-
+			::ReleaseMutex(PerIoData->Overlapped.hEvent);
 
 			continue;
 		}

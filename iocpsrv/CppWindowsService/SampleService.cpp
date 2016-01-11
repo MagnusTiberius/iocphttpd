@@ -122,44 +122,48 @@ void CSampleService::ServiceWorkerThread(void)
 
 void CSampleService::StartIt(void)
 {
-	STARTUPINFO si;
-	//PROCESS_INFORMATION pi;
 
-	ZeroMemory(&si, sizeof(si));
-	si.cb = sizeof(si);
-	ZeroMemory(&pi, sizeof(pi));
-
-	LPWSTR pProgName = L"C:\\packages\\git2\\iocphttpd\\lib\\Win32\\Release\\iocphttpd.exe";
-	WriteEventLogEntry(L"C:\\packages\\git2\\iocphttpd\\lib\\Win32\\Release\\iocphttpd.exe",
-		EVENTLOG_INFORMATION_TYPE);
-
-	// Start the child process. 
-	if (!CreateProcess(pProgName,   // No module name (use command line)
-		NULL,        // Command line
-		NULL,           // Process handle not inheritable
-		NULL,           // Thread handle not inheritable
-		FALSE,          // Set handle inheritance to FALSE
-		0,              // No creation flags
-		NULL,           // Use parent's environment block
-		NULL,           // Use parent's starting directory 
-		&si,            // Pointer to STARTUPINFO structure
-		&pi)           // Pointer to PROCESS_INFORMATION structure
-		)
+	while (true)
 	{
-		printf("CreateProcess failed (%d).\n", GetLastError());
-		return;
+		STARTUPINFO si;
+		//PROCESS_INFORMATION pi;
+
+		ZeroMemory(&si, sizeof(si));
+		si.cb = sizeof(si);
+		ZeroMemory(&pi, sizeof(pi));
+
+		LPWSTR pProgName = L"C:\\packages\\git2\\iocphttpd\\lib\\Win32\\Release\\iocphttpd.exe";
+		WriteEventLogEntry(L"C:\\packages\\git2\\iocphttpd\\lib\\Win32\\Release\\iocphttpd.exe",
+			EVENTLOG_INFORMATION_TYPE);
+
+		// Start the child process. 
+		if (!CreateProcess(pProgName,   // No module name (use command line)
+			NULL,        // Command line
+			NULL,           // Process handle not inheritable
+			NULL,           // Thread handle not inheritable
+			FALSE,          // Set handle inheritance to FALSE
+			0,              // No creation flags
+			NULL,           // Use parent's environment block
+			NULL,           // Use parent's starting directory 
+			&si,            // Pointer to STARTUPINFO structure
+			&pi)           // Pointer to PROCESS_INFORMATION structure
+			)
+		{
+			printf("CreateProcess failed (%d).\n", GetLastError());
+			return;
+		}
+
+		WriteEventLogEntry(L"StartIt 222222222",
+			EVENTLOG_INFORMATION_TYPE);
+
+
+		// Wait until child process exits.
+		WaitForSingleObject(pi.hProcess, INFINITE);
+
+		// Close process and thread handles. 
+		CloseHandle(pi.hProcess);
+		CloseHandle(pi.hThread);
 	}
-
-	WriteEventLogEntry(L"StartIt 222222222",
-		EVENTLOG_INFORMATION_TYPE);
-
-
-	// Wait until child process exits.
-	WaitForSingleObject(pi.hProcess, INFINITE);
-
-	// Close process and thread handles. 
-	CloseHandle(pi.hProcess);
-	CloseHandle(pi.hThread);
 }
 
 

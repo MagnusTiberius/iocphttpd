@@ -10,6 +10,7 @@ IocpHttpd::IocpHttpd()
 	AddRoute("/init", IocpHttpd::HandleInit);
 	AddRoute("/json/test", IocpHttpd::HandleJsonTest);
 	AddRoute("/json/testtwo", IocpHttpd::HandleJsonTestTwo);
+	AddRoute("/reset", IocpHttpd::HandleReset);
 
 	//AddRoute("/user/profile/<id:[0-9]+>/", IocpHttpd::HandleJsonUrlParam1);
 	AddRoute("/product/country/<id1:[0-9]+>/city/<id2:[0-9]+>/g.json", IocpHttpd::HandleJsonUrlParam1);
@@ -39,6 +40,11 @@ void IocpHttpd::HandleHome(HttpRequest *httpRequest, HttpResponse *httpResponse)
 		httpResponse->AddTemplate("Home", "C:\\www\\index.html");
 	}
 	httpResponse->WriteTemplate("Home");
+}
+
+void IocpHttpd::HandleReset(HttpRequest *httpRequest, HttpResponse *httpResponse)
+{
+	exit(1);
 }
 
 void IocpHttpd::HandleTest(HttpRequest *httpRequest, HttpResponse *httpResponse)
