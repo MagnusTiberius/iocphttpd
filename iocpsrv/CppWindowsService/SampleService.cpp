@@ -123,8 +123,8 @@ void CSampleService::ServiceWorkerThread(void)
 void CSampleService::StartIt(void)
 {
 
-	while (true)
-	{
+	//while (true)
+	//{
 		STARTUPINFO si;
 		//PROCESS_INFORMATION pi;
 
@@ -163,7 +163,7 @@ void CSampleService::StartIt(void)
 		// Close process and thread handles. 
 		CloseHandle(pi.hProcess);
 		CloseHandle(pi.hThread);
-	}
+	//}
 }
 
 

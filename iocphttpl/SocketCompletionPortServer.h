@@ -13,6 +13,7 @@
 #include "SocketIocpController.h"
 #include "CacheController.h"
 
+
 //#define DATA_BUFSIZE 8192
 
 class IOCPHTTPL_API SocketCompletionPortServer : public HttpUrlRoute
@@ -62,5 +63,8 @@ private:
 	int m_PortNum = PORT;
 	bool FileExist(const TCHAR *fileName);
 	CacheController cacheController;
+
+private:
+
 };
 

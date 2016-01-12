@@ -1,5 +1,5 @@
 #include "SocketCompletionPortServer.h"
-
+#include "EventLog.h"
 
 SocketCompletionPortServer::SocketCompletionPortServer()
 {
@@ -44,6 +44,11 @@ int SocketCompletionPortServer::Start()
 	WSADATA wsaData;
 	DWORD Ret;
 	DWORD dwThreadId = GetCurrentThreadId();
+
+
+	char msg2[8192];
+	EventLog* eventLog2;
+	eventLog2 = new EventLog(L"IOCP Worker Thread");
 
 	if ((Ret = WSAStartup((2, 2), &wsaData)) != 0)
 	{
@@ -180,7 +185,8 @@ int SocketCompletionPortServer::Start()
 		DWORD dwRes = WSARecv(Accept, &(PerIoData->DataBuf), 1, &PerIoData->BytesRECV, &Flags, &(PerIoData->Overlapped), NULL);
 		RecvBytes = PerIoData->BytesRECV;
 
-		printf("\n\n%d::WSARECV1 Socket=%d, PerIoData->BytesRECV=%d; PerIoData->BytesSEND=%d\n\n", dwThreadId, PerHandleData->Socket, PerIoData->BytesRECV, PerIoData->BytesSEND);
+		sprintf(msg2, "\n\n%d::WSARECV1 Socket=%d, PerIoData->BytesRECV=%d; PerIoData->BytesSEND=%d\n\n", dwThreadId, PerHandleData->Socket, PerIoData->BytesRECV, PerIoData->BytesSEND);
+		eventLog2->WriteEventLogEntry2(msg2, EVENTLOG_ERROR_TYPE);
 
 		if (dwRes == SOCKET_ERROR)
 		{
@@ -208,146 +214,165 @@ DWORD WINAPI SocketCompletionPortServer::ServerWorkerThread(LPVOID lpObject)
 	SocketIocpController::LPPER_IO_OPERATION_DATA PerIoData, PerIoDataSend;
 	DWORD SendBytes, RecvBytes;
 	DWORD Flags;
-
+	EventLog* eventLog;
 	HttpRequest httpRequest;
 	HttpResponse httpResponse;
-
+	char msg[8192];
 	httpResponse.SetCacheController(&(obj->cacheController));
+
+	eventLog = new EventLog(L"IOCP Worker Thread");
 
 	DWORD dwThreadId = GetCurrentThreadId();
 	
-
-
-	while (TRUE)
+	try
 	{
-		BytesTransferred = 0;
-		BOOL res1 = GetQueuedCompletionStatus(CompletionPort, &BytesTransferred, (PULONG_PTR)&PerHandleData, (LPOVERLAPPED *)&PerIoData, INFINITE);
-		SOCKET ts = PerHandleData->Socket;
-		if(res1 == NULL)
-		{
-			obj->socketIocpController.FreeBySocket(ts);
-			continue;
-		}
-		if (res1 == 0)
-		{
-			fprintf(stderr, "%d::ServerWorkerThread--GetQueuedCompletionStatus() failed with error %d\n", dwThreadId, GetLastError());
-			obj->socketIocpController.FreeBySocket(ts);
-			continue;
-			return 0;
-		}
-		else
-			fprintf(stderr, "%d::ServerWorkerThread--GetQueuedCompletionStatus() is OK!\n", dwThreadId);
 
-		//if (::WaitForSingleObject(PerIoData->Overlapped.hEvent, INFINITE) != WAIT_OBJECT_0)
-		if (::WaitForSingleObject(PerIoData->Overlapped.hEvent, 10000) != WAIT_OBJECT_0)
+		while (TRUE)
 		{
-			fprintf(stderr, "%d::WaitForSingleObject 1 WAIT_OBJECT_0 Mismatch\n", dwThreadId);
-			obj->socketIocpController.FreeBySocket(ts);
-			continue;
-		}
-
-		printf("\n\n%d::WSARECV2 Socket=%d, BytesTransferred=%d; PerIoData->BytesRECV=%d; PerIoData->BytesSEND=%d\n\n", dwThreadId, PerHandleData->Socket, BytesTransferred, PerIoData->BytesRECV, PerIoData->BytesSEND);
-		printf("%d::BytesTransferred = %d\n", GetCurrentThreadId(), BytesTransferred);
-		printf("%d::        BytesRECV = %d\n", GetCurrentThreadId(), PerIoData->BytesRECV);
-		printf("%d::        BytesSEND = %d\n", GetCurrentThreadId(), PerIoData->BytesSEND);
-		printf("%d::      DataBuf.len = %d\n", GetCurrentThreadId(), PerIoData->DataBuf.len);
-		//printf("%d::      DataBuf.buf = %s\n", GetCurrentThreadId(), PerIoData->DataBuf.buf);
-		printf("%d::  PerIoData.state = %d\n", GetCurrentThreadId(), PerIoData->state);
-
-		bool bCond1 = (BytesTransferred > 0 && PerIoData->BytesRECV == 0 && PerIoData->BytesSEND == 0 && PerIoData->DataBuf.len > 0);
-		bool bCond2 = (PerIoData->BytesRECV > 0);
-		//if (bCond1 || bCond2)
-		if (PerIoData->state == 0)
-		{
-			SocketIocpController::LPSOCKET_IO_DATA lpiodata = obj->socketIocpController.Allocate();
-			lpiodata->operationData.state = 1;
-			assert(lpiodata != NULL);
-			if (::WaitForSingleObject(obj->ghMutex, 15000) != WAIT_OBJECT_0)
+			BytesTransferred = 0;
+			BOOL res1 = GetQueuedCompletionStatus(CompletionPort, &BytesTransferred, (PULONG_PTR)&PerHandleData, (LPOVERLAPPED *)&PerIoData, INFINITE);
+			SOCKET ts = PerHandleData->Socket;
+			if (res1 == NULL)
 			{
-				fprintf(stderr, "%d::WaitForSingleObject 2 WAIT_OBJECT_0 Mismatch\n", dwThreadId);
+				sprintf(msg, "%d::ServerWorkerThread--GetQueuedCompletionStatus() returned null error %d\n", dwThreadId, GetLastError());
+				eventLog->WriteEventLogEntry2(msg, EVENTLOG_ERROR_TYPE);
 				obj->socketIocpController.FreeBySocket(ts);
-				::ReleaseMutex(obj->ghMutex);
-				::ReleaseMutex(PerIoData->Overlapped.hEvent);
 				continue;
 			}
-			PerIoDataSend = &lpiodata->operationData;
-			lpiodata->handleData.Socket = PerHandleData->Socket;
-
-			assert(PerIoDataSend != NULL);
-			httpRequest.Parse(PerIoData->DataBuf.buf);
-
-			obj->Dispatch(&httpRequest, &httpResponse);
-			ZeroMemory(PerIoDataSend->Buffer, BUFSIZMIN);
-			//ZeroMemory(&(PerIoDataSend->Overlapped), sizeof(OVERLAPPED));
-			PerIoDataSend->DataBuf.buf = (char*)httpResponse.GetResponse2(&PerIoDataSend->DataBuf.len);
-			PerIoDataSend->BytesRECV = 0;
-			PerIoDataSend->mallocFlag = 1;
-			int res = WSASend(PerHandleData->Socket, &(PerIoDataSend->DataBuf), 1, &PerIoDataSend->BytesSEND, 0, &(PerIoDataSend->Overlapped), NULL);
-
-			if (res == 0)
+			if (res1 == 0)
 			{
-				SendBytes = PerIoDataSend->BytesSEND;
-				printf("\n\n%d::WSASEND: Socket=%d; SendBytes=%d; PerIoDataSend->BytesRECV=%d; PerIoDataSend->BytesSEND=%d\n\n", dwThreadId, PerHandleData->Socket, SendBytes, PerIoDataSend->BytesRECV, PerIoDataSend->BytesSEND);
-
-				//if (PerIoData->Overlapped.Internal > 0)
-				//{
-				//	printf("Testing this area of logic A1 \n");
-				//	//obj->socketIocpController.FreeByIndex(PerIoData->sequence);
-				//}
-				//if (PerIoData->Overlapped.InternalHigh == 0)
-				//{
-				//	printf("Testing this area of logic A2 \n");
-				//	//obj->socketIocpController.FreeByIndex(PerIoData->sequence);
-				//}
-
-				//DWORD dwWaitResult = WaitForSingleObject(PerIoDataSend->Overlapped.hEvent, INFINITE);
-				//switch (dwWaitResult)
-				//{
-				//case WAIT_OBJECT_0:
-				//	printf("Thread %d :: Done performing the IO\n", GetCurrentThreadId());
-				//	obj->socketIocpController.FreeByIndex(PerIoData->sequence);
-				//	break;
-				//default:
-				//	printf("Wait error (%d)\n", GetLastError());
-				//}
+				sprintf(msg, "%d::ServerWorkerThread--GetQueuedCompletionStatus() failed with error %d\n", dwThreadId, GetLastError());
+				eventLog->WriteEventLogEntry2(msg, EVENTLOG_ERROR_TYPE);
+				obj->socketIocpController.FreeBySocket(ts);
+				continue;
+				return 0;
 			}
 			else
+				fprintf(stderr, "%d::ServerWorkerThread--GetQueuedCompletionStatus() is OK!\n", dwThreadId);
+
+			//if (::WaitForSingleObject(PerIoData->Overlapped.hEvent, INFINITE) != WAIT_OBJECT_0)
+			if (::WaitForSingleObject(PerIoData->Overlapped.hEvent, 10000) != WAIT_OBJECT_0)
 			{
-				fprintf(stderr, "%d::ServerWorkerThread--WSASend() failed with error %d\n", dwThreadId, WSAGetLastError());
-				//return 0;
+				sprintf(msg, "%d::WaitForSingleObject 1 WAIT_OBJECT_0 Mismatch\n", dwThreadId);
+				eventLog->WriteEventLogEntry2(msg, EVENTLOG_ERROR_TYPE);
+				obj->socketIocpController.FreeBySocket(ts);
+				continue;
 			}
 
-			::ReleaseMutex(obj->ghMutex);
-			::ReleaseMutex(PerIoData->Overlapped.hEvent);
+			sprintf(msg, "%d::WSARECV2 Socket=%d, BytesTransferred=%d; PerIoData->BytesRECV=%d; PerIoData->BytesSEND=%d; PerIoData.state=%d\n", dwThreadId, PerHandleData->Socket, BytesTransferred, PerIoData->BytesRECV, PerIoData->BytesSEND, PerIoData->state);
+			eventLog->WriteEventLogEntry2(msg, EVENTLOG_ERROR_TYPE);
+			printf("%d::BytesTransferred = %d\n", GetCurrentThreadId(), BytesTransferred);
+			printf("%d::        BytesRECV = %d\n", GetCurrentThreadId(), PerIoData->BytesRECV);
+			printf("%d::        BytesSEND = %d\n", GetCurrentThreadId(), PerIoData->BytesSEND);
+			printf("%d::      DataBuf.len = %d\n", GetCurrentThreadId(), PerIoData->DataBuf.len);
+			//printf("%d::      DataBuf.buf = %s\n", GetCurrentThreadId(), PerIoData->DataBuf.buf);
+			printf("%d::  PerIoData.state=%d\n", GetCurrentThreadId(), PerIoData->state);
 
-			continue;
-		}
 
-		//bool bCond3 = BytesTransferred > 0 && PerIoData->BytesRECV == 0 && PerIoData->DataBuf.len > 0;
-		//bool bCond4 = BytesTransferred == 0 && PerIoData->BytesRECV == 0 && PerIoData->DataBuf.len > 0;
+			bool bCond1 = (BytesTransferred > 0 && PerIoData->BytesRECV == 0 && PerIoData->BytesSEND == 0 && PerIoData->DataBuf.len > 0);
+			bool bCond2 = (PerIoData->BytesRECV > 0);
+			//if (bCond1 || bCond2)
+			if (PerIoData->state == 0)
+			{
+				SocketIocpController::LPSOCKET_IO_DATA lpiodata = obj->socketIocpController.Allocate();
+				lpiodata->operationData.state = 1;
+				assert(lpiodata != NULL);
+				if (::WaitForSingleObject(obj->ghMutex, 15000) != WAIT_OBJECT_0)
+				{
+					sprintf(msg, "%d::WaitForSingleObject 2 WAIT_OBJECT_0 Mismatch\n", dwThreadId);
+					eventLog->WriteEventLogEntry2(msg, EVENTLOG_ERROR_TYPE);
+					obj->socketIocpController.FreeBySocket(ts);
+					::ReleaseMutex(obj->ghMutex);
+					::ReleaseMutex(PerIoData->Overlapped.hEvent);
+					continue;
+				}
+				PerIoDataSend = &lpiodata->operationData;
+				lpiodata->handleData.Socket = PerHandleData->Socket;
 
-		//if (bCond3 || bCond4)
-		//{
-		if (PerIoData->state == 1)
-		{
-			printf("%d::ServerWorkerThread--Closing socket %d\n", dwThreadId, PerHandleData->Socket);
-			obj->socketIocpController.FreeBySocket(PerHandleData->Socket);
-			//if (closesocket(PerHandleData->Socket) == SOCKET_ERROR)
+				assert(PerIoDataSend != NULL);
+				httpRequest.Parse(PerIoData->DataBuf.buf);
+
+				obj->Dispatch(&httpRequest, &httpResponse);
+				ZeroMemory(PerIoDataSend->Buffer, BUFSIZMIN);
+				//ZeroMemory(&(PerIoDataSend->Overlapped), sizeof(OVERLAPPED));
+				PerIoDataSend->DataBuf.buf = (char*)httpResponse.GetResponse2(&PerIoDataSend->DataBuf.len);
+				PerIoDataSend->BytesRECV = 0;
+				PerIoDataSend->mallocFlag = 1;
+				int res = WSASend(PerHandleData->Socket, &(PerIoDataSend->DataBuf), 1, &PerIoDataSend->BytesSEND, 0, &(PerIoDataSend->Overlapped), NULL);
+
+				if (res == 0)
+				{
+					SendBytes = PerIoDataSend->BytesSEND;
+					sprintf(msg, "\n\n%d::WSASEND: Socket=%d; SendBytes=%d; PerIoDataSend->BytesRECV=%d; PerIoDataSend->BytesSEND=%d\n\n", dwThreadId, PerHandleData->Socket, SendBytes, PerIoDataSend->BytesRECV, PerIoDataSend->BytesSEND);
+					eventLog->WriteEventLogEntry2(msg, EVENTLOG_ERROR_TYPE);
+					//if (PerIoData->Overlapped.Internal > 0)
+					//{
+					//	printf("Testing this area of logic A1 \n");
+					//	//obj->socketIocpController.FreeByIndex(PerIoData->sequence);
+					//}
+					//if (PerIoData->Overlapped.InternalHigh == 0)
+					//{
+					//	printf("Testing this area of logic A2 \n");
+					//	//obj->socketIocpController.FreeByIndex(PerIoData->sequence);
+					//}
+
+					//DWORD dwWaitResult = WaitForSingleObject(PerIoDataSend->Overlapped.hEvent, INFINITE);
+					//switch (dwWaitResult)
+					//{
+					//case WAIT_OBJECT_0:
+					//	printf("Thread %d :: Done performing the IO\n", GetCurrentThreadId());
+					//	obj->socketIocpController.FreeByIndex(PerIoData->sequence);
+					//	break;
+					//default:
+					//	printf("Wait error (%d)\n", GetLastError());
+					//}
+				}
+				else
+				{
+					sprintf(msg, "%d::ServerWorkerThread--WSASend() failed with error %d\n", dwThreadId, WSAGetLastError());
+					eventLog->WriteEventLogEntry2(msg, EVENTLOG_ERROR_TYPE);
+					//return 0;
+				}
+
+				::ReleaseMutex(obj->ghMutex);
+				::ReleaseMutex(PerIoData->Overlapped.hEvent);
+
+				continue;
+			}
+
+			//bool bCond3 = BytesTransferred > 0 && PerIoData->BytesRECV == 0 && PerIoData->DataBuf.len > 0;
+			//bool bCond4 = BytesTransferred == 0 && PerIoData->BytesRECV == 0 && PerIoData->DataBuf.len > 0;
+
+			//if (bCond3 || bCond4)
 			//{
-			//	fprintf(stderr, "%d::ServerWorkerThread--closesocket() failed with error %d\n", dwThreadId, WSAGetLastError());
-			//	//return 0;
+			if (PerIoData->state == 1)
+			{
+				sprintf(msg, "%d::ServerWorkerThread--Closing socket %d\n", dwThreadId, PerHandleData->Socket);
+				eventLog->WriteEventLogEntry2(msg, EVENTLOG_ERROR_TYPE);
+				obj->socketIocpController.FreeBySocket(PerHandleData->Socket);
+				//if (closesocket(PerHandleData->Socket) == SOCKET_ERROR)
+				//{
+				//	fprintf(stderr, "%d::ServerWorkerThread--closesocket() failed with error %d\n", dwThreadId, WSAGetLastError());
+				//	//return 0;
+				//}
+				//else
+				//{
+				//	fprintf(stderr, "%d::ServerWorkerThread--closesocket() is fine!\n", dwThreadId);
+				//	obj->socketIocpController.FreeBySocket(ts);
+				//}
+				continue;
+			}
 			//}
-			//else
-			//{
-			//	fprintf(stderr, "%d::ServerWorkerThread--closesocket() is fine!\n", dwThreadId);
-			//	obj->socketIocpController.FreeBySocket(ts);
-			//}
-			continue;
-		}
-		//}
 
-		printf("\n\nZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZ\n\nUnhandled condition. IP should not reach line. \n\n\n\n");
-		//exit(1);
+			printf("\n\nZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZ\n\nUnhandled condition. IP should not reach line. \n\n\n\n");
+			//exit(1);
+		}
+	}
+	catch (...)
+	{
+		eventLog->WriteEventLogEntry2("Exception in ServerWorkerThread", EVENTLOG_ERROR_TYPE);
+		printf("\n\QQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQ\n\nException SocketCompletionPortServer::ServerWorkerThread. \n\n\n\n");
+		return 1;
 	}
 }
 
@@ -368,6 +393,12 @@ void SocketCompletionPortServer::EvalPost(HttpRequest *httpRequest, HttpResponse
 
 void SocketCompletionPortServer::Dispatch(HttpRequest *httpRequest, HttpResponse *httpResponse)
 {
+	EventLog eventLog;
+	char msg[8192];
+
+	sprintf(msg, "URL: %s\n", httpRequest->GetUrl());
+	eventLog.WriteEventLogEntry2(msg, EVENTLOG_ERROR_TYPE);
+
 	if (httpRequest->GetMethod() == MethodType::HTTP_GET)
 	{
 		EvalGet(httpRequest, httpResponse);
@@ -446,6 +477,8 @@ bool SocketCompletionPortServer::FileExist(const TCHAR *fileName)
 
 void SocketCompletionPortServer::EvalStatic(HttpRequest *httpRequest, HttpResponse *httpResponse)
 {
+	EventLog eventLog;
+	char msg[8192];
 	try
 	{
 		char *str = httpRequest->GetUrl();
@@ -454,13 +487,15 @@ void SocketCompletionPortServer::EvalStatic(HttpRequest *httpRequest, HttpRespon
 		ifstream file(s);
 		if (file)
 		{
-			printf("Static %s\n", s.c_str());
+			sprintf(msg, "Static %s\n", s.c_str());
+			eventLog.WriteEventLogEntry2(msg, EVENTLOG_ERROR_TYPE);
 			httpResponse->SetStaticFileName(s);
 			httpResponse->WriteStatic(s.c_str());
 		}
 		else
 		{
-			printf("Static %s not found\n", s.c_str());
+			sprintf(msg, "Static %s not found\n", s.c_str());
+			eventLog.WriteEventLogEntry2(msg, EVENTLOG_ERROR_TYPE);
 		}
 
 	}

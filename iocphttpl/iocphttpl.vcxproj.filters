@@ -114,6 +114,9 @@
     <ClInclude Include="CacheController.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="EventLog.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="stdafx.cpp">
