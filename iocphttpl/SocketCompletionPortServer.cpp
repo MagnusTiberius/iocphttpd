@@ -185,7 +185,7 @@ int SocketCompletionPortServer::Start()
 		DWORD dwRes = WSARecv(Accept, &(PerIoData->DataBuf), 1, &PerIoData->BytesRECV, &Flags, &(PerIoData->Overlapped), NULL);
 		RecvBytes = PerIoData->BytesRECV;
 
-		sprintf(msg2, "\n\n%d::WSARECV1 Socket=%d, PerIoData->BytesRECV=%d; PerIoData->BytesSEND=%d\n\n", dwThreadId, PerHandleData->Socket, PerIoData->BytesRECV, PerIoData->BytesSEND);
+		sprintf(msg2, "%d::WSARECV1 Socket=%d, PerIoData->BytesRECV=%d; PerIoData->BytesSEND=%d\n", dwThreadId, PerHandleData->Socket, PerIoData->BytesRECV, PerIoData->BytesSEND);
 		eventLog2->WriteEventLogEntry2(msg2, EVENTLOG_ERROR_TYPE);
 
 		if (dwRes == SOCKET_ERROR)
@@ -259,14 +259,14 @@ DWORD WINAPI SocketCompletionPortServer::ServerWorkerThread(LPVOID lpObject)
 				continue;
 			}
 
-			sprintf(msg, "%d::WSARECV2 Socket=%d, BytesTransferred=%d; PerIoData->BytesRECV=%d; PerIoData->BytesSEND=%d; PerIoData.state=%d\n", dwThreadId, PerHandleData->Socket, BytesTransferred, PerIoData->BytesRECV, PerIoData->BytesSEND, PerIoData->state);
+			sprintf(msg, "%d::WSARECV2 Socket=%d, BytesTransferred=%d; PerIoData->BytesRECV=%d; PerIoData->BytesSEND=%d; PerIoData->DataBuf.len=%d; PerIoData.state=%d\n", dwThreadId, PerHandleData->Socket, BytesTransferred, PerIoData->BytesRECV, PerIoData->BytesSEND, PerIoData->DataBuf.len, PerIoData->state);
 			eventLog->WriteEventLogEntry2(msg, EVENTLOG_ERROR_TYPE);
-			printf("%d::BytesTransferred = %d\n", GetCurrentThreadId(), BytesTransferred);
-			printf("%d::        BytesRECV = %d\n", GetCurrentThreadId(), PerIoData->BytesRECV);
-			printf("%d::        BytesSEND = %d\n", GetCurrentThreadId(), PerIoData->BytesSEND);
-			printf("%d::      DataBuf.len = %d\n", GetCurrentThreadId(), PerIoData->DataBuf.len);
+			//printf("%d::BytesTransferred = %d\n", GetCurrentThreadId(), BytesTransferred);
+			//printf("%d::        BytesRECV = %d\n", GetCurrentThreadId(), PerIoData->BytesRECV);
+			//printf("%d::        BytesSEND = %d\n", GetCurrentThreadId(), PerIoData->BytesSEND);
+			//printf("%d::      DataBuf.len = %d\n", GetCurrentThreadId(), PerIoData->DataBuf.len);
 			//printf("%d::      DataBuf.buf = %s\n", GetCurrentThreadId(), PerIoData->DataBuf.buf);
-			printf("%d::  PerIoData.state=%d\n", GetCurrentThreadId(), PerIoData->state);
+			//printf("%d::  PerIoData.state=%d\n", GetCurrentThreadId(), PerIoData->state);
 
 
 			bool bCond1 = (BytesTransferred > 0 && PerIoData->BytesRECV == 0 && PerIoData->BytesSEND == 0 && PerIoData->DataBuf.len > 0);
@@ -303,7 +303,8 @@ DWORD WINAPI SocketCompletionPortServer::ServerWorkerThread(LPVOID lpObject)
 				if (res == 0)
 				{
 					SendBytes = PerIoDataSend->BytesSEND;
-					sprintf(msg, "\n\n%d::WSASEND: Socket=%d; SendBytes=%d; PerIoDataSend->BytesRECV=%d; PerIoDataSend->BytesSEND=%d\n\n", dwThreadId, PerHandleData->Socket, SendBytes, PerIoDataSend->BytesRECV, PerIoDataSend->BytesSEND);
+					sprintf(msg, "%d::WSASEND: Socket=%d; SendBytes=%d; PerIoDataSend->BytesRECV=%d; PerIoDataSend->BytesSEND=%d; PerIoDataSend->DataBuf.len=%d; PerIoData.state=%d\n",
+						dwThreadId, PerHandleData->Socket, SendBytes, PerIoDataSend->BytesRECV, PerIoDataSend->BytesSEND, PerIoDataSend->DataBuf.len, PerIoDataSend->state);
 					eventLog->WriteEventLogEntry2(msg, EVENTLOG_ERROR_TYPE);
 					//if (PerIoData->Overlapped.Internal > 0)
 					//{
