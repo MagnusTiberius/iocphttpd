@@ -31,6 +31,8 @@ Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "iocpservicePS", "iocpservic
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "httpmodule", "httpmodule\httpmodule.vcxproj", "{F214E58F-9667-4230-B511-31B720CFB31D}"
 EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "netiocp", "netiocp\netiocp.vcxproj", "{BA75F2E0-EBB4-4DBA-9ED3-068102D3BA7E}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Win32 = Debug|Win32
@@ -109,6 +111,15 @@ Global
 		{F214E58F-9667-4230-B511-31B720CFB31D}.Release|Win32.ActiveCfg = Release|Win32
 		{F214E58F-9667-4230-B511-31B720CFB31D}.Release|Win32.Build.0 = Release|Win32
 		{F214E58F-9667-4230-B511-31B720CFB31D}.Release|x64.ActiveCfg = Release|Win32
+		{BA75F2E0-EBB4-4DBA-9ED3-068102D3BA7E}.Debug|Win32.ActiveCfg = Debug|Win32
+		{BA75F2E0-EBB4-4DBA-9ED3-068102D3BA7E}.Debug|Win32.Build.0 = Debug|Win32
+		{BA75F2E0-EBB4-4DBA-9ED3-068102D3BA7E}.Debug|x64.ActiveCfg = Debug|Win32
+		{BA75F2E0-EBB4-4DBA-9ED3-068102D3BA7E}.dummy|Win32.ActiveCfg = Debug|Win32
+		{BA75F2E0-EBB4-4DBA-9ED3-068102D3BA7E}.dummy|Win32.Build.0 = Debug|Win32
+		{BA75F2E0-EBB4-4DBA-9ED3-068102D3BA7E}.dummy|x64.ActiveCfg = Debug|Win32
+		{BA75F2E0-EBB4-4DBA-9ED3-068102D3BA7E}.Release|Win32.ActiveCfg = Release|Win32
+		{BA75F2E0-EBB4-4DBA-9ED3-068102D3BA7E}.Release|Win32.Build.0 = Release|Win32
+		{BA75F2E0-EBB4-4DBA-9ED3-068102D3BA7E}.Release|x64.ActiveCfg = Release|Win32
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
