@@ -5,12 +5,12 @@
 #include <stdio.h>
 
 #include "stdafx.h"
-
+#include "IProtocolHandler.h"
 #include "SocketIocpController.h"
 
 //#define DATA_BUFSIZE 8192
 
-class NETIOCP_API SocketCompletionPortServer
+class SocketCompletionPortServer
 {
 public:
 	SocketCompletionPortServer();
@@ -57,8 +57,9 @@ private:
 	int m_PortNum = PORT;
 	bool FileExist(const TCHAR *fileName);
 	//CacheController cacheController;
+	IProtocolHandler* protocolHandler;
 
-private:
-
+public:
+	void AddHandler(IProtocolHandler* ph);
 };
 

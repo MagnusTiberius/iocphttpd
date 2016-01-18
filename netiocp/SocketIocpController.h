@@ -6,7 +6,7 @@
 #include "stdafx.h"
 
 
-class NETIOCP_API SocketIocpController
+class SocketIocpController
 {
 public:
 	SocketIocpController();

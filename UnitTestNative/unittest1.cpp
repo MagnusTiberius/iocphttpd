@@ -6,7 +6,7 @@
 #include "HttpResponse.h"
 #include "HttpResponse.h"
 #include "HttpUrlRoute.h"
-
+//#include "SocketCompletionPortServer.h"
 
 extern "C" {
 #include "wparser.tab.h"
@@ -208,6 +208,13 @@ namespace UnitTestNative
 			{
 				ctlr.FreeByIndex(i);
 			}
+		}
+
+
+		TEST_METHOD(TestMethod12)
+		{
+			//SocketCompletionPortServer server;
+			//server.Start(8085);
 		}
 
 

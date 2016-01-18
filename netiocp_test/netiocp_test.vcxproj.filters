@@ -15,28 +15,19 @@
     </Filter>
   </ItemGroup>
   <ItemGroup>
-    <Text Include="ReadMe.txt" />
-  </ItemGroup>
-  <ItemGroup>
     <ClInclude Include="stdafx.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="targetver.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="netiocp.h">
+    <ClInclude Include="ServerIOCP.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="SocketCompletionPortServer.h">
+    <ClInclude Include="ClientIOCP.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="SocketIocpController.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="SocketClient.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="IProtocolHandler.h">
+    <ClInclude Include="ChatProtocol.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
@@ -44,22 +35,16 @@
     <ClCompile Include="stdafx.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="netiocp.cpp">
+    <ClCompile Include="unittest1.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="dllmain.cpp">
+    <ClCompile Include="ServerIOCP.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="SocketCompletionPortServer.cpp">
+    <ClCompile Include="ClientIOCP.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="SocketIocpController.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="SocketClient.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="IProtocolHandler.cpp">
+    <ClCompile Include="ChatProtocol.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>

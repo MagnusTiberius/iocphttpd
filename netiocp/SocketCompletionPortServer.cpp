@@ -214,6 +214,7 @@ DWORD WINAPI SocketCompletionPortServer::ServerWorkerThread(LPVOID lpObject)
 	SocketIocpController::LPPER_IO_OPERATION_DATA PerIoData, PerIoDataSend;
 	DWORD SendBytes, RecvBytes;
 	DWORD Flags;
+	IProtocolHandler* protocolHandler = obj->protocolHandler;
 	//EventLog* eventLog;
 	//HttpRequest httpRequest;
 	//HttpResponse httpResponse;
@@ -291,11 +292,14 @@ DWORD WINAPI SocketCompletionPortServer::ServerWorkerThread(LPVOID lpObject)
 
 				assert(PerIoDataSend != NULL);
 				//httpRequest.Parse(PerIoData->DataBuf.buf);
-
 				//obj->Dispatch(&httpRequest, &httpResponse);
 				ZeroMemory(PerIoDataSend->Buffer, BUFSIZMIN);
 				//ZeroMemory(&(PerIoDataSend->Overlapped), sizeof(OVERLAPPED));
 				//PerIoDataSend->DataBuf.buf = (char*)httpResponse.GetResponse2(&PerIoDataSend->DataBuf.len);
+
+				protocolHandler->HandleMessage(PerIoData->DataBuf.buf);
+				protocolHandler->HandleMessage(PerIoData->DataBuf.buf, PerIoDataSend->DataBuf.buf);
+				PerIoDataSend->DataBuf.len = strlen(PerIoDataSend->DataBuf.buf);
 				PerIoDataSend->BytesRECV = 0;
 				PerIoDataSend->mallocFlag = 1;
 				int res = WSASend(PerHandleData->Socket, &(PerIoDataSend->DataBuf), 1, &PerIoDataSend->BytesSEND, 0, &(PerIoDataSend->Overlapped), NULL);
@@ -380,6 +384,11 @@ DWORD WINAPI SocketCompletionPortServer::ServerWorkerThread(LPVOID lpObject)
 HANDLE SocketCompletionPortServer::GetCompletionPort()
 {
 	return CompletionPort;
+}
+
+void SocketCompletionPortServer::AddHandler(IProtocolHandler* ph)
+{
+	protocolHandler = ph;
 }
 
 //void SocketCompletionPortServer::EvalGet(HttpRequest *httpRequest, HttpResponse *httpResponse)
