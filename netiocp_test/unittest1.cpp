@@ -23,7 +23,8 @@ namespace netiocp_test
 			client.StartThread();
 
 			client.Join();
-			server.Join();
+			server.Abort();
+			//server.Join();
 		}
 
 	};

@@ -23,7 +23,9 @@ void ClientIOCP::StartThread()
 DWORD WINAPI ClientIOCP::WorkerThread(LPVOID lpObject)
 {
 	SocketClient client;
+	char* reply;
+
 	int res = client.Connect(8085);
-	client.Send("This is a test\n");
+	client.Send("This is a test\n", reply);
 	return 1;
 }

@@ -43,6 +43,7 @@ private:
 public:
 
 	void Send(const char *msg);
+	void Send(const char *msg, char*& reply);
 	int Connect();
 	int SocketClient::Connect(int portNum);
 	void Close();

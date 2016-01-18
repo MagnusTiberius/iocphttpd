@@ -173,6 +173,46 @@ int SocketClient::Connect()
 }
 
 
+void SocketClient::Send(const char *msg, char*& reply)
+{
+	// Send and receive data
+	//printf("Sending and receiving data if any...\n");
+
+	for (i = 0; i < (int)dwCount; i++)
+	{
+		ret = send(sClient, msg, strlen(msg), 0);
+		if (ret == 0)
+			break;
+		else if (ret == SOCKET_ERROR)
+		{
+			printf("send() failed with error code %d\n", WSAGetLastError());
+			break;
+		}
+
+		//printf("send() should be fine. Send %d bytes\n", ret);
+		if (!bSendOnly)
+		{
+			ZeroMemory(szBuffer, DEFAULT_BUFFER);
+
+			ret = recv(sClient, szBuffer, DEFAULT_BUFFER, 0);
+			if (ret == 0)        // Graceful close
+			{
+				printf("It is a graceful close!\n");
+				break;
+			}
+			else if (ret == SOCKET_ERROR)
+			{
+				printf("recv() failed with error code %d\n", WSAGetLastError());
+				break;
+			}
+			reply = _strdup(szBuffer);
+			szBuffer[ret] = '\0';
+			//printf("recv() is OK. Received %d bytes: %s\n", ret, szBuffer);
+		}
+	}
+
+}
+
 void SocketClient::Send(const char *msg)
 {
 	// Send and receive data
