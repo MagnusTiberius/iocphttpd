@@ -3,7 +3,7 @@
 
 extern void hpParseIt(const char *str);
 
-class HTTPMODULE_API httpTestParser
+class httpTestParser
 {
 public:
 	httpTestParser();

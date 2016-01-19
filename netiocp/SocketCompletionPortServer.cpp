@@ -78,6 +78,8 @@ int SocketCompletionPortServer::Start()
 		nThreads = 8;
 	}
 
+	nThreads = 2;
+
 	fprintf(stderr, "%d::Threads created %d\n", dwThreadId, nThreads);
 
 	//nThreads = 6;

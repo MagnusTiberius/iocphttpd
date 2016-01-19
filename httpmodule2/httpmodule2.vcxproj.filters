@@ -15,28 +15,46 @@
     </Filter>
   </ItemGroup>
   <ItemGroup>
+    <Text Include="ReadMe.txt" />
+  </ItemGroup>
+  <ItemGroup>
     <ClInclude Include="stdafx.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="targetver.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="ServerIOCP.h">
+    <ClInclude Include="CacheController.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="ClientIOCP.h">
+    <ClInclude Include="HttpHeader.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="ChatProtocol.h">
+    <ClInclude Include="HttpRequest.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="ServerHttp.h">
+    <ClInclude Include="HttpResponse.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="ProtocolHttp.h">
+    <ClInclude Include="HttpTemplate.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="ClientHttp.h">
+    <ClInclude Include="HttpUrlRoute.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="MimeTypes.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="RequestParser.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="ScannerA.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="ScannerW.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="UrlParam.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
@@ -44,25 +62,37 @@
     <ClCompile Include="stdafx.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="unittest1.cpp">
+    <ClCompile Include="CacheController.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="ServerIOCP.cpp">
+    <ClCompile Include="HttpHeader.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="ClientIOCP.cpp">
+    <ClCompile Include="HttpRequest.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="ChatProtocol.cpp">
+    <ClCompile Include="HttpResponse.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="ServerHttp.cpp">
+    <ClCompile Include="HttpTemplate.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="ProtocolHttp.cpp">
+    <ClCompile Include="HttpUrlRoute.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="ClientHttp.cpp">
+    <ClCompile Include="MimeTypes.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="RequestParser.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="ScannerA.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="ScannerW.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="UrlParam.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>

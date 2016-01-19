@@ -15,28 +15,28 @@
     </Filter>
   </ItemGroup>
   <ItemGroup>
+    <Text Include="ReadMe.txt" />
+  </ItemGroup>
+  <ItemGroup>
     <ClInclude Include="stdafx.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="targetver.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="ServerIOCP.h">
+    <ClInclude Include="ChatProtocol.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="ClientIOCP.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="ChatProtocol.h">
+    <ClInclude Include="ProtocolHttp.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="ServerHttp.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="ProtocolHttp.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="ClientHttp.h">
+    <ClInclude Include="ServerIOCP.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
@@ -44,25 +44,22 @@
     <ClCompile Include="stdafx.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="unittest1.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="ServerIOCP.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="ClientIOCP.cpp">
+    <ClCompile Include="testHttp.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="ChatProtocol.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="ServerHttp.cpp">
+    <ClCompile Include="ClientIOCP.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="ProtocolHttp.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="ClientHttp.cpp">
+    <ClCompile Include="ServerHttp.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="ServerIOCP.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>

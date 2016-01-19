@@ -119,6 +119,7 @@ int SocketClient::Connect(int portNum)
 	else
 		printf("connect() is pretty damn fine!\n");
 
+	return 0;
 
 }
 

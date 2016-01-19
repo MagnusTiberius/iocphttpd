@@ -9,6 +9,7 @@
 #include "MimeTypes.h"
 #include <assert.h> 
 #include "CacheController.h"
+#include "Shlwapi.h"
 
 class HttpResponse : public HttpTemplate
 {
