@@ -92,6 +92,10 @@ void RequestParser::Parse()
 		{
 			previous_token = token;
 		}
+		if (token == 0)
+		{
+			return;
+		}
 	}
 }
 

@@ -34,7 +34,7 @@ namespace netiocp_test
 			ServerHttp server;
 			server.StartThread();
 
-			::Sleep(5000);
+			::Sleep(2000);
 
 			ClientHttp client;
 			client.StartThread();

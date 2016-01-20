@@ -36,7 +36,10 @@ void ProtocolHttp::HandleMessage(char* msg, char*& reply)
 {
 	char* s = msg;
 	reply = strdup("I got the message.\n");
-	//httpRequest.Parse(msg);
+	httpRequest.Parse(msg);
+	Dispatch(&httpRequest, &httpResponse);
+	ULONG size;
+	reply = (char*)httpResponse.GetResponse2(&size);
 }
 
 bool ProtocolHttp::FileExist(const TCHAR *fileName)

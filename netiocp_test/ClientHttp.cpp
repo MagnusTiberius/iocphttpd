@@ -28,7 +28,7 @@ DWORD WINAPI ClientHttp::WorkerThread(LPVOID lpObject)
 	if (res == 0)
 	{
 		//client.Send("GET / HTTP/1.1\n", reply);
-		client.Send("GET \/ HTTP\/1.1\n", reply);
+		client.Send("GET \/ HTTP\/1.1\n\n", reply);
 	}
 	return 1;
 }

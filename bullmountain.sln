@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 2013
-VisualStudioVersion = 12.0.31101.0
+VisualStudioVersion = 12.0.40629.0
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "iocphttpd", "iocphttpd\iocphttpd.vcxproj", "{54F797E9-FB21-4BBE-914C-4EFD66861330}"
 	ProjectSection(ProjectDependencies) = postProject
@@ -39,6 +39,7 @@ Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "netiocp_test", "netiocp_tes
 	ProjectSection(ProjectDependencies) = postProject
 		{C8430F27-BC5C-4F41-882E-F8E5A5FA0CD9} = {C8430F27-BC5C-4F41-882E-F8E5A5FA0CD9}
 		{BA75F2E0-EBB4-4DBA-9ED3-068102D3BA7E} = {BA75F2E0-EBB4-4DBA-9ED3-068102D3BA7E}
+		{50845CFE-55B9-49C9-838C-17A0F27154FD} = {50845CFE-55B9-49C9-838C-17A0F27154FD}
 	EndProjectSection
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "testHttp", "testHttp\testHttp.vcxproj", "{514722DA-E5C8-4A96-96E4-6C7ADA719C02}"
