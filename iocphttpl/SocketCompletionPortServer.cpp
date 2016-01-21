@@ -305,7 +305,7 @@ DWORD WINAPI SocketCompletionPortServer::ServerWorkerThread(LPVOID lpObject)
 					SendBytes = PerIoDataSend->BytesSEND;
 					sprintf(msg, "%d::WSASEND: Socket=%d; SendBytes=%d; PerIoDataSend->BytesRECV=%d; PerIoDataSend->BytesSEND=%d; PerIoDataSend->DataBuf.len=%d; PerIoData.state=%d\n",
 						dwThreadId, PerHandleData->Socket, SendBytes, PerIoDataSend->BytesRECV, PerIoDataSend->BytesSEND, PerIoDataSend->DataBuf.len, PerIoDataSend->state);
-					eventLog->WriteEventLogEntry2(msg, EVENTLOG_ERROR_TYPE);
+					eventLog->WriteEventLogEntry2(msg, EVENTLOG_SUCCESS);
 					//if (PerIoData->Overlapped.Internal > 0)
 					//{
 					//	printf("Testing this area of logic A1 \n");
@@ -333,6 +333,14 @@ DWORD WINAPI SocketCompletionPortServer::ServerWorkerThread(LPVOID lpObject)
 					sprintf(msg, "%d::ServerWorkerThread--WSASend() failed with error %d\n", dwThreadId, WSAGetLastError());
 					eventLog->WriteEventLogEntry2(msg, EVENTLOG_ERROR_TYPE);
 					//return 0;
+				}
+
+				DWORD transferred;
+				DWORD Flags;
+				bool bres = WSAGetOverlappedResult(PerHandleData->Socket, &(PerIoDataSend->Overlapped), &transferred, FALSE, &Flags);
+				if (bres)
+				{
+
 				}
 
 				::ReleaseMutex(obj->ghMutex);
