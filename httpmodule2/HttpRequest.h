@@ -18,6 +18,8 @@ public:
 
 	std::vector<std::string> urlParams;
 
+	bool IsValid(char* input);
+
 private:
 	//headerparser::HParser hParser;
 	HttpHeader httpHeader;

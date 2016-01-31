@@ -37,6 +37,8 @@ public:
 	void Reset();
 	const char* GetParameterValue(const char *p);
 
+	bool IsValid();
+
 protected:
 	CHAR *m_token;
 	HEADERMAPLIST m_headermap;

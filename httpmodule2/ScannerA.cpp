@@ -25,6 +25,11 @@ void ScannerA::Input(const CHAR* str)
 	m_c = lpC;
 }
 
+bool ScannerA::IsEOS()
+{
+	bool b = (m_pos >= strlen(m_str));
+	return b;
+}
 
 void ScannerA::Backup()
 {
@@ -83,7 +88,8 @@ bool ScannerA::Accept(CHAR *str)
 	if (m_c == NULL)
 		return false;
 
-	auto chr = strchr(str, *m_c);
+	char c = *m_c;
+	auto chr = strchr(str, c);
 	if (chr != NULL)
 	{
 		return true;
@@ -116,7 +122,11 @@ CHAR* ScannerA::AcceptRun(CHAR *str)
 
 	while (Accept(str))
 	{
-		Next();
+		const CHAR* c = Next();
+		if (c == NULL)
+		{
+			return NULL;
+		}
 		inLoop = true;
 	}
 

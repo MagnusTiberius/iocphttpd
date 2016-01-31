@@ -2,7 +2,7 @@
 #include "stdafx.h"
 
 
-class IOCPHTTPL_API ScannerA
+class ScannerA
 {
 public:
 	ScannerA();
@@ -20,6 +20,7 @@ public:
 	bool IsEmpty();
 	void SkipEmpty();
 	CHAR* AcceptUntil(CHAR *str);
+	bool IsEOS();
 
 protected:
 	const CHAR* m_str;

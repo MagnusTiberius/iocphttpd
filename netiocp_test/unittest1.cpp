@@ -4,6 +4,7 @@
 #include "ClientIOCP.h"
 #include "ServerHttp.h"
 #include "ClientHttp.h"
+#include "ScannerA.h"
 
 using namespace Microsoft::VisualStudio::CppUnitTestFramework;
 
@@ -44,6 +45,64 @@ namespace netiocp_test
 			//server.Join();
 		}
 
+
+		TEST_METHOD(TestMethod3)
+		{
+			HttpRequest httpRequest;
+			httpRequest.IsValid("GET /pub/WWW/ HTTP/1.1\n\n");
+			httpRequest.Parse("GET /pub/WWW/ HTTP/1.1\n\n");
+			MethodType m = httpRequest.GetMethod();
+		}
+
+		TEST_METHOD(TestMethod4)
+		{
+			const char* inp = "GET /pub/WWW/ HTTP/1.1\n\n";
+			ScannerA s;
+			s.Input(inp);
+			int token = RequestParser::token_t::BEGIN;
+			bool isDone = false;
+			while (isDone == false)
+			{
+				char* c1 = s.AcceptRun("ABCDEFGHIJKLMNOPQRSTUVWXYZ");
+				if (c1 != NULL)
+				{
+					if (strcmp(c1, "GET") == 0 || strcmp(c1, "HTTP") == 0)
+					{
+						int x = 1;
+						token = RequestParser::token_t::GET;
+						continue;
+					}
+				}
+				c1 = s.AcceptRun("\/");
+				if (c1 != NULL)
+				{
+					s.Backup();
+					c1 = s.AcceptRun("ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz\/-0123456789._");
+					if (c1 != NULL)
+					{
+						int x = 1;
+						token = RequestParser::token_t::URL;
+						continue;
+					}
+				}
+				c1 = s.AcceptRun("\n");
+				if (c1 != NULL)
+				{
+					c1 = s.AcceptRun("\n");
+					if (c1 != NULL)
+					{
+						token = RequestParser::token_t::ENDTOKEN;
+					}
+				}
+				s.Next();
+				if (s.IsEOS())
+				{
+					isDone = true;
+				}
+			}
+
+		}
+		
 	};
 
 

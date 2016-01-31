@@ -19,6 +19,11 @@ void HttpRequest::Parse(char *content)
 	requestParser.Parse();
 }
 
+bool HttpRequest::IsValid(char* input)
+{
+	return false;
+}
+
 char* HttpRequest::GetUrl()
 {
 	char *url;
@@ -32,8 +37,8 @@ MethodType HttpRequest::GetMethod()
 {
 	MethodType mt;
 	//mt = httpHeader.GetMethod();
-	//mt = requestParser.GetMethod();
-	return httpHeader.GetMethod();
+	mt = requestParser.GetMethod();
+	return mt;
 }
 
 const char* HttpRequest::GetContent()

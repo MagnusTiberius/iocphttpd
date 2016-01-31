@@ -20,6 +20,7 @@ public:
 	bool IsEmpty();
 	void SkipEmpty();
 	CHAR* AcceptUntil(CHAR *str);
+	bool IsEOS();
 
 protected:
 	const CHAR* m_str;
