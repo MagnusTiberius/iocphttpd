@@ -11,7 +11,7 @@ namespace walkerroadlib
 {
     public class AsynchronousSocketListener
     {
-        const int PORT_NUM = 11000;
+        const int PORT_NUM = 8092;
         // Thread signal.
         public static ManualResetEvent allDone = new ManualResetEvent(false);
 
@@ -154,10 +154,10 @@ namespace walkerroadlib
         }
 
 
-        public int Start()
+        public void Start()
         {
             StartListening();
-            return 0;
+            return;
         }
     }
 }

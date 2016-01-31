@@ -46,6 +46,8 @@ Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "httpmodule2", "httpmodule2\
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "walkerroadlib", "walkerroadlib\walkerroadlib.csproj", "{BC627F8A-57E5-40C6-B30C-7E29BEEA063B}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "walkerroadtest", "walkerroadtest\walkerroadtest.csproj", "{92DF16BA-4CF8-4CAE-9305-BDC9FDECEA7C}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -247,6 +249,24 @@ Global
 		{BC627F8A-57E5-40C6-B30C-7E29BEEA063B}.Release|Mixed Platforms.Build.0 = Release|Any CPU
 		{BC627F8A-57E5-40C6-B30C-7E29BEEA063B}.Release|Win32.ActiveCfg = Release|Any CPU
 		{BC627F8A-57E5-40C6-B30C-7E29BEEA063B}.Release|x64.ActiveCfg = Release|Any CPU
+		{92DF16BA-4CF8-4CAE-9305-BDC9FDECEA7C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{92DF16BA-4CF8-4CAE-9305-BDC9FDECEA7C}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{92DF16BA-4CF8-4CAE-9305-BDC9FDECEA7C}.Debug|Mixed Platforms.ActiveCfg = Debug|Any CPU
+		{92DF16BA-4CF8-4CAE-9305-BDC9FDECEA7C}.Debug|Mixed Platforms.Build.0 = Debug|Any CPU
+		{92DF16BA-4CF8-4CAE-9305-BDC9FDECEA7C}.Debug|Win32.ActiveCfg = Debug|Any CPU
+		{92DF16BA-4CF8-4CAE-9305-BDC9FDECEA7C}.Debug|x64.ActiveCfg = Debug|Any CPU
+		{92DF16BA-4CF8-4CAE-9305-BDC9FDECEA7C}.dummy|Any CPU.ActiveCfg = Debug|Any CPU
+		{92DF16BA-4CF8-4CAE-9305-BDC9FDECEA7C}.dummy|Any CPU.Build.0 = Debug|Any CPU
+		{92DF16BA-4CF8-4CAE-9305-BDC9FDECEA7C}.dummy|Mixed Platforms.ActiveCfg = Debug|Any CPU
+		{92DF16BA-4CF8-4CAE-9305-BDC9FDECEA7C}.dummy|Mixed Platforms.Build.0 = Debug|Any CPU
+		{92DF16BA-4CF8-4CAE-9305-BDC9FDECEA7C}.dummy|Win32.ActiveCfg = Debug|Any CPU
+		{92DF16BA-4CF8-4CAE-9305-BDC9FDECEA7C}.dummy|x64.ActiveCfg = Debug|Any CPU
+		{92DF16BA-4CF8-4CAE-9305-BDC9FDECEA7C}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{92DF16BA-4CF8-4CAE-9305-BDC9FDECEA7C}.Release|Any CPU.Build.0 = Release|Any CPU
+		{92DF16BA-4CF8-4CAE-9305-BDC9FDECEA7C}.Release|Mixed Platforms.ActiveCfg = Release|Any CPU
+		{92DF16BA-4CF8-4CAE-9305-BDC9FDECEA7C}.Release|Mixed Platforms.Build.0 = Release|Any CPU
+		{92DF16BA-4CF8-4CAE-9305-BDC9FDECEA7C}.Release|Win32.ActiveCfg = Release|Any CPU
+		{92DF16BA-4CF8-4CAE-9305-BDC9FDECEA7C}.Release|x64.ActiveCfg = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

@@ -14,7 +14,7 @@ namespace walkerroadlib
 
     public class AsynchronousClient
     {
-        const int PORT_NUM = 11000;
+        const int PORT_NUM = 8092;
         // The port number for the remote device.
         private const int port = 11000;
 
@@ -37,7 +37,7 @@ namespace walkerroadlib
                 // Establish the remote endpoint for the socket.
                 // The name of the 
                 // remote device is "host.contoso.com".
-                IPHostEntry ipHostInfo = Dns.Resolve("localhost");
+                IPHostEntry ipHostInfo = Dns.Resolve(Dns.GetHostName());
                 IPAddress ipAddress = ipHostInfo.AddressList[0];
                 IPEndPoint remoteEP = new IPEndPoint(ipAddress, PORT_NUM);
 
@@ -180,10 +180,10 @@ namespace walkerroadlib
             }
         }
 
-        public int Start()
+        public void Start()
         {
             StartClient();
-            return 0;
+            return;
         }
     }
 }
