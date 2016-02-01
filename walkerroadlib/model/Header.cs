@@ -11,6 +11,16 @@ namespace walkerroadlib.model
         public string Method { get; set; }
         public string Source { get; set; }
         public object Body { get; set; }
-        public object Status { get; set; }
+        public string Status { get; set; }
+    }
+
+    public class Status
+    {
+        public enum Login
+        {
+            REQUEST = 800001,
+            GRANTED,
+            DENIED
+        }
     }
 }

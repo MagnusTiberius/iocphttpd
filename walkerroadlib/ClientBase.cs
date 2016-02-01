@@ -17,8 +17,8 @@ namespace walkerroadlib
         private void OnReceiveCompletedHandler(string response)
         {
             Console.WriteLine(response);
-            var header = JsonConvert.DeserializeObject<model.Header>(response);
-            if (header.Method.Equals("LOGIN") && header.Status.Equals("OK"))
+            model.Header header = JsonConvert.DeserializeObject<model.Header>(response);
+            if (header.Method.Equals("LOGIN") && header.Status.Equals(model.Status.Login.GRANTED.ToString()))
             {
                 Console.WriteLine("Approved");
             }
@@ -30,6 +30,7 @@ namespace walkerroadlib
             model.Header h = new model.Header();
             h.Method = "LOGIN";
             h.Source = "CLIENT";
+            h.Status = model.Status.Login.REQUEST.ToString();
             model.Login l = new model.Login();
             l.UserName = "Test";
             l.Password = "Test";

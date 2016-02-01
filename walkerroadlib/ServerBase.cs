@@ -17,7 +17,7 @@ namespace walkerroadlib
         private string OnReceiveDataHandler(string response)
         {
             var header = JsonConvert.DeserializeObject<model.Header>(response);
-            if (header.Method.Equals("LOGIN"))
+            if (header.Method.Equals("LOGIN") && header.Status.Equals(model.Status.Login.REQUEST.ToString()))
             {
                 var body = header.Body.ToString();
                 var login = JsonConvert.DeserializeObject<model.Login>(body);
@@ -25,7 +25,7 @@ namespace walkerroadlib
                 model.Header h = new model.Header();
                 h.Method = "LOGIN";
                 h.Source = "SERVER";
-                h.Status = "OK";
+                h.Status = model.Status.Login.GRANTED.ToString();
                 var jsonReply = JsonConvert.SerializeObject(h);
                 return jsonReply;
             }
