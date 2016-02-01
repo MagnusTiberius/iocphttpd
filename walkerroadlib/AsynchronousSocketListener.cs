@@ -9,17 +9,21 @@ using System.Net.Sockets;
 
 namespace walkerroadlib
 {
+    public delegate string OnReceiveData(string response);
+
     public class AsynchronousSocketListener
     {
         const int PORT_NUM = 8092;
+        public event OnReceiveData OnReceiveData;
+
         // Thread signal.
-        public static ManualResetEvent allDone = new ManualResetEvent(false);
+        public ManualResetEvent allDone = new ManualResetEvent(false);
 
         public AsynchronousSocketListener()
         {
         }
 
-        public static void StartListening()
+        public void StartListening()
         {
             // Data buffer for incoming data.
             byte[] bytes = new Byte[1024];
@@ -67,7 +71,7 @@ namespace walkerroadlib
 
         }
 
-        public static void AcceptCallback(IAsyncResult ar)
+        public void AcceptCallback(IAsyncResult ar)
         {
             // Signal the main thread to continue.
             allDone.Set();
@@ -79,11 +83,11 @@ namespace walkerroadlib
             // Create the state object.
             StateObject state = new StateObject();
             state.workSocket = handler;
-            handler.BeginReceive(state.buffer, 0, StateObject.BufferSize, 0,
+            var res = handler.BeginReceive(state.buffer, 0, StateObject.BufferSize, 0,
                 new AsyncCallback(ReadCallback), state);
         }
 
-        public static void ReadCallback(IAsyncResult ar)
+        public void ReadCallback(IAsyncResult ar)
         {
             String content = String.Empty;
 
@@ -98,8 +102,9 @@ namespace walkerroadlib
             if (bytesRead > 0)
             {
                 // There  might be more data, so store the data received so far.
-                state.sb.Append(Encoding.ASCII.GetString(
-                    state.buffer, 0, bytesRead));
+                state.sb.Append(Encoding.ASCII.GetString(state.buffer, 0, bytesRead));
+                //handler.BeginReceive(state.buffer, 0, StateObject.BufferSize, 0, new AsyncCallback(ReadCallback), state);
+
 
                 // Check for end-of-file tag. If it is not there, read 
                 // more data.
@@ -111,7 +116,7 @@ namespace walkerroadlib
                     Console.WriteLine("Read {0} bytes from socket. \n Data : {1}",
                         content.Length, content);
                     // Echo the data back to the client.
-                    Send(handler, content);
+                    Send(handler, OnReceiveData(content));
                 }
                 else
                 {
@@ -120,9 +125,15 @@ namespace walkerroadlib
                     new AsyncCallback(ReadCallback), state);
                 }
             }
+            else
+            {
+                content = state.sb.ToString();
+                OnReceiveData(content);
+                Send(handler, content);
+            }
         }
 
-        private static void Send(Socket handler, String data)
+        private void Send(Socket handler, String data)
         {
             // Convert the string data to byte data using ASCII encoding.
             byte[] byteData = Encoding.ASCII.GetBytes(data);
@@ -132,7 +143,7 @@ namespace walkerroadlib
                 new AsyncCallback(SendCallback), handler);
         }
 
-        private static void SendCallback(IAsyncResult ar)
+        private void SendCallback(IAsyncResult ar)
         {
             try
             {

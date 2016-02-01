@@ -18,17 +18,58 @@ namespace walkerroadtest
         [TestMethod]
         public void TestMethod1()
         {
-            AsynchronousSocketListener listener = new AsynchronousSocketListener();
-            AsynchronousClient client = new AsynchronousClient();
+            TestServer listener = new TestServer();
+            TestClient client = new TestClient();
 
-            Thread threadServer = new Thread(new ThreadStart(listener.Start));
-            Thread threadClient = new Thread(new ThreadStart(client.Start));
+            Thread threadServer = new Thread(new ThreadStart(listener.StartServer));
+            Thread threadClient = new Thread(new ThreadStart(client.StartClient));
 
             threadServer.Start();
-            Thread.Sleep(5000);
+            Thread.Sleep(100);
             threadClient.Start();
             threadClient.Join();
             threadServer.Abort();
+        }
+    }
+
+    public class TestServer : AsynchronousSocketListener
+    {
+        public TestServer()
+        {
+            OnReceiveData += OnReceiveDataHandler;
+        }
+
+        private string OnReceiveDataHandler(string response)
+        {
+            string reply = string.Format("Server received the message: {0}", response);
+            Console.WriteLine(reply);
+            return reply;
+        }
+
+        public void StartServer()
+        {
+            Start();
+        }
+    }
+
+
+    public class TestClient: AsynchronousClient
+    {
+        public TestClient()
+        {
+            OnReceiveCompleted += OnReceiveCompletedHandler;
+        }
+
+        private void OnReceiveCompletedHandler(string response)
+        {
+            Console.WriteLine(response);
+        }
+
+        public void StartClient()
+        {
+            Start();
+            Send("This is a test<EOF>");
+            CloseClient();
         }
     }
 }

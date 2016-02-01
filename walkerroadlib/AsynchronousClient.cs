@@ -10,7 +10,7 @@ using System.Threading;
 namespace walkerroadlib
 {
 
-
+    public delegate void OnReceiveCompleted(string response);
 
     public class AsynchronousClient
     {
@@ -19,17 +19,21 @@ namespace walkerroadlib
         private const int port = 11000;
 
         // ManualResetEvent instances signal completion.
-        private static ManualResetEvent connectDone =
+        private  ManualResetEvent connectDone =
             new ManualResetEvent(false);
-        private static ManualResetEvent sendDone =
+        private  ManualResetEvent sendDone =
             new ManualResetEvent(false);
-        private static ManualResetEvent receiveDone =
+        private  ManualResetEvent receiveDone =
             new ManualResetEvent(false);
 
         // The response from the remote device.
-        private static String response = String.Empty;
+        private  String response = String.Empty;
 
-        private static void StartClient()
+        private Socket client;
+        
+        public event OnReceiveCompleted OnReceiveCompleted;
+
+        private void StartClient()
         {
             // Connect to a remote device.
             try
@@ -42,28 +46,13 @@ namespace walkerroadlib
                 IPEndPoint remoteEP = new IPEndPoint(ipAddress, PORT_NUM);
 
                 // Create a TCP/IP socket.
-                Socket client = new Socket(AddressFamily.InterNetwork,
+                client = new Socket(AddressFamily.InterNetwork,
                     SocketType.Stream, ProtocolType.Tcp);
 
                 // Connect to the remote endpoint.
                 client.BeginConnect(remoteEP,
                     new AsyncCallback(ConnectCallback), client);
                 connectDone.WaitOne();
-
-                // Send test data to the remote device.
-                Send(client, "This is a test<EOF>");
-                sendDone.WaitOne();
-
-                // Receive the response from the remote device.
-                Receive(client);
-                receiveDone.WaitOne();
-
-                // Write the response to the console.
-                Console.WriteLine("Response received : {0}", response);
-
-                // Release the socket.
-                client.Shutdown(SocketShutdown.Both);
-                client.Close();
 
             }
             catch (Exception e)
@@ -72,7 +61,29 @@ namespace walkerroadlib
             }
         }
 
-        private static void ConnectCallback(IAsyncResult ar)
+        public void Send(string data)
+        {
+            // Send test data to the remote device.
+            //Send(client, "This is a test<EOF>");
+            Send(client, data);
+            sendDone.WaitOne();
+
+            // Receive the response from the remote device.
+            Receive(client);
+            receiveDone.WaitOne();
+        }
+
+        public void CloseClient()
+        {
+            // Write the response to the console.
+            Console.WriteLine("Response received : {0}", response);
+
+            // Release the socket.
+            client.Shutdown(SocketShutdown.Both);
+            client.Close();
+        }
+
+        private void ConnectCallback(IAsyncResult ar)
         {
             try
             {
@@ -94,7 +105,7 @@ namespace walkerroadlib
             }
         }
 
-        private static void Receive(Socket client)
+        private void Receive(Socket client)
         {
             try
             {
@@ -112,7 +123,7 @@ namespace walkerroadlib
             }
         }
 
-        private static void ReceiveCallback(IAsyncResult ar)
+        private void ReceiveCallback(IAsyncResult ar)
         {
             try
             {
@@ -139,6 +150,7 @@ namespace walkerroadlib
                     if (state.sb.Length > 1)
                     {
                         response = state.sb.ToString();
+                        OnReceiveCompleted(response);
                     }
                     // Signal that all bytes have been received.
                     receiveDone.Set();
@@ -150,7 +162,7 @@ namespace walkerroadlib
             }
         }
 
-        private static void Send(Socket client, String data)
+        private void Send(Socket client, String data)
         {
             // Convert the string data to byte data using ASCII encoding.
             byte[] byteData = Encoding.ASCII.GetBytes(data);
@@ -160,7 +172,7 @@ namespace walkerroadlib
                 new AsyncCallback(SendCallback), client);
         }
 
-        private static void SendCallback(IAsyncResult ar)
+        private void SendCallback(IAsyncResult ar)
         {
             try
             {
