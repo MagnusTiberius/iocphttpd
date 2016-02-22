@@ -490,6 +490,7 @@ DWORD WINAPI SocketCompletionPortServer::ServerWorkerThread(LPVOID lpObject)
 			eventLog->WriteEventLogEntry2(msg, EVENTLOG_ERROR_TYPE);
 			//return 0;
 		}
+		free(PerIoData->DataBuf.buf);
 
 		//::ReleaseMutex(instance->ghMutex);
 		//::ReleaseMutex(PerIoData->Overlapped.hEvent);
