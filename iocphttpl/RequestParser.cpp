@@ -68,6 +68,12 @@ void RequestParser::Parse()
 			CHAR *v = AcceptUntil("\n");
 
 			item->value = _strdup(v);
+
+			if (strcmp(item->value, "WebSocket") == 0)
+			{
+				int a = 1;
+			}
+
 			//printf("%d::Parse-PROPERTYNAME: %s=%s \n", dwThreadId, item->name, item->value);
 			m_headermap.push_back(item);
 			item = NULL;

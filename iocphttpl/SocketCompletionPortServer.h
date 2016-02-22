@@ -12,7 +12,7 @@
 #include "HttpTemplate.h"
 #include "SocketIocpController.h"
 #include "CacheController.h"
-
+#include "SocketCompletionPortServerWS.h"
 
 //#define DATA_BUFSIZE 8192
 
@@ -67,6 +67,7 @@ private:
 	CacheController cacheController;
 
 private:
+	WebSocket::SocketCompletionPortServerWS websocket;
 
 };
 

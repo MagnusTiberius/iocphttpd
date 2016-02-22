@@ -3,6 +3,7 @@
 
 #include "stdafx.h"
 #include "IocpHttpd.h"
+#include "WebSocketManager.h"
 
 //#include "HParser.h"
 #include "Jsonp.h"
@@ -21,7 +22,8 @@ int _tmain(int argc, _TCHAR* argv[])
 	//jsonp.Parse("[ \"abc\", 99999, { \"fgh\" : 1234, \"www\" : 53556  } ] ");
 	//jsonp.Parse("[ \"abc\", 99999, \"obj1\" : { \"fgh\" : 1234, \"www\" : 53556  }, 234234234, \"wertwtwet\" ] ");
 
-
+	WebSocketManager wsmanager;
+	wsmanager.Start();
 
 	IocpHttpd server;
 	server.Start(8080);

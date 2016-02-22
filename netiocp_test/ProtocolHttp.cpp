@@ -39,7 +39,7 @@ void ProtocolHttp::HandleMessage(char* msg, char*& reply)
 	httpRequest.Parse(msg);
 	Dispatch(&httpRequest, &httpResponse);
 	ULONG size;
-	reply = (char*)httpResponse.GetResponse2(&size);
+	//reply = (char*)httpResponse.GetResponse2(&size);
 }
 
 bool ProtocolHttp::FileExist(const TCHAR *fileName)

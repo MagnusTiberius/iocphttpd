@@ -79,11 +79,11 @@ int SocketCompletionPortServer::Start()
 		// Create a server worker thread and pass the completion port to the thread
 		if ((ThreadHandle = CreateThread(NULL, 0, ServerWorkerThread, this, 0, &ThreadID)) == NULL)
 		{
-			printf("CreateThread() failed with error %d\n", GetLastError());
+			printf("HTTP CreateThread() failed with error %d\n", GetLastError());
 			return 1;
 		}
 		else
-			printf("CreateThread() is OK!\n");
+			printf("HTTP CreateThread() is OK!\n");
 		// Close the thread handle
 		CloseHandle(ThreadHandle);
 	}
@@ -119,6 +119,7 @@ int SocketCompletionPortServer::Start()
 		printf("listen() is working...\n");
 
 	//completionPortStackListener.Start();
+	//websocket.Start();
 
 	// Accept connections and assign to the completion port
 	while (TRUE)

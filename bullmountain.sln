@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 2013
-VisualStudioVersion = 12.0.31101.0
+VisualStudioVersion = 12.0.40629.0
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "iocphttpd", "iocphttpd\iocphttpd.vcxproj", "{54F797E9-FB21-4BBE-914C-4EFD66861330}"
 	ProjectSection(ProjectDependencies) = postProject
@@ -12,6 +12,7 @@ EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "iocphttpl", "iocphttpl\iocphttpl.vcxproj", "{9C9048D6-37C8-44BF-BD8E-7D7F6B5AC42B}"
 	ProjectSection(ProjectDependencies) = postProject
 		{C8430F27-BC5C-4F41-882E-F8E5A5FA0CD9} = {C8430F27-BC5C-4F41-882E-F8E5A5FA0CD9}
+		{DF4CBFC5-6690-4DCB-81DE-589472D1DB00} = {DF4CBFC5-6690-4DCB-81DE-589472D1DB00}
 	EndProjectSection
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "jsoncp", "jsoncp\jsoncp.vcxproj", "{C8430F27-BC5C-4F41-882E-F8E5A5FA0CD9}"
@@ -47,6 +48,8 @@ EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "walkerroadlib", "walkerroadlib\walkerroadlib.csproj", "{BC627F8A-57E5-40C6-B30C-7E29BEEA063B}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "walkerroadtest", "walkerroadtest\walkerroadtest.csproj", "{92DF16BA-4CF8-4CAE-9305-BDC9FDECEA7C}"
+EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "websocket_l", "websocket_l\websocket_l.vcxproj", "{DF4CBFC5-6690-4DCB-81DE-589472D1DB00}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -267,6 +270,24 @@ Global
 		{92DF16BA-4CF8-4CAE-9305-BDC9FDECEA7C}.Release|Mixed Platforms.Build.0 = Release|Any CPU
 		{92DF16BA-4CF8-4CAE-9305-BDC9FDECEA7C}.Release|Win32.ActiveCfg = Release|Any CPU
 		{92DF16BA-4CF8-4CAE-9305-BDC9FDECEA7C}.Release|x64.ActiveCfg = Release|Any CPU
+		{DF4CBFC5-6690-4DCB-81DE-589472D1DB00}.Debug|Any CPU.ActiveCfg = Debug|Win32
+		{DF4CBFC5-6690-4DCB-81DE-589472D1DB00}.Debug|Mixed Platforms.ActiveCfg = Debug|Win32
+		{DF4CBFC5-6690-4DCB-81DE-589472D1DB00}.Debug|Mixed Platforms.Build.0 = Debug|Win32
+		{DF4CBFC5-6690-4DCB-81DE-589472D1DB00}.Debug|Win32.ActiveCfg = Debug|Win32
+		{DF4CBFC5-6690-4DCB-81DE-589472D1DB00}.Debug|Win32.Build.0 = Debug|Win32
+		{DF4CBFC5-6690-4DCB-81DE-589472D1DB00}.Debug|x64.ActiveCfg = Debug|Win32
+		{DF4CBFC5-6690-4DCB-81DE-589472D1DB00}.dummy|Any CPU.ActiveCfg = Debug|Win32
+		{DF4CBFC5-6690-4DCB-81DE-589472D1DB00}.dummy|Mixed Platforms.ActiveCfg = Debug|Win32
+		{DF4CBFC5-6690-4DCB-81DE-589472D1DB00}.dummy|Mixed Platforms.Build.0 = Debug|Win32
+		{DF4CBFC5-6690-4DCB-81DE-589472D1DB00}.dummy|Win32.ActiveCfg = Debug|Win32
+		{DF4CBFC5-6690-4DCB-81DE-589472D1DB00}.dummy|Win32.Build.0 = Debug|Win32
+		{DF4CBFC5-6690-4DCB-81DE-589472D1DB00}.dummy|x64.ActiveCfg = Debug|Win32
+		{DF4CBFC5-6690-4DCB-81DE-589472D1DB00}.Release|Any CPU.ActiveCfg = Release|Win32
+		{DF4CBFC5-6690-4DCB-81DE-589472D1DB00}.Release|Mixed Platforms.ActiveCfg = Release|Win32
+		{DF4CBFC5-6690-4DCB-81DE-589472D1DB00}.Release|Mixed Platforms.Build.0 = Release|Win32
+		{DF4CBFC5-6690-4DCB-81DE-589472D1DB00}.Release|Win32.ActiveCfg = Release|Win32
+		{DF4CBFC5-6690-4DCB-81DE-589472D1DB00}.Release|Win32.Build.0 = Release|Win32
+		{DF4CBFC5-6690-4DCB-81DE-589472D1DB00}.Release|x64.ActiveCfg = Release|Win32
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
