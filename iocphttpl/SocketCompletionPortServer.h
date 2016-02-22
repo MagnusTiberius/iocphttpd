@@ -45,6 +45,7 @@ public:
 	typedef /*static*/ void(*LPSTATICFUNC)(HttpRequest *httpRequest, HttpResponse *httpResponse);
 
 	int Start();
+	int Start2();
 
 	HANDLE GetCompletionPort();
 	virtual void EvalGet(HttpRequest *httpRequest, HttpResponse *httpResponse);
@@ -59,6 +60,7 @@ public:
 
 private:
 	static DWORD WINAPI ServerWorkerThread(LPVOID CompletionPortID);
+	static DWORD WINAPI ServerWorkerThread2(LPVOID CompletionPortID);
 	HANDLE CompletionPort;
 	int m_PortNum = PORT;
 	bool FileExist(const TCHAR *fileName);
