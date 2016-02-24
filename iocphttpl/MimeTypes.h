@@ -1,26 +1,30 @@
 #pragma once
 #include "stdafx.h"
 
-class MimeTypes
+namespace IOCPHTTPL
 {
-public:
-	MimeTypes();
-	~MimeTypes();
 
-	typedef std::pair<std::wstring, std::wstring> mimetype_t;
-	
+	class MimeTypes
+	{
+	public:
+		MimeTypes();
+		~MimeTypes();
 
-	typedef std::vector<mimetype_t> mimetypelist_t;
+		typedef std::pair<std::wstring, std::wstring> mimetype_t;
 
-	typedef std::vector<mimetype_t>::iterator it_mimetype_t;
 
-	void AddMimeType(std::wstring name, std::wstring val);
-	bool Exists(std::wstring name, std::wstring *val);
-	bool AssignContentType(std::wstring name, std::wstring *val);
+		typedef std::vector<mimetype_t> mimetypelist_t;
 
-private:
+		typedef std::vector<mimetype_t>::iterator it_mimetype_t;
 
-	mimetypelist_t mimetypeList;
+		void AddMimeType(std::wstring name, std::wstring val);
+		bool Exists(std::wstring name, std::wstring *val);
+		bool AssignContentType(std::wstring name, std::wstring *val);
 
-};
+	private:
 
+		mimetypelist_t mimetypeList;
+
+	};
+
+}

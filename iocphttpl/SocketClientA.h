@@ -13,34 +13,39 @@
 
 #define PORT 5150
 
-class SocketClientA
+namespace IOCPHTTPL
 {
-public:
-	SocketClientA();
-	~SocketClientA();
 
-	typedef struct
+	class SocketClientA
 	{
-		OVERLAPPED Overlapped;
-		WSABUF DataBuf;
-		CHAR Buffer[DATA_BUFSIZE];
-		byte *LPBuffer;
-		vector<byte> byteBuffer;
-		DWORD BytesSEND;
-		DWORD BytesRECV;
-	} PER_IO_OPERATION_DATA, *LPPER_IO_OPERATION_DATA;
+	public:
+		SocketClientA();
+		~SocketClientA();
 
-	typedef struct
-	{
-		SOCKET Socket;
-	} PER_HANDLE_DATA, *LPPER_HANDLE_DATA;
+		typedef struct
+		{
+			OVERLAPPED Overlapped;
+			WSABUF DataBuf;
+			CHAR Buffer[DATA_BUFSIZE];
+			byte *LPBuffer;
+			vector<byte> byteBuffer;
+			DWORD BytesSEND;
+			DWORD BytesRECV;
+		} PER_IO_OPERATION_DATA, *LPPER_IO_OPERATION_DATA;
 
-	HANDLE GetCompletionPort();
-	int Start();
+		typedef struct
+		{
+			SOCKET Socket;
+		} PER_HANDLE_DATA, *LPPER_HANDLE_DATA;
 
-private:
-	static DWORD WINAPI ServerWorkerThread(LPVOID CompletionPortID);
-	HANDLE CompletionPort;
-	int m_PortNum = PORT;
-};
+		HANDLE GetCompletionPort();
+		int Start();
 
+	private:
+		static DWORD WINAPI ServerWorkerThread(LPVOID CompletionPortID);
+		HANDLE CompletionPort;
+		int m_PortNum = PORT;
+	};
+
+
+}

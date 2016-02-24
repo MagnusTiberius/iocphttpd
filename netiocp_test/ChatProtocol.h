@@ -2,6 +2,8 @@
 #include "stdafx.h"
 #include "IProtocolHandler.h"
 
+using namespace NETIOCP;
+
 class ChatProtocol : public IProtocolHandler
 {
 public:

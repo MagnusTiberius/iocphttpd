@@ -5,24 +5,30 @@
 #include "HttpTemplate.h"
 #include "RequestParser.h"
 
-class HttpRequest : public HttpTemplate
+namespace HTTPMODULE2
 {
-public:
-	HttpRequest();
-	~HttpRequest();
 
-	void Parse(char *content);
-	char* GetUrl();
-	MethodType GetMethod();
-	const char* GetContent();
 
-	std::vector<std::string> urlParams;
+	class HttpRequest : public HttpTemplate
+	{
+	public:
+		HttpRequest();
+		~HttpRequest();
 
-	bool IsValid(char* input);
+		void Parse(char *content);
+		char* GetUrl();
+		MethodType GetMethod();
+		const char* GetContent();
 
-private:
-	//headerparser::HParser hParser;
-	HttpHeader httpHeader;
-	RequestParser requestParser;
-};
+		std::vector<std::string> urlParams;
 
+		bool IsValid(char* input);
+
+	private:
+		//headerparser::HParser hParser;
+		HttpHeader httpHeader;
+		RequestParser requestParser;
+	};
+
+
+}

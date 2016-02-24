@@ -10,7 +10,7 @@
 #include <Windows.h>
 #include <stdio.h>
 #include "SocketIocpController.h"
-
+#pragma comment(lib, "crypt32.lib")
 
 // Headers for CppUnitTest
 // TODO: reference additional headers your program requires here

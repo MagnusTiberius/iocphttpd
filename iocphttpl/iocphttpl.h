@@ -6,13 +6,18 @@
 // defined with this macro as being exported.
 #include "stdafx.h"
 
-// This class is exported from the iocphttpl.dll
-class IOCPHTTPL_API Ciocphttpl {
-public:
-	Ciocphttpl(void);
-	// TODO: add your methods here.
-};
+namespace IOCPHTTPL
+{
 
-extern IOCPHTTPL_API int niocphttpl;
+	// This class is exported from the iocphttpl.dll
+	class IOCPHTTPL_API Ciocphttpl {
+	public:
+		Ciocphttpl(void);
+		// TODO: add your methods here.
+	};
 
-IOCPHTTPL_API int fniocphttpl(void);
+	extern IOCPHTTPL_API int niocphttpl;
+
+	IOCPHTTPL_API int fniocphttpl(void);
+
+}

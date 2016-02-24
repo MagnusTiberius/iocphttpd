@@ -1,16 +1,20 @@
 #include "IProtocolHandler.h"
 
-
-IProtocolHandler::IProtocolHandler()
+namespace NETIOCP
 {
-}
+
+	IProtocolHandler::IProtocolHandler()
+	{
+	}
 
 
-IProtocolHandler::~IProtocolHandler()
-{
-}
+	IProtocolHandler::~IProtocolHandler()
+	{
+	}
 
-void IProtocolHandler::HandleMessage(char* msg)
-{
+	void IProtocolHandler::HandleMessage(char* msg)
+	{
+
+	}
 
 }

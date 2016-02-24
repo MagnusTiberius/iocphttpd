@@ -10,13 +10,19 @@
 #define NETIOCP_API __declspec(dllimport)
 #endif
 
-// This class is exported from the netiocp.dll
-class NETIOCP_API Cnetiocp {
-public:
-	Cnetiocp(void);
-	// TODO: add your methods here.
-};
+namespace NETIOCP
+{
 
-extern NETIOCP_API int nnetiocp;
+	// This class is exported from the netiocp.dll
+	class NETIOCP_API Cnetiocp {
+	public:
+		Cnetiocp(void);
+		// TODO: add your methods here.
+	};
 
-NETIOCP_API int fnnetiocp(void);
+	extern NETIOCP_API int nnetiocp;
+
+	NETIOCP_API int fnnetiocp(void);
+
+
+}

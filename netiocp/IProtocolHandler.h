@@ -1,12 +1,17 @@
 #pragma once
-class IProtocolHandler
+
+namespace NETIOCP
 {
-public:
-	IProtocolHandler();
-	~IProtocolHandler();
 
-public:
-	virtual void HandleMessage(char* msg);
-	virtual void HandleMessage(char* msg, char*& reply) = 0;
-};
+	class IProtocolHandler
+	{
+	public:
+		IProtocolHandler();
+		~IProtocolHandler();
 
+	public:
+		virtual void HandleMessage(char* msg);
+		virtual void HandleMessage(char* msg, char*& reply) = 0;
+	};
+
+}

@@ -2,6 +2,8 @@
 #include "stdafx.h"
 #include "SocketClient.h"
 
+using namespace NETIOCP;
+
 class ClientHttp
 {
 public:

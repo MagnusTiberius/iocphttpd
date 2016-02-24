@@ -24,7 +24,7 @@ namespace UnitTestNative
 		
 		TEST_METHOD(TestMethod1)
 		{
-			ScannerA scanner;
+			IOCPHTTPL::ScannerA scanner;
 			scanner.Input("GET /test HTTP/1.1\r\n\r\n");
 			bool b1 = scanner.Accept("G");
 			scanner.Next();
@@ -35,7 +35,7 @@ namespace UnitTestNative
 
 		TEST_METHOD(TestMethod2)
 		{
-			ScannerA scanner;
+			IOCPHTTPL::ScannerA scanner;
 			scanner.Input("GET /test HTTP/1.1\r\n\r\n");
 			CHAR *c1 = scanner.AcceptRun("GET");
 			CHAR *d1 = _strdup(c1);
@@ -77,7 +77,7 @@ namespace UnitTestNative
 				shdf hsfjksh dfjk sdh fjkshdf jkshf jksdhf jksdfh jksdfh jksdfh sdjkfh djf \n\
 				";
 
-			RequestParser parser;
+			IOCPHTTPL::RequestParser parser;
 
 			parser.Input(str_value.c_str());
 			parser.Parse();
@@ -101,7 +101,7 @@ namespace UnitTestNative
 				shdf hsfjksh dfjk sdh fjkshdf jkshf jksdhf jksdfh jksdfh jksdfh sdjkfh djf \n\
 				";
 
-			RequestParser parser;
+			IOCPHTTPL::RequestParser parser;
 
 			parser.Input(str_value.c_str());
 			parser.Parse();
@@ -125,7 +125,7 @@ namespace UnitTestNative
 				Content-Length: 43 \n\
 				\nfirst_name=John&last_name=Doe&action=Submit";
 
-			RequestParser parser;
+			IOCPHTTPL::RequestParser parser;
 
 			parser.Input(str_value.c_str());
 			parser.Parse();
@@ -150,7 +150,7 @@ namespace UnitTestNative
 				Content-Length: 43 \n\
 				\nfirst_name=John&last_name=Doe&action=Submit";
 
-			RequestParser parser;
+			IOCPHTTPL::RequestParser parser;
 
 			parser.Input(str_value.c_str());
 			parser.Parse();
@@ -168,7 +168,7 @@ namespace UnitTestNative
 				Accept-Language: en-US,en;q=0.8 \n \
 				\n \
 								    ";
-			RequestParser parser;
+			IOCPHTTPL::RequestParser parser;
 
 			parser.Input(str_value.c_str());
 			parser.Parse();
@@ -177,7 +177,7 @@ namespace UnitTestNative
 		TEST_METHOD(TestMethod9)
 		{
 
-			HttpResponse httpResponse;
+			IOCPHTTPL::HttpResponse httpResponse;
 			byte *s;
 			long len;
 			s = httpResponse.GetStaticContent2("C:\\www\\index.html", &len);
@@ -187,7 +187,7 @@ namespace UnitTestNative
 
 		TEST_METHOD(TestMethod10)
 		{
-			HttpUrlRoute httpUrlRoute;
+			IOCPHTTPL::HttpUrlRoute httpUrlRoute;
 			httpUrlRoute.AddRoute("/json/testtwo", NULL);
 			httpUrlRoute.AddRoute("/user/profile/<id:[0-9]+>/", NULL);
 

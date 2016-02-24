@@ -5,50 +5,54 @@
 
 #include "stdafx.h"
 
-
-class SocketIocpController
+namespace NETIOCP
 {
-public:
-	SocketIocpController();
-	~SocketIocpController();
 
-
-	typedef struct
+	class SocketIocpController
 	{
-		OVERLAPPED Overlapped;
-		WSABUF DataBuf;
-		CHAR Buffer[BUFSIZMIN];
-		byte *LPBuffer;
-		vector<byte> byteBuffer;
-		DWORD BytesSEND;
-		DWORD BytesRECV;
-		int sequence;
-		int mallocFlag;
-		int state;
-	} PER_IO_OPERATION_DATA, *LPPER_IO_OPERATION_DATA;
-
-	typedef struct
-	{
-		SOCKET Socket;
-	} PER_HANDLE_DATA, *LPPER_HANDLE_DATA;
-
-	typedef struct
-	{
-		int sequence;
-		PER_IO_OPERATION_DATA operationData;
-		PER_HANDLE_DATA handleData;
-	} SOCKET_IO_DATA, *LPSOCKET_IO_DATA;
+	public:
+		SocketIocpController();
+		~SocketIocpController();
 
 
-	LPSOCKET_IO_DATA Allocate();
-	void Free(LPSOCKET_IO_DATA data);
-	void FreeByIndex(int index);
-	void FreeBySocket(SOCKET index);
+		typedef struct
+		{
+			OVERLAPPED Overlapped;
+			WSABUF DataBuf;
+			CHAR Buffer[BUFSIZMIN];
+			byte *LPBuffer;
+			vector<byte> byteBuffer;
+			DWORD BytesSEND;
+			DWORD BytesRECV;
+			int sequence;
+			int mallocFlag;
+			int state;
+		} PER_IO_OPERATION_DATA, *LPPER_IO_OPERATION_DATA;
 
-private:
-	SOCKET_IO_DATA m_DataBuffer[DATASIZMIN];
-	int m_ActiveFlag[DATASIZMIN];
-	HANDLE ghMutex;
-	DWORD m_DataBufferSize;
-};
+		typedef struct
+		{
+			SOCKET Socket;
+		} PER_HANDLE_DATA, *LPPER_HANDLE_DATA;
 
+		typedef struct
+		{
+			int sequence;
+			PER_IO_OPERATION_DATA operationData;
+			PER_HANDLE_DATA handleData;
+		} SOCKET_IO_DATA, *LPSOCKET_IO_DATA;
+
+
+		LPSOCKET_IO_DATA Allocate();
+		void Free(LPSOCKET_IO_DATA data);
+		void FreeByIndex(int index);
+		void FreeBySocket(SOCKET index);
+
+	private:
+		SOCKET_IO_DATA m_DataBuffer[DATASIZMIN];
+		int m_ActiveFlag[DATASIZMIN];
+		HANDLE ghMutex;
+		DWORD m_DataBufferSize;
+	};
+
+
+}

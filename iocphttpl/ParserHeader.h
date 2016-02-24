@@ -2,26 +2,30 @@
 #include "stdafx.h"
 #define DATA_BUFSIZE 8192
 
-class IOCPHTTPL_API ParserHeader
+namespace IOCPHTTPL
 {
-public:
-	ParserHeader();
-	~ParserHeader();
 
-	typedef enum { HTTP_NONE, HTTP_GET, HTTP_POST } MethodType;
+	class IOCPHTTPL_API ParserHeader
+	{
+	public:
+		ParserHeader();
+		~ParserHeader();
 
-	typedef enum {
-		PSTATE_GET, PSTATE_POST, PSTATE_URL, PSTATE_HTTP_VER
-		, PSTATE_HOST_DETECTED, PSTATE_HOST_VALUE
-		, PSTATE_CONNECTION_DETECTED, PSTATE_CONNECTION_VALUE
-	} ParseState;
+		typedef enum { HTTP_NONE, HTTP_GET, HTTP_POST } MethodType;
 
-	void Parse(const char* s);
+		typedef enum {
+			PSTATE_GET, PSTATE_POST, PSTATE_URL, PSTATE_HTTP_VER
+			, PSTATE_HOST_DETECTED, PSTATE_HOST_VALUE
+			, PSTATE_CONNECTION_DETECTED, PSTATE_CONNECTION_VALUE
+		} ParseState;
 
-private:
-	void ParseLine(char *buf1);
+		void Parse(const char* s);
 
-	MethodType m_methodType;
-	ParseState m_ps;
-};
+	private:
+		void ParseLine(char *buf1);
 
+		MethodType m_methodType;
+		ParseState m_ps;
+	};
+
+}

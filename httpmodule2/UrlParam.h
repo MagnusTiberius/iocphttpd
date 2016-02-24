@@ -2,31 +2,37 @@
 #include "stdafx.h"
 #include <regex>
 
-class UrlParam
+namespace HTTPMODULE2
 {
-public:
-	UrlParam();
-	~UrlParam();
 
-	void Parse(char *path, char* url, std::vector<std::string> *list);
-	bool IsMatching(char *path, char* url);
 
-	typedef struct {
-		std::smatch match;
-	} pairvalue_t, *lppairvalue_t;
+	class UrlParam
+	{
+	public:
+		UrlParam();
+		~UrlParam();
 
-	typedef std::pair<std::string, lppairvalue_t> pair_t;
+		void Parse(char *path, char* url, std::vector<std::string> *list);
+		bool IsMatching(char *path, char* url);
 
-private:
-	char *m_path;
-	char *m_url;
+		typedef struct {
+			std::smatch match;
+		} pairvalue_t, *lppairvalue_t;
 
-	void find_and_replace(string& source, string const& find, string const& replace);
+		typedef std::pair<std::string, lppairvalue_t> pair_t;
 
-	std::vector<pair_t> paramList;
-	std::vector<pair_t>::iterator itrList;
+	private:
+		char *m_path;
+		char *m_url;
 
-	std::vector<std::string> urlParams;
+		void find_and_replace(string& source, string const& find, string const& replace);
 
-};
+		std::vector<pair_t> paramList;
+		std::vector<pair_t>::iterator itrList;
 
+		std::vector<std::string> urlParams;
+
+	};
+
+
+}

@@ -1,0 +1,4 @@
+after running CreateCert.bat
+
+1) Run the command certmgr.exe.
+2) Import the certificate.

@@ -1,43 +1,47 @@
 #include "HttpRequest.h"
 
-
-HttpRequest::HttpRequest()
+namespace IOCPHTTPL
 {
-}
+
+	HttpRequest::HttpRequest()
+	{
+	}
 
 
-HttpRequest::~HttpRequest()
-{
-}
+	HttpRequest::~HttpRequest()
+	{
+	}
 
 
-void HttpRequest::Parse(char *content)
-{
-	//httpHeader.Parse(content);
-	//hParser.Parse(content);
-	requestParser.Input(content);
-	requestParser.Parse();
-}
+	void HttpRequest::Parse(char *content)
+	{
+		//httpHeader.Parse(content);
+		//hParser.Parse(content);
+		requestParser.Input(content);
+		requestParser.Parse();
+	}
 
-char* HttpRequest::GetUrl()
-{
-	char *url;
-	//url  = httpHeader.GetUrl();
-	//url = hParser.GetUrl();
-	url = requestParser.GetUrl();
-	return url;
-}
+	char* HttpRequest::GetUrl()
+	{
+		char *url;
+		//url  = httpHeader.GetUrl();
+		//url = hParser.GetUrl();
+		url = requestParser.GetUrl();
+		return url;
+	}
 
-MethodType HttpRequest::GetMethod()
-{
-	MethodType mt;
-	//mt = httpHeader.GetMethod();
-	mt = requestParser.GetMethod();
-	return httpHeader.GetMethod();
-}
+	MethodType HttpRequest::GetMethod()
+	{
+		MethodType mt;
+		//mt = httpHeader.GetMethod();
+		mt = requestParser.GetMethod();
+		return httpHeader.GetMethod();
+	}
 
-const char* HttpRequest::GetContent()
-{
-	const char* rv = requestParser.GetParameterValue("Content:");
-	return rv;
+	const char* HttpRequest::GetContent()
+	{
+		const char* rv = requestParser.GetParameterValue("Content:");
+		return rv;
+	}
+
 }

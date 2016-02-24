@@ -5,6 +5,7 @@
 #include "HttpResponse.h"
 #include "HttpUrlRoute.h"
 
+using namespace NETIOCP;
 
 class ProtocolHttp : public HttpUrlRoute, public IProtocolHandler
 {

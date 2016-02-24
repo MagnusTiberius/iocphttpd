@@ -5,22 +5,26 @@
 #include "HttpTemplate.h"
 #include "RequestParser.h"
 
-class IOCPHTTPL_API HttpRequest : public HttpTemplate
+namespace IOCPHTTPL
 {
-public:
-	HttpRequest();
-	~HttpRequest();
 
-	void Parse(char *content);
-	char* GetUrl();
-	MethodType GetMethod();
-	const char* GetContent();
+	class IOCPHTTPL_API HttpRequest : public HttpTemplate
+	{
+	public:
+		HttpRequest();
+		~HttpRequest();
 
-	std::vector<std::string> urlParams;
+		void Parse(char *content);
+		char* GetUrl();
+		MethodType GetMethod();
+		const char* GetContent();
 
-private:
-	headerparser::HParser hParser;
-	HttpHeader httpHeader;
-	RequestParser requestParser;
-};
+		std::vector<std::string> urlParams;
 
+	private:
+		headerparser::HParser hParser;
+		HttpHeader httpHeader;
+		RequestParser requestParser;
+	};
+
+}

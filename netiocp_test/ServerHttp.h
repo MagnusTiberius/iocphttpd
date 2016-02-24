@@ -4,6 +4,8 @@
 #include "IProtocolHandler.h"
 #include "ProtocolHttp.h"
 
+using namespace NETIOCP;
+
 class ServerHttp
 {
 public:

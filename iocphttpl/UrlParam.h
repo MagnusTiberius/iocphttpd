@@ -2,31 +2,36 @@
 #include "stdafx.h"
 #include <regex>
 
-class IOCPHTTPL_API UrlParam
+namespace IOCPHTTPL
 {
-public:
-	UrlParam();
-	~UrlParam();
 
-	void Parse(char *path, char* url, std::vector<std::string> *list);
-	bool IsMatching(char *path, char* url);
+	class IOCPHTTPL_API UrlParam
+	{
+	public:
+		UrlParam();
+		~UrlParam();
 
-	typedef struct {
-		std::smatch match;
-	} pairvalue_t, *lppairvalue_t;
+		void Parse(char *path, char* url, std::vector<std::string> *list);
+		bool IsMatching(char *path, char* url);
 
-	typedef std::pair<std::string, lppairvalue_t> pair_t;
+		typedef struct {
+			std::smatch match;
+		} pairvalue_t, *lppairvalue_t;
 
-private:
-	char *m_path;
-	char *m_url;
+		typedef std::pair<std::string, lppairvalue_t> pair_t;
 
-	void find_and_replace(string& source, string const& find, string const& replace);
+	private:
+		char *m_path;
+		char *m_url;
 
-	std::vector<pair_t> paramList;
-	std::vector<pair_t>::iterator itrList;
+		void find_and_replace(string& source, string const& find, string const& replace);
 
-	std::vector<std::string> urlParams;
+		std::vector<pair_t> paramList;
+		std::vector<pair_t>::iterator itrList;
 
-};
+		std::vector<std::string> urlParams;
 
+	};
+
+
+}

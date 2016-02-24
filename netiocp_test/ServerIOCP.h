@@ -4,6 +4,8 @@
 #include "IProtocolHandler.h"
 #include "ChatProtocol.h"
 
+using namespace NETIOCP;
+
 class ServerIOCP
 {
 public:
