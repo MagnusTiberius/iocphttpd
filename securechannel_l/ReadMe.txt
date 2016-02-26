@@ -2,6 +2,21 @@
     STATIC LIBRARY : securechannel_l Project Overview
 ========================================================================
 
+References:
+
+	Transport Layer Security Protocol
+	https://msdn.microsoft.com/en-us/library/aa380516
+
+
+	Sample SSPI Code:
+	https://msdn.microsoft.com/en-us/library/aa379449
+
+
+	Creating a Secure Connection Using Schannel
+	https://msdn.microsoft.com/en-us/library/aa374782
+
+
+
 AppWizard has created this securechannel_l library project for you.
 
 This file contains a summary of what you will find in each of the files that
