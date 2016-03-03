@@ -2,6 +2,7 @@
 #include "stdafx.h"
 #include "SocketCompletionPortServer.h"
 
+using namespace IOCPHTTPL;
 
 class IocpHttpd : public SocketCompletionPortServer
 {
