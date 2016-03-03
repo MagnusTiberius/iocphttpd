@@ -1,0 +1,178 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project DefaultTargets="Build" ToolsVersion="12.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup Label="ProjectConfigurations">
+    <ProjectConfiguration Include="Debug|Win32">
+      <Configuration>Debug</Configuration>
+      <Platform>Win32</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Release|Win32">
+      <Configuration>Release</Configuration>
+      <Platform>Win32</Platform>
+    </ProjectConfiguration>
+  </ItemGroup>
+  <PropertyGroup Label="Globals">
+    <ProjectGuid>{112387A1-6378-4C10-90EA-F7735577C2A5}</ProjectGuid>
+    <Keyword>Win32Proj</Keyword>
+    <RootNamespace>database_l</RootNamespace>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">
+    <ConfigurationType>StaticLibrary</ConfigurationType>
+    <UseDebugLibraries>true</UseDebugLibraries>
+    <PlatformToolset>v120</PlatformToolset>
+    <CharacterSet>Unicode</CharacterSet>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'" Label="Configuration">
+    <ConfigurationType>StaticLibrary</ConfigurationType>
+    <UseDebugLibraries>false</UseDebugLibraries>
+    <PlatformToolset>v120</PlatformToolset>
+    <WholeProgramOptimization>true</WholeProgramOptimization>
+    <CharacterSet>Unicode</CharacterSet>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.props" />
+  <ImportGroup Label="ExtensionSettings">
+  </ImportGroup>
+  <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <PropertyGroup Label="UserMacros" />
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+    <OutDir>$(SolutionDir)\lib\$(Platform)\$(Configuration)\</OutDir>
+    <IntDir>$(SolutionDir)obj\$(ProjectName)\$(Platform)\$(Configuration)\</IntDir>
+    <IncludePath>$(VC_IncludePath);$(WindowsSDK_IncludePath);$(SolutionDir)\jsoncp\json\;$(SolutionDir)\websocket_l\;</IncludePath>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+    <OutDir>$(SolutionDir)\lib\$(Platform)\$(Configuration)\</OutDir>
+    <IntDir>$(SolutionDir)obj\$(ProjectName)\$(Platform)\$(Configuration)\</IntDir>
+    <IncludePath>$(VC_IncludePath);$(WindowsSDK_IncludePath);$(SolutionDir)\jsoncp\json\;$(SolutionDir)\websocket_l\;</IncludePath>
+  </PropertyGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+    <ClCompile>
+      <PrecompiledHeader>NotUsing</PrecompiledHeader>
+      <WarningLevel>Level3</WarningLevel>
+      <Optimization>Disabled</Optimization>
+      <PreprocessorDefinitions>WIN32;MOMINMAX;_DEBUG;_LIB;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <SDLCheck>true</SDLCheck>
+      <AdditionalIncludeDirectories>$(ProjectDir)\include\;$(ProjectDir)\include\babudb\log\;$(ProjectDir)\include\babudb\;$(ProjectDir)\include\babudb\profiles\;$(ProjectDir)\src\;$(ProjectDir)\src\log\;$(ProjectDir)\src\index\;$(ProjectDir)\src\yield_platform\;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+    </ClCompile>
+    <Link>
+      <SubSystem>Windows</SubSystem>
+      <GenerateDebugInformation>true</GenerateDebugInformation>
+    </Link>
+    <Lib>
+      <AdditionalLibraryDirectories>$(SolutionDir)\lib\$(Platform)\$(Configuration)\;</AdditionalLibraryDirectories>
+    </Lib>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+    <ClCompile>
+      <WarningLevel>Level3</WarningLevel>
+      <PrecompiledHeader>NotUsing</PrecompiledHeader>
+      <Optimization>MaxSpeed</Optimization>
+      <FunctionLevelLinking>true</FunctionLevelLinking>
+      <IntrinsicFunctions>true</IntrinsicFunctions>
+      <PreprocessorDefinitions>WIN32;MOMINMAX;NDEBUG;_LIB;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <SDLCheck>true</SDLCheck>
+      <AdditionalIncludeDirectories>$(ProjectDir)\include\;$(ProjectDir)\include\babudb\log\;$(ProjectDir)\include\babudb\;$(ProjectDir)\include\babudb\profiles\;$(ProjectDir)\src\;$(ProjectDir)\src\log\;$(ProjectDir)\src\index\;$(ProjectDir)\src\yield_platform\;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+    </ClCompile>
+    <Link>
+      <SubSystem>Windows</SubSystem>
+      <GenerateDebugInformation>true</GenerateDebugInformation>
+      <EnableCOMDATFolding>true</EnableCOMDATFolding>
+      <OptimizeReferences>true</OptimizeReferences>
+    </Link>
+    <Lib>
+      <AdditionalLibraryDirectories>$(SolutionDir)\lib\$(Platform)\$(Configuration)\;</AdditionalLibraryDirectories>
+    </Lib>
+  </ItemDefinitionGroup>
+  <ItemGroup>
+    <Text Include="ReadMe.txt" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="include\babudb\babudb.h" />
+    <ClInclude Include="include\babudb\buffer.h" />
+    <ClInclude Include="include\babudb\database.h" />
+    <ClInclude Include="include\babudb\key.h" />
+    <ClInclude Include="include\babudb\log\log.h" />
+    <ClInclude Include="include\babudb\log\log_iterator.h" />
+    <ClInclude Include="include\babudb\log\log_section.h" />
+    <ClInclude Include="include\babudb\log\log_storage.h" />
+    <ClInclude Include="include\babudb\log\record_frame.h" />
+    <ClInclude Include="include\babudb\log\record_iterator.h" />
+    <ClInclude Include="include\babudb\log\sequential_file.h" />
+    <ClInclude Include="include\babudb\lookup_iterator.h" />
+    <ClInclude Include="include\babudb\profiles\int_key.h" />
+    <ClInclude Include="include\babudb\profiles\string_db.h" />
+    <ClInclude Include="include\babudb\profiles\string_key.h" />
+    <ClInclude Include="include\babudb\test.h" />
+    <ClInclude Include="include\babudb\test_helper.h" />
+    <ClInclude Include="include\yield\platform\assert.h" />
+    <ClInclude Include="include\yield\platform\debug.h" />
+    <ClInclude Include="include\yield\platform\directory_walker.h" />
+    <ClInclude Include="include\yield\platform\disk_operations.h" />
+    <ClInclude Include="include\yield\platform\exception.h" />
+    <ClInclude Include="include\yield\platform\file.h" />
+    <ClInclude Include="include\yield\platform\memory_mapped_file.h" />
+    <ClInclude Include="include\yield\platform\path.h" />
+    <ClInclude Include="include\yield\platform\platform_exception.h" />
+    <ClInclude Include="include\yield\platform\platform_types.h" />
+    <ClInclude Include="include\yield\platform\stat.h" />
+    <ClInclude Include="include\yield\platform\windows.h" />
+    <ClInclude Include="include\yield\platform\yunit.h" />
+    <ClInclude Include="src\index\index.h" />
+    <ClInclude Include="src\index\index_writer.h" />
+    <ClInclude Include="src\index\merger.h" />
+    <ClInclude Include="src\log\log_section_iterator.h" />
+    <ClInclude Include="src\log_index.h" />
+    <ClInclude Include="src\merged_index.h" />
+    <ClInclude Include="src\util.h" />
+    <ClInclude Include="stdafx.h" />
+    <ClInclude Include="targetver.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="src\database.cpp" />
+    <ClCompile Include="src\database_test.cpp" />
+    <ClCompile Include="src\index\index.cpp" />
+    <ClCompile Include="src\index\index_test.cpp" />
+    <ClCompile Include="src\index\index_writer.cpp" />
+    <ClCompile Include="src\index\index_writer_test.cpp" />
+    <ClCompile Include="src\index\merger.cpp" />
+    <ClCompile Include="src\log\log.cpp" />
+    <ClCompile Include="src\log\log_iterator.cpp" />
+    <ClCompile Include="src\log\log_iterator_test.cpp" />
+    <ClCompile Include="src\log\log_section.cpp" />
+    <ClCompile Include="src\log\log_section_iterator.cpp" />
+    <ClCompile Include="src\log\log_storage.cpp" />
+    <ClCompile Include="src\log\log_test.cpp" />
+    <ClCompile Include="src\log\record_frame.cpp" />
+    <ClCompile Include="src\log\record_iterator.cpp" />
+    <ClCompile Include="src\log\sequential_file.cpp" />
+    <ClCompile Include="src\log\sequential_file_test.cpp" />
+    <ClCompile Include="src\log_index.cpp" />
+    <ClCompile Include="src\log_index_test.cpp" />
+    <ClCompile Include="src\lookup_iterator.cpp" />
+    <ClCompile Include="src\lookup_iterator_test.cpp" />
+    <ClCompile Include="src\merged_index.cpp" />
+    <ClCompile Include="src\merged_index_test.cpp" />
+    <ClCompile Include="src\string_db.cpp" />
+    <ClCompile Include="src\string_db_test.cpp" />
+    <ClCompile Include="src\test_main.cpp" />
+    <ClCompile Include="src\util.cpp" />
+    <ClCompile Include="src\yield_platform\directory_walker.cpp" />
+    <ClCompile Include="src\yield_platform\disk_operations.cpp" />
+    <ClCompile Include="src\yield_platform\file.cpp" />
+    <ClCompile Include="src\yield_platform\memory_mapped_file.cpp" />
+    <ClCompile Include="src\yield_platform\path.cpp" />
+    <ClCompile Include="src\yield_platform\platform_exception.cpp" />
+    <ClCompile Include="src\yield_platform\stat.cpp" />
+    <ClCompile Include="stdafx.cpp">
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Create</PrecompiledHeader>
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Create</PrecompiledHeader>
+    </ClCompile>
+  </ItemGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
+  <ImportGroup Label="ExtensionTargets">
+  </ImportGroup>
+</Project>

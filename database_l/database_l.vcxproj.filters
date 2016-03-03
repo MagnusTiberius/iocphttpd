@@ -1,0 +1,270 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <Filter Include="Source Files">
+      <UniqueIdentifier>{4FC737F1-C7A5-4376-A066-2A32D752A2FF}</UniqueIdentifier>
+      <Extensions>cpp;c;cc;cxx;def;odl;idl;hpj;bat;asm;asmx</Extensions>
+    </Filter>
+    <Filter Include="Header Files">
+      <UniqueIdentifier>{93995380-89BD-4b04-88EB-625FBE52EBFB}</UniqueIdentifier>
+      <Extensions>h;hh;hpp;hxx;hm;inl;inc;xsd</Extensions>
+    </Filter>
+    <Filter Include="Resource Files">
+      <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
+      <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
+    </Filter>
+    <Filter Include="Source Files\yield">
+      <UniqueIdentifier>{e38e67cf-b827-4286-a7c5-a413c6bd037d}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\yield">
+      <UniqueIdentifier>{38f20578-9866-484c-a03b-3aa4e9d48729}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\log">
+      <UniqueIdentifier>{12dd17ff-77a2-423d-8f47-3c6799cc1e2c}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\index">
+      <UniqueIdentifier>{7044fda0-cfd1-4ac9-a0a5-4c77538f452f}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\babudb">
+      <UniqueIdentifier>{64f46283-3e31-4c21-ae31-7fd4846318e2}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\babudb\profiles">
+      <UniqueIdentifier>{b2e6427c-39ca-4c11-a66d-95ba5a202631}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\babudb\log">
+      <UniqueIdentifier>{f4be3aba-c2bd-49de-b076-df5af2a87be0}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <Text Include="ReadMe.txt" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="stdafx.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="targetver.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="include\yield\platform\assert.h">
+      <Filter>Header Files\yield</Filter>
+    </ClInclude>
+    <ClInclude Include="include\yield\platform\debug.h">
+      <Filter>Header Files\yield</Filter>
+    </ClInclude>
+    <ClInclude Include="include\yield\platform\directory_walker.h">
+      <Filter>Header Files\yield</Filter>
+    </ClInclude>
+    <ClInclude Include="include\yield\platform\disk_operations.h">
+      <Filter>Header Files\yield</Filter>
+    </ClInclude>
+    <ClInclude Include="include\yield\platform\exception.h">
+      <Filter>Header Files\yield</Filter>
+    </ClInclude>
+    <ClInclude Include="include\yield\platform\file.h">
+      <Filter>Header Files\yield</Filter>
+    </ClInclude>
+    <ClInclude Include="include\yield\platform\memory_mapped_file.h">
+      <Filter>Header Files\yield</Filter>
+    </ClInclude>
+    <ClInclude Include="include\yield\platform\path.h">
+      <Filter>Header Files\yield</Filter>
+    </ClInclude>
+    <ClInclude Include="include\yield\platform\platform_exception.h">
+      <Filter>Header Files\yield</Filter>
+    </ClInclude>
+    <ClInclude Include="include\yield\platform\platform_types.h">
+      <Filter>Header Files\yield</Filter>
+    </ClInclude>
+    <ClInclude Include="include\yield\platform\stat.h">
+      <Filter>Header Files\yield</Filter>
+    </ClInclude>
+    <ClInclude Include="include\yield\platform\windows.h">
+      <Filter>Header Files\yield</Filter>
+    </ClInclude>
+    <ClInclude Include="include\yield\platform\yunit.h">
+      <Filter>Header Files\yield</Filter>
+    </ClInclude>
+    <ClInclude Include="include\babudb\log\log.h">
+      <Filter>Header Files\babudb\log</Filter>
+    </ClInclude>
+    <ClInclude Include="include\babudb\log\log_iterator.h">
+      <Filter>Header Files\babudb\log</Filter>
+    </ClInclude>
+    <ClInclude Include="include\babudb\log\log_section.h">
+      <Filter>Header Files\babudb\log</Filter>
+    </ClInclude>
+    <ClInclude Include="include\babudb\log\log_storage.h">
+      <Filter>Header Files\babudb\log</Filter>
+    </ClInclude>
+    <ClInclude Include="include\babudb\log\record_frame.h">
+      <Filter>Header Files\babudb\log</Filter>
+    </ClInclude>
+    <ClInclude Include="include\babudb\log\record_iterator.h">
+      <Filter>Header Files\babudb\log</Filter>
+    </ClInclude>
+    <ClInclude Include="include\babudb\log\sequential_file.h">
+      <Filter>Header Files\babudb\log</Filter>
+    </ClInclude>
+    <ClInclude Include="include\babudb\profiles\int_key.h">
+      <Filter>Header Files\babudb\profiles</Filter>
+    </ClInclude>
+    <ClInclude Include="include\babudb\profiles\string_db.h">
+      <Filter>Header Files\babudb\profiles</Filter>
+    </ClInclude>
+    <ClInclude Include="include\babudb\profiles\string_key.h">
+      <Filter>Header Files\babudb\profiles</Filter>
+    </ClInclude>
+    <ClInclude Include="include\babudb\babudb.h">
+      <Filter>Header Files\babudb</Filter>
+    </ClInclude>
+    <ClInclude Include="include\babudb\buffer.h">
+      <Filter>Header Files\babudb</Filter>
+    </ClInclude>
+    <ClInclude Include="include\babudb\database.h">
+      <Filter>Header Files\babudb</Filter>
+    </ClInclude>
+    <ClInclude Include="include\babudb\key.h">
+      <Filter>Header Files\babudb</Filter>
+    </ClInclude>
+    <ClInclude Include="include\babudb\lookup_iterator.h">
+      <Filter>Header Files\babudb</Filter>
+    </ClInclude>
+    <ClInclude Include="include\babudb\test.h">
+      <Filter>Header Files\babudb</Filter>
+    </ClInclude>
+    <ClInclude Include="include\babudb\test_helper.h">
+      <Filter>Header Files\babudb</Filter>
+    </ClInclude>
+    <ClInclude Include="src\log\log_section_iterator.h">
+      <Filter>Source Files\index</Filter>
+    </ClInclude>
+    <ClInclude Include="src\log_index.h">
+      <Filter>Source Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\merged_index.h">
+      <Filter>Source Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\util.h">
+      <Filter>Source Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\index\index.h">
+      <Filter>Source Files\index</Filter>
+    </ClInclude>
+    <ClInclude Include="src\index\merger.h">
+      <Filter>Source Files\index</Filter>
+    </ClInclude>
+    <ClInclude Include="src\index\index_writer.h">
+      <Filter>Source Files\index</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="stdafx.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\yield_platform\directory_walker.cpp">
+      <Filter>Source Files\yield</Filter>
+    </ClCompile>
+    <ClCompile Include="src\yield_platform\disk_operations.cpp">
+      <Filter>Source Files\yield</Filter>
+    </ClCompile>
+    <ClCompile Include="src\yield_platform\file.cpp">
+      <Filter>Source Files\yield</Filter>
+    </ClCompile>
+    <ClCompile Include="src\yield_platform\memory_mapped_file.cpp">
+      <Filter>Source Files\yield</Filter>
+    </ClCompile>
+    <ClCompile Include="src\yield_platform\path.cpp">
+      <Filter>Source Files\yield</Filter>
+    </ClCompile>
+    <ClCompile Include="src\yield_platform\platform_exception.cpp">
+      <Filter>Source Files\yield</Filter>
+    </ClCompile>
+    <ClCompile Include="src\yield_platform\stat.cpp">
+      <Filter>Source Files\yield</Filter>
+    </ClCompile>
+    <ClCompile Include="src\log\log.cpp">
+      <Filter>Source Files\index</Filter>
+    </ClCompile>
+    <ClCompile Include="src\log\log_iterator.cpp">
+      <Filter>Source Files\index</Filter>
+    </ClCompile>
+    <ClCompile Include="src\log\log_section.cpp">
+      <Filter>Source Files\index</Filter>
+    </ClCompile>
+    <ClCompile Include="src\log\log_section_iterator.cpp">
+      <Filter>Source Files\index</Filter>
+    </ClCompile>
+    <ClCompile Include="src\log\log_storage.cpp">
+      <Filter>Source Files\index</Filter>
+    </ClCompile>
+    <ClCompile Include="src\log\record_frame.cpp">
+      <Filter>Source Files\index</Filter>
+    </ClCompile>
+    <ClCompile Include="src\log\record_iterator.cpp">
+      <Filter>Source Files\index</Filter>
+    </ClCompile>
+    <ClCompile Include="src\log\sequential_file.cpp">
+      <Filter>Source Files\index</Filter>
+    </ClCompile>
+    <ClCompile Include="src\database.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\database_test.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\log_index.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\log_index_test.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\lookup_iterator.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\lookup_iterator_test.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\merged_index.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\merged_index_test.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\string_db.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\string_db_test.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\test_main.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\util.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\index\index_test.cpp">
+      <Filter>Source Files\index</Filter>
+    </ClCompile>
+    <ClCompile Include="src\index\index.cpp">
+      <Filter>Source Files\index</Filter>
+    </ClCompile>
+    <ClCompile Include="src\index\merger.cpp">
+      <Filter>Source Files\index</Filter>
+    </ClCompile>
+    <ClCompile Include="src\index\index_writer.cpp">
+      <Filter>Source Files\index</Filter>
+    </ClCompile>
+    <ClCompile Include="src\index\index_writer_test.cpp">
+      <Filter>Source Files\index</Filter>
+    </ClCompile>
+    <ClCompile Include="src\log\log_iterator_test.cpp">
+      <Filter>Source Files\log</Filter>
+    </ClCompile>
+    <ClCompile Include="src\log\log_test.cpp">
+      <Filter>Source Files\log</Filter>
+    </ClCompile>
+    <ClCompile Include="src\log\sequential_file_test.cpp">
+      <Filter>Source Files\log</Filter>
+    </ClCompile>
+  </ItemGroup>
+</Project>
