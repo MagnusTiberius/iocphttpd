@@ -21,7 +21,7 @@ namespace database_test
 	{
 	public:
 		
-		TEST_METHOD(TestMethod1)
+		TEST_METHOD(SequentialFileTest1)
 		{
 			LogStorage* file = PersistentLogStorage::Open(Util::testPath("testfile").getHostCharsetPath());
 			SequentialFile sf(file);

@@ -26,7 +26,7 @@ namespace database_test
 	{
 	public:
 		
-		TEST_METHOD(TestMethod1)
+		TEST_METHOD(IndexWriterTest1)
 		{
 			// create ImmutableIndex from LogIndex
 			StringOrder sorder;
