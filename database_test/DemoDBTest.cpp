@@ -8,7 +8,7 @@
 using namespace Microsoft::VisualStudio::CppUnitTestFramework;
 
 #define THREAD_COUNT 4
-
+#define LIMITCTR 10000
 namespace database_test
 {
 	// ==============================================================================================
@@ -37,7 +37,7 @@ namespace database_test
 		void UpdateDB(REQUEST* request);
 	private:
 		static DWORD WINAPI ServerWorkerThread(LPVOID CompletionPortID);
-
+		DWORD dwCtr;
 		int nThreads;
 		HANDLE ThreadHandle;
 		DWORD ThreadID;
@@ -57,6 +57,7 @@ namespace database_test
 			NULL,              // default security attributes
 			FALSE,             // initially not owned
 			NULL);
+		dwCtr = 0;
 	}
 
 	int Server::Start(HANDLE* hList)
@@ -125,6 +126,11 @@ namespace database_test
 			Sleep(300);
 			if (::WaitForSingleObject(instance->ghMutex, 10000) == WAIT_OBJECT_0)
 			{
+				instance->dwCtr++;
+				if (instance->dwCtr >= LIMITCTR)
+				{
+					instance->isLooping = false;
+				}
 				if (instance->requests.size() > 0)
 				{
 					REQUEST* req = instance->requests.top();
@@ -166,7 +172,7 @@ namespace database_test
 		DWORD dwThreadId;
 		bool isLooping;
 		HANDLE ghMutexClient;
-		
+		DWORD dwCtr;
 	};
 
 	Client::Client()
@@ -176,6 +182,7 @@ namespace database_test
 			NULL,              // default security attributes
 			FALSE,             // initially not owned
 			NULL);
+		dwCtr = 0;
 	}
 
 	Client::Client(Server* s)
@@ -186,6 +193,7 @@ namespace database_test
 			NULL,              // default security attributes
 			FALSE,             // initially not owned
 			NULL);
+		dwCtr = 0;
 	}
 
 	int Client::Start(HANDLE* hList)
@@ -243,6 +251,12 @@ namespace database_test
 				}
 
 				instance->server->Submit(req);
+
+				instance->dwCtr++;
+				if (instance->dwCtr >= LIMITCTR)
+				{
+					instance->isLooping = false;
+				}
 				::ReleaseMutex(instance->ghMutexClient);
 			}
 		}
@@ -278,8 +292,9 @@ namespace database_test
 		server.Start(hList1);
 		client = new Client(&server);
 		client->Start(hList2);
+		bool isLooping = true;
 
-		while (true)
+		while (isLooping)
 		{
 			dwEvent = WaitForMultipleObjects(THREAD_COUNT, hList1, FALSE, 5000);
 			switch (dwEvent)
@@ -288,12 +303,14 @@ namespace database_test
 			case WAIT_OBJECT_0 + 0:
 				// TODO: Perform tasks required by this event
 				printf("First event was signaled.\n");
+				isLooping = false;
 				break;
 
 				// ghEvents[1] was signaled
 			case WAIT_OBJECT_0 + 1:
 				// TODO: Perform tasks required by this event
 				printf("Second event was signaled.\n");
+				isLooping = false;
 				break;
 
 			case WAIT_TIMEOUT:
