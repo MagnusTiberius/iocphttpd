@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 2013
-VisualStudioVersion = 12.0.40629.0
+VisualStudioVersion = 12.0.31101.0
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "iocphttpd", "iocphttpd\iocphttpd.vcxproj", "{54F797E9-FB21-4BBE-914C-4EFD66861330}"
 	ProjectSection(ProjectDependencies) = postProject
@@ -59,6 +59,13 @@ EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "database_l", "database_l\database_l.vcxproj", "{112387A1-6378-4C10-90EA-F7735577C2A5}"
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "database_test", "database_test\database_test.vcxproj", "{ED300E94-1C5C-43B1-99E7-154D6F6C8C92}"
+	ProjectSection(ProjectDependencies) = postProject
+		{112387A1-6378-4C10-90EA-F7735577C2A5} = {112387A1-6378-4C10-90EA-F7735577C2A5}
+	EndProjectSection
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{7CC23EA8-63C2-4B20-8549-F0C120E288CF}"
+EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "database_demo_l", "database_demo_l\database_demo_l.vcxproj", "{B59EB318-70BF-410B-8457-EB0FB9693BCF}"
 	ProjectSection(ProjectDependencies) = postProject
 		{112387A1-6378-4C10-90EA-F7735577C2A5} = {112387A1-6378-4C10-90EA-F7735577C2A5}
 	EndProjectSection
@@ -372,6 +379,24 @@ Global
 		{ED300E94-1C5C-43B1-99E7-154D6F6C8C92}.Release|Win32.ActiveCfg = Release|Win32
 		{ED300E94-1C5C-43B1-99E7-154D6F6C8C92}.Release|Win32.Build.0 = Release|Win32
 		{ED300E94-1C5C-43B1-99E7-154D6F6C8C92}.Release|x64.ActiveCfg = Release|Win32
+		{B59EB318-70BF-410B-8457-EB0FB9693BCF}.Debug|Any CPU.ActiveCfg = Debug|Win32
+		{B59EB318-70BF-410B-8457-EB0FB9693BCF}.Debug|Mixed Platforms.ActiveCfg = Debug|Win32
+		{B59EB318-70BF-410B-8457-EB0FB9693BCF}.Debug|Mixed Platforms.Build.0 = Debug|Win32
+		{B59EB318-70BF-410B-8457-EB0FB9693BCF}.Debug|Win32.ActiveCfg = Debug|Win32
+		{B59EB318-70BF-410B-8457-EB0FB9693BCF}.Debug|Win32.Build.0 = Debug|Win32
+		{B59EB318-70BF-410B-8457-EB0FB9693BCF}.Debug|x64.ActiveCfg = Debug|Win32
+		{B59EB318-70BF-410B-8457-EB0FB9693BCF}.dummy|Any CPU.ActiveCfg = Debug|Win32
+		{B59EB318-70BF-410B-8457-EB0FB9693BCF}.dummy|Mixed Platforms.ActiveCfg = Debug|Win32
+		{B59EB318-70BF-410B-8457-EB0FB9693BCF}.dummy|Mixed Platforms.Build.0 = Debug|Win32
+		{B59EB318-70BF-410B-8457-EB0FB9693BCF}.dummy|Win32.ActiveCfg = Debug|Win32
+		{B59EB318-70BF-410B-8457-EB0FB9693BCF}.dummy|Win32.Build.0 = Debug|Win32
+		{B59EB318-70BF-410B-8457-EB0FB9693BCF}.dummy|x64.ActiveCfg = Debug|Win32
+		{B59EB318-70BF-410B-8457-EB0FB9693BCF}.Release|Any CPU.ActiveCfg = Release|Win32
+		{B59EB318-70BF-410B-8457-EB0FB9693BCF}.Release|Mixed Platforms.ActiveCfg = Release|Win32
+		{B59EB318-70BF-410B-8457-EB0FB9693BCF}.Release|Mixed Platforms.Build.0 = Release|Win32
+		{B59EB318-70BF-410B-8457-EB0FB9693BCF}.Release|Win32.ActiveCfg = Release|Win32
+		{B59EB318-70BF-410B-8457-EB0FB9693BCF}.Release|Win32.Build.0 = Release|Win32
+		{B59EB318-70BF-410B-8457-EB0FB9693BCF}.Release|x64.ActiveCfg = Release|Win32
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
