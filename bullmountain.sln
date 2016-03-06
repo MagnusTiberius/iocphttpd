@@ -60,6 +60,7 @@ Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "database_l", "database_l\da
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "database_test", "database_test\database_test.vcxproj", "{ED300E94-1C5C-43B1-99E7-154D6F6C8C92}"
 	ProjectSection(ProjectDependencies) = postProject
+		{B59EB318-70BF-410B-8457-EB0FB9693BCF} = {B59EB318-70BF-410B-8457-EB0FB9693BCF}
 		{112387A1-6378-4C10-90EA-F7735577C2A5} = {112387A1-6378-4C10-90EA-F7735577C2A5}
 	EndProjectSection
 EndProject
