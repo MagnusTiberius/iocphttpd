@@ -1,0 +1,324 @@
+<!DOCTYPE html>
+<html  xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en" xmlns:og="http://ogp.me/ns#" xmlns:fb="http://www.facebook.com/2008/fbml">
+<head>
+	<link rel="image_src" href="http://74.208.133.86:8080/static/img/nissanGtr1.jpg" />
+	<meta name="title" content="Project IOCP">
+	<meta name="description" content="IOCP is a project that is developing a webserver with applications around it." />
+
+	<meta property="og:site_name" content="iocp"/>
+	<meta property="og:locale" content="en_US" />
+	<meta property="og:title" content="Project IOCP">
+	<meta property="og:description" content="IOCP is a project that is developing a webserver with applications around it.">
+	<meta property="og:image" content="http://74.208.133.86:8080/static/img/nissanGtr1.jpg">
+	<meta property="og:url" content="http://74.208.133.86:8080/">
+	<meta property="og:type" content="article">
+
+	<title>IOCP Webserver C++</title>
+
+	<link rel="stylesheet" type="text/css" href="/static/css/test.css">
+	<script src="http://ajax.googleapis.com/ajax/libs/angularjs/1.4.8/angular.min.js"></script>
+	<script type="text/javascript" src="/static/js/testtwo.js"></script>
+
+    <!-- Le styles -->
+    <link href="/static/assets/css/bootstrap.css" rel="stylesheet">
+    <style type="text/css">
+      body {
+        padding-top: 60px;
+        padding-bottom: 40px;
+      }
+    </style>
+    <link href="/static/assets/css/bootstrap-responsive.css" rel="stylesheet">
+
+    <!-- HTML5 shim, for IE6-8 support of HTML5 elements -->
+    <!--[if lt IE 9]>
+      <script src="../assets/js/html5shiv.js"></script>
+    <![endif]-->
+	
+	<style>
+	    .marketing .span4 {
+	      text-align: center;
+	    }
+	    .marketing h2 {
+	      font-weight: normal;
+	    }
+	    .marketing .span4 p {
+	      margin-left: 10px;
+	      margin-right: 10px;
+	    }
+	</style>
+</head>
+
+<body>
+	<div ng-app="">
+    <div class="navbar navbar-inverse navbar-fixed-top">
+      <div class="navbar-inner">
+        <div class="container">
+          <button type="button" class="btn btn-navbar" data-toggle="collapse" data-target=".nav-collapse">
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+          </button>
+          <a class="brand" href="/">iocp</a>
+          <div class="nav-collapse collapse">
+            <ul class="nav">
+              <li class="active"><a href="/">Home</a></li>
+              <li><a href="/init">About</a></li>
+              <li><a href="/test">Contact</a></li>
+              <li class="dropdown">
+                <a href="#" class="dropdown-toggle" data-toggle="dropdown">Dropdown <b class="caret"></b></a>
+                <ul class="dropdown-menu">
+                  <li><a href="#">Action</a></li>
+                  <li><a href="#">Another action</a></li>
+                  <li><a href="#">Something else here</a></li>
+                  <li class="divider"></li>
+                  <li class="nav-header">Nav header</li>
+                  <li><a href="#">Separated link</a></li>
+                  <li><a href="#">One more separated link</a></li>
+                </ul>
+              </li>
+            </ul>
+            <form class="navbar-form pull-right">
+              <input class="span2" type="text" placeholder="Email">
+              <input class="span2" type="password" placeholder="Password">
+              <button type="submit" class="btn">Sign in</button>
+            </form>
+          </div><!--/.nav-collapse -->
+        </div>
+      </div>
+    </div>
+
+	<div class="container">
+	<h1>Setup Your Own Car Now!</h1>
+
+	<!--
+	[<a href="/">home</a> | <a href="/init">init</a> | <a href="/test">test</a>]
+	-->
+
+	<hr>
+	<img src="/static/img/nissanGtr1.jpg">
+	<hr>
+	<img src="/static/img/audia5titanium.jpg">
+	
+	<!--
+	<p>
+	<form>
+	  <input id="btntest1" name="btntest1" type="button" value="send json data format">
+	</form>
+	</p>
+
+	<p>
+	<form>
+	  <input id="btntest3" name="btntest3" type="button" value="test url params">
+	</form>
+	</p>
+
+	<p>
+	<form>
+	  <input id="btntest4" name="btntest4" type="button" value="test multiple url params">
+	</form>
+	</p>
+	-->
+
+	</div> <!-- /container -->
+	<br><br>
+	<div class="container marketing">
+      <!-- Three columns of text below the carousel -->
+      <div class="row">
+        <div class="span4">
+          <img class="img-circle" data-src="holder.js/140x140">
+          <h2>Heading</h2>
+          <p>Donec sed odio dui. Etiam porta sem malesuada magna mollis euismod. Nullam id dolor id nibh ultricies vehicula ut id elit. Morbi leo risus, porta ac consectetur ac, vestibulum at eros. Praesent commodo cursus magna, vel scelerisque nisl consectetur et.</p>
+          <p><a class="btn" href="#">View details &raquo;</a></p>
+        </div><!-- /.span4 -->
+        <div class="span4">
+          <img class="img-circle" data-src="holder.js/140x140">
+          <h2>Heading</h2>
+          <p>Duis mollis, est non commodo luctus, nisi erat porttitor ligula, eget lacinia odio sem nec elit. Cras mattis consectetur purus sit amet fermentum. Fusce dapibus, tellus ac cursus commodo, tortor mauris condimentum nibh, ut fermentum massa justo sit amet risus.</p>
+          <p><a class="btn" href="#">View details &raquo;</a></p>
+        </div><!-- /.span4 -->
+        <div class="span4">
+          <img class="img-circle" data-src="holder.js/140x140">
+          <h2>Heading</h2>
+          <p>Donec sed odio dui. Cras justo odio, dapibus ac facilisis in, egestas eget quam. Vestibulum id ligula porta felis euismod semper. Fusce dapibus, tellus ac cursus commodo, tortor mauris condimentum nibh, ut fermentum massa justo sit amet risus.</p>
+          <p><a class="btn" href="#">View details &raquo;</a></p>
+        </div><!-- /.span4 -->
+      </div><!-- /.row -->
+	</div> <!-- /container -->
+
+	<div class="container">
+	<p>
+The OneUp is the cheapest 3D printer in the world. At $199 for a self assembled kit, that includes everything you need, the OneUp is the easy choice to 'get your feet wet'. All corners of the internet recommend a self built printer as your first printer so you learn the ins and outs, the ups and downs of 3D printing before making a big purchase. Professional quality prints are a reality, equivalent to much more expensive machines at competitive speeds with the ability to expand the build area at at any time after purchase for only $79 (buy the TwoUp upgrade now in our online store!). Each kit includes a very reliable and forgiving extruder, that makes it easy to get great quality prints with minimal effort. The OneUp is optimized for PLA printing but with the optional heated bed upgrade, ABS and Nylon printing are a breeze! This is a Do-It-Yourself, Self-Assembly kit that generally takes 2-8 hours to assemble based on end user skill level. The only difference between the OneUp, TwoUp and ThreeUp is the build area, every other spec is the same.	</p>
+
+	<p>
+Fusce vitae lacus a nulla facilisis vulputate. Proin sed tellus justo. Aenean dignissim enim ut sapien blandit egestas. Duis aliquet imperdiet arcu. Sed iaculis nisl sed est vehicula auctor. Nam at mattis augue. Duis vitae augue enim. Nam ut mauris ac ligula euismod venenatis at non nisl. Integer suscipit lacus vitae auctor fermentum.
+	</p>
+
+	<form>
+	  <input id="btntest2" name="btntest2" type="button" value="send form data">
+	</form>
+
+	<p>Input something in the input box:</p>
+	<p>Name : <input type="text" ng-model="name" placeholder="Enter name here"></p>
+	<h1>Hello {{name}}</h1>	
+	
+	<p>
+Praesent at massa cursus, malesuada nisl vitae, dignissim augue. Vivamus ligula turpis, luctus lobortis blandit malesuada, eleifend sit amet felis. Ut ut hendrerit est. Aliquam ultrices a ex quis euismod. Vestibulum ante ipsum primis in faucibus orci luctus et ultrices posuere cubilia Curae; Phasellus dictum sem id velit lacinia dignissim. Phasellus in arcu eget sem pulvinar euismod. Etiam sollicitudin metus sapien, ut finibus felis vehicula non.
+	</p>
+
+<a href='http://postimg.org/image/dajijbvh3/' target='_blank'><img src='http://s15.postimg.org/dajijbvh3/iocp_02.jpg' border='0' alt="iocp 02" /></a>	
+	<p>
+Pellentesque fermentum sem a enim sagittis, id porttitor mi mollis. Praesent non metus ac neque viverra ultrices. Aliquam erat volutpat. Aenean mollis volutpat consequat. Cras in ligula neque. Praesent aliquet est sed est laoreet posuere. Praesent convallis mauris nec tincidunt vulputate. Duis maximus ligula sed felis fringilla condimentum. Nullam sollicitudin eu elit eget pretium. Fusce luctus faucibus feugiat. Integer posuere sem lacus, ac aliquet purus sollicitudin at. Proin pellentesque luctus porttitor.	
+	</p>
+
+	<div id="resultDiv" name="resultDiv">
+	</div>
+	
+	</div> <!-- /container -->
+
+	<script type="text/javascript" src="/static/js/test.js"></script>
+
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.2/jquery.min.js"></script>
+	<script>
+		$( "#btntest1" ).click(function() {
+			//alert( "Handler for .click() called." );
+		  	//var full = location.protocol+'//'+location.hostname+(location.port ? ':'+location.port: '');
+			$.ajax({
+				url: location.protocol+'//'+location.hostname+(location.port ? ':'+location.port: '')+"/json/testtwo",
+				contentType: 'application/json',
+				type: "POST",
+				data: "{ apiKey: \"23462\", method: \"example\", ip: \"208.74.35.5\" }",
+				dataType: "json",
+				success: function (result) {
+					//alert(result);
+					/*
+					switch (result) {
+						case true:
+							processResponse(result);
+							break;
+						default:
+							resultDiv.html(result);
+					}
+					*/
+				},
+				error: function (xhr, ajaxOptions, thrownError) {
+				//alert(xhr.status);
+				//alert(thrownError);
+				}
+			});	
+	
+		});	
+	</script>
+	
+	<script>
+		$( "#btntest2" ).click(function() {
+			//alert( "Handler for .click() called." );
+		  
+			$.ajax({
+				url: location.protocol+'//'+location.hostname+(location.port ? ':'+location.port: '')+"/json/testtwo",
+				method: "POST",
+				data: { apiKey: "23462", method: "example", ip: "208.74.35.5" },
+				dataType: "html",
+				success: function (result) {
+					//alert(result);
+					/*
+					switch (result) {
+						case true:
+							processResponse(result);
+							break;
+						default:
+							resultDiv.html(result);
+					}
+					*/
+				},
+				error: function (xhr, ajaxOptions, thrownError) {
+				//alert(xhr.status);
+				//alert(thrownError);
+				}
+			});	
+	
+		});	
+	</script>
+
+	<script>
+		$( "#btntest3" ).click(function() {
+			//alert( "Handler for .click() called." );
+		  
+			$.ajax({
+				url: location.protocol+'//'+location.hostname+(location.port ? ':'+location.port: '')+"/user/profile/5234234/",
+				method: "POST",
+				data: { apiKey: "23462", method: "example", ip: "208.74.35.5" },
+				dataType: "html",
+				success: function (result) {
+					//alert(result);
+					/*
+					switch (result) {
+						case true:
+							processResponse(result);
+							break;
+						default:
+							resultDiv.html(result);
+					}
+					*/
+				},
+				error: function (xhr, ajaxOptions, thrownError) {
+				//alert(xhr.status);
+				//alert(thrownError);
+				}
+			});	
+	
+		});	
+	</script>
+
+	
+	<script>
+		$( "#btntest4" ).click(function() {
+			//alert( "Handler for .click() called." );
+		  
+			$.ajax({
+				url: location.protocol+'//'+location.hostname+(location.port ? ':'+location.port: '')+"/product/country/123456/city/7890/g.json",
+				method: "POST",
+				data: { apiKey: "23462", method: "example", ip: "208.74.35.5" },
+				dataType: "html",
+				success: function (result) {
+					//alert(result);
+					/*
+					switch (result) {
+						case true:
+							processResponse(result);
+							break;
+						default:
+							resultDiv.html(result);
+					}
+					*/
+				},
+				error: function (xhr, ajaxOptions, thrownError) {
+				//alert(xhr.status);
+				//alert(thrownError);
+				}
+			});	
+	
+		});	
+	</script>
+	
+
+    <!-- Le javascript
+    ================================================== -->
+    <!-- Placed at the end of the document so the pages load faster -->
+    <script src="/static/assets/js/jquery.js"></script>
+    <script src="/static/assets/js/bootstrap-transition.js"></script>
+    <script src="/static/assets/js/bootstrap-alert.js"></script>
+    <script src="/static/assets/js/bootstrap-modal.js"></script>
+    <script src="/static/assets/js/bootstrap-dropdown.js"></script>
+    <script src="/static/assets/js/bootstrap-scrollspy.js"></script>
+    <script src="/static/assets/js/bootstrap-tab.js"></script>
+    <script src="/static/assets/js/bootstrap-tooltip.js"></script>
+    <script src="/static/assets/js/bootstrap-popover.js"></script>
+    <script src="/static/assets/js/bootstrap-button.js"></script>
+    <script src="/static/assets/js/bootstrap-collapse.js"></script>
+    <script src="/static/assets/js/bootstrap-carousel.js"></script>
+    <script src="/static/assets/js/bootstrap-typeahead.js"></script>
+    <script src="/static/assets/js/holder.js"></script>
+	
+	</div> <!-- ngapp-->
+<body>	
+</html>
