@@ -1,6 +1,16 @@
 /**
  * main
  */
+
+/*
+var hostdata = {
+
+    onsuccess: function() {
+        debugger
+    };
+};
+*/
+
 var game = {
 
     /**
@@ -8,8 +18,14 @@ var game = {
      */
     data : {
         // score
-        score : 0
+        score : 0,
+        parsetree : 0
     },
+
+    /*
+    var tick = null;
+    */
+
 
     /**
      *
@@ -89,6 +105,32 @@ var game = {
                 }
             }
         });
+
+
+        setInterval(function() {
+                $.ajax({
+                    url: location.protocol+'//'+location.hostname+(location.port ? ':'+location.port: '')+"/game/update.json",
+                    contentType: 'application/json',
+                    type: "POST",
+                    data: "{ apiKey: \"23462\", method: \"example\", ip: \"208.74.35.5\" }",
+                    dataType: "json",
+                    success: function (result, status, jqXHR) {
+                        debugger
+                        switch (status) {
+                            case "success":
+                                game.data.parsetree = result;
+                                break;
+                            default:
+                                game.data.parsetree = result;
+                        }
+                    },
+                    error: function (xhr, ajaxOptions, thrownError) {
+                        debugger
+                        //alert(xhr.status);
+                        //alert(thrownError);
+                    }
+                });
+            }, 3000);
 
         // switch to PLAY state
         me.state.change(me.state.PLAY);

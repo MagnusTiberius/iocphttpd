@@ -1,5 +1,5 @@
 
-
+/*
 (function () {
 
 	me.hostserver = (function() {
@@ -21,3 +21,5 @@
 	});
 
 })();
+
+*/
