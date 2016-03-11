@@ -87,8 +87,15 @@ Exit 1
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="dlldata.c" />
+    <ClCompile Include="iocpservice.cpp" />
     <ClCompile Include="iocpservice_i.c" />
     <ClCompile Include="iocpservice_p.c" />
+    <ClCompile Include="stdafx.cpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="iocpservice_i.h" />
+    <ClInclude Include="Resource.h" />
+    <ClInclude Include="stdafx.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

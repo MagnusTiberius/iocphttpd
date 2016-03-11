@@ -22,5 +22,12 @@
     <ClCompile Include="dlldata.c">
       <Filter>Generated Files</Filter>
     </ClCompile>
+    <ClCompile Include="stdafx.cpp" />
+    <ClCompile Include="iocpservice.cpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="stdafx.h" />
+    <ClInclude Include="iocpservice_i.h" />
+    <ClInclude Include="Resource.h" />
   </ItemGroup>
 </Project>
