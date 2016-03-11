@@ -455,7 +455,7 @@ namespace IOCPHTTPL
 				continue;
 			}
 
-
+			httpRequest.socket = PerHandleData->Socket;
 			httpRequest.Parse(PerIoData->DataBuf.buf);
 
 			instance->Dispatch(&httpRequest, &httpResponse);

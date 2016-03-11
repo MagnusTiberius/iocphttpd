@@ -157,6 +157,11 @@ namespace IOCPHTTPL
 		return;
 	}
 
+	IOCPHTTPL::RequestParser::HEADERMAPLIST* RequestParser::getHeaderMapList()
+	{
+		return &m_headermap;
+	}
+
 	const CHAR* RequestParser::StripOut(CHAR* item, const CHAR *strip)
 	{
 		std::string rv = "";

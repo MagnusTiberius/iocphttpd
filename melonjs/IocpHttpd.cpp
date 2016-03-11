@@ -14,8 +14,11 @@ IocpHttpd::IocpHttpd()
 
 	//AddRoute("/user/profile/<id:[0-9]+>/", IocpHttpd::HandleJsonUrlParam1);
 	//AddRoute("/game/update.json", IocpHttpd::HandleJsonUrlParam1);
-	AddRoute("/game/update.json", IocpHttpd::HandleJsonTestTwo);
-	
+	AddRoute("/game/<id:[0-9a-zA-Z]+>/update.json", IocpHttpd::HandleJsonUrlParamUpdate);
+	AddRoute("/game/<id:[0-9a-zA-Z]+>/replicateWorld.json", IocpHttpd::HandleJsonUrlParamReplicateWorld);
+
+	gameEngine = new GameEngine();
+	gameEngine->Start();
 }
 
 
@@ -86,6 +89,10 @@ void IocpHttpd::HandleJsonTestTwo(HttpRequest *httpRequest, HttpResponse *httpRe
 {
 	printf("IocpHttpd::HandleJsonTestTwo\n");
 
+	int n = httpRequest->urlParams.size();
+	printf("urlParams size=%d \n", n);
+
+
 	string json_example = "{\"array\": \
 		[\"elem1\", \
 		\"elem2\"], \
@@ -104,14 +111,73 @@ void IocpHttpd::HandleJsonTestTwo(HttpRequest *httpRequest, HttpResponse *httpRe
 	}
 }
 
-void IocpHttpd::HandleJsonUrlParam1(HttpRequest *httpRequest, HttpResponse *httpResponse)
+void IocpHttpd::ReplicateWorld(HttpRequest *httpRequest, HttpResponse *httpResponse)
+{
+	printf("IocpHttpd::HandleJsonTestTwo\n");
+
+	int n = httpRequest->urlParams.size();
+	printf("urlParams size=%d \n", n);
+
+
+	string json_example = "{\"array\": \
+						  		[\"elem1\", \
+										\"elem2\"], \
+												\"name1\": \
+														\"value1\" \
+																}";
+
+	Json::Value root;
+	Json::Reader reader;
+	bool parsedSuccess = reader.parse(json_example, root, false);
+	if (parsedSuccess)
+	{
+		std::string s = root.toStyledString();
+		httpResponse->Write(s.c_str());
+		httpResponse->SetContentType("application/json");
+	}
+}
+
+
+void IocpHttpd::HandleJsonUrlParamUpdate(HttpRequest *httpRequest, HttpResponse *httpResponse)
 {
 	printf("IocpHttpd::HandleJsonUrlParam1\n");
 
 	int n = httpRequest->urlParams.size();
 	printf("urlParams size=%d \n", n);
 
-	string json_example1 = "{\"name1\":";
+	const char* content = httpRequest->GetContent();
+
+	string json_example1 = "{\"levelmapid\":";
+	json_example1.append("\"");
+	if (httpRequest->urlParams.size() > 0)
+	{
+		auto v = httpRequest->urlParams[0];
+		json_example1.append(v);
+		json_example1.append("\"");
+		json_example1.append("}");
+
+		Json::Value root;
+		Json::Reader reader;
+		bool parsedSuccess = reader.parse(json_example1, root, false);
+		if (parsedSuccess)
+		{
+			std::string s = root.toStyledString();
+			httpResponse->Write(s.c_str());
+			httpResponse->SetContentType("application/json");
+		}
+	}
+
+}
+
+
+void IocpHttpd::HandleJsonUrlParamReplicateWorld(HttpRequest *httpRequest, HttpResponse *httpResponse)
+{
+	printf("IocpHttpd::HandleJsonUrlParam1\n");
+
+	int n = httpRequest->urlParams.size();
+	printf("urlParams size=%d \n", n);
+
+	string json_example1 = "{\"levelmapid\":";
 	json_example1.append("\"");
 	if (httpRequest->urlParams.size() > 0)
 	{

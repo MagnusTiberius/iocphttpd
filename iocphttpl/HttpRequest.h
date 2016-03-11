@@ -18,8 +18,9 @@ namespace IOCPHTTPL
 		char* GetUrl();
 		MethodType GetMethod();
 		const char* GetContent();
-
+		SOCKET socket;
 		std::vector<std::string> urlParams;
+		IOCPHTTPL::RequestParser::HEADERMAPLIST* headerList;
 
 	private:
 		headerparser::HParser hParser;

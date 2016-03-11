@@ -19,6 +19,7 @@ namespace IOCPHTTPL
 		//hParser.Parse(content);
 		requestParser.Input(content);
 		requestParser.Parse();
+		headerList = requestParser.getHeaderMapList();
 	}
 
 	char* HttpRequest::GetUrl()

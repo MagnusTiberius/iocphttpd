@@ -40,6 +40,8 @@ namespace IOCPHTTPL
 		void Reset();
 		const char* GetParameterValue(const char *p);
 
+		HEADERMAPLIST* getHeaderMapList();
+
 	protected:
 		CHAR *m_token;
 		HEADERMAPLIST m_headermap;

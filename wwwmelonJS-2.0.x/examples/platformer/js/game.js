@@ -109,10 +109,10 @@ var game = {
 
         setInterval(function() {
                 $.ajax({
-                    url: location.protocol+'//'+location.hostname+(location.port ? ':'+location.port: '')+"/game/update.json",
+                    url: location.protocol+'//'+location.hostname+(location.port ? ':'+location.port: '')+"/game/level1map/update.json",
                     contentType: 'application/json',
                     type: "POST",
-                    data: "{ apiKey: \"23462\", method: \"example\", ip: \"208.74.35.5\" }",
+                    data: "{ apiKey: \"23462\", method: \"example\", ip: \"208.74.35.5\", levelmap: \"level1map\", xpos:"12", ypos:"3" }",
                     dataType: "json",
                     success: function (result, status, jqXHR) {
                         debugger
