@@ -14,6 +14,7 @@ IocpHttpd::IocpHttpd()
 
 	//AddRoute("/user/profile/<id:[0-9]+>/", IocpHttpd::HandleJsonUrlParam1);
 	AddRoute("/product/country/<id1:[0-9]+>/city/<id2:[0-9]+>/g.json", IocpHttpd::HandleJsonUrlParam1);
+	AddRoute("/profile/<id:[A-Za-z0-9]+>/profile.html", IocpHttpd::HandleAutomobileProfile);
 }
 
 
@@ -66,6 +67,25 @@ void IocpHttpd::HandleInit(HttpRequest *httpRequest, HttpResponse *httpResponse)
 	}
 	httpResponse->WriteTemplate("init");
 }
+
+void IocpHttpd::HandleAutomobileProfile(HttpRequest *httpRequest, HttpResponse *httpResponse)
+{
+	printf("IocpHttpd::HandleAutomobileProfile\n");
+
+	int n = httpRequest->urlParams.size();
+	printf("urlParams size=%d \n", n);
+
+	string v = httpRequest->urlParams[0];
+
+	httpResponse->AddHeaderItem("AutomobileProfileName", v);
+
+	if (httpResponse->FindTemplate("init") == false)
+	{
+		httpResponse->AddTemplate("init", "C:\\www\\automobile.html");
+	}
+	httpResponse->WriteTemplate("init");
+}
+
 
 void IocpHttpd::HandleJsonTest(HttpRequest *httpRequest, HttpResponse *httpResponse)
 {

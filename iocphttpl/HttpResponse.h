@@ -24,7 +24,6 @@ namespace IOCPHTTPL
 			char *content;
 			vector<byte> *bytcontent;
 			time_t rawtime;
-
 		} static_content_t, *lpstatic_content_t;
 		typedef std::vector<lpstatic_content_t> buflist_t;
 		typedef std::vector<lpstatic_content_t>::iterator ibuflist_t;
@@ -50,7 +49,7 @@ namespace IOCPHTTPL
 		byte*  GetResponse2(ULONG *len);
 		void GetResponse3(std::vector<byte> *pvb);
 		void SetCacheController(CacheController* controller);
-
+		void AddHeaderItem(string name, string value);
 	private:
 		HttpHeader httpHeader;
 		char* m_resp_body[DATA_BUFSIZE * 4];
@@ -72,7 +71,7 @@ namespace IOCPHTTPL
 
 		MimeTypes mimeTypes;
 		CacheController* cacheController;
-
+		map<string, string> headerList;
 	};
 
 

@@ -189,6 +189,12 @@ namespace IOCPHTTPL
 		return bytbuf;
 	}
 
+
+	void HttpResponse::AddHeaderItem(string name, string value)
+	{
+		headerList[name] = value;
+	}
+
 	byte* HttpResponse::GetStaticContent2(const char *file_name, long *len)
 	{
 		FILE *fp;
@@ -302,6 +308,17 @@ namespace IOCPHTTPL
 		ctstr.assign(contenType.begin(), contenType.end());
 		sprintf_s(pszResponse, dwSize, "%s%s%s%s", pszResponse, "Content-Type: ", ctstr.c_str(), "\n");
 
+		map<string, string>::iterator it;
+		if (headerList.size() > 0)
+		{
+			for (it = headerList.begin(); it != headerList.end(); it++)
+			{
+				string name = it->first;
+				string value = it->second;
+				sprintf_s(pszResponse, dwSize, "%s%s%s%s", pszResponse, name.c_str(), value.c_str(), "\n");
+			}
+		}
+
 		size_t siz = m_sbResponsePackage.size();
 		sprintf_s(pszResponse, dwSize, "%s%s%d%s", pszResponse, "Content-Length: ", siz, "\n\n");
 		std::string str;
@@ -391,6 +408,21 @@ namespace IOCPHTTPL
 		strcat_s(txtbuf, DATA_BUFSIZE, "Content-Type: ");
 		strcat_s(txtbuf, DATA_BUFSIZE, ctstr.c_str());
 		strcat_s(txtbuf, DATA_BUFSIZE, "\n");
+
+		map<string, string>::iterator it;
+		if (headerList.size() > 0)
+		{
+			for (it = headerList.begin(); it != headerList.end(); it++)
+			{
+				string name = it->first;
+				name.append(": ");
+				string value = it->second;
+				strcat_s(txtbuf, DATA_BUFSIZE, name.c_str());
+				strcat_s(txtbuf, DATA_BUFSIZE, value.c_str());
+				strcat_s(txtbuf, DATA_BUFSIZE, "\n");
+			}
+		}
+
 		strcat_s(txtbuf, DATA_BUFSIZE, "Content-Length: ");
 		strcat_s(txtbuf, DATA_BUFSIZE, ssiz.c_str());
 		strcat_s(txtbuf, DATA_BUFSIZE, "\n");
