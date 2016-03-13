@@ -15,6 +15,7 @@ IocpHttpd::IocpHttpd()
 	//AddRoute("/user/profile/<id:[0-9]+>/", IocpHttpd::HandleJsonUrlParam1);
 	AddRoute("/product/country/<id1:[0-9]+>/city/<id2:[0-9]+>/g.json", IocpHttpd::HandleJsonUrlParam1);
 	AddRoute("/profile/<id:[A-Za-z0-9]+>/profile.html", IocpHttpd::HandleAutomobileProfile);
+	AddRoute("/ws/profile/<id:[A-Za-z0-9]+>/profile.html", IocpHttpd::HandleAutomobileProfileJson);
 }
 
 
@@ -86,6 +87,47 @@ void IocpHttpd::HandleAutomobileProfile(HttpRequest *httpRequest, HttpResponse *
 	httpResponse->WriteTemplate("init");
 }
 
+void IocpHttpd::HandleAutomobileProfileJson(HttpRequest *httpRequest, HttpResponse *httpResponse)
+{
+	printf("IocpHttpd::HandleAutomobileProfile\n");
+
+	int n = httpRequest->urlParams.size();
+	printf("urlParams size=%d \n", n);
+
+	string profID = httpRequest->urlParams[0];
+
+	string json_example = "{\"profileImages\": \
+							[{\"img\" :\"\\\\static\\\\profile\\\\" + profID + "\\\\img\\\\0001.jpg\", \"itm\" :\"active\" }, \
+							 {\"img\" :\"\\\\static\\\\profile\\\\" + profID + "\\\\img\\\\0002.jpg\", \"itm\" :\"\" }, \
+							 {\"img\" :\"\\\\static\\\\profile\\\\" + profID + "\\\\img\\\\0003.jpg\", \"itm\" :\"\" }, \
+							 {\"img\" :\"\\\\static\\\\profile\\\\" + profID + "\\\\img\\\\0004.jpg\", \"itm\" :\"\" }, \
+							 {\"img\" :\"\\\\static\\\\profile\\\\" + profID + "\\\\img\\\\0005.jpg\", \"itm\" :\"\" }, \
+							 {\"img\" :\"\\\\static\\\\profile\\\\" + profID + "\\\\img\\\\0006.jpg\", \"itm\" :\"\" }, \
+							 {\"img\" :\"\\\\static\\\\profile\\\\" + profID + "\\\\img\\\\0007.jpg\", \"itm\" :\"\" }, \
+							 {\"img\" :\"\\\\static\\\\profile\\\\" + profID + "\\\\img\\\\0008.jpg\", \"itm\" :\"\" }, \
+							 {\"img\" :\"\\\\static\\\\profile\\\\" + profID + "\\\\img\\\\0009.jpg\", \"itm\" :\"\" }, \
+							 {\"img\" :\"\\\\static\\\\profile\\\\" + profID + "\\\\img\\\\0010.jpg\", \"itm\" :\"\" }], \
+							\"profileID\": \"" + profID + "\", \
+							\"dir\": \"\\\\static\\\\profile\\\\" + profID + "\\\\img\\\\\" \
+							}";
+
+	httpResponse->AddHeaderItem("AutomobileProfileName", profID);
+
+	Json::Value root;
+	Json::Reader reader;
+	bool parsedSuccess = reader.parse(json_example, root, false);
+	if (parsedSuccess)
+	{
+		std::string s = root.toStyledString();
+		httpResponse->Write(s.c_str());
+		httpResponse->SetContentType("application/json");
+	}
+	else
+	{
+		httpResponse->Write(json_example.c_str());
+	}
+}
+
 
 void IocpHttpd::HandleJsonTest(HttpRequest *httpRequest, HttpResponse *httpResponse)
 {
@@ -109,13 +151,36 @@ void IocpHttpd::HandleJsonTestTwo(HttpRequest *httpRequest, HttpResponse *httpRe
 {
 	printf("IocpHttpd::HandleJsonTestTwo\n");
 
-	string json_example = "{\"array\": \
-							[\"item1\", \
-							\"item2\"], \
-							\"not an array\": \
-							\"asdf\" \
-							}";
+	//string json_example = "{\"array\": \
+	//						[\"\static\profile\lancerevo\img0001.jpg\", \
+	//						 \"\static\profile\lancerevo\img0002.jpg\", \
+	//						 \"\static\profile\lancerevo\img0003.jpg\", \
+	//						 \"\static\profile\lancerevo\img0004.jpg\", \
+	//						 \"\static\profile\lancerevo\img0005.jpg\", \
+	//						 \"\static\profile\lancerevo\img0006.jpg\", \
+	//						 \"\static\profile\lancerevo\img0007.jpg\", \
+	//						 \"\static\profile\lancerevo\img0008.jpg\", \
+	//						 \"\static\profile\lancerevo\img0009.jpg\", \
+	//						 \"\static\profile\lancerevo\img0010.jpg\"], \
+	//						\"profileID\": \
+	//						\"lancerevo\" \
+	//						}";
 
+
+	string json_example = "{\"profileImages\": \
+							[{\"img\" :\"0001.jpg\", \"itm\" :\"active\" }, \
+							 {\"img\" :\"0002.jpg\", \"itm\" :\"\" }, \
+							 {\"img\" :\"0003.jpg\", \"itm\" :\"\" }, \
+							 {\"img\" :\"0004.jpg\", \"itm\" :\"\" }, \
+							 {\"img\" :\"0005.jpg\", \"itm\" :\"\" }, \
+							 {\"img\" :\"0006.jpg\", \"itm\" :\"\" }, \
+							 {\"img\" :\"0007.jpg\", \"itm\" :\"\" }, \
+							 {\"img\" :\"0008.jpg\", \"itm\" :\"\" }, \
+							 {\"img\" :\"0009.jpg\", \"itm\" :\"\" }, \
+							 {\"img\" :\"0010.jpg\", \"itm\" :\"\" }], \
+							\"profileID\": \"lancerevo\", \
+							\"dir\": \"\\\\static\\\\profile\\\\lancerevo\\\\ \" \
+							}";
 	Json::Value root;
 	Json::Reader reader;
 	bool parsedSuccess = reader.parse(json_example, root, false);
@@ -124,6 +189,10 @@ void IocpHttpd::HandleJsonTestTwo(HttpRequest *httpRequest, HttpResponse *httpRe
 		std::string s = root.toStyledString();
 		httpResponse->Write(s.c_str());
 		httpResponse->SetContentType("application/json");
+	}
+	else
+	{
+		httpResponse->Write(json_example.c_str());
 	}
 }
 
