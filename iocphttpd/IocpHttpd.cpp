@@ -101,8 +101,9 @@ void IocpHttpd::HandleAutomobileMetaDataProfileJson(HttpRequest *httpRequest, Ht
 	string json_example = "{                                            \
 		\"Versions\":[                                                  \
 	{                                                                   \
-		\"Premium\":{                                                   \
-			\"MSRP\":\"101770\",                                        \
+		\"Version\":{                                                   \
+			\"MSRP\":\"101,770\",                                        \
+				\"Code\" : \"Premium\",                                       \
 				\"HP\" : \"545\",                                       \
 				\"mpgCity\" : \"16\",                                   \
 				\"mpgHiway\" : \"23\",                                  \
@@ -112,14 +113,15 @@ void IocpHttpd::HandleAutomobileMetaDataProfileJson(HttpRequest *httpRequest, Ht
 					\"3.8-liter twin-turbo V6 engine\",                 \
 						\"Dual clutch 6-speed transmission\",           \
 						\"ATTESA E-TS® All-Wheel Drive\",               \
-						\"20\" RAYS® wheels [*]\",                      \
+						\"20\\\" RAYS® wheels [*]\",                      \
 						\"Nissan/Brembo® braking system [*]\"           \
 				]                                                       \
 		}                                                               \
 	},                                                                  \
 	{                                                                   \
-		\"Gold\":{                                                      \
-			\"MSRP\":\"102770\",                                        \
+		\"Version\":{                                                      \
+			\"MSRP\":\"102,770\",                                        \
+				\"Code\" : \"Gold\",                                       \
 				\"HP\" : \"545\",                                       \
 				\"mpgCity\" : \"16\",                                   \
 				\"mpgHiway\" : \"23\",                                  \
@@ -130,13 +132,14 @@ void IocpHttpd::HandleAutomobileMetaDataProfileJson(HttpRequest *httpRequest, Ht
 			\"3.8-liter twin-turbo V6 engine\",                         \
 				\"Dual clutch 6-speed transmission\",                   \
 				\"ATTESA E-TS® All-Wheel Drive\",                       \
-				\"20\" RAYS® wheels [*]\",                              \
+				\"20\\\" RAYS® wheels [*]\",                              \
 				\"Nissan/Brembo® braking system [*]\"                   \
 		]                                                               \
 	},                                                                  \
 	{                                                                   \
-		\"Black\":{                                                     \
-			\"MSRP\":\"110510\",                                        \
+		\"Version\":{                                                     \
+			\"MSRP\":\"110,510\",                                        \
+				\"Code\" : \"Black\",                                       \
 				\"HP\" : \"545\",                                       \
 				\"mpgCity\" : \"16\",                                   \
 				\"mpgHiway\" : \"23\",                                  \
@@ -146,7 +149,7 @@ void IocpHttpd::HandleAutomobileMetaDataProfileJson(HttpRequest *httpRequest, Ht
 		\"Features\":[                                                  \
 			\"Includes Premium features plus:\",                        \
 				\"Dry carbon-fiber rear spoiler [*]\",                  \
-				\"20\" Special dark-finished RAYS® wheels [*]\",        \
+				\"20\\\" Special dark-finished RAYS® wheels [*]\",        \
 				\"Black/Red Recaro® front seats [*]\"                   \
 		]                                                               \
 	}                                                                   \
