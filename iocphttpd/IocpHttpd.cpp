@@ -16,6 +16,7 @@ IocpHttpd::IocpHttpd()
 	AddRoute("/product/country/<id1:[0-9]+>/city/<id2:[0-9]+>/g.json", IocpHttpd::HandleJsonUrlParam1);
 	AddRoute("/profile/<id:[A-Za-z0-9]+>/profile.html", IocpHttpd::HandleAutomobileProfile);
 	AddRoute("/ws/profile/<id:[A-Za-z0-9]+>/profile.html", IocpHttpd::HandleAutomobileProfileJson);
+	AddRoute("/ws/metadata/profile/<id:[A-Za-z0-9]+>/profile.html", IocpHttpd::HandleAutomobileMetaDataProfileJson);
 }
 
 
@@ -86,6 +87,89 @@ void IocpHttpd::HandleAutomobileProfile(HttpRequest *httpRequest, HttpResponse *
 	}
 	httpResponse->WriteTemplate("init");
 }
+
+
+void IocpHttpd::HandleAutomobileMetaDataProfileJson(HttpRequest *httpRequest, HttpResponse *httpResponse)
+{
+	printf("IocpHttpd::HandleAutomobileProfile\n");
+
+	int n = httpRequest->urlParams.size();
+	printf("urlParams size=%d \n", n);
+
+	string profID = httpRequest->urlParams[0];
+
+	string json_example = "{                                            \
+		\"Versions\":[                                                  \
+	{                                                                   \
+		\"Premium\":{                                                   \
+			\"MSRP\":\"101770\",                                        \
+				\"HP\" : \"545\",                                       \
+				\"mpgCity\" : \"16\",                                   \
+				\"mpgHiway\" : \"23\",                                  \
+				\"seats\" : \"4\",                                      \
+				\"doors\" : \"2\",                                      \
+				\"Features\" : [                                        \
+					\"3.8-liter twin-turbo V6 engine\",                 \
+						\"Dual clutch 6-speed transmission\",           \
+						\"ATTESA E-TS® All-Wheel Drive\",               \
+						\"20\" RAYS® wheels [*]\",                      \
+						\"Nissan/Brembo® braking system [*]\"           \
+				]                                                       \
+		}                                                               \
+	},                                                                  \
+	{                                                                   \
+		\"Gold\":{                                                      \
+			\"MSRP\":\"102770\",                                        \
+				\"HP\" : \"545\",                                       \
+				\"mpgCity\" : \"16\",                                   \
+				\"mpgHiway\" : \"23\",                                  \
+				\"seats\" : \"4\",                                      \
+				\"doors\" : \"2\"                                       \
+		},                                                              \
+		\"Features\":[                                                  \
+			\"3.8-liter twin-turbo V6 engine\",                         \
+				\"Dual clutch 6-speed transmission\",                   \
+				\"ATTESA E-TS® All-Wheel Drive\",                       \
+				\"20\" RAYS® wheels [*]\",                              \
+				\"Nissan/Brembo® braking system [*]\"                   \
+		]                                                               \
+	},                                                                  \
+	{                                                                   \
+		\"Black\":{                                                     \
+			\"MSRP\":\"110510\",                                        \
+				\"HP\" : \"545\",                                       \
+				\"mpgCity\" : \"16\",                                   \
+				\"mpgHiway\" : \"23\",                                  \
+				\"seats\" : \"4\",                                      \
+				\"doors\" : \"2\"                                       \
+		},                                                              \
+		\"Features\":[                                                  \
+			\"Includes Premium features plus:\",                        \
+				\"Dry carbon-fiber rear spoiler [*]\",                  \
+				\"20\" Special dark-finished RAYS® wheels [*]\",        \
+				\"Black/Red Recaro® front seats [*]\"                   \
+		]                                                               \
+	}                                                                   \
+		]                                                               \
+}";
+
+	httpResponse->AddHeaderItem("AutomobileProfileName", profID);
+
+	Json::Value root;
+	Json::Reader reader;
+	bool parsedSuccess = reader.parse(json_example, root, false);
+	if (parsedSuccess)
+	{
+		std::string s = root.toStyledString();
+		httpResponse->Write(s.c_str());
+		httpResponse->SetContentType("application/json");
+	}
+	else
+	{
+		httpResponse->Write(json_example.c_str());
+	}
+}
+
 
 void IocpHttpd::HandleAutomobileProfileJson(HttpRequest *httpRequest, HttpResponse *httpResponse)
 {

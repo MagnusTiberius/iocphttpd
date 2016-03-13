@@ -22,6 +22,7 @@ public:
 	static void HandleReset(HttpRequest *httpRequest, HttpResponse *httpResponse);
 	static void HandleAutomobileProfile(HttpRequest *httpRequest, HttpResponse *httpResponse);
 	static void HandleAutomobileProfileJson(HttpRequest *httpRequest, HttpResponse *httpResponse);
+	static void HandleAutomobileMetaDataProfileJson(HttpRequest *httpRequest, HttpResponse *httpResponse);
 private:
 
 };
