@@ -1,10 +1,25 @@
 <!DOCTYPE html>
-<html  lang="en">
+<html  xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en" xmlns:og="http://ogp.me/ns#" xmlns:fb="http://www.facebook.com/2008/fbml" ng-app>
 <head>
-	<link rel="stylesheet" type="text/css" href="/static/css/test.css">
-	<script type="text/javascript" src="/static/js/testtwo.js"></script>
-	<script type="text/javascript" src="/static/js/websockettest.js"></script>
+	<link rel="image_src" href="http://74.208.133.86:8080/static/img/nissanGtr1.jpg" />
+	<meta name="title" content="Project IOCP">
+	<meta name="description" content="IOCP is a project that is developing a webserver with applications around it." />
 
+	<meta property="og:site_name" content="iocp"/>
+	<meta property="og:locale" content="en_US" />
+	<meta property="og:title" content="Project IOCP">
+	<meta property="og:description" content="IOCP is a project that is developing a webserver with applications around it.">
+	<meta property="og:image" content="http://74.208.133.86:8080/static/img/nissanGtr1.jpg">
+	<meta property="og:url" content="http://74.208.133.86:8080/">
+	<meta property="og:type" content="article">
+
+	<title>IOCP Webserver C++</title>
+
+	<link rel="stylesheet" type="text/css" href="/static/css/test.css">
+	<!--script src="/static/js/angular.min.js"></script-->
+	<script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.4.5/angular.min.js"></script>
+	<script type="text/javascript" src="/static/js/testtwo.js"></script>
+	
     <!-- Le styles -->
     <link href="/static/assets/css/bootstrap.css" rel="stylesheet">
     <style type="text/css">
@@ -32,10 +47,10 @@
 	      margin-right: 10px;
 	    }
 	</style>
-	
 </head>
 
 <body>
+	<div ng-app="">
     <div class="navbar navbar-inverse navbar-fixed-top">
       <div class="navbar-inner">
         <div class="container">
@@ -44,7 +59,7 @@
             <span class="icon-bar"></span>
             <span class="icon-bar"></span>
           </button>
-          <a class="brand" href="#">Project name</a>
+          <a class="brand" href="/">iocp</a>
           <div class="nav-collapse collapse">
             <ul class="nav">
               <li class="active"><a href="/">Home</a></li>
@@ -67,6 +82,7 @@
               <input class="span2" type="text" placeholder="Email">
               <input class="span2" type="password" placeholder="Password">
               <button type="submit" class="btn">Sign in</button>
+              <button type="submit" class="btn">Sign Up</button>
             </form>
           </div><!--/.nav-collapse -->
         </div>
@@ -74,12 +90,94 @@
     </div>
 
 	<div class="container">
-	<h1>Test Home</h1>
+	<h1>Setup Your Own Car Now!</h1>
+
+	<!--
 	[<a href="/">home</a> | <a href="/init">init</a> | <a href="/test">test</a>]
+	-->
 
 	<hr>
-	<img src="/static/img/intel.jpg">
+
+    <!-- Carousel
+    ================================================== -->
+    <div id="myCarousel" class="carousel slide">
+      <div class="carousel-inner">
+        <div class="item active">
+          <img src="/static/img/nissanGtr1.01.jpg" alt="">
+          <div class="container">
+            <div class="carousel-caption">
+              <h1>Example headline.</h1>
+              <p class="lead">Cras justo odio, dapibus ac facilisis in, egestas eget quam. Donec id elit non mi porta gravida at eget metus. Nullam id dolor id nibh ultricies vehicula ut id elit.</p>
+              <a class="btn btn-large btn-primary" href="/profile/nissangtr/profile.html">Sign up today</a>
+            </div>
+          </div>
+        </div>
+        <div class="item">
+          <img src="/static/img/lancerevo.01.jpg" alt="">
+          <div class="container">
+            <div class="carousel-caption">
+              <h1>Another example headline.</h1>
+              <p class="lead">Cras justo odio, dapibus ac facilisis in, egestas eget quam. Donec id elit non mi porta gravida at eget metus. Nullam id dolor id nibh ultricies vehicula ut id elit.</p>
+              <a class="btn btn-large btn-primary" href="/profile/lancerevo/profile.html">Learn more</a>
+            </div>
+          </div>
+        </div>
+        <div class="item">
+          <img src="/static/img/mustang.01.jpg" alt="">
+          <div class="container">
+            <div class="carousel-caption">
+              <h1>Another example headline.</h1>
+              <p class="lead">Cras justo odio, dapibus ac facilisis in, egestas eget quam. Donec id elit non mi porta gravida at eget metus. Nullam id dolor id nibh ultricies vehicula ut id elit.</p>
+              <a class="btn btn-large btn-primary" href="/profile/fordmustang/profile.html">Learn more</a>
+            </div>
+          </div>
+        </div>
+        <div class="item">
+          <img src="/static/img/audia5titanium.01.jpg" alt="">
+          <div class="container">
+            <div class="carousel-caption">
+              <h1>Another example headline.</h1>
+              <p class="lead">Cras justo odio, dapibus ac facilisis in, egestas eget quam. Donec id elit non mi porta gravida at eget metus. Nullam id dolor id nibh ultricies vehicula ut id elit.</p>
+              <a class="btn btn-large btn-primary" href="/profile/audia4titanium/profile.html">Learn more</a>
+            </div>
+          </div>
+        </div>
+        <div class="item">
+          <img src="/static/img/lancerevo2.01.jpg" alt="">
+          <div class="container">
+            <div class="carousel-caption">
+              <h1>Another example headline.</h1>
+              <p class="lead">Cras justo odio, dapibus ac facilisis in, egestas eget quam. Donec id elit non mi porta gravida at eget metus. Nullam id dolor id nibh ultricies vehicula ut id elit.</p>
+              <a class="btn btn-large btn-primary" href="/profile/lancerevo/profile.html">Learn more</a>
+            </div>
+          </div>
+        </div>
+        <div class="item">
+          <img src="/static/img/SubaruBRZConcept.01.jpg" alt="">
+          <div class="container">
+            <div class="carousel-caption">
+              <h1>Another example headline.</h1>
+              <p class="lead">Cras justo odio, dapibus ac facilisis in, egestas eget quam. Donec id elit non mi porta gravida at eget metus. Nullam id dolor id nibh ultricies vehicula ut id elit.</p>
+              <a class="btn btn-large btn-primary" href="/profile/subarubrz/profile.html">Learn more</a>
+            </div>
+          </div>
+        </div>
+        <div class="item">
+          <img src="/static/img/audia4titanium.01.jpg" alt="">
+          <div class="container">
+            <div class="carousel-caption">
+              <h1>One more for good measure.</h1>
+              <p class="lead">Cras justo odio, dapibus ac facilisis in, egestas eget quam. Donec id elit non mi porta gravida at eget metus. Nullam id dolor id nibh ultricies vehicula ut id elit.</p>
+              <a class="btn btn-large btn-primary" href="/profile/audia4titanium/profile.html">Browse gallery</a>
+            </div>
+          </div>
+        </div>
+      </div>
+      <a class="left carousel-control" href="#myCarousel" data-slide="prev">&lsaquo;</a>
+      <a class="right carousel-control" href="#myCarousel" data-slide="next">&rsaquo;</a>
+    </div><!-- /.carousel -->
 	
+	<!--
 	<p>
 	<form>
 	  <input id="btntest1" name="btntest1" type="button" value="send json data format">
@@ -97,8 +195,10 @@
 	  <input id="btntest4" name="btntest4" type="button" value="test multiple url params">
 	</form>
 	</p>
-	</div> <!-- /container -->
+	-->
 
+	</div> <!-- /container -->
+	<br><br>
 	<div class="container marketing">
       <!-- Three columns of text below the carousel -->
       <div class="row">
@@ -134,6 +234,10 @@ Fusce vitae lacus a nulla facilisis vulputate. Proin sed tellus justo. Aenean di
 	<form>
 	  <input id="btntest2" name="btntest2" type="button" value="send form data">
 	</form>
+
+	<p>Input something in the input box:</p>
+	<p>Name : <input type="text" ng-model="name" placeholder="Enter name here"></p>
+	<h1>Hello {{name}}</h1>	
 	
 	<p>
 Praesent at massa cursus, malesuada nisl vitae, dignissim augue. Vivamus ligula turpis, luctus lobortis blandit malesuada, eleifend sit amet felis. Ut ut hendrerit est. Aliquam ultrices a ex quis euismod. Vestibulum ante ipsum primis in faucibus orci luctus et ultrices posuere cubilia Curae; Phasellus dictum sem id velit lacinia dignissim. Phasellus in arcu eget sem pulvinar euismod. Etiam sollicitudin metus sapien, ut finibus felis vehicula non.
@@ -151,7 +255,7 @@ Pellentesque fermentum sem a enim sagittis, id porttitor mi mollis. Praesent non
 
 	<script type="text/javascript" src="/static/js/test.js"></script>
 
-	<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.2/jquery.min.js"></script>
+	<script src="/static/js/jquery.min.js"></script>
 	<script>
 		$( "#btntest1" ).click(function() {
 			//alert( "Handler for .click() called." );
@@ -292,5 +396,10 @@ Pellentesque fermentum sem a enim sagittis, id porttitor mi mollis. Praesent non
     <script src="/static/assets/js/bootstrap-carousel.js"></script>
     <script src="/static/assets/js/bootstrap-typeahead.js"></script>
     <script src="/static/assets/js/holder.js"></script>
+	
+	<script type="text/javascript" src="/static/js/autobileapp.js"></script>
+	<script type="text/javascript" src="/static/js/autobilecontroller.js"></script>
+	
+	</div> <!-- ngapp-->
 <body>	
 </html>
