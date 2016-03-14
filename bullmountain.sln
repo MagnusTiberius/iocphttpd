@@ -1,11 +1,13 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 2013
-VisualStudioVersion = 12.0.31101.0
+VisualStudioVersion = 12.0.40629.0
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "iocphttpd", "iocphttpd\iocphttpd.vcxproj", "{54F797E9-FB21-4BBE-914C-4EFD66861330}"
 	ProjectSection(ProjectDependencies) = postProject
+		{B59EB318-70BF-410B-8457-EB0FB9693BCF} = {B59EB318-70BF-410B-8457-EB0FB9693BCF}
 		{C8430F27-BC5C-4F41-882E-F8E5A5FA0CD9} = {C8430F27-BC5C-4F41-882E-F8E5A5FA0CD9}
+		{112387A1-6378-4C10-90EA-F7735577C2A5} = {112387A1-6378-4C10-90EA-F7735577C2A5}
 		{9C9048D6-37C8-44BF-BD8E-7D7F6B5AC42B} = {9C9048D6-37C8-44BF-BD8E-7D7F6B5AC42B}
 	EndProjectSection
 EndProject
@@ -79,8 +81,6 @@ Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "carconfig", "websitecarconf
 	EndProjectSection
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "gamelib", "gamelib\gamelib.vcxproj", "{5B893221-B35C-4E2A-97C4-AB3BD3459D7D}"
-EndProject
-Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "CppWindowsService", "iocpsrv\CppWindowsService\CppWindowsService.vcxproj", "{DE70E2D1-6A4D-4984-BD82-CE750889F0D3}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -445,27 +445,6 @@ Global
 		{5B893221-B35C-4E2A-97C4-AB3BD3459D7D}.Release|Win32.ActiveCfg = Release|Win32
 		{5B893221-B35C-4E2A-97C4-AB3BD3459D7D}.Release|Win32.Build.0 = Release|Win32
 		{5B893221-B35C-4E2A-97C4-AB3BD3459D7D}.Release|x64.ActiveCfg = Release|Win32
-		{DE70E2D1-6A4D-4984-BD82-CE750889F0D3}.Debug|Any CPU.ActiveCfg = Debug|Win32
-		{DE70E2D1-6A4D-4984-BD82-CE750889F0D3}.Debug|Mixed Platforms.ActiveCfg = Debug|Win32
-		{DE70E2D1-6A4D-4984-BD82-CE750889F0D3}.Debug|Mixed Platforms.Build.0 = Debug|Win32
-		{DE70E2D1-6A4D-4984-BD82-CE750889F0D3}.Debug|Win32.ActiveCfg = Debug|Win32
-		{DE70E2D1-6A4D-4984-BD82-CE750889F0D3}.Debug|Win32.Build.0 = Debug|Win32
-		{DE70E2D1-6A4D-4984-BD82-CE750889F0D3}.Debug|x64.ActiveCfg = Debug|x64
-		{DE70E2D1-6A4D-4984-BD82-CE750889F0D3}.Debug|x64.Build.0 = Debug|x64
-		{DE70E2D1-6A4D-4984-BD82-CE750889F0D3}.dummy|Any CPU.ActiveCfg = Debug|Win32
-		{DE70E2D1-6A4D-4984-BD82-CE750889F0D3}.dummy|Mixed Platforms.ActiveCfg = Debug|Win32
-		{DE70E2D1-6A4D-4984-BD82-CE750889F0D3}.dummy|Mixed Platforms.Build.0 = Debug|Win32
-		{DE70E2D1-6A4D-4984-BD82-CE750889F0D3}.dummy|Win32.ActiveCfg = Debug|Win32
-		{DE70E2D1-6A4D-4984-BD82-CE750889F0D3}.dummy|Win32.Build.0 = Debug|Win32
-		{DE70E2D1-6A4D-4984-BD82-CE750889F0D3}.dummy|x64.ActiveCfg = Debug|x64
-		{DE70E2D1-6A4D-4984-BD82-CE750889F0D3}.dummy|x64.Build.0 = Debug|x64
-		{DE70E2D1-6A4D-4984-BD82-CE750889F0D3}.Release|Any CPU.ActiveCfg = Release|Win32
-		{DE70E2D1-6A4D-4984-BD82-CE750889F0D3}.Release|Mixed Platforms.ActiveCfg = Release|Win32
-		{DE70E2D1-6A4D-4984-BD82-CE750889F0D3}.Release|Mixed Platforms.Build.0 = Release|Win32
-		{DE70E2D1-6A4D-4984-BD82-CE750889F0D3}.Release|Win32.ActiveCfg = Release|Win32
-		{DE70E2D1-6A4D-4984-BD82-CE750889F0D3}.Release|Win32.Build.0 = Release|Win32
-		{DE70E2D1-6A4D-4984-BD82-CE750889F0D3}.Release|x64.ActiveCfg = Release|x64
-		{DE70E2D1-6A4D-4984-BD82-CE750889F0D3}.Release|x64.Build.0 = Release|x64
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

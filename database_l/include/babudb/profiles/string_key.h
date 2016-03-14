@@ -44,7 +44,7 @@ namespace babudb {
 class StringOrder : public KeyOrder {
 public:
   virtual bool less(const Buffer& l, const Buffer& r) const {
-    int order = strncmp((const char*)l.data,(const char*)r.data, std::min(l.size,r.size));
+    int order = strncmp((const char*)l.data,(const char*)r.data, std::min<int>(l.size,r.size));
     if(order == 0)  // on most significant positions they are the same
       return l.size < r.size; // second is longer, so first is before
     else

@@ -4,9 +4,11 @@
 #include "stdafx.h"
 #include "IocpHttpd.h"
 #include "WebSocketManager.h"
-
+#include "DBServer.h"
 //#include "HParser.h"
 #include "Jsonp.h"
+
+#define THREAD_COUNT 3
 
 int _tmain(int argc, _TCHAR* argv[])
 {
@@ -24,6 +26,14 @@ int _tmain(int argc, _TCHAR* argv[])
 
 	WebSocketManager wsmanager;
 	wsmanager.Start();
+
+	DBServer dbServer;
+	int n = dbServer.GetThreadNum();
+
+	assert(THREAD_COUNT==n);
+
+	HANDLE hList1[THREAD_COUNT];
+	dbServer.Start(hList1);
 
 	IocpHttpd server;
 	server.Start(8080);
