@@ -42,5 +42,6 @@ private:
 	stack<REQUEST*> requests;
 	HANDLE ghMutex;
 	DatabaseDemo::DemoDB* db;
+	HANDLE ghHasMessageEvent;
 };
 

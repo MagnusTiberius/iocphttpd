@@ -16,6 +16,7 @@ DBServer::DBServer()
 		FALSE,             // initially not owned
 		NULL);
 	dwCtr = 0;
+	ghHasMessageEvent = CreateEvent(NULL, TRUE, FALSE, TEXT("DBServer"));
 }
 
 int DBServer::Start(HANDLE* hList)
@@ -87,6 +88,7 @@ DWORD WINAPI DBServer::ServerWorkerThread(LPVOID lpObject)
 	while (instance->isLooping)
 	{
 		Sleep(300);
+		::WaitForSingleObject(instance->ghHasMessageEvent, INFINITE);
 		if (::WaitForSingleObject(instance->ghMutex, 10000) == WAIT_OBJECT_0)
 		{
 			instance->dwCtr++;
@@ -101,10 +103,16 @@ DWORD WINAPI DBServer::ServerWorkerThread(LPVOID lpObject)
 				{
 					instance->requests.pop();
 					instance->UpdateDB(req);
-					::ReleaseMutex(instance->ghMutex);
 				}
 			}
+
+			if (instance->requests.size() == 0)
+			{
+				::ResetEvent(instance->ghHasMessageEvent);
+			}
+			::ReleaseMutex(instance->ghMutex);
 		}
+
 	}
 	return 1;
 }
@@ -112,4 +120,5 @@ DWORD WINAPI DBServer::ServerWorkerThread(LPVOID lpObject)
 void DBServer::Submit(REQUEST* request)
 {
 	requests.push(request);
+	SetEvent(ghHasMessageEvent);
 }
