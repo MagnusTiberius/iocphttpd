@@ -1,6 +1,14 @@
 #include "DBServer.h"
 
 
+DBServer* DBServer::_instance = 0;
+
+DBServer* DBServer::Instance() {
+	if (_instance == 0) {
+		_instance = new DBServer();
+	}
+	return _instance;
+}
 
 DBServer::~DBServer()
 {
@@ -22,7 +30,7 @@ DBServer::DBServer()
 int DBServer::Start(HANDLE* hList)
 {
 	std::vector<std::string> indices;
-	indices.push_back("connection");
+	indices.push_back(DATADBNAME);
 	db = DatabaseDemo::DemoDB::Open("C:\\temp\\demodb", indices);
 
 	//HANDLE hList[THREAD_COUNT];
@@ -59,25 +67,107 @@ int DBServer::Connect()
 	return connectID;
 }
 
+void DBServer::InitData()
+{
+	string profID[5] = {"nissangtr","lancerevo","fordmustang","audia4titanium","subarubrz"};
+
+	for (int i = 0; i < 5; i++)
+	{
+		string key = "/ws/metadata/profile/" + profID[i] + "/profile.html";
+		key = "/ws/profile/" + profID[i] + "/profile.html";
+		string value = "{\"profileImages\":                                                                                   \
+						[{\"img\" :\"\\\\static\\\\profile\\\\" + profID[i] + "\\\\img\\\\0001.jpg\", \"itm\" :\"active\" },     \
+							{\"img\" :\"\\\\static\\\\profile\\\\" + profID[i] + "\\\\img\\\\0002.jpg\", \"itm\" :\"\" },        \
+							{\"img\" :\"\\\\static\\\\profile\\\\" + profID[i] + "\\\\img\\\\0003.jpg\", \"itm\" :\"\" },        \
+							{\"img\" :\"\\\\static\\\\profile\\\\" + profID[i] + "\\\\img\\\\0004.jpg\", \"itm\" :\"\" },        \
+							{\"img\" :\"\\\\static\\\\profile\\\\" + profID[i] + "\\\\img\\\\0005.jpg\", \"itm\" :\"\" },        \
+							{\"img\" :\"\\\\static\\\\profile\\\\" + profID[i] + "\\\\img\\\\0006.jpg\", \"itm\" :\"\" },        \
+							{\"img\" :\"\\\\static\\\\profile\\\\" + profID[i] + "\\\\img\\\\0007.jpg\", \"itm\" :\"\" },        \
+							{\"img\" :\"\\\\static\\\\profile\\\\" + profID[i] + "\\\\img\\\\0008.jpg\", \"itm\" :\"\" },        \
+							{\"img\" :\"\\\\static\\\\profile\\\\" + profID[i] + "\\\\img\\\\0009.jpg\", \"itm\" :\"\" },        \
+							{\"img\" :\"\\\\static\\\\profile\\\\" + profID[i] + "\\\\img\\\\0010.jpg\", \"itm\" :\"\" }],       \
+						\"profileID\": \"" + profID[i] + "\",                                                                    \
+						\"dir\": \"\\\\static\\\\profile\\\\" + profID[i] + "\\\\img\\\\\"                                       \
+						}";
+		db->Add(DATADBNAME, key, value);
+		string v = GetValue(key);
+		// ---------------------------------------
+
+		key = "/ws/metadata/profile/" + profID[i] + "/profile.html";
+		value = "{                                            \
+			\"Versions\":[                                                  \
+		{                                                                   \
+			\"Version\":{                                                   \
+				\"MSRP\":\"101,770\",                                       \
+					\"Code\" : \"Premium\",                                 \
+					\"HP\" : \"545\",                                       \
+					\"mpgCity\" : \"16\",                                   \
+					\"mpgHiway\" : \"23\",                                  \
+					\"seats\" : \"4\",                                      \
+					\"doors\" : \"2\",                                      \
+					\"Features\" : [                                        \
+						\"3.8-liter twin-turbo V6 engine\",                 \
+							\"Dual clutch 6-speed transmission\",           \
+							\"ATTESA E-TS® All-Wheel Drive\",               \
+							\"20\\\" RAYS® wheels [*]\",                    \
+							\"Nissan/Brembo® braking system [*]\"           \
+					]                                                       \
+			}                                                               \
+		},                                                                  \
+		{                                                                   \
+			\"Version\":{                                                   \
+				\"MSRP\":\"102,770\",                                       \
+					\"Code\" : \"Gold\",                                    \
+					\"HP\" : \"545\",                                       \
+					\"mpgCity\" : \"16\",                                   \
+					\"mpgHiway\" : \"23\",                                  \
+					\"seats\" : \"4\",                                      \
+					\"doors\" : \"2\"                                       \
+			},                                                              \
+			\"Features\":[                                                  \
+				\"3.8-liter twin-turbo V6 engine\",                         \
+					\"Dual clutch 6-speed transmission\",                   \
+					\"ATTESA E-TS® All-Wheel Drive\",                       \
+					\"20\\\" RAYS® wheels [*]\",                            \
+					\"Nissan/Brembo® braking system [*]\"                   \
+			]                                                               \
+		},                                                                  \
+		{                                                                   \
+			\"Version\":{                                                   \
+				\"MSRP\":\"110,510\",                                       \
+					\"Code\" : \"Black\",                                   \
+					\"HP\" : \"545\",                                       \
+					\"mpgCity\" : \"16\",                                   \
+					\"mpgHiway\" : \"23\",                                  \
+					\"seats\" : \"4\",                                      \
+					\"doors\" : \"2\"                                       \
+			},                                                              \
+			\"Features\":[                                                  \
+				\"Includes Premium features plus:\",                        \
+					\"Dry carbon-fiber rear spoiler [*]\",                  \
+					\"20\\\" Special dark-finished RAYS® wheels [*]\",      \
+					\"Black/Red Recaro® front seats [*]\"                   \
+			]                                                               \
+		}                                                                   \
+			]                                                               \
+		}";
+
+		db->Add(DATADBNAME, key, value);
+	}
+
+}
+
 void DBServer::UpdateDB(REQUEST* request)
 {
-	char buf[1024];
-	ZeroMemory(buf, 1024);
-	sprintf_s(buf, "Connect_%d", request->ConnectID);
-
-	char bufv[1024];
-	ZeroMemory(bufv, 1024);
-	sprintf_s(bufv, "x=%d, y=%d", request->x, request->y);
-
-	std::string v1 = db->Lookup("connection", buf);
+	std::string v1 = db->Lookup(DATADBNAME, request->key);
 	if (v1.size() == 0)
 	{
-		db->Add("connection", buf, bufv);
+		db->Add(DATADBNAME, request->key, request->value);
 	}
 	else
 	{
-		//db->Remove("connection", buf);
-		db->Add("connection", buf, bufv);
+		//db->Remove(DATADBNAME, buf);
+		db->Add(DATADBNAME, request->key, request->value);
 	}
 	db->Commit();
 }
@@ -121,4 +211,10 @@ void DBServer::Submit(REQUEST* request)
 {
 	requests.push(request);
 	SetEvent(ghHasMessageEvent);
+}
+
+string DBServer::GetValue(string key)
+{
+	string value = db->Lookup(DATADBNAME, key);
+	return value;
 }

@@ -27,16 +27,18 @@ int _tmain(int argc, _TCHAR* argv[])
 	WebSocketManager wsmanager;
 	wsmanager.Start();
 
-	DBServer dbServer;
-	int n = dbServer.GetThreadNum();
+	DBServer* dbServer;
+	dbServer = DBServer::Instance();
+	int n = dbServer->GetThreadNum();
 
 	assert(THREAD_COUNT==n);
 
 	HANDLE hList1[THREAD_COUNT];
-	dbServer.Start(hList1);
+	dbServer->Start(hList1);
+	dbServer->InitData();
 
 	IocpHttpd server;
-	server.AddDB(&dbServer);
+	server.AddDB(dbServer);
 	server.Start(8080);
 	return 0;
 }

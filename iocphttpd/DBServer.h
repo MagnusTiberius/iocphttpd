@@ -7,18 +7,21 @@
 
 #define THREAD_COUNT 3
 #define LIMITCTR 10000
+#define DATADBNAME "datadb"
 
 using namespace DatabaseDemo;
 
 typedef struct Request{
-	int ConnectID;
-	DWORD x;
-	DWORD y;
+	string key;
+	string value;
 }REQUEST, *LP_REQUEST;
 
 class DBServer
 {
 public:
+	static DBServer* Instance();
+
+protected:
 	DBServer();
 	~DBServer();
 
@@ -30,7 +33,11 @@ public:
 	int Connect();
 	void UpdateDB(REQUEST* request);
 	int GetThreadNum();
+	void InitData();
+	string GetValue(string key);
+
 private:
+	static DBServer* _instance;
 	static DWORD WINAPI ServerWorkerThread(LPVOID CompletionPortID);
 	DWORD dwCtr;
 	int nThreads;
