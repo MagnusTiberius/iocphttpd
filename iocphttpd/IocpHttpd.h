@@ -1,6 +1,7 @@
 #pragma once
 #include "stdafx.h"
 #include "SocketCompletionPortServer.h"
+#include "DBServer.h"
 
 using namespace IOCPHTTPL;
 
@@ -23,7 +24,10 @@ public:
 	static void HandleAutomobileProfile(HttpRequest *httpRequest, HttpResponse *httpResponse);
 	static void HandleAutomobileProfileJson(HttpRequest *httpRequest, HttpResponse *httpResponse);
 	static void HandleAutomobileMetaDataProfileJson(HttpRequest *httpRequest, HttpResponse *httpResponse);
-private:
 
+	void AddDB(DBServer* db);
+
+private:
+	DBServer* dbServer;
 };
 

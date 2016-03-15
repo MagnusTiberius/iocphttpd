@@ -25,6 +25,11 @@ IocpHttpd::~IocpHttpd()
 {
 }
 
+void IocpHttpd::AddDB(DBServer* db)
+{
+	dbServer = db;
+}
+
 void IocpHttpd::EvalGet(HttpRequest *httpRequest, HttpResponse *httpResponse)
 {
 	printf("IocpHttpd::EvalGet\n");
@@ -102,8 +107,8 @@ void IocpHttpd::HandleAutomobileMetaDataProfileJson(HttpRequest *httpRequest, Ht
 		\"Versions\":[                                                  \
 	{                                                                   \
 		\"Version\":{                                                   \
-			\"MSRP\":\"101,770\",                                        \
-				\"Code\" : \"Premium\",                                       \
+			\"MSRP\":\"101,770\",                                       \
+				\"Code\" : \"Premium\",                                 \
 				\"HP\" : \"545\",                                       \
 				\"mpgCity\" : \"16\",                                   \
 				\"mpgHiway\" : \"23\",                                  \
@@ -113,15 +118,15 @@ void IocpHttpd::HandleAutomobileMetaDataProfileJson(HttpRequest *httpRequest, Ht
 					\"3.8-liter twin-turbo V6 engine\",                 \
 						\"Dual clutch 6-speed transmission\",           \
 						\"ATTESA E-TS® All-Wheel Drive\",               \
-						\"20\\\" RAYS® wheels [*]\",                      \
+						\"20\\\" RAYS® wheels [*]\",                    \
 						\"Nissan/Brembo® braking system [*]\"           \
 				]                                                       \
 		}                                                               \
 	},                                                                  \
 	{                                                                   \
-		\"Version\":{                                                      \
-			\"MSRP\":\"102,770\",                                        \
-				\"Code\" : \"Gold\",                                       \
+		\"Version\":{                                                   \
+			\"MSRP\":\"102,770\",                                       \
+				\"Code\" : \"Gold\",                                    \
 				\"HP\" : \"545\",                                       \
 				\"mpgCity\" : \"16\",                                   \
 				\"mpgHiway\" : \"23\",                                  \
@@ -132,14 +137,14 @@ void IocpHttpd::HandleAutomobileMetaDataProfileJson(HttpRequest *httpRequest, Ht
 			\"3.8-liter twin-turbo V6 engine\",                         \
 				\"Dual clutch 6-speed transmission\",                   \
 				\"ATTESA E-TS® All-Wheel Drive\",                       \
-				\"20\\\" RAYS® wheels [*]\",                              \
+				\"20\\\" RAYS® wheels [*]\",                            \
 				\"Nissan/Brembo® braking system [*]\"                   \
 		]                                                               \
 	},                                                                  \
 	{                                                                   \
-		\"Version\":{                                                     \
-			\"MSRP\":\"110,510\",                                        \
-				\"Code\" : \"Black\",                                       \
+		\"Version\":{                                                   \
+			\"MSRP\":\"110,510\",                                       \
+				\"Code\" : \"Black\",                                   \
 				\"HP\" : \"545\",                                       \
 				\"mpgCity\" : \"16\",                                   \
 				\"mpgHiway\" : \"23\",                                  \
@@ -149,7 +154,7 @@ void IocpHttpd::HandleAutomobileMetaDataProfileJson(HttpRequest *httpRequest, Ht
 		\"Features\":[                                                  \
 			\"Includes Premium features plus:\",                        \
 				\"Dry carbon-fiber rear spoiler [*]\",                  \
-				\"20\\\" Special dark-finished RAYS® wheels [*]\",        \
+				\"20\\\" Special dark-finished RAYS® wheels [*]\",      \
 				\"Black/Red Recaro® front seats [*]\"                   \
 		]                                                               \
 	}                                                                   \
@@ -183,19 +188,19 @@ void IocpHttpd::HandleAutomobileProfileJson(HttpRequest *httpRequest, HttpRespon
 
 	string profID = httpRequest->urlParams[0];
 
-	string json_example = "{\"profileImages\": \
-							[{\"img\" :\"\\\\static\\\\profile\\\\" + profID + "\\\\img\\\\0001.jpg\", \"itm\" :\"active\" }, \
-							 {\"img\" :\"\\\\static\\\\profile\\\\" + profID + "\\\\img\\\\0002.jpg\", \"itm\" :\"\" }, \
-							 {\"img\" :\"\\\\static\\\\profile\\\\" + profID + "\\\\img\\\\0003.jpg\", \"itm\" :\"\" }, \
-							 {\"img\" :\"\\\\static\\\\profile\\\\" + profID + "\\\\img\\\\0004.jpg\", \"itm\" :\"\" }, \
-							 {\"img\" :\"\\\\static\\\\profile\\\\" + profID + "\\\\img\\\\0005.jpg\", \"itm\" :\"\" }, \
-							 {\"img\" :\"\\\\static\\\\profile\\\\" + profID + "\\\\img\\\\0006.jpg\", \"itm\" :\"\" }, \
-							 {\"img\" :\"\\\\static\\\\profile\\\\" + profID + "\\\\img\\\\0007.jpg\", \"itm\" :\"\" }, \
-							 {\"img\" :\"\\\\static\\\\profile\\\\" + profID + "\\\\img\\\\0008.jpg\", \"itm\" :\"\" }, \
-							 {\"img\" :\"\\\\static\\\\profile\\\\" + profID + "\\\\img\\\\0009.jpg\", \"itm\" :\"\" }, \
-							 {\"img\" :\"\\\\static\\\\profile\\\\" + profID + "\\\\img\\\\0010.jpg\", \"itm\" :\"\" }], \
-							\"profileID\": \"" + profID + "\", \
-							\"dir\": \"\\\\static\\\\profile\\\\" + profID + "\\\\img\\\\\" \
+	string json_example = "{\"profileImages\":                                                                                 \
+							[{\"img\" :\"\\\\static\\\\profile\\\\" + profID + "\\\\img\\\\0001.jpg\", \"itm\" :\"active\" },  \
+							 {\"img\" :\"\\\\static\\\\profile\\\\" + profID + "\\\\img\\\\0002.jpg\", \"itm\" :\"\" },        \
+							 {\"img\" :\"\\\\static\\\\profile\\\\" + profID + "\\\\img\\\\0003.jpg\", \"itm\" :\"\" },        \
+							 {\"img\" :\"\\\\static\\\\profile\\\\" + profID + "\\\\img\\\\0004.jpg\", \"itm\" :\"\" },        \
+							 {\"img\" :\"\\\\static\\\\profile\\\\" + profID + "\\\\img\\\\0005.jpg\", \"itm\" :\"\" },        \
+							 {\"img\" :\"\\\\static\\\\profile\\\\" + profID + "\\\\img\\\\0006.jpg\", \"itm\" :\"\" },        \
+							 {\"img\" :\"\\\\static\\\\profile\\\\" + profID + "\\\\img\\\\0007.jpg\", \"itm\" :\"\" },        \
+							 {\"img\" :\"\\\\static\\\\profile\\\\" + profID + "\\\\img\\\\0008.jpg\", \"itm\" :\"\" },        \
+							 {\"img\" :\"\\\\static\\\\profile\\\\" + profID + "\\\\img\\\\0009.jpg\", \"itm\" :\"\" },        \
+							 {\"img\" :\"\\\\static\\\\profile\\\\" + profID + "\\\\img\\\\0010.jpg\", \"itm\" :\"\" }],       \
+							\"profileID\": \"" + profID + "\",                                                                 \
+							\"dir\": \"\\\\static\\\\profile\\\\" + profID + "\\\\img\\\\\"                                    \
 							}";
 
 	httpResponse->AddHeaderItem("AutomobileProfileName", profID);

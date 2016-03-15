@@ -63,11 +63,11 @@ void DBServer::UpdateDB(REQUEST* request)
 {
 	char buf[1024];
 	ZeroMemory(buf, 1024);
-	sprintf(buf, "Connect_%d", request->ConnectID);
+	sprintf_s(buf, "Connect_%d", request->ConnectID);
 
 	char bufv[1024];
 	ZeroMemory(bufv, 1024);
-	sprintf(bufv, "x=%d, y=%d", request->x, request->y);
+	sprintf_s(bufv, "x=%d, y=%d", request->x, request->y);
 
 	std::string v1 = db->Lookup("connection", buf);
 	if (v1.size() == 0)
