@@ -27,12 +27,18 @@
     <ClInclude Include="SocketCompletionPortServerWS.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="Crypt.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="stdafx.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="SocketCompletionPortServerWS.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Crypt.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>

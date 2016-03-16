@@ -58,6 +58,9 @@ EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "securechannel_l", "securechannel_l\securechannel_l.vcxproj", "{7E20D1D3-111B-4927-8371-3A6233685689}"
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "securechanneltest", "securechanneltest\securechanneltest.vcxproj", "{26C56E8B-E7AC-4EAE-9D95-A4AC67EBF49D}"
+	ProjectSection(ProjectDependencies) = postProject
+		{DF4CBFC5-6690-4DCB-81DE-589472D1DB00} = {DF4CBFC5-6690-4DCB-81DE-589472D1DB00}
+	EndProjectSection
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "database_l", "database_l\database_l.vcxproj", "{112387A1-6378-4C10-90EA-F7735577C2A5}"
 EndProject
