@@ -71,11 +71,11 @@ done:
 	if (hProv) CryptReleaseContext(hProv, 0);
 }
 
-char* Crypt::HashIt(string value)
+char* Crypt::HashIt(string value, BYTE* out, DWORD *outLen)
 {
 	HCRYPTPROV hProv = 0;
 	HCRYPTHASH hHash = 0;
-	char *pbHash = NULL;
+	BYTE *pbHash = NULL;
 	DWORD dwHashLen;
 	BYTE pbBuffer[BUFFER_SIZE];
 	DWORD dwCount;
@@ -115,13 +115,17 @@ char* Crypt::HashIt(string value)
 		printf("Error %x during reading hash size!\n", GetLastError());
 		goto done;
 	}
-	if ((pbHash = (char*)malloc(dwHashLen)) == NULL) {
+	if ((pbHash = (BYTE*)malloc(dwHashLen)) == NULL) {
 		printf("Out of memory!\n");
 		goto done;
 	}
 	ZeroMemory(pbHash, dwHashLen);
 	// Read hash value.
 	if (!CryptGetHashParam(hHash, HP_HASHVAL, (BYTE*)pbHash, &dwHashLen, 0)) {
+		printf("Error %x during reading hash value!\n", GetLastError());
+		goto done;
+	}
+	if (!CryptGetHashParam(hHash, HP_HASHVAL, (BYTE*)out, &dwHashLen, 0)) {
 		printf("Error %x during reading hash value!\n", GetLastError());
 		goto done;
 	}
@@ -139,6 +143,8 @@ done:
 	// Release CSP handle.
 	if (hProv) CryptReleaseContext(hProv, 0);
 	//return string(_strdup(buf));
+	//out = pbHash;
+	*outLen = dwHashLen;
 	return (char*)pbHash;
 }
 

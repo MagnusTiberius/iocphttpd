@@ -20,7 +20,7 @@ public:
 
 
 	void Hash(string value);
-	static char* HashIt(string value);
+	static char* HashIt(string value, BYTE* out, DWORD *outLen);
 	static string urlEncode(string str);
 	static string urlDecode(string str);
 

@@ -43,7 +43,7 @@ namespace securechanneltest
 	}
 
 
-	void Base64::base64_encode(const char* bytes_to_encode, unsigned int in_len, char* out)
+	void Base64::base64_encode(unsigned char* bytes_to_encode, unsigned int in_len, char* out)
 	{
 		int i = 0;
 		int j = 0;
