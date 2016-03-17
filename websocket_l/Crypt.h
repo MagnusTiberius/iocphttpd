@@ -12,25 +12,31 @@
 #define WEBSOCKETKEY  "dGhlIHNhbXBsZSBub25jZQ=="
 #define WEBSOCKETKEY2 "+1bfVHYyBdlCWc4j0J27og=="
 
-class Crypt
+namespace WebSocket
 {
-public:
-	Crypt();
-	~Crypt();
 
 
-	void Hash(string value);
-	static char* HashIt(string value, BYTE* out, DWORD *outLen);
-	static string urlEncode(string str);
-	static string urlDecode(string str);
+	class Crypt
+	{
+	public:
+		Crypt();
+		~Crypt();
 
-private:
-	HCRYPTPROV hProv = 0;
-	HCRYPTHASH hHash = 0;
-	BYTE *pbHash = NULL;
-	DWORD dwHashLen;
-	BYTE pbBuffer[BUFFER_SIZE];
-	DWORD dwCount;
-	DWORD i;
-};
 
+		void Hash(string value);
+		static char* HashIt(string value, BYTE* out, DWORD *outLen);
+		static string urlEncode(string str);
+		static string urlDecode(string str);
+
+	private:
+		HCRYPTPROV hProv = 0;
+		HCRYPTHASH hHash = 0;
+		BYTE *pbHash = NULL;
+		DWORD dwHashLen;
+		BYTE pbBuffer[BUFFER_SIZE];
+		DWORD dwCount;
+		DWORD i;
+	};
+
+
+}

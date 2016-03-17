@@ -4,8 +4,9 @@
 #include <stdio.h>
 
 #include "stdafx.h"
+#include "Crypt.h"
+#include "Base64.h"
 
- 
 namespace WebSocket
 {
 

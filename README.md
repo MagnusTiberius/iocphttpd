@@ -37,3 +37,5 @@ Progress:
 12/30/2015 - Service is now able to load the executable. Start will run it and Stop will terminate the executable.
 
 2/22/2016  - Adding websocket functionality. See websocket_l for details. websockettest.js is the test client and SocketCompletionPortServerWS.cpp is the server code.
+
+3/17/2016 - Websocket handshake is now implemented.

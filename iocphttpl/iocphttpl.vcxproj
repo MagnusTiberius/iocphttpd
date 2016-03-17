@@ -104,7 +104,7 @@
     <Link>
       <SubSystem>Windows</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
-      <AdditionalDependencies>version.lib;ws2_32.lib;Shlwapi.lib;jsoncp.lib;websocket_l.lib</AdditionalDependencies>
+      <AdditionalDependencies>version.lib;ws2_32.lib;Shlwapi.lib;jsoncp.lib;websocket_l.lib;Advapi32.lib</AdditionalDependencies>
       <AdditionalLibraryDirectories>$(SolutionDir)\lib\$(Platform)\$(Configuration)\;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
     </Link>
   </ItemDefinitionGroup>
@@ -140,7 +140,7 @@
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
       <OptimizeReferences>true</OptimizeReferences>
-      <AdditionalDependencies>version.lib;ws2_32.lib;Shlwapi.lib;jsoncp.lib;websocket_l.lib</AdditionalDependencies>
+      <AdditionalDependencies>version.lib;ws2_32.lib;Shlwapi.lib;jsoncp.lib;websocket_l.lib;Advapi32.lib</AdditionalDependencies>
       <AdditionalLibraryDirectories>$(SolutionDir)\lib\$(Platform)\$(Configuration)\;C:\Program Files (x86)\Windows Kits\8.1\Lib\winv6.3\um\x86;C:\Windows\System32;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
     </Link>
   </ItemDefinitionGroup>

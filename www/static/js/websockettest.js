@@ -4,7 +4,7 @@ webSocket = new WebSocket("ws://localhost:9090/test");
 
 
 webSocket.onopen = function() {
-   alert("webSocket.onopen");
+   alert("webSocket.onopen, successful websocket connection made!");
 };
 
 

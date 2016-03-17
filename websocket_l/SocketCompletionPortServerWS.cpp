@@ -254,21 +254,79 @@ namespace WebSocket
 			//PerIoData->BytesRECV = 0;
 
 
-			int len = strlen(PerIoData->DataBuf.buf);
-			int res = ::send(PerHandleData->Socket, PerIoData->DataBuf.buf, len, NULL);
-
-			if (res != SOCKET_ERROR)
+			const char* pfindver = "Sec-WebSocket-Version:";
+			char* pver = strstr(PerIoData->DataBuf.buf, pfindver);
+			if (pver)
 			{
-				SendBytes = PerIoData->BytesSEND;
-				sprintf(msg, "%d::WSASEND: Socket=%d; SendBytes=%d; PerIoDataSend->BytesRECV=%d; PerIoDataSend->BytesSEND=%d; PerIoDataSend->DataBuf.len=%d\n",
-					dwThreadId, PerHandleData->Socket, SendBytes, PerIoData->BytesRECV, PerIoData->BytesSEND, PerIoData->DataBuf.len);
+				pver += strlen(pfindver);
+				while (*pver == ' ')
+					pver++;
+				int nVersion = atoi(pver);
+				const char* pfindkey = "Sec-WebSocket-Key:";
+				char* pkey = strstr(PerIoData->DataBuf.buf, pfindkey);
+				if (pkey)
+				{
+					pkey += strlen(pfindkey);
+					while (*pkey == ' ')
+						pkey++;
+					char *pend = strstr(pkey, "\r\n");
+					if (pend)
+					{
+						*pend = 0;
+						BYTE outres[1024];
+						ZeroMemory(outres, 1024);
+						DWORD dwLen;
+						string in1;
+						in1.assign(pkey);
+						in1.append("258EAFA5-E914-47DA-95CA-C5AB0DC85B11");
+						Crypt::HashIt(in1, outres, &dwLen);
+						char out[256];
+						ZeroMemory(out, 256);
+						unsigned char* input = (unsigned char*)outres;
+						DWORD dwInLen = dwLen;
+						Base64::base64_encode(input, dwInLen, out);
+						char strReply[256];
+						sprintf(strReply,
+							"HTTP/1.1 101 Switching Protocols\r\n"
+							"Upgrade: websocket\r\n"
+							"Connection: Upgrade\r\n"
+							"Sec-WebSocket-Accept: %s\r\n\r\n", out);
+						int res = ::send(PerHandleData->Socket, strReply, strlen(strReply), NULL);
+						if (res != SOCKET_ERROR)
+						{
+							SendBytes = PerIoData->BytesSEND;
+							sprintf(msg, "%d::WSASEND: Socket=%d; SendBytes=%d; PerIoDataSend->BytesRECV=%d; PerIoDataSend->BytesSEND=%d; PerIoDataSend->DataBuf.len=%d\n",
+								dwThreadId, PerHandleData->Socket, SendBytes, PerIoData->BytesRECV, PerIoData->BytesSEND, PerIoData->DataBuf.len);
+						}
+						else
+						{
+							sprintf(msg, "%d::ServerWorkerThread--WSASend() failed with error %d\n", dwThreadId, WSAGetLastError());
+							//return 0;
+						}
+					}
+				}
 			}
 			else
 			{
-				sprintf(msg, "%d::ServerWorkerThread--WSASend() failed with error %d\n", dwThreadId, WSAGetLastError());
-				//return 0;
+				// TODO: add handler code for websocket communication.
+				int len = strlen(PerIoData->DataBuf.buf);
+				int res = ::send(PerHandleData->Socket, PerIoData->DataBuf.buf, len, NULL);
+
+				if (res != SOCKET_ERROR)
+				{
+					SendBytes = PerIoData->BytesSEND;
+					sprintf(msg, "%d::WSASEND: Socket=%d; SendBytes=%d; PerIoDataSend->BytesRECV=%d; PerIoDataSend->BytesSEND=%d; PerIoDataSend->DataBuf.len=%d\n",
+						dwThreadId, PerHandleData->Socket, SendBytes, PerIoData->BytesRECV, PerIoData->BytesSEND, PerIoData->DataBuf.len);
+				}
+				else
+				{
+					sprintf(msg, "%d::ServerWorkerThread--WSASend() failed with error %d\n", dwThreadId, WSAGetLastError());
+					//return 0;
+				}
+				//free(PerIoData->DataBuf.buf);
 			}
-			//free(PerIoData->DataBuf.buf);
+
+
 
 
 			PerIoData->BytesRECV = 0;
