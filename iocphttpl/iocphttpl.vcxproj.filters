@@ -117,6 +117,9 @@
     <ClInclude Include="EventLog.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="Base64.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="stdafx.cpp">
@@ -195,6 +198,9 @@
       <Filter>resource manager\socket io data</Filter>
     </ClCompile>
     <ClCompile Include="CacheController.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Base64.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>

@@ -168,6 +168,7 @@
     <Text Include="ReadMe.txt" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="Base64.h" />
     <ClInclude Include="BTree.h" />
     <ClInclude Include="CacheController.h" />
     <ClInclude Include="Entity.h" />
@@ -198,6 +199,7 @@
     <ClInclude Include="UrlParam.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="Base64.cpp" />
     <ClCompile Include="CacheController.cpp" />
     <ClCompile Include="dllmain.cpp">
       <CompileAsManaged Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">false</CompileAsManaged>

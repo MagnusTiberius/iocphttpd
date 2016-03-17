@@ -71,11 +71,11 @@ done:
 	if (hProv) CryptReleaseContext(hProv, 0);
 }
 
-string Crypt::HashIt(string value)
+char* Crypt::HashIt(string value)
 {
 	HCRYPTPROV hProv = 0;
 	HCRYPTHASH hHash = 0;
-	BYTE *pbHash = NULL;
+	char *pbHash = NULL;
 	DWORD dwHashLen;
 	BYTE pbBuffer[BUFFER_SIZE];
 	DWORD dwCount;
@@ -88,13 +88,15 @@ string Crypt::HashIt(string value)
 	sbuf.assign(WEBSOCKETKEY);
 	sbuf.append(KEY);
 
+	char RetBuf[1024];
+	ZeroMemory(RetBuf, 1024);
 
 	if (!CryptAcquireContext(&hProv, NULL, NULL, PROV_RSA_FULL, 0)) {
 		printf("Error %x during CryptAcquireContext!\n", GetLastError());
 		goto done;
 	}
 	// Create hash object.
-	if (!CryptCreateHash(hProv, CALG_MD5, 0, 0, &hHash)) {
+	if (!CryptCreateHash(hProv, CALG_SHA1, 0, 0, &hHash)) {
 		printf("Error %x during CryptBeginHash!\n", GetLastError());
 		goto done;
 	}
@@ -113,13 +115,13 @@ string Crypt::HashIt(string value)
 		printf("Error %x during reading hash size!\n", GetLastError());
 		goto done;
 	}
-	if ((pbHash = (BYTE*)malloc(dwHashLen)) == NULL) {
+	if ((pbHash = (char*)malloc(dwHashLen)) == NULL) {
 		printf("Out of memory!\n");
 		goto done;
 	}
 	ZeroMemory(pbHash, dwHashLen);
 	// Read hash value.
-	if (!CryptGetHashParam(hHash, HP_HASHVAL, pbHash, &dwHashLen, 0)) {
+	if (!CryptGetHashParam(hHash, HP_HASHVAL, (BYTE*)pbHash, &dwHashLen, 0)) {
 		printf("Error %x during reading hash value!\n", GetLastError());
 		goto done;
 	}
@@ -136,7 +138,8 @@ done:
 	if (hHash) CryptDestroyHash(hHash);
 	// Release CSP handle.
 	if (hProv) CryptReleaseContext(hProv, 0);
-	return string(_strdup(buf));
+	//return string(_strdup(buf));
+	return (char*)pbHash;
 }
 
 
