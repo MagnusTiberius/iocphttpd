@@ -303,6 +303,7 @@ namespace WebSocket
 							sprintf(msg, "%d::ServerWorkerThread--WSASend() failed with error %d\n", dwThreadId, WSAGetLastError());
 							//return 0;
 						}
+						ZeroMemory(PerIoData->DataBuf.buf, DATA_BUFSIZE);
 					}
 				}
 			}
@@ -312,6 +313,55 @@ namespace WebSocket
 				int len = strlen(PerIoData->DataBuf.buf);
 				int res = ::send(PerHandleData->Socket, PerIoData->DataBuf.buf, len, NULL);
 
+				char buf[512];
+				ZeroMemory(buf, 512);
+				char buf2[512];
+				ZeroMemory(buf2, 512);
+
+				for (int i = 0; i < len; i++)
+				{
+					BYTE b = PerIoData->DataBuf.buf[i];
+					sprintf_s(buf, "%s%2.2X ", buf, b);
+					sprintf_s(buf2, "%s%d ", buf2, b);
+					char c = PerIoData->DataBuf.buf[i];
+					int a = 1;
+				}
+
+				BYTE secondByte = PerIoData->DataBuf.buf[1];
+				int length = secondByte & 127;
+				int indexFirstMask = 2;
+				if (length == 126)
+				{
+					indexFirstMask = 4;
+				}
+				else if (length == 126)
+				{
+					indexFirstMask = 10;
+				}
+
+				BYTE masks[4];
+				ZeroMemory(masks, 4);
+
+				int j = 0;
+				int i = 0;
+				for (i = indexFirstMask; i<(indexFirstMask + 4); i++){
+					masks[j] = PerIoData->DataBuf.buf[i];
+					j++;
+				}
+
+				char message[1024];
+				ZeroMemory(message, 1024);
+
+				int rDataStart = indexFirstMask + 4;
+				for (i = rDataStart, j = 0; i<(length + rDataStart); i++, j++)
+				{
+					message[j] = (byte)(PerIoData->DataBuf.buf[i] ^ masks[j % 4]);
+				}
+				//
+				// http://stackoverflow.com/questions/8125507/how-can-i-send-and-receive-websocket-messages-on-the-server-side
+				//
+
+				res = ::send(PerHandleData->Socket, message, strlen(message), NULL);
 				if (res != SOCKET_ERROR)
 				{
 					SendBytes = PerIoData->BytesSEND;
@@ -323,7 +373,7 @@ namespace WebSocket
 					sprintf(msg, "%d::ServerWorkerThread--WSASend() failed with error %d\n", dwThreadId, WSAGetLastError());
 					//return 0;
 				}
-				//free(PerIoData->DataBuf.buf);
+				ZeroMemory(PerIoData->DataBuf.buf, DATA_BUFSIZE);
 			}
 
 
