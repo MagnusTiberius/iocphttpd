@@ -46,6 +46,7 @@ namespace WebSocket
 		HANDLE ghMutex;
 
 
+
 	private:
 		static DWORD WINAPI ServerWorkerThread(LPVOID CompletionPortID);
 		static DWORD WINAPI ServerWorkerThread2(LPVOID CompletionPortID);
@@ -53,7 +54,7 @@ namespace WebSocket
 		int m_PortNum = PORT;
 		bool FileExist(const TCHAR *fileName);
 
-
+		void FrameEncode(char* data, DWORD dwLen, BYTE* output, DWORD* dwSendLen, BYTE firstByte);
 	private:
 
 	};

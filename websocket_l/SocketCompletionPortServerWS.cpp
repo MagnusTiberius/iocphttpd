@@ -71,10 +71,10 @@ namespace WebSocket
 
 		int nThreads = (int)SystemInfo.dwNumberOfProcessors * 2;
 
-		if (nThreads <= 8)
-		{
-			nThreads = 8;
-		}
+		//if (nThreads <= 8)
+		//{
+			nThreads = 4;
+		//}
 
 		for (i = 0; i < nThreads; i++)
 		{
@@ -183,6 +183,69 @@ namespace WebSocket
 	}
 
 
+	void SocketCompletionPortServerWS::FrameEncode(char* data, DWORD dwLen, BYTE* reply, DWORD* dwSendLen, BYTE firstByte)
+	{
+		int frameCount = 0;
+
+		char buf[1024];
+		ZeroMemory(buf, 1024);
+
+		sprintf_s(buf, "%2.2X", firstByte);
+
+		BYTE* frame = new BYTE[10];
+		ZeroMemory(frame, 10);
+		frame[0] = 0x81;
+
+		if (firstByte == 136)
+		{
+			frame[0] = 0x88;
+		}
+
+		if (dwLen <= 125){
+			frame[1] = (byte)dwLen;
+			frameCount = 2;
+		}
+		else if (dwLen >= 126 && dwLen <= 65535){
+			frame[1] = (byte)126;
+			int len = dwLen;
+			frame[2] = (byte)((len >> 8) & (byte)255);
+			frame[3] = (byte)(len & (byte)255);
+			frameCount = 4;
+		}
+		else{
+			frame[1] = (byte)127;
+			int len = dwLen;
+			frame[2] = (byte)((len >> 56) & (byte)255);
+			frame[3] = (byte)((len >> 48) & (byte)255);
+			frame[4] = (byte)((len >> 40) & (byte)255);
+			frame[5] = (byte)((len >> 32) & (byte)255);
+			frame[6] = (byte)((len >> 24) & (byte)255);
+			frame[7] = (byte)((len >> 16) & (byte)255);
+			frame[8] = (byte)((len >> 8) & (byte)255);
+			frame[9] = (byte)(len & (byte)255);
+			frameCount = 10;
+		}
+
+		int bLength = frameCount + dwLen;
+
+		*dwSendLen = bLength;
+
+		ZeroMemory(buf, 1024);
+		int bLim = 0;
+		for (int i = 0; i<frameCount; i++){
+			reply[bLim] = frame[i];
+			sprintf_s(buf, "%s%2.2X ", buf, frame[i]);
+			bLim++;
+		}
+		for (int i = 0; i<dwLen; i++){
+			reply[bLim] = data[i];
+			sprintf_s(buf, "%s%2.2X ", buf, data[i]);
+			bLim++;
+		}
+
+
+	}
+
 	DWORD WINAPI SocketCompletionPortServerWS::ServerWorkerThread(LPVOID lpObject)
 	{
 		SocketCompletionPortServerWS* instance = (SocketCompletionPortServerWS*)lpObject;
@@ -290,7 +353,8 @@ namespace WebSocket
 							"HTTP/1.1 101 Switching Protocols\r\n"
 							"Upgrade: websocket\r\n"
 							"Connection: Upgrade\r\n"
-							"Sec-WebSocket-Accept: %s\r\n\r\n", out);
+							"Sec-WebSocket-Accept: %s\r\n"
+							"Sec-WebSocket-Version: %d\r\n\r\n", out, nVersion);
 						int res = ::send(PerHandleData->Socket, strReply, strlen(strReply), NULL);
 						if (res != SOCKET_ERROR)
 						{
@@ -303,6 +367,13 @@ namespace WebSocket
 							sprintf(msg, "%d::ServerWorkerThread--WSASend() failed with error %d\n", dwThreadId, WSAGetLastError());
 							//return 0;
 						}
+
+						char* message = "Hello from server: Please see user page for additional information.";
+						BYTE reply[1024];
+						ZeroMemory(reply, 1024);
+						DWORD dwSendLen;
+						instance->FrameEncode(message, strlen(message), reply, &dwSendLen, 0);
+						res = ::send(PerHandleData->Socket, (char*)reply, dwSendLen, NULL);
 						ZeroMemory(PerIoData->DataBuf.buf, DATA_BUFSIZE);
 					}
 				}
@@ -327,7 +398,19 @@ namespace WebSocket
 					int a = 1;
 				}
 
+				BYTE firstByte = PerIoData->DataBuf.buf[0];
+				char buff[64];
+				ZeroMemory(buff, 64);
+				sprintf_s(buff, "%2.2X ", firstByte);
+
 				BYTE secondByte = PerIoData->DataBuf.buf[1];
+				sprintf_s(buff, "%s%2.2X ", buff, secondByte);
+
+				if (firstByte == 136)
+				{
+					// connection close
+				}
+
 				int length = secondByte & 127;
 				int indexFirstMask = 2;
 				if (length == 126)
@@ -361,7 +444,13 @@ namespace WebSocket
 				// http://stackoverflow.com/questions/8125507/how-can-i-send-and-receive-websocket-messages-on-the-server-side
 				//
 
-				res = ::send(PerHandleData->Socket, message, strlen(message), NULL);
+				DWORD sz = strlen(message) + 10;
+				DWORD dwSendLen;
+				BYTE* reply = new BYTE[sz];
+				ZeroMemory(reply, sz);
+				instance->FrameEncode(message, strlen(message), reply, &dwSendLen, firstByte);
+
+				res = ::send(PerHandleData->Socket, (char*)reply, dwSendLen, NULL);
 				if (res != SOCKET_ERROR)
 				{
 					SendBytes = PerIoData->BytesSEND;

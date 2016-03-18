@@ -72,10 +72,10 @@ namespace IOCPHTTPL
 
 		int nThreads = (int)SystemInfo.dwNumberOfProcessors * 2;
 
-		if (nThreads <= 8)
-		{
-			nThreads = 8;
-		}
+		//if (nThreads <= 8)
+		//{
+			nThreads = 4;
+		//}
 
 		for (i = 0; i < nThreads; i++)
 		{

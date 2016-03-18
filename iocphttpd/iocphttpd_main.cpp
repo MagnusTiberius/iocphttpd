@@ -24,8 +24,8 @@ int _tmain(int argc, _TCHAR* argv[])
 	//jsonp.Parse("[ \"abc\", 99999, { \"fgh\" : 1234, \"www\" : 53556  } ] ");
 	//jsonp.Parse("[ \"abc\", 99999, \"obj1\" : { \"fgh\" : 1234, \"www\" : 53556  }, 234234234, \"wertwtwet\" ] ");
 
-	WebSocketManager wsmanager;
-	wsmanager.Start();
+	//WebSocketManager wsmanager;
+	//wsmanager.Start();
 
 	DBServer* dbServer;
 	dbServer = DBServer::Instance();

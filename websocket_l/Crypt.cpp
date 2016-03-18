@@ -83,6 +83,7 @@ namespace WebSocket
 		BYTE pbBuffer[BUFFER_SIZE];
 		DWORD dwCount;
 		DWORD i;
+		PSECURITY_DESCRIPTOR pNewSD = NULL;
 
 		char buf[BUFFER_SIZE];
 		ZeroMemory(buf, BUFFER_SIZE);
@@ -96,7 +97,23 @@ namespace WebSocket
 
 		if (!CryptAcquireContext(&hProv, NULL, NULL, PROV_RSA_FULL, 0)) {
 			printf("Error %x during CryptAcquireContext!\n", GetLastError());
-			goto done;
+			
+			if (!CryptAcquireContext(&hProv, NULL, NULL, PROV_RSA_FULL, CRYPT_NEWKEYSET))
+			{
+				printf("Error %x during CryptAcquireContext!\n", GetLastError());
+				goto done;
+			}
+			pNewSD = (PSECURITY_DESCRIPTOR)LocalAlloc(LPTR,	SECURITY_DESCRIPTOR_MIN_LENGTH);
+			if (NULL == pNewSD)
+			{
+				printf("LocalAlloc error: %u.\n", GetLastError());
+				goto done;
+			}
+			//if (!CryptSetProvParam(hProv, PP_KEYSET_SEC_DESCR, (BYTE*)pNewSD, DACL_SECURITY_INFORMATION))
+			//{
+			//	printf("Error %x during CryptSetProvParam!\n", GetLastError());
+			//	goto done;
+			//}
 		}
 		// Create hash object.
 		if (!CryptCreateHash(hProv, CALG_SHA1, 0, 0, &hHash)) {
