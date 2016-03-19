@@ -185,6 +185,8 @@ namespace WebSocket
 
 	void SocketCompletionPortServerWS::FrameEncode(char* data, DWORD dwLen, BYTE* reply, DWORD* dwSendLen, BYTE firstByte)
 	{
+		printf("DATA: %s; firstByte=%2.2X \r\n", data, firstByte);
+
 		int frameCount = 0;
 
 		char buf[1024];
@@ -194,12 +196,12 @@ namespace WebSocket
 
 		BYTE* frame = new BYTE[10];
 		ZeroMemory(frame, 10);
-		frame[0] = 0x81;
+		frame[0] = firstByte; // 0x81;
 
-		if (firstByte == 136)
-		{
-			frame[0] = 0x88;
-		}
+		//if (firstByte == 136)
+		//{
+		//	frame[0] = 0x88;
+		//}
 
 		if (dwLen <= 125){
 			frame[1] = (byte)dwLen;
@@ -242,7 +244,7 @@ namespace WebSocket
 			sprintf_s(buf, "%s%2.2X ", buf, data[i]);
 			bLim++;
 		}
-
+		printf("FRAME: %s \r\n", buf);
 
 	}
 
@@ -349,6 +351,7 @@ namespace WebSocket
 						DWORD dwInLen = dwLen;
 						Base64::base64_encode(input, dwInLen, out);
 						char strReply[256];
+						ZeroMemory(strReply, 256);
 						sprintf(strReply,
 							"HTTP/1.1 101 Switching Protocols\r\n"
 							"Upgrade: websocket\r\n"
@@ -368,12 +371,23 @@ namespace WebSocket
 							//return 0;
 						}
 
-						char* message = "Hello from server: Please see user page for additional information.";
-						BYTE reply[1024];
-						ZeroMemory(reply, 1024);
-						DWORD dwSendLen;
-						instance->FrameEncode(message, strlen(message), reply, &dwSendLen, 0);
-						res = ::send(PerHandleData->Socket, (char*)reply, dwSendLen, NULL);
+						{
+							char* message = "Hello from server: Please see user page for additional information.";
+							BYTE reply[1024];
+							ZeroMemory(reply, 1024);
+							DWORD dwSendLen;
+							instance->FrameEncode(message, strlen(message), reply, &dwSendLen, 0x81);
+							res = ::send(PerHandleData->Socket, (char*)reply, dwSendLen, NULL);
+						}
+						{
+							char* message = "Please join us in the lobby.";
+							BYTE reply[1024];
+							ZeroMemory(reply, 1024);
+							DWORD dwSendLen;
+							instance->FrameEncode(message, strlen(message), reply, &dwSendLen, 0x81);
+							res = ::send(PerHandleData->Socket, (char*)reply, dwSendLen, NULL);
+						}
+
 						ZeroMemory(PerIoData->DataBuf.buf, DATA_BUFSIZE);
 					}
 				}
@@ -382,7 +396,10 @@ namespace WebSocket
 			{
 				// TODO: add handler code for websocket communication.
 				int len = strlen(PerIoData->DataBuf.buf);
-				int res = ::send(PerHandleData->Socket, PerIoData->DataBuf.buf, len, NULL);
+				//int res = ::send(PerHandleData->Socket, PerIoData->DataBuf.buf, len, NULL);
+				int res = 0;
+				bool isPing = false;
+				bool isConnectClose = false;
 
 				char buf[512];
 				ZeroMemory(buf, 512);
@@ -398,6 +415,8 @@ namespace WebSocket
 					int a = 1;
 				}
 
+				printf("RECV Frame: %s \n", buf);
+
 				BYTE firstByte = PerIoData->DataBuf.buf[0];
 				char buff[64];
 				ZeroMemory(buff, 64);
@@ -406,10 +425,28 @@ namespace WebSocket
 				BYTE secondByte = PerIoData->DataBuf.buf[1];
 				sprintf_s(buff, "%s%2.2X ", buff, secondByte);
 
+				firstByte = 0x81;
+
+				if (buff[1] == '9')
+				{
+					isPing = true;
+					firstByte = 0xA1;  //pong
+					printf("Client sent a ping\n");
+				}
+
+				if (buff[1] == '8')
+				{
+					isConnectClose = true;
+					firstByte = 0x88;  //pong
+					printf("Client sent a close connection\n");
+				}
+
+
 				if (firstByte == 136)
 				{
-					// connection close
+
 				}
+
 
 				int length = secondByte & 127;
 				int indexFirstMask = 2;
@@ -448,7 +485,12 @@ namespace WebSocket
 				DWORD dwSendLen;
 				BYTE* reply = new BYTE[sz];
 				ZeroMemory(reply, sz);
-				instance->FrameEncode(message, strlen(message), reply, &dwSendLen, firstByte);
+
+				char msgback[1024];
+				ZeroMemory(msgback, 1024);
+				sprintf_s(msgback, "This is a reply. %d", 1);
+
+				instance->FrameEncode(msgback, strlen(msgback), reply, &dwSendLen, firstByte);
 
 				res = ::send(PerHandleData->Socket, (char*)reply, dwSendLen, NULL);
 				if (res != SOCKET_ERROR)
@@ -463,6 +505,7 @@ namespace WebSocket
 					//return 0;
 				}
 				ZeroMemory(PerIoData->DataBuf.buf, DATA_BUFSIZE);
+				continue;
 			}
 
 

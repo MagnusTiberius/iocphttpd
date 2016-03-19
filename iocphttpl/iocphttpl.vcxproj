@@ -171,6 +171,7 @@
     <ClInclude Include="Base64.h" />
     <ClInclude Include="BTree.h" />
     <ClInclude Include="CacheController.h" />
+    <ClInclude Include="Crypt.h" />
     <ClInclude Include="Entity.h" />
     <ClInclude Include="Enums.h" />
     <ClInclude Include="EventLog.h" />
@@ -201,6 +202,7 @@
   <ItemGroup>
     <ClCompile Include="Base64.cpp" />
     <ClCompile Include="CacheController.cpp" />
+    <ClCompile Include="Crypt.cpp" />
     <ClCompile Include="dllmain.cpp">
       <CompileAsManaged Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">false</CompileAsManaged>
       <CompileAsManaged Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">false</CompileAsManaged>

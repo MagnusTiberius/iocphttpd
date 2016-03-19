@@ -126,6 +126,7 @@ void CSampleService::StartIt(void)
 	//while (true)
 	//{
 		STARTUPINFO si;
+		STARTUPINFO si2;
 		//PROCESS_INFORMATION pi;
 
 		ZeroMemory(&si, sizeof(si));
@@ -157,13 +158,45 @@ void CSampleService::StartIt(void)
 			EVENTLOG_INFORMATION_TYPE);
 
 
+		ZeroMemory(&si2, sizeof(si2));
+		si2.cb = sizeof(si2);
+		ZeroMemory(&pi2, sizeof(pi2));
+
+		LPWSTR pProgName2 = L"C:\\packages\\git2\\iocphttpd\\lib\\Win32\\Release\\iocpws.exe";
+		WriteEventLogEntry(L"C:\\packages\\git2\\iocphttpd\\lib\\Win32\\Release\\iocpws.exe",
+			EVENTLOG_INFORMATION_TYPE);
+
+		// Start the child process. 
+		if (!CreateProcess(pProgName2,   // No module name (use command line)
+			NULL,        // Command line
+			NULL,           // Process handle not inheritable
+			NULL,           // Thread handle not inheritable
+			FALSE,          // Set handle inheritance to FALSE
+			0,              // No creation flags
+			NULL,           // Use parent's environment block
+			NULL,           // Use parent's starting directory 
+			&si2,            // Pointer to STARTUPINFO structure
+			&pi2)           // Pointer to PROCESS_INFORMATION structure
+			)
+		{
+			printf("CreateProcess failed (%d).\n", GetLastError());
+			return;
+		}
+
+		WriteEventLogEntry(L"StartIt 3333333333",
+			EVENTLOG_INFORMATION_TYPE);
+
+
 		// Wait until child process exits.
 		WaitForSingleObject(pi.hProcess, INFINITE);
+		WaitForSingleObject(pi2.hProcess, INFINITE);
 
 		// Close process and thread handles. 
 		CloseHandle(pi.hProcess);
 		CloseHandle(pi.hThread);
-	//}
+		CloseHandle(pi2.hProcess);
+		CloseHandle(pi2.hThread);
+		//}
 }
 
 
@@ -186,6 +219,7 @@ void CSampleService::OnStop()
         EVENTLOG_INFORMATION_TYPE);
 
 	TerminateProcess(pi.hProcess, 0);
+	TerminateProcess(pi2.hProcess, 0);
 
     // Indicate that the service is stopping and wait for the finish of the 
     // main service function (ServiceWorkerThread).

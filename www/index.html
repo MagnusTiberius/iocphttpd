@@ -199,7 +199,13 @@
 
 	</div> <!-- /container -->
 	<br><br>
+
 	<div class="container marketing">
+
+	  <div id="chat" name="chat">
+			{{chattext}}
+	  </div>
+
       <!-- Three columns of text below the carousel -->
       <div class="row">
         <div class="span4">
@@ -226,6 +232,11 @@
 	<div class="container">
 	<p>
 The OneUp is the cheapest 3D printer in the world. At $199 for a self assembled kit, that includes everything you need, the OneUp is the easy choice to 'get your feet wet'. All corners of the internet recommend a self built printer as your first printer so you learn the ins and outs, the ups and downs of 3D printing before making a big purchase. Professional quality prints are a reality, equivalent to much more expensive machines at competitive speeds with the ability to expand the build area at at any time after purchase for only $79 (buy the TwoUp upgrade now in our online store!). Each kit includes a very reliable and forgiving extruder, that makes it easy to get great quality prints with minimal effort. The OneUp is optimized for PLA printing but with the optional heated bed upgrade, ABS and Nylon printing are a breeze! This is a Do-It-Yourself, Self-Assembly kit that generally takes 2-8 hours to assemble based on end user skill level. The only difference between the OneUp, TwoUp and ThreeUp is the build area, every other spec is the same.	</p>
+
+	<form>
+	  <input id="inputchattext" name="inputchattext" type="text" ng-model="chattext" placeholder="Enter message here">
+	  <input id="btntest6" name="btntest6" type="button" value="web socket test">
+	</form>
 
 	<p>
 Fusce vitae lacus a nulla facilisis vulputate. Proin sed tellus justo. Aenean dignissim enim ut sapien blandit egestas. Duis aliquet imperdiet arcu. Sed iaculis nisl sed est vehicula auctor. Nam at mattis augue. Duis vitae augue enim. Nam ut mauris ac ligula euismod venenatis at non nisl. Integer suscipit lacus vitae auctor fermentum.
@@ -256,6 +267,21 @@ Pellentesque fermentum sem a enim sagittis, id porttitor mi mollis. Praesent non
 	<script type="text/javascript" src="/static/js/test.js"></script>
 
 	<script src="/static/js/jquery.min.js"></script>
+	<script>
+		$( "#btntest6" ).click(function() {
+			//alert( "Handler for .click() called." );
+		  	//var full = location.protocol+'//'+location.hostname+(location.port ? ':'+location.port: '');
+		  	//debugger
+			   //webSocket.send("Hello webSockets!", function(error) {
+			   //	debugger
+			   //});
+			var txt = $("#inputchattext").val();
+			console.log(txt);
+			webSocket.send(txt);
+			$("#inputchattext").val("");
+	
+		});	
+	</script>
 	<script>
 		$( "#btntest1" ).click(function() {
 			//alert( "Handler for .click() called." );
@@ -378,6 +404,45 @@ Pellentesque fermentum sem a enim sagittis, id porttitor mi mollis. Praesent non
 		});	
 	</script>
 	
+
+
+	
+	<script>
+		var wsurl = 'ws://'+location.hostname+":9090/test";
+		var webSocket = new WebSocket(wsurl);
+
+
+		webSocket.onopen = function(event) {
+		   console.log("webSocket.onopen, successful websocket connection made!");
+		   //debugger
+		   //webSocket.send("Hello webSockets!", function(error) {
+		   //	debugger
+		   //});
+		};
+
+
+		webSocket.onclose = function(closeEvent) {
+			//debugger
+			var code = closeEvent.code;
+			var reason = closeEvent.reason;
+			var wasClean = closeEvent.wasClean;	
+			console.log("webSocket.onclose");
+		};	
+
+		webSocket.onmessage = function(messageEvent) {
+		//	debugger
+		//   alert("webSocket.onmessage: " + messageEvent.data);
+		   console.log(messageEvent.data);
+		   $( "#chat" ).append( "<p>" + messageEvent.data + "</p>" );
+		};
+
+		webSocket.onerror = function(event) {
+			//debugger
+		   //alert("webSocket.onerror");
+		   console.log("The following error occurred: " + event.data);
+		};	
+	</script>
+
 
     <!-- Le javascript
     ================================================== -->

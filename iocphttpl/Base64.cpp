@@ -13,12 +13,13 @@ namespace IOCPHTTPL
 	{
 	}
 
-	char *Base64::base64_encode(const unsigned char *data, size_t input_length, size_t *output_length) 
+	char *Base64::base64_encode2(const char *data, size_t input_length, size_t *output_length)
 	{
 
 		*output_length = 4 * ((input_length + 2) / 3);
 
 		char *encoded_data = (char*)malloc(*output_length);
+		ZeroMemory(encoded_data, *output_length);
 		if (encoded_data == NULL) return NULL;
 
 		for (int i = 0, j = 0; i < input_length;) {
@@ -41,7 +42,53 @@ namespace IOCPHTTPL
 		return encoded_data;
 	}
 
-	unsigned char *Base64::base64_decode(const char *data, size_t input_length, size_t *output_length) 
+
+	void Base64::base64_encode(unsigned char* bytes_to_encode, unsigned int in_len, char* out)
+	{
+		int i = 0;
+		int j = 0;
+		unsigned char char_array_3[3];
+		unsigned char char_array_4[4];
+		static const std::string base64_chars =
+			"ABCDEFGHIJKLMNOPQRSTUVWXYZ"
+			"abcdefghijklmnopqrstuvwxyz"
+			"0123456789+/";
+
+		while (in_len--) {
+			char_array_3[i++] = *(bytes_to_encode++);
+			if (i == 3) {
+				char_array_4[0] = (char_array_3[0] & 0xfc) >> 2;
+				char_array_4[1] = ((char_array_3[0] & 0x03) << 4) + ((char_array_3[1] & 0xf0) >> 4);
+				char_array_4[2] = ((char_array_3[1] & 0x0f) << 2) + ((char_array_3[2] & 0xc0) >> 6);
+				char_array_4[3] = char_array_3[2] & 0x3f;
+
+				for (i = 0; (i <4); i++)
+					*out++ = base64_chars[char_array_4[i]];
+				i = 0;
+			}
+		}
+
+		if (i)
+		{
+			for (j = i; j < 3; j++)
+				char_array_3[j] = '\0';
+
+			char_array_4[0] = (char_array_3[0] & 0xfc) >> 2;
+			char_array_4[1] = ((char_array_3[0] & 0x03) << 4) + ((char_array_3[1] & 0xf0) >> 4);
+			char_array_4[2] = ((char_array_3[1] & 0x0f) << 2) + ((char_array_3[2] & 0xc0) >> 6);
+			char_array_4[3] = char_array_3[2] & 0x3f;
+
+			for (j = 0; (j < i + 1); j++)
+				*out++ = base64_chars[char_array_4[j]];
+
+			while ((i++ < 3))
+				*out++ = '=';
+
+		}
+		*out = 0;
+	}
+
+	unsigned char *Base64::base64_decode(const char *data, size_t input_length, size_t *output_length)
 	{
 
 		if (decoding_table == NULL) build_decoding_table();
@@ -53,6 +100,7 @@ namespace IOCPHTTPL
 		if (data[input_length - 2] == '=') (*output_length)--;
 
 		unsigned char *decoded_data = (unsigned char *)malloc(*output_length);
+		ZeroMemory(decoded_data, *output_length);
 		if (decoded_data == NULL) return NULL;
 
 		for (int i = 0, j = 0; i < input_length;) {
@@ -76,7 +124,7 @@ namespace IOCPHTTPL
 	}
 
 
-	void Base64::build_decoding_table() 
+	void Base64::build_decoding_table()
 	{
 
 		decoding_table = (char*)malloc(256);
@@ -86,7 +134,7 @@ namespace IOCPHTTPL
 	}
 
 
-	void Base64::base64_cleanup() 
+	void Base64::base64_cleanup()
 	{
 		free(decoding_table);
 	}

@@ -13,7 +13,8 @@
 #include "SocketIocpController.h"
 #include "CacheController.h"
 #include "SocketCompletionPortServerWS.h"
-
+#include "Crypt.h"
+#include "Base64.h"
 //#define DATA_BUFSIZE 8192
 
 namespace IOCPHTTPL
@@ -69,6 +70,9 @@ namespace IOCPHTTPL
 		bool FileExist(const TCHAR *fileName);
 		CacheController cacheController;
 
+		void WebsocketInit(CHAR* buf, SOCKET socket);
+		void FrameEncode(char* data, DWORD dwLen, BYTE* reply, DWORD* dwSendLen, BYTE firstByte);
+		void SocketCompletionPortServer::HandleWebsocketFrame(CHAR* databuf, SOCKET socket);
 	private:
 		WebSocket::SocketCompletionPortServerWS websocket;
 

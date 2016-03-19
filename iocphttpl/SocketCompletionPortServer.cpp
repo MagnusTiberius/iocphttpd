@@ -362,6 +362,252 @@ namespace IOCPHTTPL
 		return 0;
 	}
 
+	void SocketCompletionPortServer::FrameEncode(char* data, DWORD dwLen, BYTE* reply, DWORD* dwSendLen, BYTE firstByte)
+	{
+		printf("DATA: %s; firstByte=%2.2X \r\n", data, firstByte);
+
+		int frameCount = 0;
+
+		char buf[1024];
+		ZeroMemory(buf, 1024);
+
+		sprintf_s(buf, "%2.2X", firstByte);
+
+		BYTE* frame = new BYTE[10];
+		ZeroMemory(frame, 10);
+		frame[0] = firstByte; // 0x81;
+
+		//if (firstByte == 136)
+		//{
+		//	frame[0] = 0x88;
+		//}
+
+		if (dwLen <= 125){
+			frame[1] = (byte)dwLen;
+			frameCount = 2;
+		}
+		else if (dwLen >= 126 && dwLen <= 65535){
+			frame[1] = (byte)126;
+			int len = dwLen;
+			frame[2] = (byte)((len >> 8) & (byte)255);
+			frame[3] = (byte)(len & (byte)255);
+			frameCount = 4;
+		}
+		else{
+			frame[1] = (byte)127;
+			int len = dwLen;
+			frame[2] = (byte)((len >> 56) & (byte)255);
+			frame[3] = (byte)((len >> 48) & (byte)255);
+			frame[4] = (byte)((len >> 40) & (byte)255);
+			frame[5] = (byte)((len >> 32) & (byte)255);
+			frame[6] = (byte)((len >> 24) & (byte)255);
+			frame[7] = (byte)((len >> 16) & (byte)255);
+			frame[8] = (byte)((len >> 8) & (byte)255);
+			frame[9] = (byte)(len & (byte)255);
+			frameCount = 10;
+		}
+
+		int bLength = frameCount + dwLen;
+
+		*dwSendLen = bLength;
+
+		ZeroMemory(buf, 1024);
+		int bLim = 0;
+		for (int i = 0; i<frameCount; i++){
+			reply[bLim] = frame[i];
+			sprintf_s(buf, "%s%2.2X ", buf, frame[i]);
+			bLim++;
+		}
+		for (int i = 0; i<dwLen; i++){
+			reply[bLim] = data[i];
+			sprintf_s(buf, "%s%2.2X ", buf, data[i]);
+			bLim++;
+		}
+		printf("FRAME: %s \r\n", buf);
+
+	}
+
+
+	void SocketCompletionPortServer::WebsocketInit(CHAR* databuf, SOCKET socket)
+	{
+		const char* pfindver = "Sec-WebSocket-Version:";
+		char* pver = strstr(databuf, pfindver);
+		if (pver)
+		{
+			pver += strlen(pfindver);
+			while (*pver == ' ')
+				pver++;
+			int nVersion = atoi(pver);
+			const char* pfindkey = "Sec-WebSocket-Key:";
+			char* pkey = strstr(databuf, pfindkey);
+			if (pkey)
+			{
+				pkey += strlen(pfindkey);
+				while (*pkey == ' ')
+					pkey++;
+				char *pend = strstr(pkey, "\r\n");
+				if (pend)
+				{
+					*pend = 0;
+					BYTE outres[1024];
+					ZeroMemory(outres, 1024);
+					DWORD dwLen;
+					string in1;
+					in1.assign(pkey);
+					in1.append("258EAFA5-E914-47DA-95CA-C5AB0DC85B11");
+					Crypt::HashIt(in1, outres, &dwLen);
+					char out[256];
+					ZeroMemory(out, 256);
+					unsigned char* input = (unsigned char*)outres;
+					DWORD dwInLen = dwLen;
+					Base64::base64_encode(input, dwInLen, out);
+					char strReply[256];
+					ZeroMemory(strReply, 256);
+					sprintf(strReply,
+						"HTTP/1.1 101 Switching Protocols\r\n"
+						"Upgrade: websocket\r\n"
+						"Connection: Upgrade\r\n"
+						"Sec-WebSocket-Accept: %s\r\n"
+						"Sec-WebSocket-Version: %d\r\n\r\n", out, nVersion);
+					int res = ::send(socket, strReply, strlen(strReply), NULL);
+					if (res != SOCKET_ERROR)
+					{
+					}
+					else
+					{
+					}
+
+					{
+						char* message = "Hello from server: Please see user page for additional information.";
+						BYTE reply[1024];
+						ZeroMemory(reply, 1024);
+						DWORD dwSendLen;
+						FrameEncode(message, strlen(message), reply, &dwSendLen, 0x81);
+						res = ::send(socket, (char*)reply, dwSendLen, NULL);
+					}
+					{
+						char* message = "Please join us in the lobby.";
+						BYTE reply[1024];
+						ZeroMemory(reply, 1024);
+						DWORD dwSendLen;
+						FrameEncode(message, strlen(message), reply, &dwSendLen, 0x81);
+						res = ::send(socket, (char*)reply, dwSendLen, NULL);
+					}
+
+					ZeroMemory(databuf, DATA_BUFSIZE);
+				}
+			}
+		}
+	}
+
+	void SocketCompletionPortServer::HandleWebsocketFrame(CHAR* databuf, SOCKET socket)
+	{
+		// TODO: add handler code for websocket communication.
+		int len = strlen(databuf);
+		int res = 0;
+		bool isPing = false;
+		bool isConnectClose = false;
+
+		char buf[512];
+		ZeroMemory(buf, 512);
+		char buf2[512];
+		ZeroMemory(buf2, 512);
+
+		for (int i = 0; i < len; i++)
+		{
+			BYTE b = databuf[i];
+			sprintf_s(buf, "%s%2.2X ", buf, b);
+			sprintf_s(buf2, "%s%d ", buf2, b);
+			char c = databuf[i];
+			int a = 1;
+		}
+
+		printf("RECV Frame: %s \n", buf);
+
+		BYTE firstByte = databuf[0];
+		char buff[64];
+		ZeroMemory(buff, 64);
+		sprintf_s(buff, "%2.2X ", firstByte);
+
+		BYTE secondByte = databuf[1];
+		sprintf_s(buff, "%s%2.2X ", buff, secondByte);
+
+		firstByte = 0x81;
+
+		if (buff[1] == '9')
+		{
+			isPing = true;
+			firstByte = 0xA1;  //pong
+			printf("Client sent a ping\n");
+		}
+
+		if (buff[1] == '8')
+		{
+			isConnectClose = true;
+			firstByte = 0x88;  //pong
+			printf("Client sent a close connection\n");
+		}
+
+
+		if (firstByte == 136)
+		{
+
+		}
+
+
+		int length = secondByte & 127;
+		int indexFirstMask = 2;
+		if (length == 126)
+		{
+			indexFirstMask = 4;
+		}
+		else if (length == 126)
+		{
+			indexFirstMask = 10;
+		}
+
+		BYTE masks[4];
+		ZeroMemory(masks, 4);
+
+		int j = 0;
+		int i = 0;
+		for (i = indexFirstMask; i<(indexFirstMask + 4); i++){
+			masks[j] = databuf[i];
+			j++;
+		}
+
+		char message[1024];
+		ZeroMemory(message, 1024);
+
+		int rDataStart = indexFirstMask + 4;
+		for (i = rDataStart, j = 0; i<(length + rDataStart); i++, j++)
+		{
+			message[j] = (byte)(databuf[i] ^ masks[j % 4]);
+		}
+		//
+		// http://stackoverflow.com/questions/8125507/how-can-i-send-and-receive-websocket-messages-on-the-server-side
+		//
+
+		DWORD sz = strlen(message) + 10;
+		DWORD dwSendLen;
+		BYTE* reply = new BYTE[sz];
+		ZeroMemory(reply, sz);
+
+		char msgback[1024];
+		ZeroMemory(msgback, 1024);
+		sprintf_s(msgback, "This is a reply. %d", 1);
+
+		FrameEncode(msgback, strlen(msgback), reply, &dwSendLen, firstByte);
+
+		res = ::send(socket, (char*)reply, dwSendLen, NULL);
+		if (res != SOCKET_ERROR)
+		{
+		}
+		else
+		{
+		}
+	}
+
 	DWORD WINAPI SocketCompletionPortServer::ServerWorkerThread(LPVOID lpObject)
 	{
 		SocketCompletionPortServer* instance = (SocketCompletionPortServer*)lpObject;
@@ -455,45 +701,40 @@ namespace IOCPHTTPL
 				continue;
 			}
 
-			httpRequest.socket = PerHandleData->Socket;
-			httpRequest.Parse(PerIoData->DataBuf.buf);
-
-			instance->Dispatch(&httpRequest, &httpResponse);
-			ZeroMemory(PerIoData->Buffer, BUFSIZMIN);
-			PerIoData->DataBuf.buf = (char*)httpResponse.GetResponse2(&PerIoData->DataBuf.len);
-			PerIoData->BytesRECV = 0;
-
-			// Create per I/O socket information structure to associate with the WSARecv call below
-			//if ((PerIoDataSend = (LPPER_IO_OPERATION_DATA)GlobalAlloc(GPTR, sizeof(PER_IO_OPERATION_DATA))) == NULL)
-			//{
-			//	printf("GlobalAlloc() failed with error %d\n", GetLastError());
-			//	return 1;
-			//}
-			//else
-			//	printf("GlobalAlloc() for LPPER_IO_OPERATION_DATA is OK!\n");
-
-			//ZeroMemory(&(PerIoDataSend->Overlapped), sizeof(OVERLAPPED));
-			//PerIoDataSend->BytesSEND = 0;
-			//PerIoDataSend->BytesRECV = 0;
-			//PerIoDataSend->DataBuf.buf = (char*)httpResponse.GetResponse2(&PerIoDataSend->DataBuf.len);
-
-			//int res = WSASend(PerHandleData->Socket, &(PerIoDataSend->DataBuf), 1, &PerIoDataSend->BytesSEND, 0, &(PerIoDataSend->Overlapped), NULL);
-
-			int res = ::send(PerHandleData->Socket, PerIoData->DataBuf.buf, PerIoData->DataBuf.len, NULL);
-
-			if (res != SOCKET_ERROR)
+			const char* pfindver = "Sec-WebSocket-Version:";
+			char* pver = strstr(PerIoData->DataBuf.buf, pfindver);
+			if (pver)
 			{
-				SendBytes = PerIoData->BytesSEND;
-				sprintf(msg, "%d::WSASEND: Socket=%d; SendBytes=%d; PerIoDataSend->BytesRECV=%d; PerIoDataSend->BytesSEND=%d; PerIoDataSend->DataBuf.len=%d\n",
-					dwThreadId, PerHandleData->Socket, SendBytes, PerIoData->BytesRECV, PerIoData->BytesSEND, PerIoData->DataBuf.len);
-				eventLog->WriteEventLogEntry2(msg, EVENTLOG_SUCCESS);
+				instance->WebsocketInit(PerIoData->DataBuf.buf, PerHandleData->Socket);
+			}
+			else if (PerIoData->DataBuf.buf[0] == 'G' || PerIoData->DataBuf.buf[0] == 'P')
+			{
+				httpRequest.socket = PerHandleData->Socket;
+				httpRequest.Parse(PerIoData->DataBuf.buf);
+				instance->Dispatch(&httpRequest, &httpResponse);
+				ZeroMemory(PerIoData->Buffer, BUFSIZMIN);
+				PerIoData->DataBuf.buf = (char*)httpResponse.GetResponse2(&PerIoData->DataBuf.len);
+				PerIoData->BytesRECV = 0;
+				int res = ::send(PerHandleData->Socket, PerIoData->DataBuf.buf, PerIoData->DataBuf.len, NULL);
+				if (res != SOCKET_ERROR)
+				{
+					SendBytes = PerIoData->BytesSEND;
+					sprintf(msg, "%d::WSASEND: Socket=%d; SendBytes=%d; PerIoDataSend->BytesRECV=%d; PerIoDataSend->BytesSEND=%d; PerIoDataSend->DataBuf.len=%d\n",
+						dwThreadId, PerHandleData->Socket, SendBytes, PerIoData->BytesRECV, PerIoData->BytesSEND, PerIoData->DataBuf.len);
+					eventLog->WriteEventLogEntry2(msg, EVENTLOG_SUCCESS);
+				}
+				else
+				{
+					sprintf(msg, "%d::ServerWorkerThread--WSASend() failed with error %d\n", dwThreadId, WSAGetLastError());
+					eventLog->WriteEventLogEntry2(msg, EVENTLOG_ERROR_TYPE);
+					//return 0;
+				}
 			}
 			else
 			{
-				sprintf(msg, "%d::ServerWorkerThread--WSASend() failed with error %d\n", dwThreadId, WSAGetLastError());
-				eventLog->WriteEventLogEntry2(msg, EVENTLOG_ERROR_TYPE);
-				//return 0;
+
 			}
+
 			free(PerIoData->DataBuf.buf);
 
 			//::ReleaseMutex(instance->ghMutex);

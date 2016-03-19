@@ -43,6 +43,7 @@ protected:
 
 private:
 	PROCESS_INFORMATION pi;
+	PROCESS_INFORMATION pi2;
 	void StartIt(void);
 
     BOOL m_fStopping;
