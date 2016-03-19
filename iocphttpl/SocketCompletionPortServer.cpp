@@ -701,14 +701,14 @@ namespace IOCPHTTPL
 				continue;
 			}
 
-			const char* pfindver = "Sec-WebSocket-Version:";
-			char* pver = strstr(PerIoData->DataBuf.buf, pfindver);
-			if (pver)
-			{
-				instance->WebsocketInit(PerIoData->DataBuf.buf, PerHandleData->Socket);
-			}
-			else if (PerIoData->DataBuf.buf[0] == 'G' || PerIoData->DataBuf.buf[0] == 'P')
-			{
+			//const char* pfindver = "Sec-WebSocket-Version:";
+			//char* pver = strstr(PerIoData->DataBuf.buf, pfindver);
+			//if (pver)
+			//{
+			//	instance->WebsocketInit(PerIoData->DataBuf.buf, PerHandleData->Socket);
+			//}
+			//else if (PerIoData->DataBuf.buf[0] == 'G' || PerIoData->DataBuf.buf[0] == 'P' || PerIoData->DataBuf.buf[0] == 'D' || PerIoData->DataBuf.buf[0] == 'T' || PerIoData->DataBuf.buf[0] == 'C' || PerIoData->DataBuf.buf[0] == 'O')
+			//{
 				httpRequest.socket = PerHandleData->Socket;
 				httpRequest.Parse(PerIoData->DataBuf.buf);
 				instance->Dispatch(&httpRequest, &httpResponse);
@@ -729,11 +729,11 @@ namespace IOCPHTTPL
 					eventLog->WriteEventLogEntry2(msg, EVENTLOG_ERROR_TYPE);
 					//return 0;
 				}
-			}
-			else
-			{
+			//}
+			//else
+			//{
 
-			}
+			//}
 
 			free(PerIoData->DataBuf.buf);
 

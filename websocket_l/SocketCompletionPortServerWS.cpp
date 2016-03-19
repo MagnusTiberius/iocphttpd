@@ -488,7 +488,7 @@ namespace WebSocket
 
 				char msgback[1024];
 				ZeroMemory(msgback, 1024);
-				sprintf_s(msgback, "This is a reply. %d", 1);
+				sprintf_s(msgback, "REPLY: %s", message);
 
 				instance->FrameEncode(msgback, strlen(msgback), reply, &dwSendLen, firstByte);
 
@@ -505,7 +505,7 @@ namespace WebSocket
 					//return 0;
 				}
 				ZeroMemory(PerIoData->DataBuf.buf, DATA_BUFSIZE);
-				continue;
+				//continue;
 			}
 
 
