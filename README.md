@@ -19,7 +19,7 @@ iocphttpd features:
 2.  URL routing makes it easy for you to write a handler for a given URL route.
 3.  URL parameters, you can simply retrieve parameters from a list.
 4.  JSON support is available in the API, see jsoncpp for details.
-
+5.  Websocket enabled, just added the demo for Websocket in index.html. Check it out.
 
 Screenshots:
 
