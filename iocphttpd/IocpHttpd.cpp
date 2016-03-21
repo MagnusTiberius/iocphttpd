@@ -98,17 +98,17 @@ void IocpHttpd::HandleAutomobileProfile(HttpRequest *httpRequest, HttpResponse *
 
 	httpResponse->AddHeaderItem("AutomobileProfileName", v);
 
-	if (httpResponse->FindTemplate("init") == false)
+	if (httpResponse->FindTemplate("HandleAutomobileProfile") == false)
 	{
-		httpResponse->AddTemplate("init", "C:\\www\\automobile.html");
+		httpResponse->AddTemplate("HandleAutomobileProfile", "C:\\www\\automobile.html");
 	}
-	httpResponse->WriteTemplate("init");
+	httpResponse->WriteTemplate("HandleAutomobileProfile");
 }
 
 
 void IocpHttpd::HandleAutomobileMetaDataProfileJson(HttpRequest *httpRequest, HttpResponse *httpResponse)
 {
-	printf("IocpHttpd::HandleAutomobileProfile\n");
+	printf("IocpHttpd::HandleAutomobileMetaDataProfileJson\n");
 
 	int n = httpRequest->urlParams.size();
 	printf("urlParams size=%d \n", n);
