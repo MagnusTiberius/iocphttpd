@@ -15,6 +15,7 @@ public:
 	void EvalPost(HttpRequest *httpRequest, HttpResponse *httpResponse);
 
 	static void HandleHome(HttpRequest *httpRequest, HttpResponse *httpResponse);
+	static void HandleGame(HttpRequest *httpRequest, HttpResponse *httpResponse);
 	static void HandleTest(HttpRequest *httpRequest, HttpResponse *httpResponse);
 	static void HandleInit(HttpRequest *httpRequest, HttpResponse *httpResponse);
 	static void HandleJsonTest(HttpRequest *httpRequest, HttpResponse *httpResponse);

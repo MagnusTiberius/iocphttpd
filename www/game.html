@@ -1,0 +1,177 @@
+<!DOCTYPE html>
+<html  xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en" xmlns:og="http://ogp.me/ns#" xmlns:fb="http://www.facebook.com/2008/fbml" ng-app>
+
+<head>
+  <link rel="image_src" href="http://74.208.133.86:8080/static/img/nissanGtr1.jpg" />
+  <meta name="title" content="Project IOCP">
+  <meta name="description" content="IOCP is a project that is developing a webserver with applications around it." />
+
+  <meta property="og:site_name" content="iocp"/>
+  <meta property="og:locale" content="en_US" />
+  <meta property="og:title" content="Project IOCP">
+  <meta property="og:description" content="IOCP is a project that is developing a webserver with applications around it.">
+  <meta property="og:image" content="http://74.208.133.86:8080/static/img/nissanGtr1.jpg">
+  <meta property="og:url" content="http://74.208.133.86:8080/">
+  <meta property="og:type" content="article">
+  
+  <title>IOCP Webserver C++</title>
+
+  <script src="/static/js/jquery.min.js"></script>
+  <!--script src="/static/js/angular.min.js"></script-->
+  <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.4.5/angular.min.js"></script>
+	<link rel="stylesheet" type="text/css" href="/static/css/test.css">
+	<script type="text/javascript" src="/static/js/testtwo.js"></script>
+	<script type="text/javascript" src="/static/js/test.js"></script>
+	
+    <!-- Le styles -->
+    <link href="/static/assets/css/bootstrap.css" rel="stylesheet">
+    <style type="text/css">
+      body {
+        padding-top: 60px;
+        padding-bottom: 40px;
+      }
+    </style>
+    <link href="/static/assets/css/bootstrap-responsive.css" rel="stylesheet">
+
+    <!-- HTML5 shim, for IE6-8 support of HTML5 elements -->
+    <!--[if lt IE 9]>
+      <script src="../assets/js/html5shiv.js"></script>
+    <![endif]-->
+
+</head>
+<body>
+    <div class="navbar navbar-inverse navbar-fixed-top">
+      <div class="navbar-inner">
+        <div class="container">
+          <button type="button" class="btn btn-navbar" data-toggle="collapse" data-target=".nav-collapse">
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+          </button>
+          <a class="brand" href="/">iocp</a>
+          <div class="nav-collapse collapse">
+            <ul class="nav">
+              <li><a href="/">Home</a></li>
+              <li class="active"><a href="/game">Game</a></li>
+              <li><a href="/init">About</a></li>
+              <li><a href="/test">Contact</a></li>
+              <li class="dropdown">
+                <a href="#" class="dropdown-toggle" data-toggle="dropdown">Dropdown <b class="caret"></b></a>
+                <ul class="dropdown-menu">
+                  <li><a href="#">Action</a></li>
+                  <li><a href="#">Another action</a></li>
+                  <li><a href="#">Something else here</a></li>
+                  <li class="divider"></li>
+                  <li class="nav-header">Nav header</li>
+                  <li><a href="#">Separated link</a></li>
+                  <li><a href="#">One more separated link</a></li>
+                </ul>
+              </li>
+            </ul>
+            <form class="navbar-form pull-right">
+              <input class="span2" type="text" placeholder="Email">
+              <input class="span2" type="password" placeholder="Password">
+              <button type="submit" class="btn">Sign in</button>
+              <button type="submit" class="btn">Sign Up</button>
+            </form>
+          </div><!--/.nav-collapse -->
+        </div>
+      </div>
+    </div>
+
+	<div class="container">
+
+	<h1>Demo Game Using Websockets</h1>
+	<hr>
+
+  <div id="chat" name="chat">
+  </div>
+
+  <form>
+    <input id="inputchattext" name="inputchattext" type="text" placeholder="Enter message here">
+    <input id="btntest6" name="btntest6" type="button" value="send message">
+  </form>
+
+  <hr>
+
+	<p>
+The TwoUp is the larger version of the OneUp, the lowest priced 3D printer on the planet. The TwoUp adds 75mm on both the X and Y axis in build area; the Z-axis stays the same at 125mm. At $279 for a self assembled kit, that includes everything you need, the TwoUp is the easy choice to 'get your feet wet' and you want the ability to make large objects. All corners of the internet recommend a self built printer as your first printer so you learn the ins and outs, the ups and downs of 3D printing before making a big purchase. Professional quality prints are a reality, equivalent to much more expensive machines at competitive speeds with the ability to expand the build area at a later date for only $79. Each kit includes a very reliable and forgiving extruder, that makes it easy to get great quality prints with minimal effort. The TwoUp is optimized for PLA printing but with the optional heated bed upgrade, ABS and Nylon printing are a breeze! This is a Do-It-Yourself, Self-Assembly kit that generally takes 2-8 hours to assemble based on end user skill level. The only difference between the OneUp, TwoUp and ThreeUp is the build area, every other spec is the same.	</p>
+
+	<p>
+Pellentesque fermentum sem a enim sagittis, id porttitor mi mollis. Praesent non metus ac neque viverra ultrices. Aliquam erat volutpat. Aenean mollis volutpat consequat. Cras in ligula neque. Praesent aliquet est sed est laoreet posuere. Praesent convallis mauris nec tincidunt vulputate. Duis maximus ligula sed felis fringilla condimentum. Nullam sollicitudin eu elit eget pretium. Fusce luctus faucibus feugiat. Integer posuere sem lacus, ac aliquet purus sollicitudin at. Proin pellentesque luctus porttitor.	
+	</p>
+	
+
+	</div> <!-- /container -->
+	
+    <!-- Le javascript
+    ================================================== -->
+    <!-- Placed at the end of the document so the pages load faster -->
+    <script src="/static/assets/js/jquery.js"></script>
+    <script src="/static/assets/js/bootstrap-transition.js"></script>
+    <script src="/static/assets/js/bootstrap-alert.js"></script>
+    <script src="/static/assets/js/bootstrap-modal.js"></script>
+    <script src="/static/assets/js/bootstrap-dropdown.js"></script>
+    <script src="/static/assets/js/bootstrap-scrollspy.js"></script>
+    <script src="/static/assets/js/bootstrap-tab.js"></script>
+    <script src="/static/assets/js/bootstrap-tooltip.js"></script>
+    <script src="/static/assets/js/bootstrap-popover.js"></script>
+    <script src="/static/assets/js/bootstrap-button.js"></script>
+    <script src="/static/assets/js/bootstrap-collapse.js"></script>
+    <script src="/static/assets/js/bootstrap-carousel.js"></script>
+    <script src="/static/assets/js/bootstrap-typeahead.js"></script>	
+    <script src="/static/assets/js/holder.js"></script>
+
+
+  <script>
+    $( "#btntest6" ).click(function() {
+      //alert( "Handler for .click() called." );
+        //var full = location.protocol+'//'+location.hostname+(location.port ? ':'+location.port: '');
+        //debugger
+         //webSocket.send("Hello webSockets!", function(error) {
+         // debugger
+         //});
+      var txt = $("#inputchattext").val();
+      console.log(txt);
+      webSocket.send(txt);
+      $("#inputchattext").val("");
+  
+    }); 
+  </script>
+  <script>
+    var wsurl = 'ws://'+location.hostname+":9090/test";
+    var webSocket = new WebSocket(wsurl);
+
+
+    webSocket.onopen = function(event) {
+       console.log("webSocket.onopen, successful websocket connection made!");
+       //debugger
+       //webSocket.send("Hello webSockets!", function(error) {
+       // debugger
+       //});
+    };
+
+
+    webSocket.onclose = function(closeEvent) {
+      //debugger
+      var code = closeEvent.code;
+      var reason = closeEvent.reason;
+      var wasClean = closeEvent.wasClean; 
+      console.log("webSocket.onclose");
+    };  
+
+    webSocket.onmessage = function(messageEvent) {
+    //  debugger
+    //   alert("webSocket.onmessage: " + messageEvent.data);
+       console.log(messageEvent.data);
+       $( "#chat" ).append( "<p>" + messageEvent.data + "</p>" );
+    };
+
+    webSocket.onerror = function(event) {
+      //debugger
+       //alert("webSocket.onerror");
+       console.log("The following error occurred: " + event.data);
+    };  
+  </script>
+<body>	
+</html>

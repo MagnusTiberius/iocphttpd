@@ -8,6 +8,7 @@ IocpHttpd::IocpHttpd()
 	AddRoute("/", IocpHttpd::HandleHome);
 	AddRoute("/test", IocpHttpd::HandleTest);
 	AddRoute("/init", IocpHttpd::HandleInit);
+	AddRoute("/game", IocpHttpd::HandleGame);
 	AddRoute("/json/test", IocpHttpd::HandleJsonTest);
 	AddRoute("/json/testtwo", IocpHttpd::HandleJsonTestTwo);
 	AddRoute("/reset", IocpHttpd::HandleReset);
@@ -63,6 +64,17 @@ void IocpHttpd::HandleTest(HttpRequest *httpRequest, HttpResponse *httpResponse)
 		httpResponse->AddTemplate("Test", "C:\\www\\test.html");
 	}
 	httpResponse->WriteTemplate("Test");
+}
+
+
+void IocpHttpd::HandleGame(HttpRequest *httpRequest, HttpResponse *httpResponse)
+{
+	printf("IocpHttpd::HandleGame\n");
+	if (httpResponse->FindTemplate("game") == false)
+	{
+		httpResponse->AddTemplate("game", "C:\\www\\game.html");
+	}
+	httpResponse->WriteTemplate("game");
 }
 
 void IocpHttpd::HandleInit(HttpRequest *httpRequest, HttpResponse *httpResponse)
