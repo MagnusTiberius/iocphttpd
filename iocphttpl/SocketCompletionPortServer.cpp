@@ -1022,6 +1022,7 @@ namespace IOCPHTTPL
 		EventLog eventLog;
 		char msg[8192];
 
+		httpResponse->PageNotFound = false;
 		sprintf(msg, "URL: %s\n", httpRequest->GetUrl());
 		eventLog.WriteEventLogEntry2(msg, EVENTLOG_ERROR_TYPE);
 
@@ -1083,11 +1084,13 @@ namespace IOCPHTTPL
 					{
 						httpResponse->SetStaticFileName(sbuffer.c_str());
 						httpResponse->WriteStatic(sbuffer.c_str());
+						httpResponse->PageNotFound = false;
 						return;
 					}
 					else
 					{
 						printf("File not found: %s \n", sbuffer.c_str());
+						httpResponse->PageNotFound = true;
 					}
 				}
 				UrlNotFound(httpRequest, httpResponse);
@@ -1122,6 +1125,7 @@ namespace IOCPHTTPL
 			{
 				sprintf(msg, "Static %s not found\n", s.c_str());
 				eventLog.WriteEventLogEntry2(msg, EVENTLOG_ERROR_TYPE);
+				UrlNotFound(httpRequest, httpResponse);
 			}
 
 		}
@@ -1140,6 +1144,7 @@ namespace IOCPHTTPL
 	void SocketCompletionPortServer::UrlNotFound(HttpRequest *httpRequest, HttpResponse *httpResponse)
 	{
 		fprintf(stderr, "SocketCompletionPortServer::UrlNotFound: \n");
+		httpResponse->PageNotFound = true;
 	}
 
 
