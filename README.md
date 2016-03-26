@@ -20,6 +20,7 @@ iocphttpd features:
 3.  URL parameters, you can simply retrieve parameters from a list.
 4.  JSON support is available in the API, see jsoncpp for details.
 5.  Websocket enabled, just added the demo for Websocket in index.html. Check it out.
+6.  Key-Value store implemented using babudb library.
 
 Screenshots:
 
