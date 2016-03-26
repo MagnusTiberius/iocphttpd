@@ -7,6 +7,19 @@ namespace IOCPHTTPL
 	class IOCPHTTPL_API EventLog
 	{
 	public:
+		static EventLog* getInstance()
+		{
+			// The only instance
+			// Guaranteed to be lazy initialized
+			// Guaranteed that it will be destroyed correctly
+			static EventLog instance;
+			return &instance;
+		}
+
+	public:
+		void WriteEventLogEntry2(char* pszMessage, WORD wType);
+
+	private:
 		EventLog()
 		{
 
@@ -22,7 +35,6 @@ namespace IOCPHTTPL
 
 		}
 
-		void WriteEventLogEntry2(char* pszMessage, WORD wType);
 
 	private:
 		// The status of the service

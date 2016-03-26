@@ -72,7 +72,8 @@ namespace IOCPHTTPL
 
 		void WebsocketInit(CHAR* buf, SOCKET socket);
 		void FrameEncode(char* data, DWORD dwLen, BYTE* reply, DWORD* dwSendLen, BYTE firstByte);
-		void SocketCompletionPortServer::HandleWebsocketFrame(CHAR* databuf, SOCKET socket);
+		void HandleWebsocketFrame(CHAR* databuf, SOCKET socket);
+		void HandleWebsocketRequest(CHAR* databuf, SOCKET socket);
 	private:
 		WebSocket::SocketCompletionPortServerWS websocket;
 

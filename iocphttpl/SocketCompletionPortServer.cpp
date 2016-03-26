@@ -205,7 +205,7 @@ namespace IOCPHTTPL
 
 		char msg2[8192];
 		EventLog* eventLog2;
-		eventLog2 = new EventLog(L"IOCP Worker Thread");
+		eventLog2 = EventLog::getInstance(); //new EventLog(L"IOCP Worker Thread");
 
 		if ((Ret = WSAStartup((2, 2), &wsaData)) != 0)
 		{
@@ -500,6 +500,123 @@ namespace IOCPHTTPL
 		}
 	}
 
+	
+	void SocketCompletionPortServer::HandleWebsocketRequest(CHAR* databuf, SOCKET socket)
+	{
+		// TODO: add handler code for websocket communication.
+		int len = strlen(databuf);
+		//int res = ::send(PerHandleData->Socket, PerIoData->DataBuf.buf, len, NULL);
+		int res = 0;
+		bool isPing = false;
+		bool isConnectClose = false;
+
+		char buf[512];
+		ZeroMemory(buf, 512);
+		char buf2[512];
+		ZeroMemory(buf2, 512);
+
+		for (int i = 0; i < len; i++)
+		{
+			BYTE b = databuf[i];
+			sprintf_s(buf, "%s%2.2X ", buf, b);
+			sprintf_s(buf2, "%s%d ", buf2, b);
+			char c = databuf[i];
+			int a = 1;
+		}
+
+		printf("RECV Frame: %s \n", buf);
+
+		BYTE firstByte = databuf[0];
+		char buff[64];
+		ZeroMemory(buff, 64);
+		sprintf_s(buff, "%2.2X ", firstByte);
+
+		BYTE secondByte = databuf[1];
+		sprintf_s(buff, "%s%2.2X ", buff, secondByte);
+
+		firstByte = 0x81;
+
+		if (buff[1] == '9')
+		{
+			isPing = true;
+			firstByte = 0xA1;  //pong
+			printf("Client sent a ping\n");
+		}
+
+		if (buff[1] == '8')
+		{
+			isConnectClose = true;
+			firstByte = 0x88;  //pong
+			printf("Client sent a close connection\n");
+		}
+
+
+		if (firstByte == 136)
+		{
+
+		}
+
+
+		int length = secondByte & 127;
+		int indexFirstMask = 2;
+		if (length == 126)
+		{
+			indexFirstMask = 4;
+		}
+		else if (length == 126)
+		{
+			indexFirstMask = 10;
+		}
+
+		BYTE masks[4];
+		ZeroMemory(masks, 4);
+
+		int j = 0;
+		int i = 0;
+		for (i = indexFirstMask; i<(indexFirstMask + 4); i++){
+			masks[j] = databuf[i];
+			j++;
+		}
+
+		char message[1024];
+		ZeroMemory(message, 1024);
+
+		int rDataStart = indexFirstMask + 4;
+		for (i = rDataStart, j = 0; i<(length + rDataStart); i++, j++)
+		{
+			message[j] = (byte)(databuf[i] ^ masks[j % 4]);
+		}
+		//
+		// http://stackoverflow.com/questions/8125507/how-can-i-send-and-receive-websocket-messages-on-the-server-side
+		//
+
+		DWORD sz = strlen(message) + 10;
+		DWORD dwSendLen;
+		BYTE* reply = new BYTE[sz];
+		ZeroMemory(reply, sz);
+
+		char msgback[1024];
+		ZeroMemory(msgback, 1024);
+		sprintf_s(msgback, "REPLY: %s", message);
+
+		FrameEncode(msgback, strlen(msgback), reply, &dwSendLen, firstByte);
+
+		res = ::send(socket, (char*)reply, dwSendLen, NULL);
+		if (res != SOCKET_ERROR)
+		{
+			//SendBytes = PerIoData->BytesSEND;
+			//sprintf(msg, "%d::WSASEND: Socket=%d; SendBytes=%d; PerIoDataSend->BytesRECV=%d; PerIoDataSend->BytesSEND=%d; PerIoDataSend->DataBuf.len=%d\n",
+			//	dwThreadId, PerHandleData->Socket, SendBytes, PerIoData->BytesRECV, PerIoData->BytesSEND, PerIoData->DataBuf.len);
+		}
+		else
+		{
+			//sprintf(msg, "%d::ServerWorkerThread--WSASend() failed with error %d\n", dwThreadId, WSAGetLastError());
+			//return 0;
+		}
+		ZeroMemory(databuf, DATA_BUFSIZE);
+		//continue;
+	}
+
 	void SocketCompletionPortServer::HandleWebsocketFrame(CHAR* databuf, SOCKET socket)
 	{
 		// TODO: add handler code for websocket communication.
@@ -621,13 +738,13 @@ namespace IOCPHTTPL
 		HttpRequest httpRequest;
 		HttpResponse httpResponse;
 
-		EventLog* eventLog;
+		EventLog* eventLog = EventLog::getInstance();
 		DWORD dwThreadId = GetCurrentThreadId();
 		char msg[8192];
 
 		httpResponse.SetCacheController(&(instance->cacheController));
 
-		eventLog = new EventLog(L"IOCP Worker Thread");
+		//eventLog =  new EventLog(L"IOCP Worker Thread");
 
 		while (TRUE)
 		{
@@ -654,29 +771,15 @@ namespace IOCPHTTPL
 				else
 					printf("closesocket() is fine!\n");
 
+				ZeroMemory(msg, 8192);
+				sprintf(msg, "%d::Socket %d closed\n", dwThreadId, (int)PerHandleData->Socket);
+				eventLog->WriteEventLogEntry2(msg, EVENTLOG_SUCCESS);
+
 				GlobalFree(PerHandleData);
 				GlobalFree(PerIoData);
 				continue;
 			}
 
-			//if (::WaitForSingleObject(PerIoData->Overlapped.hEvent, 5000) != WAIT_OBJECT_0)
-			//{
-			//	sprintf(msg, "%d::WaitForSingleObject 1 WAIT_OBJECT_0 Mismatch\n", dwThreadId);
-			//	eventLog->WriteEventLogEntry2(msg, EVENTLOG_ERROR_TYPE);
-			//	::ReleaseMutex(PerIoData->Overlapped.hEvent);
-			//	continue;
-			//}
-
-
-
-			//if (::WaitForSingleObject(instance->ghMutex, 5000) != WAIT_OBJECT_0)
-			//{
-			//	sprintf(msg, "%d::WaitForSingleObject 2 WAIT_OBJECT_0 Mismatch\n", dwThreadId);
-			//	eventLog->WriteEventLogEntry2(msg, EVENTLOG_ERROR_TYPE);
-			//	//::ReleaseMutex(instance->ghMutex);
-			//	//::ReleaseMutex(PerIoData->Overlapped.hEvent);
-			//	continue;
-			//}
 
 			try
 			{
@@ -701,14 +804,14 @@ namespace IOCPHTTPL
 				continue;
 			}
 
-			//const char* pfindver = "Sec-WebSocket-Version:";
-			//char* pver = strstr(PerIoData->DataBuf.buf, pfindver);
-			//if (pver)
-			//{
-			//	instance->WebsocketInit(PerIoData->DataBuf.buf, PerHandleData->Socket);
-			//}
-			//else if (PerIoData->DataBuf.buf[0] == 'G' || PerIoData->DataBuf.buf[0] == 'P' || PerIoData->DataBuf.buf[0] == 'D' || PerIoData->DataBuf.buf[0] == 'T' || PerIoData->DataBuf.buf[0] == 'C' || PerIoData->DataBuf.buf[0] == 'O')
-			//{
+			const char* pfindver = "Sec-WebSocket-Version:";
+			char* pver = strstr(PerIoData->DataBuf.buf, pfindver);
+			if (pver)
+			{
+				instance->WebsocketInit(PerIoData->DataBuf.buf, PerHandleData->Socket);
+			}
+			else if (PerIoData->DataBuf.buf[0] == 'G' || PerIoData->DataBuf.buf[0] == 'P' || PerIoData->DataBuf.buf[0] == 'D' || PerIoData->DataBuf.buf[0] == 'T' || PerIoData->DataBuf.buf[0] == 'C' || PerIoData->DataBuf.buf[0] == 'O')
+			{
 				httpRequest.socket = PerHandleData->Socket;
 				httpRequest.Parse(PerIoData->DataBuf.buf);
 				instance->Dispatch(&httpRequest, &httpResponse);
@@ -729,13 +832,14 @@ namespace IOCPHTTPL
 					eventLog->WriteEventLogEntry2(msg, EVENTLOG_ERROR_TYPE);
 					//return 0;
 				}
-			//}
-			//else
-			//{
+				free(PerIoData->DataBuf.buf);
+			}
+			else
+			{
+				instance->HandleWebsocketRequest(PerIoData->DataBuf.buf, PerHandleData->Socket);
+			}
 
-			//}
-
-			free(PerIoData->DataBuf.buf);
+			//free(PerIoData->DataBuf.buf);
 
 			//::ReleaseMutex(instance->ghMutex);
 			//::ReleaseMutex(PerIoData->Overlapped.hEvent);
@@ -760,64 +864,6 @@ namespace IOCPHTTPL
 				printf("WSARecv() is OK!\n");
 
 
-			if (false)
-			{
-				// Check to see if the BytesRECV field equals zero. If this is so, then
-				// this means a WSARecv call just completed so update the BytesRECV field
-				// with the BytesTransferred value from the completed WSARecv() call
-				if (PerIoData->BytesRECV == 0)
-				{
-					PerIoData->BytesRECV = BytesTransferred;
-					PerIoData->BytesSEND = 0;
-				}
-				else
-				{
-					PerIoData->BytesSEND += BytesTransferred;
-				}
-
-				if (PerIoData->BytesRECV > PerIoData->BytesSEND)
-				{
-					// Post another WSASend() request.
-					// Since WSASend() is not guaranteed to send all of the bytes requested,
-					// continue posting WSASend() calls until all received bytes are sent.
-					ZeroMemory(&(PerIoData->Overlapped), sizeof(OVERLAPPED));
-					PerIoData->DataBuf.buf = PerIoData->Buffer + PerIoData->BytesSEND;
-					PerIoData->DataBuf.len = PerIoData->BytesRECV - PerIoData->BytesSEND;
-
-					if (WSASend(PerHandleData->Socket, &(PerIoData->DataBuf), 1, &SendBytes, 0,
-						&(PerIoData->Overlapped), NULL) == SOCKET_ERROR)
-					{
-						if (WSAGetLastError() != ERROR_IO_PENDING)
-						{
-							printf("WSASend() failed with error %d\n", WSAGetLastError());
-							return 0;
-						}
-					}
-					else
-						printf("WSASend() is OK!\n");
-				}
-				else
-				{
-					PerIoData->BytesRECV = 0;
-					// Now that there are no more bytes to send post another WSARecv() request
-					Flags = 0;
-					ZeroMemory(&(PerIoData->Overlapped), sizeof(OVERLAPPED));
-					PerIoData->DataBuf.len = DATA_BUFSIZE;
-					PerIoData->DataBuf.buf = PerIoData->Buffer;
-
-					if (WSARecv(PerHandleData->Socket, &(PerIoData->DataBuf), 1, &RecvBytes, &Flags,
-						&(PerIoData->Overlapped), NULL) == SOCKET_ERROR)
-					{
-						if (WSAGetLastError() != ERROR_IO_PENDING)
-						{
-							printf("WSARecv() failed with error %d\n", WSAGetLastError());
-							return 0;
-						}
-					}
-					else
-						printf("WSARecv() is OK!\n");
-				}
-			}
 		}
 	}
 
@@ -831,13 +877,13 @@ namespace IOCPHTTPL
 		SocketIocpController::LPPER_IO_OPERATION_DATA PerIoData, PerIoDataSend;
 		DWORD SendBytes, RecvBytes;
 		DWORD Flags;
-		EventLog* eventLog;
+		EventLog* eventLog = EventLog::getInstance();
 		HttpRequest httpRequest;
 		HttpResponse httpResponse;
 		char msg[8192];
 		httpResponse.SetCacheController(&(obj->cacheController));
 
-		eventLog = new EventLog(L"IOCP Worker Thread");
+		//eventLog = new EventLog(L"IOCP Worker Thread");
 
 		DWORD dwThreadId = GetCurrentThreadId();
 
@@ -1019,12 +1065,13 @@ namespace IOCPHTTPL
 
 	void SocketCompletionPortServer::Dispatch(HttpRequest *httpRequest, HttpResponse *httpResponse)
 	{
-		EventLog eventLog;
+		EventLog* eventLog = EventLog::getInstance();
+		DWORD dwThreadId = GetCurrentThreadId();
 		char msg[8192];
 
 		httpResponse->PageNotFound = false;
-		sprintf(msg, "URL: %s\n", httpRequest->GetUrl());
-		eventLog.WriteEventLogEntry2(msg, EVENTLOG_ERROR_TYPE);
+		sprintf(msg, "%d::URL: %s\n", dwThreadId, httpRequest->GetUrl());
+		eventLog->WriteEventLogEntry2(msg, EVENTLOG_ERROR_TYPE);
 
 		if (httpRequest->GetMethod() == MethodType::HTTP_GET)
 		{
@@ -1091,6 +1138,10 @@ namespace IOCPHTTPL
 					{
 						printf("File not found: %s \n", sbuffer.c_str());
 						httpResponse->PageNotFound = true;
+						ZeroMemory(msg, 8192);
+						sprintf(msg, "%d::URL NOT FOUND: %s\n", dwThreadId, httpRequest->GetUrl());
+						eventLog->WriteEventLogEntry2(msg, EVENTLOG_ERROR_TYPE);
+
 					}
 				}
 				UrlNotFound(httpRequest, httpResponse);
@@ -1106,7 +1157,8 @@ namespace IOCPHTTPL
 
 	void SocketCompletionPortServer::EvalStatic(HttpRequest *httpRequest, HttpResponse *httpResponse)
 	{
-		EventLog eventLog;
+		EventLog* eventLog = EventLog::getInstance();
+		DWORD dwThreadId = GetCurrentThreadId();
 		char msg[8192];
 		try
 		{
@@ -1116,15 +1168,15 @@ namespace IOCPHTTPL
 			ifstream file(s);
 			if (file)
 			{
-				sprintf(msg, "Static %s\n", s.c_str());
-				eventLog.WriteEventLogEntry2(msg, EVENTLOG_ERROR_TYPE);
+				sprintf(msg, "%d::Static %s\n", dwThreadId, s.c_str());
+				eventLog->WriteEventLogEntry2(msg, EVENTLOG_ERROR_TYPE);
 				httpResponse->SetStaticFileName(s);
 				httpResponse->WriteStatic(s.c_str());
 			}
 			else
 			{
-				sprintf(msg, "Static %s not found\n", s.c_str());
-				eventLog.WriteEventLogEntry2(msg, EVENTLOG_ERROR_TYPE);
+				sprintf(msg, "%d::Static %s not found\n", dwThreadId, s.c_str());
+				eventLog->WriteEventLogEntry2(msg, EVENTLOG_ERROR_TYPE);
 				UrlNotFound(httpRequest, httpResponse);
 			}
 
