@@ -28,6 +28,8 @@ public:
 
 	void AddDB(DBServer* db);
 
+	static void HandleWebSocketTest(char* message, char* reply);
+
 private:
 	DBServer* dbServer;
 };

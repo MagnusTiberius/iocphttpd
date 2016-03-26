@@ -597,7 +597,9 @@ namespace IOCPHTTPL
 
 		char msgback[1024];
 		ZeroMemory(msgback, 1024);
-		sprintf_s(msgback, "REPLY: %s", message);
+		//sprintf_s(msgback, "REPLY: %s", message);
+
+		DispatchWebSocket(message, msgback);
 
 		FrameEncode(msgback, strlen(msgback), reply, &dwSendLen, firstByte);
 
@@ -617,113 +619,113 @@ namespace IOCPHTTPL
 		//continue;
 	}
 
-	void SocketCompletionPortServer::HandleWebsocketFrame(CHAR* databuf, SOCKET socket)
-	{
-		// TODO: add handler code for websocket communication.
-		int len = strlen(databuf);
-		int res = 0;
-		bool isPing = false;
-		bool isConnectClose = false;
+	//void SocketCompletionPortServer::HandleWebsocketFrame(CHAR* databuf, SOCKET socket)
+	//{
+	//	// TODO: add handler code for websocket communication.
+	//	int len = strlen(databuf);
+	//	int res = 0;
+	//	bool isPing = false;
+	//	bool isConnectClose = false;
 
-		char buf[512];
-		ZeroMemory(buf, 512);
-		char buf2[512];
-		ZeroMemory(buf2, 512);
+	//	char buf[512];
+	//	ZeroMemory(buf, 512);
+	//	char buf2[512];
+	//	ZeroMemory(buf2, 512);
 
-		for (int i = 0; i < len; i++)
-		{
-			BYTE b = databuf[i];
-			sprintf_s(buf, "%s%2.2X ", buf, b);
-			sprintf_s(buf2, "%s%d ", buf2, b);
-			char c = databuf[i];
-			int a = 1;
-		}
+	//	for (int i = 0; i < len; i++)
+	//	{
+	//		BYTE b = databuf[i];
+	//		sprintf_s(buf, "%s%2.2X ", buf, b);
+	//		sprintf_s(buf2, "%s%d ", buf2, b);
+	//		char c = databuf[i];
+	//		int a = 1;
+	//	}
 
-		printf("RECV Frame: %s \n", buf);
+	//	printf("RECV Frame: %s \n", buf);
 
-		BYTE firstByte = databuf[0];
-		char buff[64];
-		ZeroMemory(buff, 64);
-		sprintf_s(buff, "%2.2X ", firstByte);
+	//	BYTE firstByte = databuf[0];
+	//	char buff[64];
+	//	ZeroMemory(buff, 64);
+	//	sprintf_s(buff, "%2.2X ", firstByte);
 
-		BYTE secondByte = databuf[1];
-		sprintf_s(buff, "%s%2.2X ", buff, secondByte);
+	//	BYTE secondByte = databuf[1];
+	//	sprintf_s(buff, "%s%2.2X ", buff, secondByte);
 
-		firstByte = 0x81;
+	//	firstByte = 0x81;
 
-		if (buff[1] == '9')
-		{
-			isPing = true;
-			firstByte = 0xA1;  //pong
-			printf("Client sent a ping\n");
-		}
+	//	if (buff[1] == '9')
+	//	{
+	//		isPing = true;
+	//		firstByte = 0xA1;  //pong
+	//		printf("Client sent a ping\n");
+	//	}
 
-		if (buff[1] == '8')
-		{
-			isConnectClose = true;
-			firstByte = 0x88;  //pong
-			printf("Client sent a close connection\n");
-		}
-
-
-		if (firstByte == 136)
-		{
-
-		}
+	//	if (buff[1] == '8')
+	//	{
+	//		isConnectClose = true;
+	//		firstByte = 0x88;  //pong
+	//		printf("Client sent a close connection\n");
+	//	}
 
 
-		int length = secondByte & 127;
-		int indexFirstMask = 2;
-		if (length == 126)
-		{
-			indexFirstMask = 4;
-		}
-		else if (length == 126)
-		{
-			indexFirstMask = 10;
-		}
+	//	if (firstByte == 136)
+	//	{
 
-		BYTE masks[4];
-		ZeroMemory(masks, 4);
+	//	}
 
-		int j = 0;
-		int i = 0;
-		for (i = indexFirstMask; i<(indexFirstMask + 4); i++){
-			masks[j] = databuf[i];
-			j++;
-		}
 
-		char message[1024];
-		ZeroMemory(message, 1024);
+	//	int length = secondByte & 127;
+	//	int indexFirstMask = 2;
+	//	if (length == 126)
+	//	{
+	//		indexFirstMask = 4;
+	//	}
+	//	else if (length == 126)
+	//	{
+	//		indexFirstMask = 10;
+	//	}
 
-		int rDataStart = indexFirstMask + 4;
-		for (i = rDataStart, j = 0; i<(length + rDataStart); i++, j++)
-		{
-			message[j] = (byte)(databuf[i] ^ masks[j % 4]);
-		}
-		//
-		// http://stackoverflow.com/questions/8125507/how-can-i-send-and-receive-websocket-messages-on-the-server-side
-		//
+	//	BYTE masks[4];
+	//	ZeroMemory(masks, 4);
 
-		DWORD sz = strlen(message) + 10;
-		DWORD dwSendLen;
-		BYTE* reply = new BYTE[sz];
-		ZeroMemory(reply, sz);
+	//	int j = 0;
+	//	int i = 0;
+	//	for (i = indexFirstMask; i<(indexFirstMask + 4); i++){
+	//		masks[j] = databuf[i];
+	//		j++;
+	//	}
 
-		char msgback[1024];
-		ZeroMemory(msgback, 1024);
-		sprintf_s(msgback, "This is a reply. %d", 1);
+	//	char message[1024];
+	//	ZeroMemory(message, 1024);
 
-		FrameEncode(msgback, strlen(msgback), reply, &dwSendLen, firstByte);
+	//	int rDataStart = indexFirstMask + 4;
+	//	for (i = rDataStart, j = 0; i<(length + rDataStart); i++, j++)
+	//	{
+	//		message[j] = (byte)(databuf[i] ^ masks[j % 4]);
+	//	}
+	//	//
+	//	// http://stackoverflow.com/questions/8125507/how-can-i-send-and-receive-websocket-messages-on-the-server-side
+	//	//
 
-		res = ::send(socket, (char*)reply, dwSendLen, NULL);
-		if (res != SOCKET_ERROR)
-		{
-		}
-		else
-		{
-		}
-	}
+	//	DWORD sz = strlen(message) + 10;
+	//	DWORD dwSendLen;
+	//	BYTE* reply = new BYTE[sz];
+	//	ZeroMemory(reply, sz);
+
+	//	char msgback[1024];
+	//	ZeroMemory(msgback, 1024);
+	//	sprintf_s(msgback, "This is a reply. %d", 1);
+
+	//	FrameEncode(msgback, strlen(msgback), reply, &dwSendLen, firstByte);
+
+	//	res = ::send(socket, (char*)reply, dwSendLen, NULL);
+	//	if (res != SOCKET_ERROR)
+	//	{
+	//	}
+	//	else
+	//	{
+	//	}
+	//}
 
 	DWORD WINAPI SocketCompletionPortServer::ServerWorkerThread(LPVOID lpObject)
 	{
@@ -837,6 +839,7 @@ namespace IOCPHTTPL
 			else
 			{
 				instance->HandleWebsocketRequest(PerIoData->DataBuf.buf, PerHandleData->Socket);
+				
 			}
 
 			//free(PerIoData->DataBuf.buf);
@@ -1061,6 +1064,11 @@ namespace IOCPHTTPL
 	void SocketCompletionPortServer::EvalPost(HttpRequest *httpRequest, HttpResponse *httpResponse)
 	{
 		fprintf(stderr, "SocketCompletionPortServer::EvalPost\n");
+	}
+
+	void SocketCompletionPortServer::DispatchWebSocket(char* message, char* reply)
+	{
+		WebSocketRoute::DispatchWebSocket(message, reply);
 	}
 
 	void SocketCompletionPortServer::Dispatch(HttpRequest *httpRequest, HttpResponse *httpResponse)

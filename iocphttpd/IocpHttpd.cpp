@@ -18,6 +18,9 @@ IocpHttpd::IocpHttpd()
 	AddRoute("/profile/<id:[A-Za-z0-9]+>/profile.html", IocpHttpd::HandleAutomobileProfile);
 	AddRoute("/ws/profile/<id:[A-Za-z0-9]+>/profile.html", IocpHttpd::HandleAutomobileProfileJson);
 	AddRoute("/ws/metadata/profile/<id:[A-Za-z0-9]+>/profile.html", IocpHttpd::HandleAutomobileMetaDataProfileJson);
+
+	AddWebSocketRoute("/test", IocpHttpd::HandleWebSocketTest);
+
 }
 
 
@@ -29,6 +32,17 @@ IocpHttpd::~IocpHttpd()
 void IocpHttpd::AddDB(DBServer* db)
 {
 	dbServer = db;
+}
+
+void IocpHttpd::HandleWebSocketTest(char* message, char* reply)
+{
+	//sprintf_s(reply, "REPLY: %s", message);
+	string rep;
+	rep.assign("REPLY::");
+	rep.append(message);
+	//reply = (char*)rep.c_str();
+	int siz = rep.size();
+	sprintf_s(reply, siz + 1, "%s", rep.c_str());
 }
 
 void IocpHttpd::EvalGet(HttpRequest *httpRequest, HttpResponse *httpResponse)

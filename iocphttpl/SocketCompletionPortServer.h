@@ -15,12 +15,13 @@
 #include "SocketCompletionPortServerWS.h"
 #include "Crypt.h"
 #include "Base64.h"
+#include "WebSocketRoute.h"
 //#define DATA_BUFSIZE 8192
 
 namespace IOCPHTTPL
 {
 
-	class IOCPHTTPL_API SocketCompletionPortServer : public HttpUrlRoute
+	class IOCPHTTPL_API SocketCompletionPortServer : public HttpUrlRoute, public WebSocketRoute
 	{
 	public:
 		SocketCompletionPortServer();
@@ -47,6 +48,7 @@ namespace IOCPHTTPL
 		} PER_HANDLE_DATA, *LPPER_HANDLE_DATA;
 
 		typedef /*static*/ void(*LPSTATICFUNC)(HttpRequest *httpRequest, HttpResponse *httpResponse);
+		typedef /*static*/ void(*LPSTATICFUNCWEBSOCKET)(char* message);
 
 		int Start();
 		int Start2();
@@ -62,6 +64,8 @@ namespace IOCPHTTPL
 		HANDLE ghMutex;
 		SocketIocpController socketIocpController;
 
+		void DispatchWebSocket(char* message, char* reply);
+
 	private:
 		static DWORD WINAPI ServerWorkerThread(LPVOID CompletionPortID);
 		static DWORD WINAPI ServerWorkerThread2(LPVOID CompletionPortID);
@@ -72,7 +76,7 @@ namespace IOCPHTTPL
 
 		void WebsocketInit(CHAR* buf, SOCKET socket);
 		void FrameEncode(char* data, DWORD dwLen, BYTE* reply, DWORD* dwSendLen, BYTE firstByte);
-		void HandleWebsocketFrame(CHAR* databuf, SOCKET socket);
+		//void HandleWebsocketFrame(CHAR* databuf, SOCKET socket);
 		void HandleWebsocketRequest(CHAR* databuf, SOCKET socket);
 	private:
 		WebSocket::SocketCompletionPortServerWS websocket;
