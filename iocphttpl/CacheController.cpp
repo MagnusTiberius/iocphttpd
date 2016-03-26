@@ -149,12 +149,14 @@ namespace IOCPHTTPL
 		lSize = ftell(pFile);
 		rewind(pFile);
 
-		buffer = (char*)malloc(sizeof(char)*lSize);
+		buffer = (char*)malloc(lSize);
 		if (buffer == NULL)
 		{
 			fputs("Memory error", stderr);
 			return;
 		}
+
+		ZeroMemory(buffer, lSize);
 
 		result = fread(buffer, 1, lSize, pFile);
 		if (result != lSize)

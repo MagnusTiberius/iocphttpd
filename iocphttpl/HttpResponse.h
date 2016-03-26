@@ -28,9 +28,12 @@ namespace IOCPHTTPL
 		typedef std::vector<lpstatic_content_t> buflist_t;
 		typedef std::vector<lpstatic_content_t>::iterator ibuflist_t;
 
-		const char* resp_ok = "HTTP/1.x 200 OK";
+		const char* resp_ok = "HTTP/1.1 200 OK";
+		const char* resp_404 = "HTTP/1.1 404 Not Found";
 		const char* resp_ct = "text/html";
 		const char* tmp_date = "Fri, 31 Dec 1999 23:59:59 GMT";
+
+		bool PageNotFound;
 
 		void Write(const char* str);
 		void WriteTemplate(char* code);

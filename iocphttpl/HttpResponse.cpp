@@ -379,10 +379,25 @@ namespace IOCPHTTPL
 		struct tm  now = *localtime(&t);
 		char* dt = ctime(&t);
 
+		if (PageNotFound)
+		{
+			strcpy_s(txtbuf, DATA_BUFSIZE, resp_404);
+			strcat_s(txtbuf, DATA_BUFSIZE, "\n");
+			strcat_s(txtbuf, DATA_BUFSIZE, "Date: ");
+			strcat_s(txtbuf, DATA_BUFSIZE, dt);
+			strcat_s(txtbuf, DATA_BUFSIZE, "\n");
+			strcat_s(txtbuf, DATA_BUFSIZE, "Content-Type: ");
+			strcat_s(txtbuf, DATA_BUFSIZE, ctstr.c_str());
+			strcat_s(txtbuf, DATA_BUFSIZE, "\n");
+			strcat_s(txtbuf, DATA_BUFSIZE, "\n");
+
+			int nbuffersize = strlen(txtbuf);
+			char* nbuf = _strdup(txtbuf);
+			return (byte*)nbuf;
+		}
 
 		if (contentsiz == 0)
 		{
-
 			strcpy_s(txtbuf, DATA_BUFSIZE, resp_ok);
 			strcat_s(txtbuf, DATA_BUFSIZE, "\n");
 			strcat_s(txtbuf, DATA_BUFSIZE, "Date: ");
